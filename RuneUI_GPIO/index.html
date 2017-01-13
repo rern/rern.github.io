@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RuneAudio - RuneUIe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link rel="stylesheet" href="assets/css/runeui.css">
+    <link rel="stylesheet" href="assets/css/pnotify.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/img/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/img/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/img/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/img/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon-180x180.png">
+    <meta name="apple-mobile-web-app-title" content="RuneAudio">
+    <link rel="icon" type="image/png" href="assets/img/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="assets/img/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="assets/img/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="assets/img/mstile-144x144.png">
+    <meta name="msapplication-config" content="assets/img/browserconfig.xml">
+    <meta name="application-name" content="RuneAudio">
+</head>
+<body id="section-index">
+<!--
+ /*
+ * Copyright (C) 2013-2014 RuneAudio Team
+ * http://www.runeaudio.com
+ *
+ * RuneUI
+ * copyright (C) 2013-2014 - Andrea Coiutti (aka ACX) & Simone De Gregori (aka Orion)
+ *
+ * RuneOS
+ * copyright (C) 2013-2014 - Simone De Gregori (aka Orion) & Carmelo San Giovanni (aka Um3ggh1U)
+ *
+ * RuneAudio website and logo
+ * copyright (C) 2013-2014 - ACX webdesign (Andrea Coiutti)
+ *
+ * This Program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This Program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RuneAudio; see the file COPYING.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.txt>.
+ *
+ * RuneUI version: 1.3
+ * RuneOS version: 0.3-beta
+ *
+ */
+-->
+<div id="barleft"></div>
+<div id="barright"></div>
+<div id="menu-top">
+    <img class="logo" src="assets/img/runelogo.svg" alt="RuneAudio" href="/">
+	<button id="gpio" class="btn-default"><i class="fa fa-volume-off"></i></button>
+    <div class="playback-controls">
+        <button id="previous" class="btn btn-default btn-cmd" title="Previous" data-cmd="previous"><i class="fa fa-step-backward"></i></button>
+        <button id="stop" class="btn btn-default btn-cmd btn-primary" title="Stop" data-cmd="stop"><i class="fa fa-stop"></i></button>
+        <button id="play" class="btn btn-default btn-cmd" title="Play/Pause" data-cmd="play"><i class="fa-play fa"></i></button>
+	<button id="next" class="btn btn-default btn-cmd" title="Next" data-cmd="next"><i class="fa fa-step-forward"></i></button>
+    </div>
+    <div class="dropdown">
+        <button id="menu-settings" class="btn-default dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" href="#"><i class="fa fa-gear"></i></button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu-settings">
+			<li id="dropdownbg"></li> <!-- box-shadow -->
+            <li class=""><a><i class="fa fa-folder-open"></i> Sources</a></li>
+            <li class=""><a><i class="fa fa-cogs"></i> MPD</a></li>
+            <li class=""><a><i class="fa fa-wrench"></i> Settings</a></li>
+            <li class=""><a><i class="fa fa-sitemap"></i> Network</a></li>
+            <li class=""><a><i class="fa fa-bug"></i> Debug</a></li>
+            <li class=""><a><i class="fa fa-trophy"></i> Credits</a></li>
+            <li class=""><a><i class="fa fa-code"></i> Development</a></li>
+			<li><a href="gpiosettings.html" target="_blank"><i class="fa fa-volume-off"></i> GPIO</a></li>
+            <li><a data-toggle="modal"><i class="fa fa-power-off"></i> Turn off</a></li>
+        </ul>
+    </div>    
+</div>
+<div id="menu-bottom">
+    <ul>
+        <li id="open-panel-sx"><a class="open-panel-sx"><i class="fa fa-folder-open"></i></a></li>
+        <li id="open-playback" class="active"><a><i class="fa fa-music"></i></a></li>
+        <li id="open-panel-dx"><a class="open-panel-dx"><i class="fa fa-list"></i></a></li>
+    </ul>
+</div>
+<div id="lyricfade" class="hide">
+</div>
+	
+<div class="tab-content" id="content">
+    <!-- PLAYBACK PANEL -->
+    <div id="playback" class="tab-pane active">
+        <div id="container-playback">
+		<div id="info">
+			<div id="divartist">
+			<span id="currentartist"></span>
+			</div>
+			<div id="divsong">
+			<span id="currentsong"></span>
+			</div>
+			<div id="divalbum">
+			<span id="currentalbum"></span>
+			</div>
+			<div id="sampling">
+				<span id="playlist-position"><span></span></span>
+				<span id="format-bitrate"><a id="dot0" style="color:#ffffff"> • </a>16 bit 44.1 kHz 1411.2 kbps<a style="color:#ffffff"> • </a>FLAC</span>
+			</div>
+		</div>
+            <div class="row" id="playback-row">
+                <div id="time-knob">
+                    <div style="width: 230px; height: 230px;">
+		    <input id="time" value="0" data-width="230" data-height="230" data-bgcolor="#34495E" data-fgcolor="#0095D8" data-thickness="0.30" data-min="0" data-max="1000" data-displayinput="false" data-displayprevious="true" style="display: none; width: 0px; visibility: hidden;"></div>
+                    <button id="overlay-playsource-open" title="View and change playback source" style="margin-top: -330px;" class="btn btn-default btn-xs disabled">MPD</button>
+                    <span id="countdown-display" class="is-countdown"><span class="countdown-row countdown-amount countdown-holding">00:00</span></span>
+                    <span id="total">03:26</span>
+                </div>
+                <div id="play-group">
+                    <div class="btn-group">
+                        <button id="repeat" class="btn btn-default btn-lg btn-cmd btn-toggle" type="button" title="Repeat" data-cmd="repeat"><i class="fa fa-repeat"></i></button>
+                        <button id="random" class="btn btn-default btn-lg btn-cmd btn-toggle" type="button" title="Random" data-cmd="random"><i class="fa fa-random"></i></button>
+                        <button id="single" class="btn btn-default btn-lg btn-cmd btn-toggle " type="button" title="Single" data-cmd="single"><i class="fa fa-dot-circle-o"></i></button>
+                    </div>
+                </div>
+                <div id="coverart">
+                    <img id="cover-art" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="transparent-square">
+                </div>
+                <div id="share-group">
+                    <div class="btn-group">
+                        <button id="overlay-social-open" class="btn btn-default btn-lg" type="button" title="Share this track"><i class="fa fa-share-alt"></i></button>
+                    </div>
+                </div>
+		<div id="volume-knob" class="">
+                    <input id="volume" value="100" data-width=230 data-height=230 data-bgColor="#f00" data-thickness="0.25" data-skin="tron" data-cursor="true" data-angleArc="250" data-angleOffset="-125" data-readOnly="false" data-fgColor="#0095D8">
+                </div>
+                <div id="vol-group">
+                    <div class="btn-group">
+                        <button id="volumedn" class="btn btn-default btn-lg btn-cmd btn-volume" type="button" title="Volume down"><i class="fa fa-volume-down"></i></button>
+                        <button id="volumemute" class="btn btn-default btn-lg btn-cmd btn-volume" type="button" title="Volume mute/unmute"><i class="fa fa-volume-off"></i> <i class="fa fa-exclamation"></i></button>
+                        <button id="volumeup" class="btn btn-default btn-lg btn-cmd btn-volume" type="button" title="Volume up"><i class="fa fa-volume-up"></i></button>
+                    </div>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
+<div id="overlay-social" class="overlay-scale closed">
+    <nav>
+	<ul>
+	    <li><span>Share this track</span></li>
+	    <li><a><i class="fa fa-twitter sx"></i> Share on Twitter</a></li>
+	    <li><a><i class="fa fa-facebook sx"></i> Share on Facebook</a></li>
+	    <li><a><i class="fa fa-google-plus sx"></i> Share on Google+</a></li>
+	    <li><a class="btn btn-default btn-lg btn-block"><i class="fa fa-heart sx"></i> Support RuneAudio</a></li>
+	    <li><button id="overlay-social-close" class="btn btn-link" type="button"><i class="fa fa-times"></i> close this layer</button></li>
+	</ul>
+    </nav>
+</div>
+<div id="overlay-playsource" class="overlay-scale closed">
+    <nav>
+	<ul>
+	    <li><span>Playback source</span></li>
+			<li><a class="btn btn-default btn-lg btn-block" style="background: #003D88;" title="Switch to MPD"><i class="fa fa-linux sx"></i> MPD</a></li>
+			<li><a class="btn btn-default btn-lg btn-block inactive" title="Switch to Spotify"><i class="fa fa-spotify sx"></i> <span>spop</span> Spotify</a></li>
+			<li><a class="btn btn-default btn-lg btn-block inactive"><i class="fa fa-apple sx"></i> <span>ShairPort</span> Airplay</a></li>
+			<li><a class="btn btn-default btn-lg btn-block inactive"><i class="fa fa-puzzle-piece sx"></i> <span>upmpdcli</span> DLNA</a></li>
+	    <li><button id="overlay-playsource-close" class="btn btn-link" type="button"><i class="fa fa-times"></i> close this layer</button></li>
+	</ul>
+    </nav>
+</div>
+<script src="assets/js/vendor/jquery-2.1.0.min.js"></script>
+<script src="assets/js/vendor/pushstream.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/vendor/jquery.knob.min.js"></script>
+<script src="assets/js/vendor/pnotify3.custom.min.js"></script>
+<script src="assets/js/custom.js"></script>
+<script src="assets/js/vendor/hammer.min.js"></script>
+<script src="assets/js/gpio.js"></script>
+</body>
+</html>
