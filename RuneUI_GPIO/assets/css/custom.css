@@ -445,7 +445,7 @@
 	#time-knob {
 	    order: 3;
 		-webkit-order: 3;
-		margin-top: 10px;
+		margin-top: 25px;
 	}
 	#coverart {
 		order: 1;
@@ -537,7 +537,7 @@
 	#time-knob {
 	    order: 1;
 		-webkit-order: 1;
-		margin-top: 0px;
+		margin-top: 0;
 	}
 	#coverart {
 		order: 2;
