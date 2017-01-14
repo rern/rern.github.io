@@ -328,7 +328,7 @@ $('#playsource, #menu-settings, #open-panel-sx, #open-panel-dx').click(function(
 });
 
 // additional play/pause by click
-$('#coverart').click(function(){
+$('#coverart, #countdown-display').click(function(){
 	$('#play').click();
 });
 // lastfm search
