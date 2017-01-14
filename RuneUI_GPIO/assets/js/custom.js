@@ -245,13 +245,14 @@ function topbottom() {
 }
 function volmargin() {
 	if ($('#cover-art').is(':visible')) {
+		if ($(window).width() < 500) $('#time-knob').css('margin-top', 0);
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
 			$('#divalbum').show();
 		}
 	} else {
-		$('#time-knob').css('margin-top', 0); // hidden '#cover-art' cannot be css
+		$('#time-knob').css('margin-top', '-25px'); // hidden '#cover-art' cannot be css
 	}
 }
 
