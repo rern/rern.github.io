@@ -537,6 +537,7 @@
 	#time-knob {
 	    order: 1;
 		-webkit-order: 1;
+		margin-top: 0px;
 	}
 	#coverart {
 		order: 2;
