@@ -245,7 +245,6 @@ function topbottom() {
 }
 function volmargin() {
 	if ($('#cover-art').is(':visible')) {
-		$('#time-knob').css('margin-top', '25px');
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
