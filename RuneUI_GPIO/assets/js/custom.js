@@ -243,9 +243,9 @@ function topbottom() {
 		$('#menu-bottom').css('bottom', '-40px');
 	}
 }
-function volmargin() {
+function timemargin() {
 	if ($('#cover-art').is(':visible')) {
-		if ($(window).width() < 500) $('#time-knob').css('margin-top', 0);
+		if ($(window).width() < 414) $('#time-knob').css('margin-top', 0);
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
@@ -257,11 +257,11 @@ function volmargin() {
 }
 
 $('#barleft').click( function() {
-	if ($('#volume-knob').length && $(window).width() < 500) {
+	if ($('#volume-knob').length && $(window).width() < 414) {
 		if ($('#play-group').is(':visible')) {
-			$('#share-group, #cover-art').slideToggle(volmargin);
+			$('#share-group, #cover-art').slideToggle(timemargin);
 		} else {
-			$('#cover-art').slideToggle(volmargin);
+			$('#cover-art').slideToggle(timemargin);
 		}
 	} else {
 		topbottom();
@@ -285,7 +285,7 @@ $('#barright').click( function() {
 	} else {
 		$('#share-group').hide();
 	}
-	if (window.innerHeight < 500) {
+	if (window.innerHeight < 414) {
 		if ($('#play-group').is(':visible')) {
 			$('#divalbum, #sampling').hide();
 		} else {
@@ -313,7 +313,7 @@ $('#playlist ul').click(function(e) {
 	if (e.target.nodeName == 'SPAN') {
 		$('#open-playback a').click();
 		$('#open-playback a')[0].click();
-		if ($(window).width() < 500 || $(window).height() < 500) topbottom();
+		if ($(window).width() < 414 || $(window).height() < 414) topbottom();
 	}
 });
 // playsource button replacement
