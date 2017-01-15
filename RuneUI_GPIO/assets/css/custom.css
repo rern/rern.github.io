@@ -4,6 +4,7 @@
 #overlay-social-open {
 	z-index: 0;
 }
+
 #barleft {
 	position: fixed;
 	top: 0;
@@ -271,6 +272,10 @@
 	background: -webkit-linear-gradient(top,  transparent,#000000);
 	background: linear-gradient(to bottom,  transparent,#000000);
 }
+.lyric-menu-bottom {
+	margin-left: 510px;
+	width: calc(100vw - 510px);
+}
 
 /* ---------------------- custom pnotify ----------------------*/
 .pnotify_lyric div.ui-pnotify-container {
@@ -334,7 +339,7 @@
 }
 
 /* ---------------------- responsive ----------------------*/
-@media(max-width: 750px) and (min-width: 500px) {
+@media(max-width: 736px) and (min-width: 414px) {
 	#playback {
 		padding: 50px 0 20px 0;
 	}
@@ -376,12 +381,12 @@
 		-webkit-order: 6;
 	}
 }
-@media(max-width: 750px) {
+@media(max-width: 736px) {
 	#clock-display {
 		display: none;
 	}
 }
-@media(max-width: 660px) {
+@media(max-width: 640px) {
 	.logo {
 		display: none;
 	}
@@ -392,13 +397,7 @@
 		padding: 50px 0 20px 0;
 	}
 }
-@media(min-width: 640px) {
-	.lyric-menu-bottom {
-		margin-left: 510px;
-		width: calc(100vw - 510px);
-	}
-}
-@media(max-width: 500px) {
+@media(max-width: 414px) {
 	#menu-top {
 		top: -40px;
 	}
@@ -486,12 +485,12 @@
 		left: calc(100vw - 40px);
 	}
 }
-@media(min-height: 500px) {
+@media(min-height: 414px) {
 	#currentalbum {
 		display: table !important;
 	}
 }
-@media(max-height: 500px) {
+@media(max-height: 414px) {
 	#menu-top {
 		top: -40px;
 	}
@@ -519,7 +518,7 @@
 		margin: 0;
 	}
 }
-@media(max-height: 500px) and (max-width: 750px) and (min-width: 500px) {
+@media(max-height: 414px) and (max-width: 736px) {
 	#sampling span
 	#dot0 {
 		display: inline;
@@ -549,7 +548,7 @@
 		-webkit-order: 6;
 	}
 }
-@media(max-width: 640px) and (max-height: 500px) { /* 800x480 */
+@media(max-height: 320px) and (max-width: 534px) {
 	#divartist,
 	#divalbum {
 		display: none !important;
@@ -588,7 +587,7 @@
 		margin-top: 10px;
 	}
 }
-@media(max-width: 500px) and (max-height: 640px) { /* 480x800 */
+@media(max-width: 320px) {
 	#divartist,
 	#divalbum {
 		display: none !important;
