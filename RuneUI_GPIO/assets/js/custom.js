@@ -75,7 +75,7 @@ function play() {
 	var totaltime = $('#total').text().split(':');
 	var totalsec = (Number(totaltime[0]) * 60) + Number(totaltime[1]);
 	var currentknob = Number($('#time').val());
-	timer = setInterval(function() {
+/*	timer = setInterval(function() {
 		currentsec = currentsec + 1;
 		var min = Math.floor(currentsec / 60);
 		min = (min < 10) ? '0'+ min :  min;
@@ -108,7 +108,41 @@ function play() {
 				play();
 			}
 		}
-	}, 1000);
+	}, 1000);*/
+	timer = setInterval(function() {
+		currentsec = currentsec + 0.25;
+		var min = Math.floor(currentsec / 60);
+		min = (min < 10) ? '0'+ min :  min;
+		var sec = (currentsec) % 60;
+		sec = (sec < 10) ? '0'+ sec : sec;
+		currenttime = min +':'+ sec;
+		currentknob = Math.round(1000 * currentsec / totalsec);
+		$('#countdown-display span').text(currenttime);
+		$('#time').val(currentknob).trigger('change');
+		if (currentsec == totalsec) {
+			var list = $('#playlist-position').find('span').text();
+			$('#time').val(0).trigger('change');
+			$('#countdown-display span').text('00:00')
+			clearInterval(timer);
+			timer = false;
+			if ($('#repeat').hasClass('btn-primary')) {
+				if (!$('#single').hasClass('btn-primary')) {
+					(list == '3/3') ? songchange(song1) : next();
+				}
+				play();
+			} else if ($('#single').hasClass('btn-primary')) {
+				$('#stop').click();
+			} else if ($('#random').hasClass('btn-primary')) {
+				if (list == '1/3') songchange(song3);
+				if (list == '2/3') songchange(song1);
+				if (list == '3/3') songchange(song2);
+				play();
+			} else {
+				next();
+				play();
+			}
+		}
+	}, 250);
 }
 function songchange(sn) {
 	$('#currentartist').text(sn[0]);
