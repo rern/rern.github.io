@@ -76,7 +76,7 @@ function play() {
 	var totalsec = (Number(totaltime[0]) * 60) + Number(totaltime[1]);
 	var currentknob = Number($('#time').val());
 	timer = setInterval(function() {
-		currentsec = currentsec + 1;
+		currentsec = currentsec + 0.25;
 		var min = Math.floor(currentsec / 60);
 		min = (min < 10) ? '0'+ min :  min;
 		var sec = (currentsec) % 60;
