@@ -108,7 +108,7 @@ function play() {
 				play();
 			}
 		}
-	}, 1000);
+	}, 250);
 }
 function songchange(sn) {
 	$('#currentartist').text(sn[0]);
