@@ -110,6 +110,15 @@ function play() {
 		}
 	}, 1000);
 }
+function scrolltext() {
+	$('#divartist, #divsong, #divalbum').each(function() {
+		if ($(this).find('span').width() > Math.floor(window.innerWidth * 0.975)) {
+			$(this).addClass('scroll-left');
+		} else {
+			$(this).removeClass('scroll-left');
+		}
+	});	
+}
 function songchange(sn) {
 	$('#currentartist').text(sn[0]);
 	$('#currentsong').text(sn[1]);
@@ -123,14 +132,7 @@ function songchange(sn) {
 		clearInterval(timer);
 		play();
 	}
-// scrolling text
-	$('#divartist, #divsong, #divalbum').each(function() {
-		if ($(this).find('span').width() > Math.floor(window.innerWidth * 0.975)) {
-			$(this).addClass('scroll-left');
-		} else {
-			$(this).removeClass('scroll-left');
-		}
-	});
+	scrolltext();
 }
 function previous() {
 	var list = $('#playlist-position').find('span').text();
@@ -245,7 +247,7 @@ function topbottom() {
 }
 function timemargin() {
 	if ($('#cover-art').is(':visible')) {
-		if ($(window).width() < 414) $('#time-knob').css('margin-top', 0);
+		if ($(window).width() < 500) $('#time-knob').css('margin-top', 0);
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
@@ -270,11 +272,7 @@ $('#barleft').click( function() {
 window.addEventListener('orientationchange', function() {
 //	$('#cover-art').show(volmargin);
 	$('#divartist, #divsong, #divalbum').each(function() {
-		if ($(this).find('span').width() > window.innerWidth) {
-			$(this).addClass('scroll-left');
-		} else {
-			$(this).removeClass('scroll-left');
-		}
+		scrolltext();
 	});
 });
 
