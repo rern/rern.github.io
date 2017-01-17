@@ -259,7 +259,7 @@ function timemargin() {
 }
 
 $('#barleft').click( function() {
-	if ($('#volume-knob').length && $(window).width() < 414) {
+	if ($('#volume-knob').length && $(window).width() < 500) {
 		if ($('#play-group').is(':visible')) {
 			$('#share-group, #cover-art').slideToggle(timemargin);
 		} else {
@@ -283,7 +283,7 @@ $('#barright').click( function() {
 	} else {
 		$('#share-group').hide();
 	}
-	if (window.innerHeight < 414) {
+	if (window.innerHeight < 500) {
 		if ($('#play-group').is(':visible')) {
 			$('#divalbum, #sampling').hide();
 		} else {
@@ -311,7 +311,7 @@ $('#playlist ul').click(function(e) {
 	if (e.target.nodeName == 'SPAN') {
 		$('#open-playback a').click();
 		$('#open-playback a')[0].click();
-		if ($(window).width() < 414 || $(window).height() < 414) topbottom();
+		if ($(window).width() < 500 || $(window).height() < 500) topbottom();
 	}
 });
 // playsource button replacement
