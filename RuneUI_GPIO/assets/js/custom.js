@@ -76,10 +76,10 @@ function play() {
 	var totalsec = (Number(totaltime[0]) * 60) + Number(totaltime[1]);
 	var currentknob = Number($('#time').val());
 	timer = setInterval(function() {
-		currentsec = currentsec + 0.25;
+		currentsec = currentsec + 1;
 		var min = Math.floor(currentsec / 60);
 		min = (min < 10) ? '0'+ min :  min;
-		var sec = Math.floor(currentsec) % 60;
+		var sec = currentsec % 60;
 		sec = (sec < 10) ? '0'+ sec : sec;
 		currenttime = min +':'+ sec;
 		currentknob = Math.round(1000 * currentsec / totalsec);
@@ -108,7 +108,7 @@ function play() {
 				play();
 			}
 		}
-	}, 250);
+	}, 1000);
 }
 function songchange(sn) {
 	$('#currentartist').text(sn[0]);
