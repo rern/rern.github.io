@@ -280,7 +280,7 @@ $('#barleft').click( function() {
 		if ($('#play-group').is(':visible')) {
 			$('#share-group, #cover-art').slideToggle(volmargin);
 		} else {
-			$('#cover-art').slideToggle(volmargin);
+			$('#coverart').slideToggle(volmargin);
 		}
 	} else {
 		topbottom();
@@ -295,7 +295,7 @@ window.addEventListener('orientationchange', function() {
 
 $('#barright').click( function() {
 	$('#play-group, #vol-group').toggle();
-	if ($('#play-group').is(':visible') && $('#cover-art').is(':visible')) {
+	if ($('#play-group').is(':visible') && $('#coverart').is(':visible')) {
 		$('#share-group').show();
 	} else {
 		$('#share-group').hide();
