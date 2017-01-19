@@ -278,7 +278,7 @@ function volmargin() {
 $('#barleft').click( function() {
 	if ($('#volume-knob').length && $(window).width() < 640) {
 		if ($('#play-group').is(':visible')) {
-			$('#share-group, #cover-art').slideToggle(volmargin);
+			$('#share-group, #coverart').slideToggle(volmargin);
 		} else {
 			$('#coverart').slideToggle(volmargin);
 		}
