@@ -247,36 +247,19 @@ function topbottom() {
 }
 function volmargin() {
 	if ($('#coverart').is(':visible')) {
-		if ($(window).width() < 640) {
-			$('#playback-row').css('margin-top', '10px');
-			$('#volume-knob').css('margin-top', '20px');
-		}
+		if ($(window).width() < 500) $('#time-knob').css('margin-top', 0);
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
 			$('#divalbum').show();
 		}
-		$('#coverart').css({'order': '2', '-webkit-order': '2'});
-		$('#share-group').css({'order': '4', '-webkit-order': '4'});
-		$('#volume-knob').css({'order': '5', '-webkit-order': '5'});
-		$('#vol-group').css({'order': '6', '-webkit-order': '6'});
 	} else {
-		//$('#time-knob').css('margin-top', '-25px'); // hidden '#coverart' cannot be css
-		if ($(window).height() <= 360) {
-			$('#playback-row').css('margin-top', 0);
-			$('#play-group, #vol-group').css('margin-top', '5px');
-			$('#time-knob, #volume-knob').css('margin-top', 0);
-		}
-		$('#coverart').css({'order': '5', '-webkit-order': '5'});
-		$('#share-group').css({'order': '6', '-webkit-order': '6'});
-		$('#volume-knob').css({'order': '2', '-webkit-order': '2'});
-		$('#vol-group').css({'order': '4', '-webkit-order': '4'});
+		$('#time-knob').css('margin-top', '-25px'); // hidden '#cover-art' cannot be css
 	}
-
 }
 
 $('#barleft').click( function() {
-	if ($('#volume-knob').length && $(window).width() < 640) {
+	if ($('#volume-knob').length && $(window).width() < 500) {
 		if ($('#play-group').is(':visible')) {
 			$('#share-group, #coverart').slideToggle(volmargin);
 		} else {
@@ -286,12 +269,7 @@ $('#barleft').click( function() {
 		topbottom();
 	}
 });
-window.addEventListener('orientationchange', function() {
-//	$('#coverart').show(volmargin);
-	$('#divartist, #divsong, #divalbum').each(function() {
-		scrolltext();
-	});
-});
+window.addEventListener('orientationchange', scrolltext);
 
 $('#barright').click( function() {
 	$('#play-group, #vol-group').toggle();
@@ -374,6 +352,19 @@ hammerbarleft.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
 var hammerbarright = new Hammer(document.getElementById('barright'));
 hammerbarright.on('swipe', topbottom);
 hammerbarright.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+function scrolltext() {
+// scrolling text
+	setTimeout(function() {
+		$('#divartist, #divsong, #divalbum').each(function() {
+			if ($(this).find('span').width() > Math.floor(window.innerWidth * 0.975)) {
+				$(this).addClass('scroll-left');
+			} else {
+				$(this).removeClass('scroll-left');
+			}
+		});
+	}, 50);
+}
 
 // document ready end *********************************************************************
 });
