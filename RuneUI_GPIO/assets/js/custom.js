@@ -261,7 +261,7 @@ function volmargin() {
 		$('#volume-knob').css({'order': '5', '-webkit-order': '5'});
 		$('#vol-group').css({'order': '6', '-webkit-order': '6'});
 	} else {
-		//$('#time-knob').css('margin-top', '-25px'); // hidden '#cover-art' cannot be css
+		//$('#time-knob').css('margin-top', '-25px'); // hidden '#coverart' cannot be css
 		if ($(window).height() <= 360) {
 			$('#playback-row').css('margin-top', 0);
 			$('#play-group, #vol-group').css('margin-top', '5px');
@@ -287,7 +287,7 @@ $('#barleft').click( function() {
 	}
 });
 window.addEventListener('orientationchange', function() {
-//	$('#cover-art').show(volmargin);
+//	$('#coverart').show(volmargin);
 	$('#divartist, #divsong, #divalbum').each(function() {
 		scrolltext();
 	});
