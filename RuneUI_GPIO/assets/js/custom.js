@@ -245,25 +245,42 @@ function topbottom() {
 		$('#menu-bottom').css('bottom', '-40px');
 	}
 }
-function timemargin() {
-	if ($('#cover-art').is(':visible')) {
-		if ($(window).width() < 500) $('#time-knob').css('margin-top', 0);
+function volmargin() {
+	if ($('#coverart').is(':visible')) {
+		if ($(window).width() < 640) {
+			$('#playback-row').css('margin-top', '10px');
+			$('#volume-knob').css('margin-top', '20px');
+		}
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
 			$('#divalbum').show();
 		}
+		$('#coverart').css({'order': '2', '-webkit-order': '2'});
+		$('#share-group').css({'order': '4', '-webkit-order': '4'});
+		$('#volume-knob').css({'order': '5', '-webkit-order': '5'});
+		$('#vol-group').css({'order': '6', '-webkit-order': '6'});
 	} else {
-		$('#time-knob').css('margin-top', '-25px'); // hidden '#cover-art' cannot be css
+		//$('#time-knob').css('margin-top', '-25px'); // hidden '#cover-art' cannot be css
+		if ($(window).height() <= 360) {
+			$('#playback-row').css('margin-top', 0);
+			$('#play-group, #vol-group').css('margin-top', '5px');
+			$('#time-knob, #volume-knob').css('margin-top', 0);
+		}
+		$('#coverart').css({'order': '5', '-webkit-order': '5'});
+		$('#share-group').css({'order': '6', '-webkit-order': '6'});
+		$('#volume-knob').css({'order': '2', '-webkit-order': '2'});
+		$('#vol-group').css({'order': '4', '-webkit-order': '4'});
 	}
+
 }
 
 $('#barleft').click( function() {
-	if ($('#volume-knob').length && $(window).width() < 500) {
+	if ($('#volume-knob').length && $(window).width() < 640) {
 		if ($('#play-group').is(':visible')) {
-			$('#share-group, #cover-art').slideToggle(timemargin);
+			$('#share-group, #cover-art').slideToggle(volmargin);
 		} else {
-			$('#cover-art').slideToggle(timemargin);
+			$('#cover-art').slideToggle(volmargin);
 		}
 	} else {
 		topbottom();
