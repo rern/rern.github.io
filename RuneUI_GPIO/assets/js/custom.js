@@ -246,7 +246,7 @@ function topbottom() {
 	}
 }
 $('#barleft').click( function() {
-	if (!$('#volume-knob').length && $(window).width() > 568) {
+	if (!$('#volume-knob').length) {
 		topbottom();
 	} else {
 		$('#coverart').slideToggle(function() {
