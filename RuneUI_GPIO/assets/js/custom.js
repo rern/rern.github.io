@@ -246,26 +246,14 @@ function topbottom() {
 	}
 }
 function volmargin() {
+	$('#time-knob, #volume-knob').css('margin-top', 0);
 	if ($('#coverart').is(':visible')) {
-		$('#playback-row').css('margin-top', '10px');
-		if ($(window).width() < 568) $('#volume-knob').css('margin-top', '20px');
 		if ($('#play-group').is(':visible')) {
 			$('#share-group').show();
 		} else {
 			$('#divalbum').show();
+			$('#volume-knob').css('margin-top', '20px');
 		}
-		$('#coverart').css({'order': '2', '-webkit-order': '2'});
-		$('#share-group').css({'order': '4', '-webkit-order': '4'});
-		$('#volume-knob').css({'order': '5', '-webkit-order': '5'});
-		$('#vol-group').css({'order': '6', '-webkit-order': '6'});
-		$('#play-group, #vol-group').css('margin-top', '10px');
-	} else {
-		$('#playback-row, #volume-knob').css('margin-top', 0); // hidden '#cover-art' cannot be css
-		$('#coverart').css({'order': '5', '-webkit-order': '5'});
-		$('#share-group').css({'order': '6', '-webkit-order': '6'});
-		$('#volume-knob').css({'order': '2', '-webkit-order': '2'});
-		$('#vol-group').css({'order': '4', '-webkit-order': '4'});
-		$('#play-group, #vol-group').css('margin-top', 0);
 	}
 }
 
