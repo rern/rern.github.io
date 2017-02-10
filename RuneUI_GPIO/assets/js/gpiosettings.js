@@ -14,6 +14,9 @@ var name = {
 };
 var timer = $('#timer').val();
 
+$('#close').click(function() {
+	window.location.href = 'index.html';
+});
 $('#gpio-enable').click(function() {
 	$('#gpio-group').toggle();
 	$('#divgpio').toggleClass('boxed-group');
