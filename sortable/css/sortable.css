@@ -25,7 +25,7 @@
 .sortableth2 a {
 	text-align: right;	
 }
-.sortableth2:nth-child(5) {
+.sortableth2 a:nth-child(5) {
 	text-align: left;	
 }
 .sortable thead th, .sortable thead td {
