@@ -112,6 +112,7 @@ function thead2align() {
 			$thead2a.eq(i).css('width', (thW  > tdW) ? thW : tdW +'px'); // include 'td' padding
 		});
 		$thead2.show();
+		alert($thead2.find('a:last').width())
 	}, thead2aligntimeout);
 }
 
