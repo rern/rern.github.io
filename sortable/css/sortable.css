@@ -86,7 +86,7 @@ body {
 	display: inline-block;
 }
 .sortable thead {
-	visibility: hidden;
+	/*visibility: hidden;*/
 }
 .sortable thead th:empty, .sortable thead td:empty {
 	pointer-events: none;
