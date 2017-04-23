@@ -31,6 +31,7 @@ $('tableid').sortable(); 	// without options > full page table
 $('tableid').sortable({
 	divBeforeTable: 'divbeforeid',	// default: (none) - div before table, enclosed in single div
 	divAfterTable: 'divafterid',	// default: (none) - div after table, enclosed in single div
+	initialSort: 'column#',		// default: (none)
 	locale: 'code'		// default: 'en' - locale code
 });
 ...
@@ -46,6 +47,7 @@ $.fn.sortable = function(options) {
 var settings = $.extend({ // defaults
 	divBeforeTable: '',
 	divAfterTable: '',
+	initialSort: '',
 	locale: 'en'
 }, options );
 
@@ -67,6 +69,7 @@ var divbefore = '#'+ settings.divBeforeTable;
 var divafter = '#'+ settings.divAfterTable;
 var divbeforeH = settings.divBeforeTable ? $(divbefore).outerHeight() : 0;
 var divafterH = settings.divAfterTable ? $(divafter).outerHeight() : 0;
+var initialsort = settings.initialSort;
 
 // convert 'tbody' to value-only array [ [i, 'a', 'b', 'c'], [i, 'd', 'e', 'f'] ]
 var arr = [];
@@ -103,7 +106,7 @@ $('head').append('<style>'+
 );
 
 // #1 - functions
-// align 'thead td, sortableth2 a' to 'tbody td' + zebra
+// align 'sortableth2 a' width to 'thead th'
 function thead2align() {
 	setTimeout(function() { // wait rendering
 		$thead.children().children().each(function(i) {
@@ -125,8 +128,12 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
+// align text to 'thead th'
+$thead.children().children().each(function(i) {
+	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') );
+});
 // delegate click to 'thead'
-$thead2.delegate('a', 'click', function() {
+$thead2.find('a').click(function() {
 	$thead.children().children().eq( $(this).index() )
 		.click();
 });
@@ -142,7 +149,7 @@ $tbl.find('tr').each(function() {
 $(tblparent).append($tbl);
 
 // #4 - add empty 'tr' to bottom
-$tbody.append('<tr><td></td></tr>');
+$tbody.append($tbody.find('tr:last').clone().empty());
 
 // #5 - 'position fixed' divAfter to screen bottom
 if (divafterH) {
@@ -152,7 +159,7 @@ if (divafterH) {
 	$table.find('tr:last').css('height', ($tbtr.outerHeight() + divafterH) +'px');
 }
 
-// #6 - align 'thead2 a' to 'tbody td'
+// #6 - align 'sortableth2 a' width to 'thead th'
 thead2align();
 
 // #7 - scroll
@@ -167,10 +174,11 @@ $window.scroll(function () {
 // show top part on short viewport initial load
 setTimeout(function() {
 	$window.scrollTop(0);
+	initialsort && $thtd.eq(initialsort - 1).click();
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
-$thead.delegate('td', 'click', function() {
+$thead.children().children().click(function() {
 	var i = $(this).index();
 	var order = $(this).hasClass('asc') ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
