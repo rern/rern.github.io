@@ -128,7 +128,7 @@ $('body').prepend('\
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
 // delegate click to 'thead'
-$thead2.delegate('a', 'click', function() {
+$thead2.find('a').click(function() {
 	$thead.children().children().eq( $(this).index() )
 		.click();
 });
@@ -172,7 +172,7 @@ setTimeout(function() {
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
-$thead.delegate('th', 'click', function() {
+$thead.children().children().click(function() {
 	var i = $(this).index();
 	var order = $(this).hasClass('asc') ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
