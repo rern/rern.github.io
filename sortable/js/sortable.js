@@ -144,7 +144,7 @@ $tbl.find('tr').each(function() {
 $(tblparent).append($tbl);
 
 // #4 - add empty 'tr' to bottom
-$tbody.append('<tr><td></td></tr>');
+$tbody.append($tbody.find('tr:last').clone().empty());
 
 // #5 - 'position fixed' divAfter to screen bottom
 if (divafterH) {
