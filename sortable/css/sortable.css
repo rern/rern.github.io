@@ -104,10 +104,10 @@ body {
 	width: 900px; /* oversize for centering table */
 }
 .asc:after {
-	content: 'A';
+	content: '\200a\25b2';
 	color: green;
 }
 .desc:after {
-	content: 'V';
+	content: '\200a\25bc';
 	color: crimson;
 }
