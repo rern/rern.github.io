@@ -172,7 +172,7 @@ setTimeout(function() {
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
-$thead.delegate('td', 'click', function() {
+$thead.delegate('th', 'click', function() {
 	var i = $(this).index();
 	var order = $(this).hasClass('asc') ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
