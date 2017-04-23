@@ -113,7 +113,11 @@
 <script>
 $(document).ready(function () {
 
-	$('#tableid').sortable({divBeforeTable: 'divbeforeid', divAfterTable: 'divafterid'});
+	$('#tableid').sortable({
+		divBeforeTable: 'divbeforeid',
+		divAfterTable: 'divafterid',
+		initialSort: 5
+	});
 
 });
 </script>
