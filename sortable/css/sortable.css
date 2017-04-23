@@ -1,0 +1,104 @@
+/* *** sortable.css for sortable.js *** */
+
+/* custom >> */
+.divbefore { /* 'divBeforeTable' */
+/*	box-shadow: 0px 5px 5px rgba(0,0,0,0.1);*/
+}
+
+.sortable {
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	border-style: none;
+	border-width: 0;
+	border-spacing: 0;
+}
+.sortable thead, .sortableth2 {
+	line-height: 40px;
+	background: #effbf8;
+}
+.sortableth2 {
+	box-shadow: 0px 5px 5px rgba(0,0,0,0.1) inset, 
+		0px 5px 5px rgba(0,0,0,0.5);
+	opacity: 0.95;
+}
+.sortable thead th, .sortable thead td {
+	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
+	border-bottom: 1px solid #eee;
+}
+.sortable th {
+	font-weight: normal;
+	text-align: left;
+}
+.sortable tbody {
+/*	background: #fff;*/
+}
+.sortable tr {
+	height: 30px;
+	cursor: default;
+}
+.sortable tbody tr:nth-child(even) { /* zebra stripe */
+	background: #f0f0f0;
+}
+.sortable tbody tr:hover {
+	background: #d0d0d0;
+}
+.sortable th, .sortable td {
+	padding: 0 0 0 5px;
+	/* 3 ellipsis lines: 'td' must has 'width' or 'max-width' */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.sorted {
+	background: rgba(0,0,0,0.05);
+}
+
+.divafter { /* 'divAfterTable' */
+	box-shadow: 0px -5px 5px rgba(0,0,0,0.5);
+}
+
+@media(min-height: 415px) {
+	.sortable thead th, .sortable thead td {
+		border: 0;
+	}
+}
+/* << custom */
+
+/* do NOT change below this line */
+body {
+	width: 100% !important;
+}
+.sortable thead, .sortableth2 {
+	cursor: pointer;
+	user-select: none;
+}
+.sortableth2 {
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+}
+.sortableth2 a {
+	display: inline-block;
+}
+.sortable thead {
+	visibility: hidden;
+}
+.sortable thead th:empty, .sortable thead td:empty {
+	pointer-events: none;
+}
+.sortable tbody {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch; /* ios momentum scroll */
+}
+.sortable .tdpad {
+	width: 900px; /* oversize for centering table */
+}
+.asc:after {
+	content: '\200a\25b2';
+	color: green;
+}
+.desc:after {
+	content: '\200a\25bc';
+	color: crimson;
+}

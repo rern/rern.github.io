@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/sortable.css">
+	<style>
+	html {
+		box-sizing: border-box;
+	}
+	*, *:before, *:after {
+		box-sizing: inherit;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+	}
+	#divbeforeid {
+		height: 200px;
+		line-height: 200px;
+		width: 100%;
+		text-align: center;
+		background: #faf3f3;
+	}
+	#divafterid {
+		height: 100px;
+		line-height: 100px;
+		width: 100%;
+		text-align: center;
+		background: #effbf8;
+	}
+	</style>
+</head>
+
+<body>
+
+<div id="divbeforeid">
+	(divBeforeTable html)
+</div>
+
+<table id="tableid">
+<thead>
+	<tr><th>Total Gross</th><th>Change</th><th># Movies</th><th>#1 Movie</th><th>Week</th></tr>
+</thead>
+<tbody>
+	<tr><td>$62,930,094</td><td>24.9%</td><td>13</td><td>The Great Wall</td><td>53</td></tr>
+	<tr><td>$50,587,136</td><td>-18.6%</td><td>10</td><td>Passengers (2016)</td><td>52</td></tr>
+	<tr><td>$61,908,379</td><td>27.6%</td><td>11</td><td>Rogue One: A Star Wars Story</td><td>51</td></tr>
+	<tr><td>$48,287,470</td><td>9.3%</td><td>13</td><td>Underworld: Blood Wars</td><td>50</td></tr>
+	<tr><td>$44,172,230</td><td>-13.2%</td><td>11</td><td>Moana</td><td>49</td></tr>
+	<tr><td></td><td>0%</td><td></td><td></td><td></td></tr>
+	<tr><td>$50,846,288</td><td>-39.3%</td><td>10</td><td>Fantastic Beasts and Where To Find Them</td><td>48</td></tr>
+	<tr><td>$83,589,429</td><td>68.3%</td><td>8</td><td>Fantastic Beasts and Where To Find Them</td><td>47</td></tr>
+	<tr><td>$49,408,486</td><td>26.7%</td><td>12</td><td>Your Name (Kimi no na wa.)</td><td>46</td></tr>
+	<tr><td>$38,527,129</td><td>-60.9%</td><td>14</td><td>Doctor Strange</td><td>45</td></tr>
+	<tr><td></td><td>0%</td><td></td><td></td><td></td></tr>
+	<tr><td>$98,815,128</td><td>192.1%</td><td>12</td><td>Doctor Strange</td><td>44</td></tr>
+	<tr><td>$33,930,853</td><td>15.5%</td><td>12</td><td>Jack Reacher: Never Go Back</td><td>43</td></tr>
+	<tr><td>$29,545,477</td><td>-37%</td><td>11</td><td>Max Steel</td><td>42</td></tr>
+	<tr><td>$46,282,213</td><td>-17.2%</td><td>11</td><td>888 Fast Thai</td><td>41</td></tr>
+	<tr><td></td><td>0%</td><td></td><td></td><td></td></tr>
+	<tr><td>$55,380,873</td><td>37.7%</td><td>12</td><td>Miss Peregrine's Home for Peculiar Children</td><td>40</td></tr>
+	<tr><td>$40,271,452</td><td>11.8%</td><td>14</td><td>Blair Witch</td><td>39</td></tr>
+	<tr><td>$36,143,462</td><td>-35.7%</td><td>12</td><td>Don't Breathe</td><td>38</td></tr>
+	<tr><td>$56,051,402</td><td>-12.7%</td><td>14</td><td>Fan Gun Khae Wan Diaw (Fan Day)</td><td>37</td></tr>
+	<tr><td>$63,793,704</td><td>32.1%</td><td>13</td><td>Fan Gun Khae Wan Diaw (Fan Day)</td><td>36</td></tr>
+	<tr><td>$48,331,933</td><td>5%</td><td>11</td><td>Mechanic: Resurrection</td><td>35</td></tr>
+	<tr><td>$45,971,345</td><td>-37.1%</td><td>9</td><td>Train to Busan</td><td>34</td></tr>
+	<tr><td>$73,470,635</td><td>-18.4%</td><td>11</td><td>Suicide Squad</td><td>33</td></tr>
+	<tr><td>$90,746,708</td><td>47.5%</td><td>11</td><td>Suicide Squad</td><td>32</td></tr>
+	<tr><td>$60,999,073</td><td>-1.1%</td><td>15</td><td>Jason Bourne</td><td>31</td></tr>
+	<tr><td>$61,984,473</td><td>-17.8%</td><td>13</td><td>Star Trek Beyond</td><td>30</td></tr>
+	<tr><td>$75,474,587</td><td>57%</td><td>14</td><td>Khun phan</td><td>29</td></tr>
+	<tr><td>$48,338,345</td><td>-17.4%</td><td>12</td><td>The Shallows</td><td>28</td></tr>
+	<tr><td>$58,297,898</td><td>-44.1%</td><td>10</td><td>The Legend of Tarzan</td><td>27</td></tr>
+	<tr><td>$105,060,796</td><td>63.2%</td><td>11</td><td>Independence Day: Resurgence</td><td>26</td></tr>
+	<tr><td>$62,373,560</td><td>-24%</td><td>9</td><td>Finding Dory</td><td>25</td></tr>
+	<tr><td>$84,870,138</td><td>16.3%</td><td>10</td><td>Now You See Me 2</td><td>24</td></tr>
+	<tr><td>$73,000,063</td><td>-5.9%</td><td>10</td><td>Teenage Mutant Ninja Turtles: Out of the Shadows</td><td>23</td></tr>
+	<tr><td>$78,441,355</td><td>-28.7%</td><td>10</td><td>Warcraft</td><td>22</td></tr>
+	<tr><td>$109,490,350</td><td>148.3%</td><td>9</td><td>X-Men: Apocalypse</td><td>21</td></tr>
+	<tr><td>$43,878,433</td><td>-39.2%</td><td>10</td><td>The Angry Birds Movie</td><td>20</td></tr>
+	<tr><td>$71,600,001</td><td>-49.5%</td><td>10</td><td>Captain America: Civil War</td><td>19</td></tr>
+	<tr><td>$140,899,977</td><td>161.8%</td><td>7</td><td>Captain America: Civil War</td><td>18</td></tr>
+	<tr><td>$114,200,731</td><td>31.1%</td><td>13</td><td>The Jungle Book (2016)</td><td>16</td></tr>
+	<tr><td>$87,311,889</td><td>100.3%</td><td>14</td><td>Like Jazz 4G</td><td>15</td></tr>
+	<tr><td>$43,554,331</td><td>-49.2%</td><td>13</td><td>Batman v Superman: Dawn of Justice</td><td>14</td></tr>
+	<tr><td>$85,994,869</td><td>142.8%</td><td>16</td><td>Batman v Superman: Dawn of Justice</td><td>13</td></tr>
+	<tr><td>$34,991,970</td><td>-45.7%</td><td>17</td><td>The Divergent Series: Allegiant</td><td>12</td></tr>
+	<tr><td>$64,829,523</td><td>0%</td><td>12</td><td>The Divergent Series: Allegiant</td><td>11</td></tr>
+	<tr><td>$65,417,152</td><td>-19.5%</td><td>14</td><td>London Has Fallen</td><td>10</td></tr>
+	<tr><td>$82,144,255</td><td>113.4%</td><td>17</td><td>Gods of Egypt</td><td>9</td></tr>
+	<tr><td>$38,479,579</td><td>-64.6%</td><td>19</td><td>Deadpool</td><td>8</td></tr>
+	<tr><td>$108,083,791</td><td>185%</td><td>15</td><td>Deadpool</td><td>7</td></tr>
+	<tr><td>$37,869,958</td><td>-0.3%</td><td>20</td><td>The Revenant</td><td>6</td></tr>
+	<tr><td>$38,153,838</td><td>14.2%</td><td>14</td><td>The Boy (2016)</td><td>5</td></tr>
+	<tr><td>$33,718,498</td><td>-4.1%</td><td>20</td><td>Awasarn Lok Suay</td><td>4</td></tr>
+	<tr><td>$34,063,756</td><td>14.3%</td><td>16</td><td>The 5th Wave</td><td>3</td></tr>
+	<tr><td>$29,751,467</td><td>-42%</td><td>19</td><td>Star Wars: The Force Awakens</td><td>2</td></tr>
+	<tr><td>$53,095,525</td><td>23.1%</td><td>17</td><td>Star Wars: The Force Awakens</td><td>1</td></tr>
+</tbody>
+</table>
+
+<div id="divafterid">
+	(divAfterTable html)
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="js/sortable.js"></script>
+<script>
+$(document).ready(function () {
+
+	$('#tableid').sortable({divBeforeTable: 'divbeforeid', divAfterTable: 'divafterid'});
+
+});
+</script>
+
+</body>
+</html>
