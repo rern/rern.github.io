@@ -127,6 +127,10 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
+// align text to 'thead th'
+$thead2a.each(function(i) {
+	$(this).css( 'text-align', $thead.children().children().eq(i).css('text-align') );
+});
 // delegate click to 'thead'
 $thead2.find('a').click(function() {
 	$thead.children().children().eq( $(this).index() )
