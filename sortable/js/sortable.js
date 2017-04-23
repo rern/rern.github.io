@@ -107,8 +107,8 @@ $('head').append('<style>'+
 function thead2align() {
 	setTimeout(function() { // wait rendering
 		$thead.children().children().each(function(i) {
-			var thW = $(this).outerWidth();
-			var tdW = $tbody.find('td').eq(i).outerWidth();
+			var thW = $(this).outerWidth() +20;
+			var tdW = $tbody.find('td').eq(i).outerWidth() + 20;
 			$thead2a.eq(i).css('width', (thW  > tdW) ? thW : tdW +'px'); // include 'td' padding
 		});
 		$thead2.show();
