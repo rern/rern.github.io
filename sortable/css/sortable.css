@@ -22,12 +22,6 @@
 		0px 5px 5px rgba(0,0,0,0.5);
 	opacity: 0.95;
 }
-.sortableth2 a {
-	text-align: right;	
-}
-.sortableth2 a:nth-child(5) {
-	text-align: left;	
-}
 .sortable thead th, .sortable thead td {
 	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
 	border-bottom: 1px solid #eee;
@@ -51,14 +45,20 @@
 }
 .sortable th, .sortable td {
 	padding: 0 5px;
+	min-width: 100px;
 	/* 3 ellipsis lines: 'td' must has 'width' or 'max-width' */
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	min-width: 100px;
 }
 .sorted {
 	background: rgba(0,0,0,0.05);
+}
+.asc:after {
+	color: green;
+}
+.desc:after {
+	color: crimson;
 }
 
 .divafter { /* 'divAfterTable' */
@@ -100,9 +100,7 @@ body {
 }
 .asc:after {
 	content: '\200a\25b2';
-	color: green;
 }
 .desc:after {
 	content: '\200a\25bc';
-	color: crimson;
 }
