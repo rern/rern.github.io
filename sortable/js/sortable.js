@@ -107,12 +107,9 @@ $('head').append('<style>'+
 function thead2align() {
 	setTimeout(function() { // wait rendering
 		$thead.children().children().each(function(i) {
-			var thW = $(this).outerWidth();
-			var tdW = $tbody.find('td').eq(i).outerWidth();
-			$thead2a.eq(i).css('width', (thW  > tdW) ? thW : tdW +'px'); // include 'td' padding
+			$thead2a.eq(i).css('width', $(this).outerWidth() +'px'); // include 'td' padding
 		});
 		$thead2.show();
-		alert($thead2.find('a:last').width())
 	}, thead2aligntimeout);
 }
 
@@ -128,12 +125,8 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
-// align text to 'thead th'
-$thead.children().children().each(function(i) {
-	$thead2a.eq(i).css('text-align', $(this).css('text-align'));
-});
 // delegate click to 'thead'
-$thead2.find('a').click(function() {
+$thead2.delegate('a', 'click', function() {
 	$thead.children().children().eq( $(this).index() )
 		.click();
 });
@@ -149,7 +142,7 @@ $tbl.find('tr').each(function() {
 $(tblparent).append($tbl);
 
 // #4 - add empty 'tr' to bottom
-$tbody.append($tbody.find('tr:last').clone().empty());
+$tbody.append('<tr><td></td></tr>');
 
 // #5 - 'position fixed' divAfter to screen bottom
 if (divafterH) {
@@ -177,7 +170,7 @@ setTimeout(function() {
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
-$thead.children().children().click(function() {
+$thead.delegate('td', 'click', function() {
 	var i = $(this).index();
 	var order = $(this).hasClass('asc') ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
