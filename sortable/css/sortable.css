@@ -50,11 +50,12 @@
 	background: #d0d0d0;
 }
 .sortable th, .sortable td {
-	padding: 0 0 0 5px;
+	padding: 0 5px;
 	/* 3 ellipsis lines: 'td' must has 'width' or 'max-width' */
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-width: 100px;
 }
 .sorted {
 	background: rgba(0,0,0,0.05);
@@ -62,12 +63,6 @@
 
 .divafter { /* 'divAfterTable' */
 	box-shadow: 0px -5px 5px rgba(0,0,0,0.5);
-}
-
-@media(min-height: 415px) {
-	.sortable thead th, .sortable thead td {
-		border: 0;
-	}
 }
 /* << custom */
 
