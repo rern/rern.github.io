@@ -17,7 +17,6 @@
 	}
 	#divbeforeid {
 		height: 200px;
-		line-height: 200px;
 		width: 100%;
 		text-align: center;
 		background: #faf3f3;
@@ -43,6 +42,12 @@
 
 <div id="divbeforeid">
 	(divBeforeTable html)
+	$('#tableid').sortable({
+		divBeforeTable: 'divbeforeid',
+		divAfterTable: 'divafterid',
+		initialSort: 4,
+		locale: 'th'
+	});
 </div>
 
 <table id="tableid">
