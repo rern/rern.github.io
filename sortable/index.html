@@ -3,7 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>sortable.js</title>
-	<link rel="stylesheet" type="text/css" href="css/sortable.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/0sort.css">
 	<style>
 	html {
 		box-sizing: border-box;
@@ -47,14 +48,15 @@
 
 <div id="divbeforeid">
 	<br>
-	(divBeforeTable html)<br>
+	<span id="z">(divBeforeTable html)</span><br>
 	<br>
 	<pre>
 	$('#tableid').sortable({
 	    divBeforeTable: 'divbeforeid',
 	    divAfterTable: 'divafterid',
 	    initialSort: 4,
-	    locale: 'th'
+	    locale: 'th',
+	    minusColumn: [0, 1, 2]
 	});
 	</pre>
 </div>
@@ -64,8 +66,8 @@
 	<tr><th>Total Gross</th><th>Change</th><th># Movies</th><th>#1 Movie</th><th>Week</th></tr>
 </thead>
 <tbody>
-	<tr><td>$62,930,094</td><td>24.9%</td><td>13</td><td>The Great Wall</td><td>-53</td></tr>
-	<tr><td>$50,587,136</td><td>-18.6%</td><td>10</td><td>Passengers (2016)</td><td>52</td></tr>
+	<tr><td>-$62,930,094</td><td>24.9%</td><td>13</td><td>The Great Wall</td><td>-53</td></tr>
+	<tr><td>-$50,587,136</td><td>-18.6%</td><td>10</td><td>Passengers (2016)</td><td>52</td></tr>
 	<tr><td>$61,908,379</td><td>27.6%</td><td>11</td><td>Rogue One: A Star Wars Story</td><td>51</td></tr>
 	<tr><td>$48,287,470</td><td>9.3%</td><td>13</td><td>Underworld: Blood Wars</td><td>50</td></tr>
 	<tr><td>$44,172,230</td><td>-13.2%</td><td>11</td><td>Moana</td><td>49</td></tr>
@@ -123,7 +125,7 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/sortable.js"></script>
+<script src="js/plugin/sortable.js"></script>
 <script>
 $(document).ready(function () {
 
@@ -131,7 +133,8 @@ $(document).ready(function () {
 		divBeforeTable: 'divbeforeid',
 		divAfterTable: 'divafterid',
 		initialSort: 4,
-		locale: 'th'
+		locale: 'th',
+		minusColumn: [0, 1, 2]
 	});
 
 });
