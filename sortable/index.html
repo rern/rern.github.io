@@ -48,7 +48,7 @@
 
 <div id="divbeforeid">
 	<br>
-	<span id="z">(divBeforeTable html)</span><br>
+	(divBeforeTable html)<br>
 	<br>
 	<pre>
 	$('#tableid').sortable({
@@ -59,6 +59,8 @@
 	    minusColumn: [0, 1, 2]
 	});
 	</pre>
+	Note: Column #4, 'Week', not in 'minusColumn':<br>
+	'-' minus in this column will not be sorted as negative value 
 </div>
 
 <table id="tableid">
@@ -125,7 +127,7 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://github.com/rern/tips/blob/master/js/sortable/sortable.js"></script>
+<script src="js/sortable.js"></script>
 <script>
 $(document).ready(function () {
 
