@@ -68,7 +68,7 @@
 	bottom: 0;
 	box-shadow: 0px -5px 5px rgba(0,0,0,0.5);
 }
-@media(min-height: 415px) {
+@media(max-width: 415px) {
 	.sortableth2 a:nth-child(3),
 	th:nth-child(3),
 	td:nth-child(3) {
@@ -84,6 +84,8 @@
 	td:nth-child(5) {
 		max-width: 200px;
 	}
+}
+@media(min-height: 415px) {
 	.sortable thead th {
 		border: 0;
 	}
