@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>sortable.js</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" type="text/css" href="css/sortable.css">
+	<link rel="stylesheet" type="text/css" href="css/0sort.css">
 	<style>
 	html {
 		box-sizing: border-box;
@@ -34,32 +34,27 @@
 		text-align: center;
 		background: #effbf8;
 	}
-	#tableid th, #tableid td, .sortableth2 a {
-		padding: 0 5px;
-		text-align: right;
-	}
-	#tableid th:nth-child(5), #tableid td:nth-child(5) {
-		text-align: left;
-	}
+	
 	</style>
 </head>
 
 <body>
 
 <div id="divbeforeid">
-	<br>
-	(divBeforeTable html)<br>
-	<br>
-	<pre>
-	$('#tableid').sortable({
-	    divBeforeTable: 'divbeforeid',
-	    divAfterTable: 'divafterid',
-	    initialSort: 4,
-	    locale: 'th',
-	    minusColumn: [0, 1, 2]
-	});
-	</pre>
-	Note: column #4 - 'Week', not in 'minusColumn'
+<br>
+<pre>
+sortable.js
+----------------------------------------
+$('#tableid').sortable({
+	divBeforeTable: 'divbeforeid',
+	divAfterTable: 'divafterid',
+	initialSort: 4,
+	locale: 'th',
+	negativeSort: [0, 1]
+});
+----------------------------------------
+Note: column 'Week' - not 'negativeSort'
+</pre>
 </div>
 
 <table id="tableid">
@@ -122,11 +117,11 @@
 </table>
 
 <div id="divafterid">
-	(divAfterTable html)
+	<pre>(divAfterTable html)</pre>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/sortable.js"></script>
+<script src="js/plugin/sortable.js"></script>
 <script>
 $(document).ready(function () {
 
@@ -135,7 +130,7 @@ $(document).ready(function () {
 		divAfterTable: 'divafterid',
 		initialSort: 4,
 		locale: 'th',
-		minusColumn: [0, 1, 2]
+		negativeSort: [0, 1]
 	});
 
 });
