@@ -32,8 +32,9 @@ $('tableid').sortable({
 	divBeforeTable: 'divbeforeid',	// default: (none) - div before table, enclosed in single div
 	divAfterTable: 'divafterid',	// default: (none) - div after table, enclosed in single div
 	initialSort: 'column#',		// default: (none) - start with 0
+	initialSortDesc: false,
 	locale: 'code',		// default: 'en' - locale code
-	minusColumn: [column#]	// default: (none) - column with 'minus' value
+	negativeSort: [column#]	// default: (none) - column with negative value
 });
 ...
 
@@ -49,11 +50,12 @@ var settings = $.extend({ // defaults
 	divBeforeTable: '',
 	divAfterTable: '',
 	initialSort: '',
+	initialSortDesc: false,
 	locale: 'en',
-	minusColumn: []
+	negativeSort: []
 }, options );
 var initialsort = settings.initialSort;
-var minuscolumn = settings.minusColumn;
+var negativesort = settings.negativeSort;
 
 var shortvport = 415; // min height to apply fixed thead
 var initscrolltimeout = 300; // all 'setTimeout()' are crucial, less will break header and scroll position
@@ -85,17 +87,12 @@ var arr = [];
 $tbtr.each(function(i) {
 	var tdarr = [i];
 	$(this).find('td').each(function(j) {
-		if (minuscolumn.indexOf(j) === -1) {
+		if (negativesort.indexOf(j) === -1) {
 			var tdtxt = $(this).text();
 		} else { // minus value in column
 			var tdtxt = $(this).text().replace(/[^0-9\.\-]/g, '') // get only '0-9', '.' and '-'
 		}
 		tdarr.push( $thtd.eq(j).text() == '' ? '' : tdtxt ); // blank header not sortable
-		
-		// add '+20' space for sort icon
-		if (i === 0 && $thtd.eq(j).text() !== '') {
-			$(this).css('min-width', ($(this).outerWidth() + 20) +'px'); // 'i === 0' - only 1 row needed
-		}
 	});
 	arr.push(tdarr);
 });
@@ -127,9 +124,16 @@ $('head').append('<style>'+
 // align 'sortableth2 a' width to 'thead th'
 function thead2align() {
 	setTimeout(function() { // wait rendering	
+		var $tbtd = $tbtr.find('td');
+		$thead2a.add( $table.find('th, td') ).show(); // reset hidden
 		$thead.children().children().each(function(i) {
-			$thead2a.eq(i).css('width', $(this).outerWidth() +'px'); // include 'td' padding
+			if ( $tbtd.eq(i).is(':visible') ) {
+				$thead2a.eq(i).css('width', $tbtd.eq(i).outerWidth() +'px'); // include 'td' padding
+			} else {
+				$thead2a.eq(i).add(this).hide(); // set hidden
+			}
 		});
+		$thead2a.eq(0).css( 'width', $tbody.find('td:first').outerWidth() ); // fix - tdpad reset to '0'
 		$thead2.show();
 	}, thead2aligntimeout);
 }
@@ -146,12 +150,23 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
+// set 'thead2 a' space for sort icon
+$('body').append( // dummy - get 'thead td' native string width
+	'<table id="tmp" class="sortable">'+ $thead.html() +'</table>'
+);
+var $tmptd = $('#tmp tr').children();
+var $trtd = $tbtr.eq(0).find('td'); // set 1 row - result all
+$trtd.each(function(i) { // add width only 'thead' with space '< 20' px
+	var diffW = $(this).width() - $tmptd.eq(i).width();
+	diffW < 20 && $(this).css('min-width', ($(this).outerWidth() + 20 - diffW) +'px'); // add to '20'
+});
+$('#tmp').remove();
 // align text to 'thead th'
 $thead.children().children().each(function(i) {
 	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') );
 });
 // delegate click to 'thead'
-$thead2.find('a').click(function() {
+$thead2a.click(function() {
 	$thead.children().children().eq( $(this).index() )
 		.click();
 });
@@ -160,9 +175,14 @@ $thead2.find('a').click(function() {
 // 'detach' to avoid many dom traversings
 var $tbl = $table.detach();
 $tbl.find('tr').each(function() {
+	if ($(this).children().eq(0).prop('tagName') === 'TH') {
+		var tdpad = '<th class="tdpad"></th>';
+	} else {
+		var tdpad = '<td class="tdpad"></td>';
+	}
 	$(this)
-		.prepend('<td class="tdpad"></td>')
-		.append('<td class="tdpad"></td>');
+		.prepend(tdpad)
+		.append(tdpad);
 });
 $(tblparent).append($tbl);
 
@@ -190,14 +210,14 @@ $window.scroll(function () {
 // show top part on short viewport initial load
 setTimeout(function() {
 	$window.scrollTop(0);
-	initialsort && $thtd.eq(initialsort - 1).click();
+	initialsort && $thtd.eq(initialsort - 1).trigger('click', settings.initialSortDesc);
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
-$thead.children().children().click(function() {
+$thead.children().children().click(function(event, initdesc) {
 	var i = $(this).index();
-	var numcol = minuscolumn.indexOf(i - 1); // '-1' - deduct 'tdpad' column
-	var order = $(this).hasClass('asc') ? 'desc' : 'asc';
+	var numcol = negativesort.indexOf(i - 1); // '-1' - deduct 'tdpad' column
+	var order = ($(this).hasClass('asc') || initdesc) ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
 	var sorted = arr.sort(function(a, b) {
 		if (order == 'desc') {
