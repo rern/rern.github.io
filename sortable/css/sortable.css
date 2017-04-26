@@ -152,5 +152,6 @@ body {
 	-webkit-overflow-scrolling: touch; /* ios momentum scroll */
 }
 .sortable .tdpad {
-	width: 900px; /* oversize for centering table */
+	width: 50%; /* oversize for centering table */
+	margin: 0;
 }
