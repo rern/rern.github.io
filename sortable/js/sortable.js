@@ -150,21 +150,14 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
-// set 'thead2 a' space for sort icon
-$('body').append( // dummy - get 'thead td' native string width
-	'<table id="tmp" class="sortable">'+ $thead.html() +'</table>'
-);
-var $tmptd = $('#tmp tr').children();
-var $trtd = $tbtr.eq(0).find('td'); // set 1 row - result all
-$trtd.each(function(i) { // add width only 'thead' with space '< 20' px
-	var diffW = $(this).width() - $tmptd.eq(i).width();
-	diffW < 20 && $(this).css('min-width', ($(this).outerWidth() + 20 - diffW) +'px'); // add to '20'
-});
-$('#tmp').remove();
-// align text to 'thead th'
+// set 'thead2 a' space for sort icon with long text (not work with column after 'max-width' column)
+var $tbtd = $tbtr.find('td');
+$thead.find('th, td').prepend('<a class="tmpicon" style="opacity: 0">\u25b2\u200a</a>');
 $thead.children().children().each(function(i) {
-	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') );
+	$tbtd.eq(i).css('min-width', $(this).outerWidth());
+	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') ); // 'text-align' 'thead2 a' to 'thead th'
 });
+$thead.find('.tmpicon').remove();
 // delegate click to 'thead'
 $thead2a.click(function() {
 	$thead.children().children().eq( $(this).index() )
