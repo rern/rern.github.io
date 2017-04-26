@@ -46,7 +46,7 @@
 .sortableth2 a,
 .sortable th,
 .sortable td {
-	padding: 0 3px;
+	padding: 0 5px;
 	text-align: right;
 }
 
@@ -55,14 +55,12 @@
 	text-align: left;
 }
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
-.sortable td:nth-child(6) {
-	min-width: 60px; /* fix - no space for icon after 'max-with' column */
-}
 @media(max-width: 569px) {
 	.sortable td:nth-child(4) {
 		display: none !important;
 	}
 	.sortable td:nth-child(5) {
+		min-width: 0; /* reset to prevent override 'max-width' */
 		max-width: 300px;
 	}
 }
@@ -71,11 +69,13 @@
 		display: none !important;
 	}
 	.sortable td:nth-child(5) {
+		min-width: 0;
 		max-width: 230px;
 	}
 }
 @media(max-width: 320px) {
 	.sortable td:nth-child(5) {
+		min-width: 0;
 		max-width: 150px;
 	}
 }
@@ -105,12 +105,10 @@
 .sorted { /* sorted column */
 	background: rgba(0,0,0,0.05);
 }
-.asc:before { /* sort icon */
-	content: '\25b2\200a';
+.asc::before { /* sort icon */
 	color: green;
 }
-.desc:before { /* sort icon */
-	content: '\25bc\200a';
+.desc::before { /* sort icon */
 	color: crimson;
 }
 /* custom <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
@@ -154,4 +152,10 @@ body {
 .sortable .tdpad {
 	width: 50%; /* oversize for centering table */
 	margin: 0;
+}
+.asc:before { /* sort icon */
+	content: '\25b2\200a';
+}
+.desc:before { /* sort icon */
+	content: '\25bc\200a';
 }
