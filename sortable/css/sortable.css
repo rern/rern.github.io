@@ -56,7 +56,7 @@
 }
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
 .sortable td:nth-child(6) {
-	min-width: 60px; /* fix - no space for icon after max-with column */
+	min-width: 60px; /* fix - no space for icon after 'max-with' column */
 }
 @media(max-width: 569px) {
 	.sortable td:nth-child(4) {
