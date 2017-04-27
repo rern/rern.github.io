@@ -102,7 +102,7 @@ $thead.find('th, td').prepend('<a class="tmpicon" style="opacity: 0">'+ icon +'<
 $thead.children().children().each(function(i) {
 	$(this).css('min-width', $(this).outerWidth() +'px');
 });
-$thead.find('#tmp, .tmpicon').remove();
+$thead.find('.tmpicon').add('#tmp').remove();
 
 // #b dynamic css - for divbeforeH underlay, divafterH and fixed thead2
 var tblid = this[0].id;
