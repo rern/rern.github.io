@@ -77,7 +77,7 @@ if (settings.divAfterTable) {
 
 // convert 'tbody' to value-only array [ [i, 'a', 'b', 'c'], [i, 'd', 'e', 'f'] ]
 var arr = [];
-var $thtd = $thead.children(); // without 'tdpad'
+var $thtd = $thtr.children(); // without 'tdpad'
 $tbtr.each(function(i) {
 	var tdarr = [i];
 	$(this).find('td').each(function(j) {
@@ -149,7 +149,7 @@ function thead2align() {
 // #2 - add fixed header for short viewport
 var th2html = $thtr
 	.html()
-	.replace(/style="min-width: .{1,7}"/g, '')
+	.replace(/[\n\t]| style="min-width: .{1,4}px;"/g, '')
 	.replace(/th|td/g, 'a');
 $('body').prepend('\
 	<div id="'+ tblid +'th2" class="sortableth2" style="display: none">\
@@ -177,7 +177,7 @@ $tbl.find('tr').each(function() {
 		.append(tdpad);
 });
 $(tblparent).append($tbl);
-var $thtd = $thead.children();
+var $thtd = $thtr.children();
 var $tbtd = $tbtr.find('td');
 
 // #4 - add empty 'tr' to bottom
