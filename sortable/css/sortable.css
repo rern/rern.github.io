@@ -56,30 +56,18 @@
 }
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
 @media(max-width: 569px) {
-	.sortable td:nth-child(4) {
-		display: none !important;
-	}
-	.sortable td:nth-child(5) {
-		min-width: 0; /* reset to prevent override 'max-width' */
-		max-width: 300px;
-	}
+	.sortable th:nth-child(4), .sortable td:nth-child(4) {min-width: 0 !important; display: none !important;}
+	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 300px;}
 }
-@media(max-width: 415px) {
-	.sortable td:nth-child(3) {
-		display: none !important;
-	}
-	.sortable td:nth-child(5) {
-		min-width: 0;
-		max-width: 230px;
-	}
+@media(max-width: 414px) {
+	.sortable th:nth-child(3), .sortable td:nth-child(3) {min-width: 0 !important; display: none !important;}
+	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 220px;}
 }
 @media(max-width: 320px) {
-	.sortable td:nth-child(5) {
-		min-width: 0;
-		max-width: 150px;
-	}
+	.sortable th:nth-child(6), .sortable td:nth-child(6) {display: none !important;}
+	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 200px;}
 }
-@media(min-height: 415px) {
+@media(min-height: 414px) {
 	.sortable th {
 		border: 0;
 	}
@@ -106,8 +94,8 @@
 	background: rgba(0,0,0,0.05);
 }
 .asc:before { /* sort icon */
-	content: '\25b2\200a';
 	color: green;
+	content: '\25b2\200a';
 }
 .desc:before { /* sort icon */
 	content: '\25bc\200a';
@@ -153,5 +141,5 @@ body {
 }
 .sortable .tdpad {
 	width: 50%; /* oversize for centering table */
-	margin: 0;
+	padding: 0;
 }
