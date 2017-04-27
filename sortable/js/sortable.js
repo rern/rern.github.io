@@ -1,40 +1,33 @@
-// *** sortable.js ***
-
-// https://github.com/rern/tips/tree/master/js/sortable
-
+// *** sortable.js - https://github.com/rern/js/edit/master/sortable/ ***
 /*
 usage:
 ...
 <link rel="stylesheet" href="/path/sortable.css">
 </head>
 <body>
-
 	<div id="divbeforeid"> <!-- optional -->
 		(divBeforeTable html)
 	</div>
-
 	<table id="tableid">
 		<thead><tr><td></td></tr></thead>
 		<tbody><tr><td></td></tr></tbody>
 	</table>
-
 	<div id="divafterid"> <!-- optional -->
 		(divAfterTable html)
 	</div>
-
 <script src="/path/jquery.min.js"></script>
 <script src="/path/sortable.js"></script>
 <script>
 ...
-$('tableid').sortable(); 	// without options > full page table
+$('tableid').sortable(); 		// without options > full page table
 // or
 $('tableid').sortable({
 	divBeforeTable: 'divbeforeid',	// default: (none) - div before table, enclosed in single div
 	divAfterTable: 'divafterid',	// default: (none) - div after table, enclosed in single div
 	initialSort: 'column#',		// default: (none) - start with 0
 	initialSortDesc: false,
-	locale: 'code',		// default: 'en' - locale code
-	negativeSort: [column#]	// default: (none) - column with negative value
+	locale: 'code',			// default: 'en' - locale code
+	negativeSort: [column#]		// default: (none) - column with negative value
 });
 ...
 
@@ -57,33 +50,34 @@ var settings = $.extend({ // defaults
 var initialsort = settings.initialSort;
 var negativesort = settings.negativeSort;
 
-var shortvport = 415; // min height to apply fixed thead
-var initscrolltimeout = 300; // all 'setTimeout()' are crucial, less will break header and scroll position
-var scrolltimeout = 400;
-var thead2aligntimeout = 300;
+var shortvport = 414; // max height to apply fixed thead
+var initscrolltimeout = 400; // all 'setTimeout()' are crucial, less will break header and scroll position
+var scrolltimeout = 500;
+var thead2aligntimeout = 400;
 
 var $window = $(window);
 var $table = this;
 var $thead = $table.find('thead');
-var $thtd = $thead.find('tr').children();
+var $thtr = $thead.find('tr');
 var $tbody = $table.find('tbody');
 var $tbtr = $tbody.find('tr');
 
-var tblid = this[0].id;
-var tblparent = '#sortable'+ tblid;
+var divbeforeH = 0;
+var divafterH = 0;
 if (settings.divBeforeTable) {
 	var divbefore = '#'+ settings.divBeforeTable;
-	var divbeforeH = settings.divBeforeTable ? $(divbefore).outerHeight() : 0;
+	var divbeforeH = $(divbefore).outerHeight();
 	$(divbefore).addClass('divbefore');
 }
 if (settings.divAfterTable) {
 	var divafter = '#'+ settings.divAfterTable;
-	var divafterH = settings.divAfterTable ? $(divafter).outerHeight() : 0;
+	var divafterH = $(divafter).outerHeight();
 	$(divafter).addClass('divafter');
 }
 
 // convert 'tbody' to value-only array [ [i, 'a', 'b', 'c'], [i, 'd', 'e', 'f'] ]
 var arr = [];
+var $thtd = $thead.children(); // without 'tdpad'
 $tbtr.each(function(i) {
 	var tdarr = [i];
 	$(this).find('td').each(function(j) {
@@ -97,9 +91,24 @@ $tbtr.each(function(i) {
 	arr.push(tdarr);
 });
 
+// #a - allocate space for sort icon with long text
+// extract sort icon
+$('body').append('<a id="tmp" class="asc">24</a>');
+var icon = window.getComputedStyle(
+	document.getElementById('tmp'),':before').content;
+icon = '&#'+ icon.charCodeAt(0) +';&#'+ icon.charCodeAt(1) +';'
+// add sort icon to set 'min-width'
+$thead.find('th, td').prepend('<a class="tmpicon" style="opacity: 0">'+ icon +'</a>');
+$thead.children().children().each(function(i) {
+	$(this).css('min-width', $(this).outerWidth() +'px');
+});
+$thead.find('#tmp, .tmpicon').remove();
+
+// #b dynamic css - for divbeforeH underlay, divafterH and fixed thead2
+var tblid = this[0].id;
+var tblparent = '#sortable'+ tblid;
 $table.wrap('<div id="sortable'+ tblid +'" class="tblparent"></div>');
 $table.addClass('sortable');
-// dynamic css - for divbeforeH underlay, divafterH and fixed thead2
 var trH = $tbtr.height();
 $('head').append('<style>'+
 	'.tblparent::before {'+
@@ -109,7 +118,7 @@ $('head').append('<style>'+
 	'}\n'+
 	'.sortableth2 {top: '+ divbeforeH +'px;}\n'+
 	'.sortableth2 a {padding: '+ $table.find('td').css('padding') +';}\n'+
-	'#trlast {height: '+ (divafterH + trH) +'px;}'+
+	'#trlast {height: '+ (divafterH + trH) +'px;}\n'+
 	'@media(max-height: '+ shortvport +'px) {\n'+
 		'.divbefore, .divafter {position: relative;}'+
 		'.tblparent::before {display: block; height: 0;}'+
@@ -124,22 +133,21 @@ $('head').append('<style>'+
 // align 'sortableth2 a' width to 'thead th'
 function thead2align() {
 	setTimeout(function() { // wait rendering	
-		var $tbtd = $tbtr.find('td');
-		$thead2a.add( $table.find('th, td') ).show(); // reset hidden
-		$thead.children().children().each(function(i) {
+		$thead2a.add( $thtd ).show(); // reset hidden
+		$thtd.each(function(i) {
 			if ( $tbtd.eq(i).is(':visible') ) {
 				$thead2a.eq(i).css('width', $tbtd.eq(i).outerWidth() +'px'); // include 'td' padding
 			} else {
 				$thead2a.eq(i).add(this).hide(); // set hidden
 			}
 		});
-		$thead2a.eq(0).css( 'width', $tbody.find('td:first').outerWidth() ); // fix - tdpad reset to '0'
+		$thead2a.eq(0).css( 'width', $tbtd.eq(0).outerWidth() ); // fix - tdpad reset to '0'
 		$thead2.show();
 	}, thead2aligntimeout);
 }
 
 // #2 - add fixed header for short viewport
-var th2html = $thead.find('tr')
+var th2html = $thtr
 	.html()
 	.replace(/th|td/g, 'a')
 	.replace(/[\n\t]|style=".*"/g, '');
@@ -150,14 +158,9 @@ $('body').prepend('\
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
-// set 'thead2 a' space for sort icon with long text (not work with column after 'max-width' column)
-var $tbtd = $tbtr.find('td');
-$thead.find('th, td').prepend('<a class="tmpicon" style="opacity: 0">\u25b2\u200a</a>');
 $thead.children().children().each(function(i) {
-	$tbtd.eq(i).css('min-width', $(this).outerWidth());
 	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') ); // 'text-align' 'thead2 a' to 'thead th'
 });
-$thead.find('.tmpicon').remove();
 // delegate click to 'thead'
 $thead2a.click(function() {
 	$thead.children().children().eq( $(this).index() )
@@ -168,16 +171,14 @@ $thead2a.click(function() {
 // 'detach' to avoid many dom traversings
 var $tbl = $table.detach();
 $tbl.find('tr').each(function() {
-	if ($(this).children().eq(0).prop('tagName') === 'TH') {
-		var tdpad = '<th class="tdpad"></th>';
-	} else {
-		var tdpad = '<td class="tdpad"></td>';
-	}
+	var tdpad = '<td class="tdpad"></td>';
 	$(this)
 		.prepend(tdpad)
 		.append(tdpad);
 });
 $(tblparent).append($tbl);
+var $thtd = $thead.children();
+var $tbtd = $tbtr.find('td');
 
 // #4 - add empty 'tr' to bottom
 $tbody.append(
@@ -201,9 +202,10 @@ $window.scroll(function () {
 });
 
 // show top part on short viewport initial load
+var $thtd = $thtr.children(); // with 'tdpad'
 setTimeout(function() {
 	$window.scrollTop(0);
-	initialsort && $thtd.eq(initialsort - 1).trigger('click', settings.initialSortDesc);
+	initialsort && $thtd.eq(initialsort).trigger('click', settings.initialSortDesc);
 }, initscrolltimeout);
 
 // #8 - click 'thead' to sort
@@ -232,13 +234,16 @@ $thead.children().children().click(function(event, initdesc) {
 		$tbody.prepend( $tbtr.eq($(this)[0]) );
 	});
 	// switch sort icon
-	$thead2a.add(this).siblings().addBack()
+	$thead2a.add($thtd)
 		.removeClass('asc desc');
 	$thead2a.eq(i).add(this)
 		.addClass(order);
 	// highlight sorted column
-	$tbody.find('td').removeClass('sorted');
-	$tbody.find('td:nth-child('+ (i+1) +')').addClass('sorted');
+	$tbtd
+		.removeClass('sorted')
+		.end()
+			.find('td:nth-child('+ (i+1) +')')
+				.addClass('sorted');
 });
 
 // #9 - screen rotate
