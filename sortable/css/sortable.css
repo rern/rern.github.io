@@ -105,10 +105,12 @@
 .sorted { /* sorted column */
 	background: rgba(0,0,0,0.05);
 }
-.asc::before { /* sort icon */
+.asc:before { /* sort icon */
+	content: '\25b2\200a';
 	color: green;
 }
-.desc::before { /* sort icon */
+.desc:before { /* sort icon */
+	content: '\25bc\200a';
 	color: crimson;
 }
 /* custom <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
@@ -152,10 +154,4 @@ body {
 .sortable .tdpad {
 	width: 50%; /* oversize for centering table */
 	margin: 0;
-}
-.asc:before { /* sort icon */
-	content: '\25b2\200a';
-}
-.desc:before { /* sort icon */
-	content: '\25bc\200a';
 }
