@@ -149,8 +149,8 @@ function thead2align() {
 // #2 - add fixed header for short viewport
 var th2html = $thtr
 	.html()
-	.replace(/th|td/g, 'a')
-	.replace(/[\n\t]|style=".*"/g, '');
+	.replace(/style="min-width: .{1,7}"/g, '')
+	.replace(/th|td/g, 'a');
 $('body').prepend('\
 	<div id="'+ tblid +'th2" class="sortableth2" style="display: none">\
 		<a></a>'+ th2html +
