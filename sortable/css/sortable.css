@@ -28,7 +28,7 @@
 	opacity: 0.95;
 }
 .sortable th,
-.sortable thead .tdpad {
+.sortable thead td {
 	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
 	border-bottom: 1px solid #eee;
 }
@@ -54,7 +54,9 @@
 .sortable td:nth-child(5) {
 	text-align: left;
 }
+
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
+/* ***'min-width: 0 !important' required for column with 'max-width'*** */
 @media(max-width: 569px) {
 	.sortable th:nth-child(4), .sortable td:nth-child(4) {min-width: 0 !important; display: none !important;}
 	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 300px;}
@@ -72,6 +74,7 @@
 		border: 0;
 	}
 }
+
 /* SHOULD NOT change below this line ------------------------------------------------------------------------------------------- */
 .sortableth2 a,
 .sortable th,
@@ -84,6 +87,9 @@
 .sortable th {
 	text-overflow: clip; /* for very narrow column */
 }
+.sortable tbody tr:nth-child(1) td { /* 1st row top offset */
+	padding-top: 5px;
+}
 .sortable tbody tr:nth-child(even) { /* zebra stripe */
 	background: rgba(0,0,0,0.05);
 }
@@ -93,13 +99,16 @@
 .sorted { /* sorted column */
 	background: rgba(0,0,0,0.05);
 }
-.asc:before { /* sort icon */
+.asc:before, .asctmp:before {
+	content: '▲';
 	color: green;
-	content: '\25b2\200a';
 }
-.desc:before { /* sort icon */
-	content: '\25bc\200a';
+.desc:before {
+	content: '▼';
 	color: crimson;
+}
+.asctmp:before {
+	opacity: 0;
 }
 /* custom <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
 
