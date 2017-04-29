@@ -51,16 +51,16 @@ var initialsort = settings.initialSort;
 var negativesort = settings.negativeSort;
 
 var shortvport = 414; // max height to apply fixed thead
-var initscrolltimeout = 400; // all 'setTimeout()' are crucial, less will break header and scroll position
-var scrolltimeout = 500;
-var thead2aligntimeout = 400;
+var timeout = 300; // less will break header and scroll position
 
 var $window = $(window);
 var $table = this;
 var $thead = $table.find('thead');
 var $thtr = $thead.find('tr');
+var $thtd = $thtr.children(); // either 'th' or 'td'
 var $tbody = $table.find('tbody');
 var $tbtr = $tbody.find('tr');
+var $tbtd = $tbtr.find('td');
 
 var divbeforeH = 0;
 var divafterH = 0;
@@ -91,79 +91,70 @@ $tbtr.each(function(i) {
 	arr.push(tdarr);
 });
 
-// #a - allocate space for sort icon with long text
-// extract sort icon
-$('body').append('<a id="tmp" class="asc">24</a>');
-var icon = window.getComputedStyle(
-	document.getElementById('tmp'),':before').content;
-icon = '&#'+ icon.charCodeAt(0) +';&#'+ icon.charCodeAt(1) +';'
-// add sort icon to set 'min-width'
-$thead.find('th, td').prepend('<a class="tmpicon" style="opacity: 0">'+ icon +'</a>');
-$thead.children().children().each(function(i) {
-	$(this).css('min-width', $(this).outerWidth() +'px');
-});
-$thead.find('.tmpicon').add('#tmp').remove();
-
-// #b dynamic css - for divbeforeH underlay, divafterH and fixed thead2
+// dynamic css - for divbeforeH underlay, divafterH and fixed thead2
 var tblid = this[0].id;
 var tblparent = '#sortable'+ tblid;
 $table.wrap('<div id="sortable'+ tblid +'" class="tblparent"></div>');
 $table.addClass('sortable');
 var trH = $tbtr.height();
-$('head').append('<style>'+
-	'.tblparent::before {'+
-		'content: "";'+
-		'display: block;'+
-		'height: '+ (divbeforeH + 5) +'px;'+ // +5px offset 1st row
-	'}\n'+
-	'.sortableth2 {top: '+ divbeforeH +'px;}\n'+
-	'.sortableth2 a {padding: '+ $table.find('td').css('padding') +';}\n'+
-	'#trlast {height: '+ (divafterH + trH) +'px;}\n'+
-	'@media(max-height: '+ shortvport +'px) {\n'+
-		'.divbefore, .divafter {position: relative;}'+
-		'.tblparent::before {display: block; height: 0;}'+
-		'.sortableth2 {top: 0;}'+
-		'.sortable thead {visibility: visible;}'+
-		'#trlast {height: '+ trH +'px;}'+
-	'}'+
-	'</style>'
+
+$('head').append('<style>'
+	+'.tblparent::before {'
+		+'content: "";'
+		+'display: block;'
+		+'height: '+ divbeforeH +'px;'
+		+'width: 100%;'
+	+'}\n'
+	+'.sortableth2 {top: '+ divbeforeH +'px;}\n'
+	+'#trlast {height: '+ (divafterH + trH) +'px;}\n'
+	+'@media(max-height: '+ shortvport +'px) {\n'
+		+'.divbefore, .divafter {position: relative;}'
+		+'.tblparent::before {position: absolute;}'
+		+'.tblparent::before, .sortableth2 {top: 0;}'
+		+'.sortable thead {visibility: visible;}'
+		+'#trlast {height: '+ trH +'px;}'
+	+'}'
+	+'</style>'
+//	+'<meta name="viewport" content="width=device-width, initial-scale=1.0">'
 );
 
 // #1 - functions
-// align 'sortableth2 a' width to 'thead th'
+// allocate width for sort icon and align 'sortableth2 a' width to 'thead th'
 function thead2align() {
 	setTimeout(function() { // wait rendering	
-		$thead2a.add( $thtd ).show(); // reset hidden
+		$thead2a.show(); // reset hidden
+		var thtdL = $thtd.length;
 		$thtd.each(function(i) {
+			if ( i > 0 && i < (thtdL - 1) ) { // allocate width for sort icon to avoid clipped header
+				$(this)
+					.addClass('asctmp')
+					.css('min-width', $(this).outerWidth() +'px')
+					.removeClass('asctmp');
+			}
 			if ( $tbtd.eq(i).is(':visible') ) {
-				$thead2a.eq(i).css('width', $tbtd.eq(i).outerWidth() +'px'); // include 'td' padding
+				$thead2a.eq(i).css('width', $(this).outerWidth() +'px'); // include 'td' padding
 			} else {
-				$thead2a.eq(i).add(this).hide(); // set hidden
+				$thead2a.eq(i).hide(); // set hidden column
 			}
 		});
 		$thead2a.eq(0).css( 'width', $tbtd.eq(0).outerWidth() ); // fix - tdpad reset to '0'
 		$thead2.show();
-	}, thead2aligntimeout);
+	}, timeout);
 }
 
 // #2 - add fixed header for short viewport
-var th2html = $thtr
-	.html()
-	.replace(/[\n\t]| style="min-width: .{1,4}px;"/g, '')
-	.replace(/th|td/g, 'a');
-$('body').prepend('\
-	<div id="'+ tblid +'th2" class="sortableth2" style="display: none">\
-		<a></a>'+ th2html +
-	'</div>'
+var th2html = '<a></a>'; // for 'td' click index
+$thtd.each(function(i) { // eq(i + 1) 'text-align' - compensate added tdpad
+	th2html += '<a style="text-align: '+ $thtd.eq(i + 1).css('text-align') +';">'+ $(this).text() +'</a>';
+});
+$('body').prepend(
+	'<div id="'+ tblid +'th2" class="sortableth2" style="display: none">'+ th2html +'</div>'
 );
 var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
-$thead.children().children().each(function(i) {
-	$thead2a.eq(i).css( 'text-align', $(this).css('text-align') ); // 'text-align' 'thead2 a' to 'thead th'
-});
 // delegate click to 'thead'
 $thead2a.click(function() {
-	$thead.children().children().eq( $(this).index() )
+	$thtd.eq( $(this).index() )
 		.click();
 });
 
@@ -177,8 +168,8 @@ $tbl.find('tr').each(function() {
 		.append(tdpad);
 });
 $(tblparent).append($tbl);
-var $thtd = $thtr.children();
-var $tbtd = $tbtr.find('td');
+var $thtd = $thtr.children(); // refresh cache after added
+var $tbtd = $tbtr.find('td'); // refresh cache after added
 
 // #4 - add empty 'tr' to bottom
 $tbody.append(
@@ -194,7 +185,7 @@ thead2align();
 
 // #7 - scroll
 // reference for scrolling calculation
-fromshortv = ($window.height() < shortvport) ? 1 : 0;
+fromshortv = ($window.height() <= shortvport) ? 1 : 0;
 // get scroll position
 var scrltop = 0;
 $window.scroll(function () {
@@ -206,10 +197,10 @@ var $thtd = $thtr.children(); // with 'tdpad'
 setTimeout(function() {
 	$window.scrollTop(0);
 	initialsort && $thtd.eq(initialsort).trigger('click', settings.initialSortDesc);
-}, initscrolltimeout);
+}, timeout);
 
 // #8 - click 'thead' to sort
-$thead.children().children().click(function(event, initdesc) {
+$thtd.click(function(event, initdesc) {
 	var i = $(this).index();
 	var numcol = negativesort.indexOf(i - 1); // '-1' - deduct 'tdpad' column
 	var order = ($(this).hasClass('asc') || initdesc) ? 'desc' : 'asc';
@@ -250,11 +241,11 @@ $thead.children().children().click(function(event, initdesc) {
 window.addEventListener('orientationchange', function() {
 //		scrltop = $window.scrollTop(); // !!! detect incorrectly in fullscreen ios, chrome devtools
 	// maintain scroll position on rotate
-	if ($window.height() < shortvport) {
+	if ($('.sortableth2').css('top') == '0px') {
 		var scrltop0 = scrltop + divbeforeH;
 		fromshortv = 1;
 	} else {
-		var scrltop0 = scrltop - (fromshortv ? divbeforeH : 0); // calc if from short viewport
+		var scrltop0 = scrltop - (fromshortv ? divbeforeH : 0); // less if from short viewport
 		fromshortv = 0;
 	}
 	$thead2.hide();
@@ -262,7 +253,7 @@ window.addEventListener('orientationchange', function() {
 	
 	setTimeout(function() {
 		$window.scrollTop(scrltop0);
-	}, scrolltimeout);
+	}, timeout + 100);
 });
 //*****************************************************************************
 }
