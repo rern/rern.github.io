@@ -30,7 +30,6 @@
 .sortable th,
 .sortable thead td {
 	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
-	border-bottom: 1px solid #eee;
 }
 .sortable th {
 	font-weight: normal;
@@ -69,9 +68,9 @@
 	.sortable th:nth-child(6), .sortable td:nth-child(6) {display: none !important;}
 	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 200px;}
 }
-@media(min-height: 414px) {
-	.sortable th {
-		border: 0;
+@media( max-height: 414px ) {
+	.sortable th, .sortable thead td {
+		border-bottom: 1px solid rgba( 0,0,0,0.05 );
 	}
 }
 
@@ -82,13 +81,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-}
-.sortableth2 a,
-.sortable th {
-	text-overflow: clip; /* for very narrow column */
-}
-.sortable tbody tr:nth-child(1) td { /* 1st row top offset */
-	padding-top: 5px;
 }
 .sortable tbody tr:nth-child(even) { /* zebra stripe */
 	background: rgba(0,0,0,0.05);
