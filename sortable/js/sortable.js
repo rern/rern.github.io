@@ -19,17 +19,17 @@ usage:
 <script src="/path/sortable.js"></script>
 <script>
 ...
-$('tableid').sortable(); 		// without options > full page table
+$('tableid').sortable();             // without options > full page table
 // or
-$('tableid').sortable({
-	divBeforeTable: 'divbeforeid'	// default: (none) - div before table, enclosed in single div
-	, divAfterTable: 'divafterid'	// default: (none) - div after table, enclosed in single div
-	, initialSort: 'column#'		// default: (none) - start with 0
-	. initialSortDesc: false	// default: false
-	, locale: 'code'			// default: 'en' - locale code
-	, negativeSort: [column#]		// default: (none) - column with negative value
-	, tableArray : []			// default: (none) - use table data array directly
-});
+$('tableid').sortable( {
+	divBeforeTable:	   'divbeforeid' // default: (none) - div before table, enclosed in single div
+	, divAfterTable:   'divafterid'  // default: (none) - div after table, enclosed in single div
+	, initialSort:     'column#'     // default: (none) - start with 0
+	, initialSortDesc: false         // default: false
+	, locale:          'code'        // default: 'en'   - locale code
+	, negativeSort:    [column#]     // default: (none) - column with negative value
+	, tableArray:      []            // default: (none) - use table data array directly
+} );
 ...
 
 **custom css for table:**  
@@ -50,7 +50,7 @@ var settings = $.extend( { // defaults
 	, tableArray : []
 }, options );
 var shortvport = 414; // max height to apply fixed thead
-var timeout = 300; // try higher if table was not right
+var timeout = 400; // try higher if table was not right
 
 var $window = $(window);
 var $table = this;
@@ -71,11 +71,11 @@ if ( settings.tableArray.length ) {
 	var arr = [];
 	$tbtr.each( function( i ) {
 		var tdarr = [ i ];
-		$(this).find('td').each( function( j ) {
+		$( this ).find('td').each( function( j ) {
 			if ( negativesort.indexOf( j ) === -1 ) {
-				var tdtxt = $(this).text();
+				var tdtxt = $( this ).text();
 			} else { // minus value in column
-				var tdtxt = $(this).text().replace( /[^0-9\.\-]/g, '' ); // get only '0-9', '.' and '-'
+				var tdtxt = $( this ).text().replace( /[^0-9\.\-]/g, '' ); // get only '0-9', '.' and '-'
 			}
 			tdarr.push( $thtd.eq( j ).text() == '' ? '' : tdtxt ); // blank header not sortable
 		} );
@@ -131,13 +131,13 @@ function thead2align() {
 		var thtdL = $thtd.length;
 		$thtd.each( function( i ) {
 			if ( i > 0 && i < ( thtdL - 1 ) ) { // allocate width for sort icon to avoid clipped header
-				$(this)
+				$( this )
 					.addClass('asctmp')
-					.css('min-width', $(this).outerWidth() +'px')
+					.css('min-width', $( this ).outerWidth() +'px')
 					.removeClass('asctmp');
 			}
 			if ( $tbtd.eq( i ).is(':visible') ) {
-				$thead2a.eq( i ).css('width', $(this).outerWidth() +'px'); // include 'td' padding
+				$thead2a.eq( i ).css('width', $( this ).outerWidth() +'px'); // include 'td' padding
 			} else {
 				$thead2a.eq( i ).hide(); // set hidden column
 			}
@@ -150,7 +150,7 @@ function thead2align() {
 // #2 - add fixed header for short viewport
 var th2html = '<a></a>'; // for 'td' click index
 $thtd.each( function( i ) { // eq(i + 1) 'text-align' - compensate added tdpad
-	th2html += '<a style="text-align: '+ $thtd.eq( i + 1 ).css('text-align') +';">'+ $(this).text() +'</a>';
+	th2html += '<a style="text-align: '+ $thtd.eq( i + 1 ).css('text-align') +';">'+ $( this ).text() +'</a>';
 } );
 $('body').prepend(
 	'<div id="'+ tblid +'th2" class="sortableth2" style="display: none">'+ th2html +'</div>'
@@ -159,7 +159,7 @@ var $thead2 = $('#'+ tblid +'th2');
 var $thead2a = $thead2.find('a');
 // delegate click to 'thead'
 $thead2a.click( function() {
-	$thtd.eq( $(this).index() )
+	$thtd.eq( $( this ).index() )
 		.click();
 } );
 
@@ -182,7 +182,6 @@ $tbody.append(
 		.prop('id', 'trlast')
 );
 
-
 // #6 - align 'sortableth2 a' width to 'thead th'
 thead2align();
 
@@ -190,26 +189,22 @@ thead2align();
 // reference for scrolling calculation
 var fromshortv = ( $window.height() <= shortvport ) ? 1 : 0;
 // get scroll position
-var scrl = [0, 0];
 var scrltop = 0;
 $window.scroll( function () {
-	setTimeout( function() { // fix: delay to prevent  reset by screen rotation
-		scrltop = $window.scrollTop();
-	}, 500);
+	scrltop = $window.scrollTop();
 } );
 
-// show top part on short viewport initial load
-$thtd = $thtr.children(); // with 'tdpad'
+// initial sort column
 setTimeout( function() {
-	$window.scrollTop( 0 );
+//	$window.scrollTop( 0 );
 	initialsort && $thtd.eq( initialsort ).trigger( 'click', settings.initialSortDesc );
 }, timeout );
 
 // #8 - click 'thead' to sort
 $thtd.click( function( event, initdesc ) {
-	var i = $(this).index();
+	var i = $( this ).index();
 	var numcol = negativesort.indexOf( i-1 ); // '-1' - deduct 'tdpad' column
-	var order = ( $(this).hasClass('asc') || initdesc ) ? 'desc' : 'asc';
+	var order = ( $( this ).hasClass('asc') || initdesc ) ? 'desc' : 'asc';
 	// sort value-only array (multi-dimensional)
 	var sorted = arr.sort( function( a, b ) {
 		if ( order == 'desc') {
@@ -226,9 +221,9 @@ $thtd.click( function( event, initdesc ) {
 			}
 		}
 	} );
-	// sort 'tbody' in-place by each 'array[0]', reference i [ [i, 'a', 'b', 'c'], [i, 'd', 'e', 'f'] ]
+	// sort 'tbody' in-place by each 'array[ 0 ]', reference i [ [i, 'a', 'b', 'c'], [i, 'd', 'e', 'f'] ]
 	$.each( sorted, function() {
-		$tbody.prepend( $tbtr.eq( $(this)[0]) );
+		$tbody.prepend( $tbtr.eq( $( this )[ 0 ]) );
 	} );
 	// switch sort icon and highlight sorted column
 	$thead2a.add( $thtd ).add( $tbtd )
@@ -242,21 +237,26 @@ $thtd.click( function( event, initdesc ) {
 // #9 - screen rotate
 var scrlcurrent = 0;
 window.addEventListener('orientationchange', function() {
-//	scrltop = $window.scrollTop(); // !!! detect incorrectly in fullscreen ios, chrome devtools
-	// maintain scroll position on rotate
+	// maintain scroll position on rotate (get 'scrollTop()' here works only on ios)
 	if ( $('.sortableth2').css('top') == '0px' ) {
 		scrlcurrent = scrltop + divbeforeH;
 		fromshortv = 1;
 	} else {
-		scrlcurrent = scrltop - ( fromshortv ? divbeforeH : 0 ); // omit only from short viewport
+		scrlcurrent = scrltop - ( fromshortv ? divbeforeH : 0 ); // omit only H to V from short viewport
 		fromshortv = 0;
 	}
 	$thead2.hide();
 	thead2align(); // align thead2
 	
 	setTimeout( function() {
-		$window.scrollTop( scrlcurrent );
-	}, timeout + 100);
+		$window.off('scroll') // fix - android 'scrollTop()' on 'orientationchange'
+			.scrollTop( scrlcurrent )
+			.scroll( function () {
+				setTimeout( function() {
+					scrltop = $window.scrollTop();
+				}, timeout);
+			} );
+	}, timeout);
 } );
 //*****************************************************************************
 }
