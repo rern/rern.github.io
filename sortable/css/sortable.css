@@ -27,56 +27,54 @@
 		0px 5px 5px rgba(0,0,0,0.5);
 	opacity: 0.95;
 }
-.sortable th,
-.sortable thead td {
-	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
-}
-.sortable th {
-	font-weight: normal;
-	text-align: left;
-}
-.sortable tbody {
-/*	background: #fff;*/
-}
 .sortable tr {
 	height: 30px;
 	cursor: default;
 }
 .sortableth2 a,
-.sortable th,
 .sortable td {
 	padding: 0 5px;
+}
+.sortable td {
 	text-align: right;
 }
-
-.sortable th:nth-child(5),
 .sortable td:nth-child(5) {
 	text-align: left;
+}
+
+.sortable thead td {
+	box-shadow: 0px 9px 5px -6px rgba(0,0,0,0.1) inset;
+}
+.sortable thead td {
+/*	font-weight: bold;
+	text-align: center;*/ /* default */
+}
+.sortable tbody {
+/*	background: #fff;*/
 }
 
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
 /* ***'min-width: 0 !important' required for column with 'max-width'*** */
 @media(max-width: 569px) {
-	.sortable th:nth-child(4), .sortable td:nth-child(4) {min-width: 0 !important; display: none !important;}
-	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 300px;}
+	.sortable td:nth-child(4) {min-width: 0 !important; display: none !important;}
+	.sortable td:nth-child(5) {min-width: 0 !important; max-width: 300px;}
 }
 @media(max-width: 414px) {
-	.sortable th:nth-child(3), .sortable td:nth-child(3) {min-width: 0 !important; display: none !important;}
-	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 220px;}
+	.sortable td:nth-child(3) {min-width: 0 !important; display: none !important;}
+	.sortable td:nth-child(5) {min-width: 0 !important; max-width: 220px;}
 }
 @media(max-width: 320px) {
-	.sortable th:nth-child(6), .sortable td:nth-child(6) {display: none !important;}
-	.sortable th:nth-child(5), .sortable td:nth-child(5) {min-width: 0 !important; max-width: 200px;}
+	.sortable td:nth-child(6) {display: none !important;}
+	.sortable td:nth-child(5) {min-width: 0 !important; max-width: 200px;}
 }
 @media( max-height: 414px ) {
-	.sortable th, .sortable thead td {
+	.sortable thead td {
 		border-bottom: 1px solid rgba( 0,0,0,0.05 );
 	}
 }
 
 /* SHOULD NOT change below this line ------------------------------------------------------------------------------------------- */
 .sortableth2 a,
-.sortable th,
 .sortable td { /* 3 lines for ellipsis: 'td max-width' must be set */
 	white-space: nowrap;
 	overflow: hidden;
@@ -132,7 +130,6 @@ body {
 .sortable thead {
 	visibility: hidden;
 }
-.sortable thead th:empty,
 .sortable thead td:empty {
 	pointer-events: none;
 }
