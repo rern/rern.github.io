@@ -56,11 +56,11 @@
 /* reponsive ------------------------------------------------------------------------------------------------------------------------------------- */
 /* ***'min-width: 0 !important' required for column with 'max-width'*** */
 @media(max-width: 569px) {
-	.sortable td:nth-child(4) {min-width: 0 !important; display: none !important;}
+	.sortable td:nth-child(4) {display: none !important;}
 	.sortable td:nth-child(5) {min-width: 0 !important; max-width: 300px;}
 }
 @media(max-width: 414px) {
-	.sortable td:nth-child(3) {min-width: 0 !important; display: none !important;}
+	.sortable td:nth-child(3) {display: none !important;}
 	.sortable td:nth-child(5) {min-width: 0 !important; max-width: 220px;}
 }
 @media(max-width: 320px) {
