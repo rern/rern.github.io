@@ -1,7 +1,7 @@
 ( function ( $ ) {
 
 $.fn.sortable = function ( options ) {
-//*****************************************************************************
+//******************************************************************
 var settings = $.extend( {   // #### defaults:
 	divBeforeTable: ''       // 
 	, divAfterTable: ''      // 
@@ -10,7 +10,7 @@ var settings = $.extend( {   // #### defaults:
 	, locale: 'en'           // 
 	, negativeSort: []       // column with negative value
 	, timeout: 400           // try higher if 'thead2' misaligned
-	, shortViewportH: 414    // max height to apply fixed 'thead2'
+	, shortViewportH: 414    // max height to unfix divBeforeTable, divAfterTable
 	, tableArray : []        // raw data array to skip extraction
 }, options );
 
@@ -43,43 +43,12 @@ if ( settings.tableArray.length ) {
 	} );
 }
 
-var divBeforeH = 0;
-var divAfterH = 0;
-if ( settings.divBeforeTable ) {
-	divBeforeH = $( settings.divBeforeTable ).outerHeight();
-	$( settings.divBeforeTable ).addClass( 'divbefore' );
-}
-if ( settings.divAfterTable ) {
-	divAfterH = $( settings.divAfterTable ).outerHeight();
-	$( settings.divAfterTable ).addClass( 'divafter' );
-}
-
-// dynamic css - for divBeforeH, divAfterH and thead2
 var tableID = this[ 0 ].id;
 var tableParent = '#sortable'+ tableID;
 var trH = $tbtr.height();
 $table.wrap( '<div id="sortable'+ tableID +'" class="tableParent"></div>' );
 $table.addClass( 'sortable' );
 
-$( 'head' ).append( '<style>'
-	+'.tableParent::before {'
-		+'content: "";'
-		+'display: block;'
-		+'height: '+ divBeforeH +'px;'
-		+'width: 100%;'
-	+'}\n'
-	+'.sortableth2 {top: '+ divBeforeH +'px;}\n'
-	+'#trlast {height: '+ ( divAfterH + trH ) +'px;}\n'
-	+'@media(max-height: '+ settings.shortViewportH +'px) {\n'
-		+'.divbefore {position: absolute;}'
-		+'.divafter {position: relative;}'
-		+'.sortableth2 {top: 0;}'
-		+'.sortable thead {visibility: visible;}'
-		+'#trlast {height: '+ trH +'px;}'
-	+'}'
-	+'</style>'
-//	+'<meta name="viewport" content="width=device-width, initial-scale=1.0">'
-);
 
 // #### add l/r padding 'td' to keep table center
 var $tabletmp = $table.detach(); // avoid many dom traversings
@@ -138,7 +107,7 @@ function thead2align() {
 				$( this ).is(':hidden') &&
 					$thead2a.eq( i ).hide(); // set hidden header
 			} )
-				.removeClass( 'asctmp' )
+		.removeClass( 'asctmp' )
 	;
 	$thead2a.eq( 0 ) // set 'td' min-width then get 'tdpad' width
 		.css( 'width', $thtd.eq( 0 ).outerWidth() )
@@ -147,11 +116,42 @@ function thead2align() {
 	;
 }
 
-// #### initial align 'thead2a' and sort column
+// #### initial align 'thead2a' and sort column, set height
 setTimeout( function () {
 	thead2align()
 	settings.initialSort &&
 		$thtd.eq( settings.initialSort ).trigger( 'click', settings.initialSortDesc );
+		
+// dynamic css - for divBeforeH, divAfterH and thead2
+	var divBeforeH = 0;
+	var divAfterH = 0;
+	if ( settings.divBeforeTable ) {
+		divBeforeH = $( settings.divBeforeTable ).outerHeight();
+		$( settings.divBeforeTable ).addClass( 'divbefore' );
+	}
+	if ( settings.divAfterTable ) {
+		divAfterH = $( settings.divAfterTable ).outerHeight();
+		$( settings.divAfterTable ).addClass( 'divafter' );
+	}
+	$( 'head' ).append( '<style>'
+		+'.tableParent::before {'
+			+'content: "";'
+			+'display: block;'
+			+'height: '+ divBeforeH +'px;'
+			+'width: 100%;'
+		+'}\n'
+		+'.sortableth2 {top: '+ divBeforeH +'px;}\n'
+		+'#trlast {height: '+ ( divAfterH + trH ) +'px;}\n'
+		+'@media(max-height: '+ settings.shortViewportH +'px) {\n'
+			+'.divbefore {position: absolute;}'
+			+'.divafter {position: relative;}'
+			+'.sortableth2 {top: 0;}'
+			+'.sortable thead {visibility: visible;}'
+			+'#trlast {height: '+ trH +'px;}'
+		+'}'
+		+'</style>'
+	//	+'<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+	);
 }, settings.timeout );
 
 // #### click 'thead' to sort
@@ -231,8 +231,7 @@ window.addEventListener( 'resize', function () {
 		getScrollTop(); // re-enable 'scroll'
 	}, settings.timeout );
 } );
-//*****************************************************************************
+//******************************************************************
 }
 
 } ( jQuery ) );
-
