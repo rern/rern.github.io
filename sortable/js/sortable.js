@@ -187,7 +187,7 @@ $thtd.click( function ( event, initdesc ) {
 // get scroll position
 var positionTop = 0;
 var scrollTimeout;
-function getScrollTop() {
+( function getScrollTop() {
 	$window.scroll( function () {
 		// cancel previous 'scroll' within 'settings.timeout'
 		clearTimeout( scrollTimeout );
@@ -195,8 +195,7 @@ function getScrollTop() {
 			positionTop = $window.scrollTop();
 		}, settings.timeout );
 	} );
-};
-getScrollTop();
+} )();
 
 // reference for scrolling calculation
 var fromShortViewport = ( $window.height() <= settings.shortViewportH ) ? 1 : 0;
