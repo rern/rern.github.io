@@ -20,21 +20,29 @@
 	<div id="library" class="btn btn-default"><i class="fa fa-library"></i><span>Library</span></div>
 	<div id="playback" class="btn btn-default active"><i class="fa fa-play-circle"></i><span>Playback</span></div>
 	<div id="playlist" class="btn btn-default"><i class="fa fa-list-ul"></i><span>Playlist</span></div>
+	<div id="settings" class="btn btn-default"><i id="settings" class="fa fa-gear"></i></div>
 	<div class="prev-next"><i id="previous" class="fa fa-arrow-left"></i>&emsp;<i id="next" class="fa fa-arrow-right"></i></div>
 	<img src="assets/img/guide/1.jpg">
 </div>
 <script src="assets/js/plugin/jquery-2.2.4.min.js"></script>
 <script src="assets/js/plugin/jquery.mobile.custom.min.js"></script>
 <script>
-var nlibrary = 14;
-var nplaylist = 30;
-var ntotal = 35;
+var nlibrary = 21;
+var nplaylist = 37;
+var nsettings = 43;
+var ntotal = 46;
 var n = 1;
 $.event.special.swipe.horizontalDistanceThreshold = 80; // pixel to swipe
 $( '#count' ).text( n +'/'+ ntotal );
 
 $( '.btn' ).click( function() {
-	n = this.id === 'playback' ? 1 : ( this.id === 'library' ? nlibrary : nplaylist );
+	var page = {
+		  playback : 1
+		, library  : nlibrary
+		, playlist : nplaylist
+		, settings : nsettings
+	}
+	n = page[ this.id ]
 	renderPage( n );
 } );
 $( '#next' ).click( function() {
@@ -52,15 +60,17 @@ $( 'body' ).swiperight( function( e ) {
 	$( '#previous' ).click();
 } );
 function renderPage( n ) {
-	$( 'img' ).prop( 'src', 'assets/img/guide/'+ n +'.jpg' );
+	$( 'img' ).prop( 'src', '/assets/img/guide/'+ n +'.<?=$time?>.jpg' );
 	$( '#count' ).text( n +'/'+ ntotal );
 	$( '.btn' ).removeClass( 'active' );
 	if ( n >= 1 && n < nlibrary ) {
 		var id = 'playback';
 	} else if ( n >= nlibrary && n < nplaylist ) {
 		var id = 'library';
-	} else {
+	} else if ( n >= nplaylist && n < nsettings ) {
 		var id = 'playlist';
+	} else {
+		var id = 'settings';
 	}
 	$( '#'+ id ).addClass( 'active' );
 }

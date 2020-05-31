@@ -1,22 +1,22 @@
 @font-face {
-	font-family: enhance;
-	src        : url( '../fonts/enhance.woff' ) format( 'woff' ),
-				 url( '../fonts/enhance.ttf' ) format( 'truetype' );
-	font-weight: normal;
-	font-style : normal;
-}
-@font-face {
 	font-family: Lato;
-	src: url( '../fonts/lato-regular-webfont.woff' ) format( 'woff' ),
-		url( '../fonts/lato-regular-webfont.ttf' ) format( 'truetype' );
+	src: url( '/assets/fonts/lato-regular-webfont.woff' ) format( 'woff' ),
+		url( '/assets/fonts/lato-regular-webfont.ttf' ) format( 'truetype' );
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: Lato;
-	src: url( '../fonts/lato-light-webfont.woff' ) format( 'woff' ),
-	     url( '../fonts/lato-light-webfont.ttf' ) format( 'truetype' );
+	src: url( '/assets/fonts/lato-light-webfont.woff' ) format( 'woff' ),
+		url( '/assets/fonts/lato-light-webfont.ttf' ) format( 'truetype' );
 	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: Inconsolata;
+	src: url('/assets/fonts/Inconsolata.woff') format('woff'),
+		url( '/assets/fonts/Inconsolata.ttf' ) format( 'truetype' );
+	font-weight: normal;
 	font-style: normal;
 }
 .fa {
@@ -545,7 +545,7 @@ input:checked + .switchlabel:after {
 	display: inline-block;
 	width: 110px;
 	height: 34px;
-	margin: 0 10px 10px 0 !important;
+	margin: 0 5px 10px 0 !important;
 	text-align: center;
 }
 #guide .btn i {
@@ -558,6 +558,12 @@ input:checked + .switchlabel:after {
 }
 #guide img {
 	width: 100%;
+}
+#guide #settings {
+	width: 34px;
+}
+#guide #settings i {
+	margin: 3px 0 0 0;
 }
 .prev-next {
 	display: inline-block;
