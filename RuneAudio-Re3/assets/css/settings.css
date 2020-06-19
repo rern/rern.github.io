@@ -1,21 +1,21 @@
 @font-face {
 	font-family: Lato;
-	src: url( '/assets/fonts/lato-regular-webfont.woff' ) format( 'woff' ),
-		url( '/assets/fonts/lato-regular-webfont.ttf' ) format( 'truetype' );
+	src: url( 'assets/fonts/lato-regular-webfont.woff' ) format( 'woff' ),
+		url( 'assets/fonts/lato-regular-webfont.ttf' ) format( 'truetype' );
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: Lato;
-	src: url( '/assets/fonts/lato-light-webfont.woff' ) format( 'woff' ),
-		url( '/assets/fonts/lato-light-webfont.ttf' ) format( 'truetype' );
+	src: url( 'assets/fonts/lato-light-webfont.woff' ) format( 'woff' ),
+		url( 'assets/fonts/lato-light-webfont.ttf' ) format( 'truetype' );
 	font-weight: 300;
 	font-style: normal;
 }
 @font-face {
 	font-family: Inconsolata;
-	src: url('/assets/fonts/Inconsolata.woff') format('woff'),
-		url( '/assets/fonts/Inconsolata.ttf' ) format( 'truetype' );
+	src: url('assets/fonts/Inconsolata.woff') format('woff'),
+		url( 'assets/fonts/Inconsolata.ttf' ) format( 'truetype' );
 	font-weight: normal;
 	font-style: normal;
 }
