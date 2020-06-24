@@ -8,6 +8,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="msapplication-tap-highlight" content="no">
+	<link rel="stylesheet" href="assets/css/info.css">
 	<link rel="stylesheet" href="assets/css/settings.css">
 	<link rel="icon" type="image/png" href="assets/img/favicon-192x192.png" sizes="192x192">
 </head>
@@ -26,6 +27,7 @@
 </div>
 <script src="assets/js/plugin/jquery-2.2.4.min.js"></script>
 <script src="assets/js/plugin/jquery.mobile.custom.min.js"></script>
+<script src="assets/js/info.js"></script>
 <script>
 var nlibrary = 21;
 var nplaylist = 38;
@@ -46,6 +48,11 @@ $( '.btn' ).click( function() {
 	renderPage( n );
 } );
 $( '#next' ).click( function() {
+	info( {
+		  icon      : 'wifi-3'
+		, title     : 'Wi-Fi Setup'
+		, textlabel : 'SSID'
+	} ); return
 	n = n < ntotal ? n + 1 : 1;
 	renderPage( n );
 } );
