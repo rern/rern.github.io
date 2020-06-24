@@ -60,7 +60,7 @@ $( 'body' ).swiperight( function( e ) {
 	$( '#previous' ).click();
 } );
 function renderPage( n ) {
-	$( 'img' ).prop( 'src', '/assets/img/guide/'+ n +'.jpg' );
+	$( 'img' ).prop( 'src', 'assets/img/guide/'+ n +'.jpg' );
 	$( '#count' ).text( n +'/'+ ntotal );
 	$( '.btn' ).removeClass( 'active' );
 	if ( n >= 1 && n < nlibrary ) {
