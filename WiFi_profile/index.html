@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>R+R Wi-Fi Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="msapplication-tap-highlight" content="no">
+	<link rel="stylesheet" href="assets/colors.css">
+	<link rel="stylesheet" href="assets/info.css">
+	<link rel="icon" type="image/png" href="assets/addons.png" sizes="192x192">
+	<style>
+@font-face {
+	font-family: Lato;
+	src: url( 'assets/lato-regular-webfont.woff' ) format( 'woff' ),
+		url( 'assets/lato-regular-webfont.ttf' ) format( 'truetype' );
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: enhance;
+	src        : url( 'assets/enhance.woff' ) format( 'woff' ),
+				 url( 'assets/enhance.ttf' ) format( 'truetype' );
+	font-weight: normal;
+	font-style : normal;
+}
+.fa {
+	display: inline-block;
+	font-family: enhance;
+	font-style: normal;
+}
+.fa-lg { font-size: 22px; line-height: 18px; }
+.fa-addons:before { content: "\f581" }
+.fa-eye:before { content: "\f575" }
+.fa-wifi-3:before { content: "\f570" }
+body {
+	margin: 0;
+	font-family: "Lato";
+	font-size: 15px;
+	line-height: 1.42857143;
+	color: var( --cw );
+	background-color: #000;
+	overscroll-behavior: none; /* disable android pull-down refresh */
+}
+#splash {
+	position: relative;
+	height: 100vh;
+}
+#splash img {
+	position: absolute;
+	width: 90vw;
+	max-width: 750px;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+.hide { display: none !important; }
+wh { color: var( --cw ) !important; }
+	</style>
+</head>
+<body>
+
+	<div id="splash"><img src="assets/start.png"></div>
+	<script src="assets/jquery-2.2.4.min.js"></script>
+	<script src="assets/info.js"></script>
+	<script>
+setTimeout( function() {
+	info( {
+		  icon          : 'wifi-3'
+		, title         : 'Wi-Fi Profile Generator'
+		, textlabel     : [ 'SSID', 'IP', 'Gateway' ]
+		, textrequired  : [ 0 ]
+		, checkbox      : { 'Static IP': 1, 'Hidden SSID': 1, 'WEP': 1 }
+		, passwordlabel : 'Password'
+		, footer        : '<br><px50/><code>"</code> double quotes not allowed'
+		, preshow       : function() {
+			$( '#infotextlabel a:eq( 1 ), #infoTextBox1, #infotextlabel a:eq( 2 ), #infoTextBox2' ).hide();
+			$( '#infoCheckBox' ).on( 'click', 'input:eq( 0 )', function() {
+				$( '#infotextlabel a:eq( 1 ), #infoTextBox1, #infotextlabel a:eq( 2 ), #infoTextBox2' ).toggle( $( this ).prop( 'checked' ) );
+			} );
+			setTimeout( function() {
+				$( '#infoTextBox' ).focus();
+			}, 0 );
+		}
+		, ok            : function() {
+			var ssid = $( '#infoTextBox' ).val();
+			var ip = $( '#infoTextBox1' ).val();
+			var gw = $( '#infoTextBox2' ).val();
+			var password = $( '#infoPasswordBox' ).val();
+			var static = $( '#infoCheckBox input:eq( 0 )' ).prop( 'checked' );
+			var hidden = $( '#infoCheckBox input:eq( 1 )' ).prop( 'checked' );
+			var security = $( '#infoCheckBox input:eq( 2 )' ).prop( 'checked' );
+			var data =   'Interface=wlan0'
+						+'\nConnection=wireless'
+						+'\nESSID="'+ escapeString( ssid ) +'"'
+						+'\nIP='+ ( static ? 'static' : 'dhcp' );
+			if ( password ) {
+				data +=  '\nSecurity='+ ( security ?  'wep' : 'wpa' )
+						+'\nKey="'+ escapeString( password ) +'"';
+			} else {
+				data +=  '\nSecurity=none'
+			}
+			if ( hidden ) {
+				data +=  '\nHidden=yes';
+			}
+			if ( static ) {
+				data +=  '\nAddress='+ ip +'/24'
+						+'\nGateway='+ gw;
+			}
+			info ( {
+				  icon          : 'wifi-3'
+				, title         : 'Wi-Fi Profile Generator'
+				, message       : 'Insert <wh>RuneAudio+R</wh> <i class="fa fa-addons"></i> SD card'
+								 +'<br><br>Save to <code>BOOT</code>'
+								 +'<br>(Keep filename as <code>wifi</code>)'
+				, ok    : function() {
+					var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
+					var a = document.createElement( 'a' );
+					a.setAttribute( 'download', 'wifi' );
+					a.setAttribute( 'href', window.URL.createObjectURL( blob ) );
+					a.click();
+				}
+			} );
+		}
+	} );
+}, 500 );
+function escapeString( string ) {
+	var to_escape = [ '\\', ';', ',', ':', '"' ];
+	var hex_only = /^[0-9a-f]+$/i;
+	var output = "";
+	for ( var i = 0; i < string.length; i++ ) {
+		if ( $.inArray( string[ i ], to_escape ) != -1 ) {
+			output += '\\'+string[ i ];
+		} else {
+			output += string[ i ];
+		}
+	}
+	return output;
+};
+	</script>
+	
+</body>
+</html>
