@@ -67,7 +67,8 @@ setTimeout( function() {
 				  icon          : 'wifi-3'
 				, title         : 'Wi-Fi Data'
 				, message       : 'Insert <wh>RuneAudio+R</wh> <i class="fa fa-addons"></i> SD card'
-								 +'<br><br>Save/Copy <code>wifi</code> to <code>BOOT</code>'
+								 +'<br><br>Save as <code>wifi</code> to <code>BOOT</code>'
+								 +'<br>(Or copy from <wh>Download</wh> folder if no download prompt.)'
 				, ok    : function() {
 					var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
 					var a = document.createElement( 'a' );
