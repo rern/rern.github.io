@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>R+R Wi-Fi Profile</title>
+	<title>Wi-Fi Profile</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -10,60 +10,12 @@
 	<meta name="msapplication-tap-highlight" content="no">
 	<link rel="stylesheet" href="assets/colors.css">
 	<link rel="stylesheet" href="assets/info.css">
+	<link rel="stylesheet" href="assets/main.css">
 	<link rel="icon" type="image/png" href="assets/addons.png" sizes="192x192">
-	<style>
-@font-face {
-	font-family: Lato;
-	src: url( 'assets/lato-regular-webfont.woff' ) format( 'woff' ),
-		url( 'assets/lato-regular-webfont.ttf' ) format( 'truetype' );
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: enhance;
-	src        : url( 'assets/enhance.woff' ) format( 'woff' ),
-				 url( 'assets/enhance.ttf' ) format( 'truetype' );
-	font-weight: normal;
-	font-style : normal;
-}
-.fa {
-	display: inline-block;
-	font-family: enhance;
-	font-style: normal;
-}
-.fa-lg { font-size: 22px; line-height: 18px; }
-.fa-addons:before { content: "\f581" }
-.fa-eye:before { content: "\f575" }
-.fa-wifi-3:before { content: "\f570" }
-body {
-	margin: 0;
-	font-family: "Lato";
-	font-size: 15px;
-	line-height: 1.42857143;
-	color: var( --cw );
-	background-color: #000;
-	overscroll-behavior: none; /* disable android pull-down refresh */
-}
-#splash {
-	position: relative;
-	height: 100vh;
-}
-#splash img {
-	position: absolute;
-	width: 90vw;
-	max-width: 750px;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-}
-.hide { display: none !important; }
-wh { color: var( --cw ) !important; }
-	</style>
 </head>
 <body>
 
+	<div class="head"><i class="page-icon fa fa-addons"></i><span class="title">Wi-Fi Profile Generator</span></div>
 	<div id="splash"><img src="assets/start.png"></div>
 	<script src="assets/jquery-2.2.4.min.js"></script>
 	<script src="assets/info.js"></script>
