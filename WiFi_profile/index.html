@@ -82,7 +82,13 @@ setTimeout( function() {
 	} );
 }, 500 );
 function escapeString( str ) {
-	return str.replace( /([&()]\\)/g, '\$1' );
+	var string = str
+			.replace( /([&()\\])/g, '\$1' )
+			.replace( /"/g, '\\\"' )
+	return escapeSingleQuote( string )
+}
+function escapeSingleQuote( str ) {
+	return str.replace( /'/g, '\'"\'"\'' );
 }
 	</script>
 	
