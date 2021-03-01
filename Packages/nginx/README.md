@@ -4,7 +4,6 @@ NGINX Upgrade with pushstream
 - **pushstream** is not available as a separated package
 
 ### compile
-- NGINX mainline source files: https://archlinuxarm.org/packages/armv7h/nginx-mainline/files
 ```sh
 # remove confilit file (mailcap reinstates it)
 pacman -Syu
