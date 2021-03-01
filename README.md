@@ -6,5 +6,5 @@
 
 **Repo database update**
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/Packages/repoupdate.sh )
+bash <( curl -L https://github.com/rern/rern.github.io/raw/master/repoupdate.sh )
 ```
