@@ -2,14 +2,9 @@
 Source: [Spotifyd](https://github.com/Spotifyd/spotifyd)
 ```sh
 pacman -Syu
-pacman -S --needed base-devel cargo
+pacman -S --needed base-devel cargo rustup
 
-# needs rust 1.47 (otherwise runtime error: librespot_tremor::tremor_sys::ov_callbacks)
-wget http://tardis.tiny-vps.com/aarm/packages/r/rust/rust-1%3A1.47.0-4-aarch64.pkg.tar.xz
-pacman -U rust*
-
-# setup distcc
-systemctl start distccd
+# no distcc for cargo/rust
 
 su alarm
 
@@ -55,4 +50,7 @@ package() {
 EOF
 
 makepkg -A
+
+# after install
+ln -s /usr/lib/systemd/{user,system}/spotifyd.service
 ```
