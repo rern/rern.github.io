@@ -1,11 +1,11 @@
-### Arch Linux Arm Package Sources
+### Source files not in `https://github.com/archlinuxarm/PKGBUILDs`
 
-**Package list on GitHub**
+**Arch Linux package list**
 ```sh
 https://github.com/archlinux/svntogit-community
 ```
 
-**Package source files**
+**Source files**
 ```sh
 https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME
 ```
