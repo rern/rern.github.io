@@ -23,7 +23,7 @@ updateRepo() {
 <table>
 	<tr><td><a href="/">../</a></td><td></td></tr>'
 	pkg=( $( ls *.pkg.tar.xz ) )
-	readarray -t sizedate <<<$( ls -l *.pkg.tar.xz | tr -s ' ' | cut -d' ' -f6-8 )
+	readarray -t sizedate <<<$( ls -lh --time-style='+%Y%m%d %H:%M' *.pkg.tar.xz | tr -s ' ' | cut -d' ' -f6-7 )
 	pkgL=${#pkg[@]}
 	for (( i=1; i < $pkgL; i++ )); do
 		pkg=${pkg[$i]}
