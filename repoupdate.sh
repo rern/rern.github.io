@@ -23,7 +23,7 @@ updateRepo() {
 <table>
 	<tr><td><a href="/">../</a></td><td></td></tr>'
 	pkg=( $( ls *.pkg.tar.xz ) )
-	readarray -t sizedate <<<$( ls -lh *.pkg.tar.xz | cut -c24-40 )
+	readarray -t sizedate <<<$( ls -l *.pkg.tar.xz | tr -s ' ' | cut -d' ' -f6-8 )
 	pkgL=${#pkg[@]}
 	for (( i=1; i < $pkgL; i++ )); do
 		pkg=${pkg[$i]}
@@ -61,4 +61,4 @@ currentdir=$( pwd )
 
 cd "$currentdir"
 
-dialog --colors --infobox "\n Repositories updated succesfully." 5 40
+dialog --colors --infobox "\n \Z1Repositories\Z0 updated succesfully." 5 40
