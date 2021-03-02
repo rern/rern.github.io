@@ -61,4 +61,4 @@ currentdir=$( pwd )
 
 cd "$currentdir"
 
-dialog --colors --infobox "\n \Z1\Repositories\Z0\ updated succesfully." 5 40
+dialog --colors --infobox "\n \Z1Repositories\Z0 updated succesfully." 5 40
