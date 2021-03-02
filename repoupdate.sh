@@ -47,7 +47,7 @@ arch=" $arch "
 [[ $arch == *' 2 '* ]] && armv7h=1
 [[ $arch == *' 3 '* ]] && aarch64=1
 if [[ -z $armv6h && -z $armv7h && -z $aarch64 ]]; then
-	dialog --colors --msgbox '\nNo \Z1Arch\Z0 selected.' 8 30
+	dialog --colors --infobox '\n No \Z1Arch\Z0 selected.' 5 40
 	exit
 fi
 
@@ -61,4 +61,4 @@ currentdir=$( pwd )
 
 cd "$currentdir"
 
-dialog --colors --msgbox "\nRepositories updated succesfully." 8 30
+dialog --colors --infobox "\n Repositories updated succesfully." 5 40
