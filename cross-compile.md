@@ -11,7 +11,7 @@ pacman -Sy docker
 
 systemctl start docker
 
-# get image
+# get image: https://github.com/mydatakeeper/archlinuxarm
 for arch in armv6h armv7h aarch64; do
 	docker pull mydatakeeper/archlinuxarm:$arch
 done
