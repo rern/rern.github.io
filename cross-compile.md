@@ -128,14 +128,19 @@ docker rename NAME NEW_NAME
 ```sh
 docker stop $( docker ps -aq )
 ```
-- Save updated image for later uses with another ssh:
+- Remove CONTAINER
 ```sh
-docker ps -a  # get CONTAINER_ID
-docker commit CONTAINER_ID IMG_NAME
-docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
+docker ps -a  # get CONTAINER
+docker rm CONTAINER
 ```
 - Remove image:
 ```sh
 docker image ls  # get REPOSITORY
 docker rm REPOSITORY  # or REPOSITORY:TAG if more than 1
+```
+- Save updated image for later uses with another ssh:
+```sh
+docker ps -a  # get CONTAINER_ID
+docker commit CONTAINER_ID IMG_NAME
+docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
