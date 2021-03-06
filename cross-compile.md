@@ -4,7 +4,7 @@ Cross-Compiling
 - [Distcc](#distcc)
 
 ### Docker
-- Rust/Cargo must be run on RPi with the same 32 or 64bit arch.
+- `rust`/`cargo`, used by **spotifyd**,  must be run on RPi, for armv6h on armv7h - not aarch64.
 ```sh
 pacman -Sy docker
 
