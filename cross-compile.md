@@ -25,6 +25,10 @@ docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 docker start ARCH
 docker exec -it ARCH bash
 
+# rename run image --name NAME
+docker ps -a  # get NAME
+docker rename NAME NEW_NAME
+
 ########## docker container ##########
 
 # root password: root
