@@ -10,34 +10,25 @@ pacman -Sy docker
 
 systemctl start docker
 
-# ready made image
-# armv7h - docker-armv7h.tar.gz
-# aarch64 - docker-aarch64.tar.gz
-wget https://github.com/rern/distcc-alarm/releases/download/10.2.0.20200823-3/docker-armv6h.tar.gz
-docker load -i docker-armv6h.tar.gz
-docker run -it --platform arm armv6h bash
+# get image
+for arch in armv6h armv7h aarch64; do
+	docker pull mydatakeeper/archlinuxarm:$arch
+done
 
-
-# OR start with new image from docker hub
-# armv7h - eothel/armv7h-archlinux
-# aarch64 - mydatakeeper/archlinuxarm:aarch64
-docker run -it --platform arm eothel/armv6h-archlinux bash
+# run
+docker run -it mydatakeeper/archlinuxarm:ARCH bash
 
 ########## docker container
+sed -i 's|^Server = http://|&COUNTRY_CODE.|' /etc/pacman.d/mirrorlist
 pacman -Syu
-pacman -S nano
-nano /etc/pacman.d/mirrorlist  # set preferred repo
-pacman -S base-devel cargo rust wget alsa-lib libogg libpulse dbus
 
-passwd  # set root password
-mkdir /home/alarm
-useradd alarm
-chown alarm /home/alarm
+# set root password
+passwd
 
-##### save docker image for later uses > another ssh:
+##### save updated image for later uses with another ssh:
 docker ps -a  # get container id
-docker commit CONTAINER_ID armv6h
-docker save armv6h:latest | gzip > docker-armv6h
+docker commit CONTAINER_ID IMG_NAME
+docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
 
 ### Distcc
