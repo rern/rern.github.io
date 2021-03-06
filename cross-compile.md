@@ -3,8 +3,9 @@ Cross-Compiling
 - [Docker](#docker)
 - [Distcc](#distcc)
 
-### Docker
-- `rust`/`cargo`, used by **spotifyd**,  must be run on RPi, for armv6h on armv7h - not aarch64.
+### Docker - on x86 Linux
+**`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
+- Setup
 ```sh
 pacman -Sy docker
 
@@ -24,11 +25,17 @@ pacman -Syu
 
 # set root password
 passwd
-
-##### save updated image for later uses with another ssh:
+```
+- Save updated image for later uses with another ssh:
+```sh
 docker ps -a  # get container id
 docker commit CONTAINER_ID IMG_NAME
 docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
+```
+- Remove image:
+```sh
+docker image ls  # repo list
+docker rm REPO_NAME  # or REPO_NAME:TAG
 ```
 
 ### Distcc
