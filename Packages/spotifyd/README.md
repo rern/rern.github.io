@@ -19,4 +19,4 @@ makepkg -A
 ```
 
 ### RPi Zero
-- [Cross compile armv6h on armv7h](https://github.com/rern/distcc-alarm/blob/main/README.md#docker)
+- Run build on [RPi 4 armv7h Docker](https://github.com/rern/distcc-alarm/blob/main/README.md#docker)
