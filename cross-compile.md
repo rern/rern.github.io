@@ -1,56 +1,7 @@
 Cross-Compiling
 ---
-- [Docker](#docker)
 - [Distcc](#distcc)
-
-### Docker - on x86 Linux
-- Notes
-	- Native compile on RPi 4 is faster.
-	- **`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
-- Setup
-```sh
-pacman -Sy docker
-
-systemctl start docker
-
-# get image: https://github.com/mydatakeeper/archlinuxarm
-for arch in armv6h armv7h aarch64; do
-	docker pull mydatakeeper/archlinuxarm:$arch
-done
-
-# run
-docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
-
-# rerun ARCH image with changes maintained from last exit
-docker start ARCH
-docker exec -it ARCH bash
-
-# rename run image --name NAME
-docker ps -a  # get NAME
-docker rename NAME NEW_NAME
-
-# stop all
-docker stop $( docker ps -aq )
-
-########## docker container ##########
-
-# root password: root
-
-# system upgrade
-sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
-pacman -Syu nano wget
-```
-- Save updated image for later uses with another ssh:
-```sh
-docker ps -a  # get container id
-docker commit CONTAINER_ID IMG_NAME
-docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
-```
-- Remove image:
-```sh
-docker image ls  # repo list
-docker rm REPO_NAME  # or REPO_NAME:TAG
-```
+- [Docker](#docker)
 
 ### Distcc
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
@@ -135,3 +86,53 @@ systemctl start distccd
 	bash <( curl -L https://github.com/rern/rAudio-addons/raw/main/0Packages/repoupdate.sh )	
 	```
 	- GitHub Desktop > Push
+
+
+### Docker - on x86 Linux
+- Notes
+	- Native compile on RPi 4 is faster.
+	- **`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
+- Setup
+```sh
+pacman -Sy docker
+
+systemctl start docker
+
+# get image: https://github.com/mydatakeeper/archlinuxarm
+for arch in armv6h armv7h aarch64; do
+	docker pull mydatakeeper/archlinuxarm:$arch
+done
+
+# run
+docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
+
+# rerun ARCH image with changes maintained from last exit
+docker start ARCH
+docker exec -it ARCH bash
+
+# rename run image --name NAME
+docker ps -a  # get NAME
+docker rename NAME NEW_NAME
+
+# stop all
+docker stop $( docker ps -aq )
+
+########## docker container ##########
+
+# root password: root
+
+# system upgrade
+sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
+pacman -Syu nano wget
+```
+- Save updated image for later uses with another ssh:
+```sh
+docker ps -a  # get container id
+docker commit CONTAINER_ID IMG_NAME
+docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
+```
+- Remove image:
+```sh
+docker image ls  # repo list
+docker rm REPO_NAME  # or REPO_NAME:TAG
+```
