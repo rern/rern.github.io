@@ -10,7 +10,9 @@ pacman -Sy docker
 
 systemctl start docker
 
-# pre-build image
+# ready made image
+# armv7h - docker-armv7h.tar.gz
+# aarch64 - docker-aarch64.tar.gz
 wget https://github.com/rern/distcc-alarm/releases/download/10.2.0.20200823-3/docker-armv6h.tar.gz
 docker load -i docker-armv6h.tar.gz
 docker run -it --platform arm armv6h bash
