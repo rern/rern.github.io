@@ -2,7 +2,7 @@
 Source: [Spotifyd](https://github.com/Spotifyd/spotifyd)
 ```sh
 pacman -Syu
-pacman -S --needed base-devel cargo rust
+pacman -S --needed base-devel cargo rust alsa-lib libogg libpulse dbus
 
 # no distcc for cargo/rust
 
