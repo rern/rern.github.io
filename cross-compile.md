@@ -20,11 +20,13 @@ done
 docker run -it mydatakeeper/archlinuxarm:ARCH bash
 
 ########## docker container
-sed -i 's|^Server = http://|&COUNTRY_CODE.|' /etc/pacman.d/mirrorlist
-pacman -Syu
 
 # set root password
 passwd
+
+# system upgrade
+sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
+pacman -Syu nano wget
 ```
 - Save updated image for later uses with another ssh:
 ```sh
