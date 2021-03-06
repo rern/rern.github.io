@@ -113,29 +113,29 @@ docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
 pacman -Syu nano wget
 ```
-- Rerun ARCH image - with changes maintained from last exit
+- Rerun image - with changes maintained from last exit
 ```sh
-docker start ARCH
-docker exec -it ARCH bash
+docker ps -a  # get NAME
+docker start NAME
+docker exec -it NAME bash
 ```
 - Rename run image `--name NAME`
 ```sh
 docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 ```
-
 - Stop all running
 ```sh
 docker stop $( docker ps -aq )
 ```
 - Save updated image for later uses with another ssh:
 ```sh
-docker ps -a  # get container id
+docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
 docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
 - Remove image:
 ```sh
-docker image ls  # repo list
-docker rm REPO_NAME  # or REPO_NAME:TAG
+docker image ls  # get REPOSITORY
+docker rm REPOSITORY  # or REPOSITORY:TAG if more than 1
 ```
