@@ -29,7 +29,10 @@ wget https://github.com/rern/distcc-alarm/releases/download/10.2.0.20200823-3/do
 docker load -i docker-armv6h.tar.gz
 docker run -it armv6h bash
 
-# OR new from docker hub
+# proceed as above
+
+
+# OR start with new image from docker hub
 docker run -it eothel/armv6h-archlinux bash
 
 ########## docker container
