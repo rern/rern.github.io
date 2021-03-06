@@ -36,9 +36,11 @@ mkdir /home/alarm
 useradd alarm
 chown alarm /home/alarm
 
-# save docker image by another ssh
+##### save docker image by another ssh
 docker ps -a  # get container id
 docker commit CONTAINER_ID IMG_NAME
+docker save -o IMG_NAME.tar IMG_NAME:latest
+#####
 
 # proceed as above
 ```
