@@ -105,17 +105,6 @@ done
 # run
 docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 
-# rerun ARCH image with changes maintained from last exit
-docker start ARCH
-docker exec -it ARCH bash
-
-# rename run image --name NAME
-docker ps -a  # get NAME
-docker rename NAME NEW_NAME
-
-# stop all
-docker stop $( docker ps -aq )
-
 ########## docker container ##########
 
 # root password: root
@@ -123,6 +112,21 @@ docker stop $( docker ps -aq )
 # system upgrade
 sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
 pacman -Syu nano wget
+```
+- Rerun ARCH image - with changes maintained from last exit
+```sh
+docker start ARCH
+docker exec -it ARCH bash
+```
+- Rename run image `--name NAME`
+```sh
+docker ps -a  # get NAME
+docker rename NAME NEW_NAME
+```
+
+- Stop all running
+```sh
+docker stop $( docker ps -aq )
 ```
 - Save updated image for later uses with another ssh:
 ```sh
