@@ -4,7 +4,9 @@ Cross-Compiling
 - [Distcc](#distcc)
 
 ### Docker - on x86 Linux
-**`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
+- Notes
+	- Native compile on RPi 4 is faster.
+	- **`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
 - Setup
 ```sh
 pacman -Sy docker
