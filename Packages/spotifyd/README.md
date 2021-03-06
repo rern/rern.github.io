@@ -23,6 +23,13 @@ makepkg -A
 pacman -Sy docker
 
 systemctl start docker
+
+# pre-build image
+wget https://github.com/rern/distcc-alarm/releases/download/10.2.0.20200823-3/docker-armv6h.tar.gz
+docker load -i docker-armv6h.tar.gz
+docker run -it armv6h bash
+
+# OR new from docker hub
 docker run -it eothel/armv6h-archlinux bash
 
 ########## docker container
