@@ -29,6 +29,9 @@ docker exec -it ARCH bash
 docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 
+# stop all
+docker stop $( docker ps -aq )
+
 ########## docker container ##########
 
 # root password: root
