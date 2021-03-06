@@ -21,8 +21,7 @@ docker run -it mydatakeeper/archlinuxarm:ARCH bash
 
 ########## docker container
 
-# set root password
-passwd
+# root password: root
 
 # system upgrade
 sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
