@@ -19,11 +19,11 @@ for arch in armv6h armv7h aarch64; do
 done
 
 # run
-docker run -it --name NAME mydatakeeper/archlinuxarm:ARCH bash
+docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 
-# rerun NAME image with changes maintained from last exit
-docker start NAME
-docker exec -it NAME bash
+# rerun ARCH image with changes maintained from last exit
+docker start ARCH
+docker exec -it ARCH bash
 
 ########## docker container ##########
 
