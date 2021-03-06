@@ -7,7 +7,7 @@ Cross-Compiling
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
 - [Toolchains](https://aur.archlinux.org/packages/distccd-alarm-armv7h/)
 
-### Client/Volunteer - x86-64 Arch Linux
+**Client/Volunteer - x86-64 Arch Linux**
 - Install distcc
 ```sh
 pacman -Sy distcc
@@ -41,8 +41,7 @@ systemctl start distccd-[armv6h|armv7h|armv8]
 # or
 bash <( curl -L https://github.com/rern/distcc-alarm/raw/main/distcc.sh )
 ```
-
-### Master - RPi
+**Master - RPi**
 - Install distcc
 ```sh
 pacman -Sy distcc
