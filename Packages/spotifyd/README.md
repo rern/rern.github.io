@@ -1,5 +1,6 @@
 ### A spotify daemon
-Source: [Spotifyd](https://github.com/Spotifyd/spotifyd)
+- Source: [Spotifyd](https://github.com/Spotifyd/spotifyd)
+- RPi Zero - Run build on [RPi 4 armv7h Docker](https://github.com/rern/distcc-alarm/blob/main/README.md#docker)
 ```sh
 pacman -Syu
 pacman -S --needed base-devel cargo rust alsa-lib libogg libpulse dbus
@@ -17,6 +18,3 @@ sed -i -e 's/ --features .*$//
 ' PKGBUILD
 makepkg -A
 ```
-
-### RPi Zero
-- Run build on [RPi 4 armv7h Docker](https://github.com/rern/distcc-alarm/blob/main/README.md#docker)
