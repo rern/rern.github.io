@@ -73,6 +73,7 @@ if [[ $cores=4 ]]; then
 ExecStart=
 ExecStart=/usr/bin/taskset -c 3 /usr/bin/distccd --no-detach --daemon $DISTCC_ARGS
 EOF
+	systemctl daemon-reload
 else
 	jobs=8
 	hosts="$clientip:$port/$jobs"
