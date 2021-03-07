@@ -21,8 +21,13 @@ case $arch in
 	1 ) arch=armv6h;;
 	2 ) arch=armv7h;;
 	3 ) arch=aarch64;;
-	4 ) docker stop $( docker ps -aq );;
+	4 ) arch=stop;;
 esac
+
+if [[ $arch == stop ]]; then
+	docker stop $( docker ps -aq )
+	exit
+fi
 
 systemctl start docker
 docker start $arch
