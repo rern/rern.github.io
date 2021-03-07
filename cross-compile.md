@@ -45,19 +45,14 @@ bash <( curl -L https://github.com/rern/distcc-alarm/raw/main/distcc.sh )
 - Install distcc
 ```sh
 pacman -Sy distcc
-```
-- Config
-```sh
-# MAKEFLAGS="-j8"                             --- 2x max threads per client
-# BUILDENV=(distcc color !ccache check !sign) --- unnegate !distcc
-# DISTCC_HOSTS="192.168.1.9:3636/8"           --- CLIENT_IP:PORT/JOBS (JOBS: 2x max threads per client)
-# Add Master IP to DISTCC_HOSTS to have it help running build.
+
+# MAKEFLAGS="-j12"                                --- 2x max threads per client
+# BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc
+# DISTCC_HOSTS="192.168.1.9:3636/8 192.168.1.4/4" --- CLIENT_IP:PORT/JOBS (JOBS: 2x max threads per client)
+# Single core CPU - Omit Master IP from DISTCC_HOSTS
 
 clientip=CLIENT_IP
 
-cores=4    # on client: $( lscpu | awk '/^Core/ {print $NF}' )
-threads=1  # on client: $( lscpu | awk '/^Thread/ {print $NF}' )
-jobs=$(( 2 * $cores * $threads ))
 if [[ -e /boot/kernel8.img ]]; then
 	port=3636  # armv8
 elif [[ -e /boot/kernel7.img ]]; then
@@ -65,13 +60,21 @@ elif [[ -e /boot/kernel7.img ]]; then
 else
 	port=3634  # armv6h
 fi
+hostsip=$clientip:$port/$jobs
+cores=$( lscpu | awk '/^Core/ {print $NF}' )
+if [[ $cores=4 ]]; then
+	jobs=12
+	masterip=$( ifconfig | awk '/inet.*broadcast 192/ {print $2}' )
+	hosts="$clientip:$port/$jobs $masterip:$port/$cores"
+else
+	jobs=8
+	hosts="$clientip:$port/$jobs"
+fi
 
-sed -i -e '/^#MAKEFLAGS=/ a\
-MAKEFLAGS="-j'$jobs'"
-' -e 's/BUILDENV=(!distcc/BUILDENV=(distcc/
-' -e '/#DISTCC_HOSTS=/ a\
-DISTCC_HOSTS="'$clientip:$port/$jobs'"
-' /etc/makepkg.conf
+sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\1'$jobs'"/
+' -e 's/!distcc/distcc/
+' -e "s|^#*\(DISTCC_HOSTS=\"\).*|\1$hosts\"|
+" /etc/makepkg.conf
 
 systemctl start distccd
 ```
