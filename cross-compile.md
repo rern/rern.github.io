@@ -60,7 +60,7 @@ elif [[ -e /boot/kernel7.img ]]; then
 else
 	port=3634  # armv6h
 fi
-hostsip=$clientip:$port/$jobs
+
 cores=$( lscpu | awk '/^Core/ {print $NF}' )
 if (( $cores == 4 )); then
 	jobs=12
