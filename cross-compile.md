@@ -88,9 +88,8 @@ systemctl start distccd
 ```
 - Build package
 	- Setup and build as usual.
-	- Monitor on another terminal: `distccmon-text 1` (1 - @ 1 second)
-- Copy to repository
-	- From Client:
+	- Monitor with another SSH on build directory: `distccmon-text 1` (1: @ 1 second)
+- Copy to repository from Client:
 	```sh
 	scp root@MASTER_IP:/home/alarm/PKG_DIR/PKG.tar.xz /home/USER/GitHub/rern.github.io/ARCH
 	bash <( curl -L https://github.com/rern/rAudio-addons/raw/main/0Packages/repoupdate.sh )	
