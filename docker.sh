@@ -14,16 +14,17 @@ arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 " 8 0 0 \
 1 armv6h \
 2 armv7h \
-3 armv8/aarch64 )
+3 armv8/aarch64 \
+4 Stop all )
 
 case $arch in
 	1 ) arch=armv6h;;
 	2 ) arch=armv7h;;
 	3 ) arch=aarch64;;
+	4 ) docker stop $( docker ps -aq );;
 esac
 
 systemctl start docker
-docker stop $( docker ps -aq ) &> /dev/null
 docker start $arch
 clear -x
 docker exec -it $arch bash
