@@ -103,6 +103,14 @@ systemctl start distccd
 	- **`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
 - Setup
 ```sh
+# pakages for running ARM images on x86
+path=https://github.com/rern/rern.github.io/releases/download/20210307
+wget $path/binfmt-qemu-static-20210119-1-any.pkg.tar.zst
+wget $path/glib2-static-2.66.6-1-x86_64.pkg.tar.zst
+wget $path/pcre-static-8.44-5-x86_64.pkg.tar.zst
+wget $path/qemu-user-static-5.2.0-1-x86_64.pkg.tar.zst
+pacman -U *.zst
+
 pacman -Sy docker
 
 systemctl start docker
