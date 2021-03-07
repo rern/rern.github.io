@@ -10,7 +10,7 @@ dialog "${optbox[@]}" --infobox "
 sleep 1
 
 arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
- \Z1Arch\Z0:
+ \Z1Docker\Z0:
 " 8 0 0 \
 1 armv6h \
 2 armv7h \
