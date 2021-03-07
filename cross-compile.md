@@ -159,7 +159,7 @@ docker rm CONTAINER
 - Remove REPOSITORY (image)
 ```sh
 docker image ls  # get REPOSITORY
-docker rm REPOSITORY  # or REPOSITORY:TAG if more than 1
+docker image rm REPOSITORY  # or REPOSITORY:TAG if more than 1
 ```
 - Save updated image for later uses with another ssh:
 ```sh
