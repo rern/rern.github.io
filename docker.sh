@@ -25,4 +25,5 @@ esac
 systemctl start docker
 docker stop $( docker ps -aq ) &> /dev/null
 docker start $arch
+clear -x
 docker exec -it $arch bash
