@@ -15,7 +15,7 @@ arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 1 armv6h \
 2 armv7h \
 3 armv8/aarch64 \
-4 Stop all )
+4 'Stop all' )
 
 case $arch in
 	1 ) arch=armv6h;;
