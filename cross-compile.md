@@ -62,7 +62,7 @@ else
 fi
 hostsip=$clientip:$port/$jobs
 cores=$( lscpu | awk '/^Core/ {print $NF}' )
-if [[ $cores=4 ]]; then
+if (( $cores == 4 )); then
 	jobs=12
 	masterip=$( ifconfig | awk '/inet.*broadcast 192/ {print $2}' )
 	hosts="$clientip:$port/$jobs $masterip:$port/$cores"
