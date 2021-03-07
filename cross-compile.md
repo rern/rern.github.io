@@ -3,6 +3,14 @@ Cross-Compiling
 - [Distcc](#distcc)
 - [Docker](#docker)
 
+### Selection
+- aarch64 / armv7h
+	- RPi4 Native + Distcc
+	- Native alone is faster than Docker
+- armv6h
+	- RPI4 - Docker armv6h
+	- `rust`/`cargo`, used by spotifyd - not support Distcc
+
 ### Distcc
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
 - [Toolchains](https://aur.archlinux.org/packages/distccd-alarm-armv7h/)
@@ -97,10 +105,7 @@ systemctl start distccd
 	- GitHub Desktop > Push
 
 
-### Docker - on x86 Linux
-- Notes
-	- Native compile on RPi 4 is faster.
-	- **`rust`/`cargo`, used by spotifyd,  must be run on RPi, for armv6h on armv7h - not aarch64.**
+### Docker
 - Setup
 ```sh
 # pakages for running ARM images on x86
