@@ -66,6 +66,13 @@ if [[ $cores=4 ]]; then
 	jobs=12
 	masterip=$( ifconfig | awk '/inet.*broadcast 192/ {print $2}' )
 	hosts="$clientip:$port/$jobs $masterip:$port/$cores"
+	dir=/etc/systemd/system/distccd.service.d
+	mkdir -p $dir
+	cat << 'EOF' > $dir/override.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/taskset -c 3 /usr/bin/distccd --no-detach --daemon $DISTCC_ARGS
+EOF
 else
 	jobs=8
 	hosts="$clientip:$port/$jobs"
