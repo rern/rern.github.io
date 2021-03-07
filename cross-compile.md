@@ -10,6 +10,7 @@ Cross-Compiling
 - armv6h
 	- RPi Zero native + Distcc
 	- RPI4 armv7h - Docker armv6h - `rust`/`cargo`, used by spotifyd - not support Distcc
+	- Docker armv6h - `rust`/`cargo` failed
 
 ### Distcc
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
