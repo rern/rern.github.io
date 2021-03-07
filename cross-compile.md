@@ -31,16 +31,16 @@ pacman -Sy distcc
 	su
 	```
 
-- Install toolchains
-```sh
-for arch in armv6h armv7h armv8; do
-	pacman -U distccd-alarm-$arch
-done
+	- Install
+	```sh
+	for arch in armv6h armv7h armv8; do
+		pacman -U distccd-alarm-$arch
+	done
 
-systemctl start distccd-[armv6h|armv7h|armv8]
-# or
-bash <( curl -L https://github.com/rern/distcc-alarm/raw/main/distcc.sh )
-```
+	systemctl start distccd-[armv6h|armv7h|armv8]
+	# or
+	bash <( curl -L https://github.com/rern/distcc-alarm/raw/main/distcc.sh )
+	```
 **Master - RPi**
 - Install distcc
 ```sh
