@@ -45,14 +45,13 @@ pacman -Sy distcc
 	for arch in armv6h armv7h armv8; do
 		pacman -U distccd-alarm-$arch
 	done
-
-	systemctl start distccd-[armv6h|armv7h|armv8]
-	# or
-	bash <( curl -L https://github.com/rern/distcc-alarm/raw/main/distcc.sh )
 	```
 **Master - RPi**
 - Install distcc
 ```sh
+bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-master.sh )
+
+# OR
 pacman -Sy distcc
 
 # MAKEFLAGS="-j12"                                --- 2x max threads per client
