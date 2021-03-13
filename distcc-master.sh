@@ -9,7 +9,7 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-pacman -Sy distcc
+pacman -Sy --noconfirm distcc
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
 Client IP:
 
