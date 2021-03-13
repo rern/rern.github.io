@@ -49,7 +49,8 @@ kid3-cli -c "select \"/path/to file\"" \
 pacman -Syu
 pacman -S --needed  base-devel chromaprint extra-cmake-modules id3lib libmp4v2 ninja python qt5-multimedia qt5-tools docbook-xsl taglib
 
-# setup distcc
+# kid3-cli ninja not support distcc
+# RPi Zero - compile on Docker
 
 su alarm
 cd
