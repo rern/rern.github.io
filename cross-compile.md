@@ -167,3 +167,8 @@ docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
 docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
+- Copy file to host:
+```sh
+docker ps -a  # get NAME
+docker cp NAME:/path/to/file .
+```
