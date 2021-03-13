@@ -9,18 +9,13 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
- \Z1Distcc\Z0:
-" 8 0 0 \
-1 armv6h \
-2 armv7h \
-3 armv8/aarch64 )
-
-case $arch in
-	1 ) arch=armv6h;;
-	2 ) arch=armv7h;;
-	3 ) arch=armv8;;
-esac
+if [[ -e $BOOT/kernel8.img ]]; then
+	arch=armv8
+elif [[ -e $BOOT/kernel7.img ]]; then
+	arch=armv7h
+else
+	arch=armv6h
+fi
 
 pacman -Sy distcc
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
