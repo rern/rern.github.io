@@ -9,8 +9,8 @@ Cross-Compiling
 	- RPi4 native alone is faster than Docker
 - armv6h
 	- RPi Zero native + Distcc
-	- RPI4 armv7h - Docker armv6h - `rust`/`cargo`, used by spotifyd - not support Distcc
-	- x86 Docker armv6h - failed `rust`/`cargo`
+	- `spotifyd` - RPI4 armv7h - Docker armv6h - `rust`/`cargo` - not support Distcc
+	- `kid3-cli` - PC x86 Docker armv6h - `ninja` not distribute to distcc
 
 ### Distcc
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
