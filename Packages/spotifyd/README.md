@@ -5,7 +5,7 @@
 pacman -Syu
 pacman -S --needed base-devel cargo rust alsa-lib libogg libpulse dbus
 
-# no distcc for cargo/rust
+# compile on RPi 4 Docker (no distcc for cargo/rust)
 
 su alarm
 
