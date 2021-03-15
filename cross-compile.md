@@ -107,24 +107,35 @@ systemctl start distccd
 
 ### Docker
 - Setup
+	- x86 PC
+	```sh
+	# pakages for running ARM images on x86
+	path=https://github.com/rern/rern.github.io/releases/download/20210307
+	wget $path/binfmt-qemu-static-20210119-1-any.pkg.tar.zst
+	wget $path/glib2-static-2.66.6-1-x86_64.pkg.tar.zst
+	wget $path/pcre-static-8.44-5-x86_64.pkg.tar.zst
+	wget $path/qemu-user-static-5.2.0-1-x86_64.pkg.tar.zst
+	pacman -U *.zst
+
+	pacman -Sy docker
+
+	systemctl start docker
+
+	# get image: https://github.com/mydatakeeper/archlinuxarm
+	for arch in armv6h armv7h aarch64; do
+		docker pull mydatakeeper/archlinuxarm:$arch
+	done
+	```
+	- RPi 4
+	```sh
+	pacman -Sy docker
+
+	systemctl start docker
+	
+	docker pull mydatakeeper/archlinuxarm:armv6h
+	```
+-Run
 ```sh
-# pakages for running ARM images on x86
-path=https://github.com/rern/rern.github.io/releases/download/20210307
-wget $path/binfmt-qemu-static-20210119-1-any.pkg.tar.zst
-wget $path/glib2-static-2.66.6-1-x86_64.pkg.tar.zst
-wget $path/pcre-static-8.44-5-x86_64.pkg.tar.zst
-wget $path/qemu-user-static-5.2.0-1-x86_64.pkg.tar.zst
-pacman -U *.zst
-
-pacman -Sy docker
-
-systemctl start docker
-
-# get image: https://github.com/mydatakeeper/archlinuxarm
-for arch in armv6h armv7h aarch64; do
-	docker pull mydatakeeper/archlinuxarm:$arch
-done
-
 # run
 docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 
