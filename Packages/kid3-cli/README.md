@@ -56,7 +56,5 @@ su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/kid3-cli.tar.gz | bsdtar xf -
 cd kid3-cli
-
-systemctl start distccd
 makepkg -A
 ```
