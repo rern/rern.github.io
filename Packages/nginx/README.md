@@ -5,7 +5,10 @@ NGINX Upgrade with pushstream
 
 ### compile
 ```sh
-# remove confilit file (mailcap reinstates it)
+# compare version
+pacman -Q nginx | cut -d' ' -f2
+curl -s https://archlinuxarm.org/packages/aarch64/nginx-mainline | grep h1 | sed 's/.*mainline \(.*\)<.*/\1/'
+
 pacman -Syu
 pacman -S --needed base-devel geoip mailcap
 
