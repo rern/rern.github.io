@@ -10,9 +10,8 @@ systemctl start distccd
 
 su alarm
 cd
-mkdir rpigpio
-cd rpigpio
-wget https://github.com/rern/rAudio-addons/raw/main/0Packages/RPi.GPIO/PKGBUILD
+curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/python-raspberry-gpio.tar.gz | bsdtar xf -
+cd python-raspberry-gpio
 
 # get latest version: https://sourceforge.net/p/raspberry-gpio-python/code/commit_browser
 version=VERSION
