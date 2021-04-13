@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for pkg in bluez-alsa-git fakepkg hfsprogs matchbox-window-manager mpdscribble snapcast upmpdcli; do
-	version=$( curl -L "https://aur.archlinux.org/packages/?O=0&K=$pkg" \
+	version=$( curl -L https://aur.archlinux.org/packages/$pkg
 				| grep -A1 "<td>.*$pkg" \
 				| tail -1 \
 				| sed 's/.*td>\(.*\)<.*/\1/' )
