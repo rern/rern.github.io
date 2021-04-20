@@ -4,8 +4,7 @@ Source: [mpdscribble](https://github.com/MusicPlayerDaemon/mpdscribble)
 pacman -Syu
 pacman -S --needed base-devel boost libmpdclient libsoup meson ninja
 
-# setup distcc
-systemctl start distccd
+# small - no need for distcc
 
 su alarm
 cd
