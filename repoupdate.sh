@@ -4,7 +4,7 @@ rm $0
 
 updateRepo() {
 	# recreate database
-	cd /run/media/x/BIG/RPi/Git/rern.github.io/$1
+	cd /home/x/BIG/RPi/Git/rern.github.io/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
