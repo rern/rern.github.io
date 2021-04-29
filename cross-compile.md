@@ -5,12 +5,11 @@ Cross-Compiling
 
 ### Selection
 - aarch64 / armv7h
-	- RPi4 native + Distcc
-	- RPi4 native alone is faster than Docker
+	- Native + Distcc
+	- Native alone is faster than Docker
 - armv6h
-	- RPi Zero native + Distcc
-	- `spotifyd` - RPI4 armv7h - Docker armv6h - `rust`/`cargo` - not support Distcc
-	- `kid3-cli` - PC x86 Docker armv6h - `ninja` not distribute to distcc
+	- Native + Distcc
+	- `spotifyd` - RPi armv7h + Docker armv6h - `rust`/`cargo` - not support Distcc
 
 ### Distcc
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
