@@ -17,16 +17,11 @@ Cross-Compiling
 - Build package
 
 **Master - RPi**
-- Install distcc
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-master.sh )
-```
+- Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-master.sh )`
 
 **Client/Volunteer - x86-64 Arch Linux**
-- Install distcc
-```sh
-pacman -Sy distcc
-```
+- Install distcc: `pacman -Sy distcc`
+
 - Toolchains
 	- Get
 	```sh
@@ -98,7 +93,7 @@ pacman -Sy distcc
 	
 	docker pull mydatakeeper/archlinuxarm:armv6h
 	```
--Run
+- Run
 ```sh
 # run
 docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
