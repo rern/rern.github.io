@@ -1,6 +1,10 @@
 ### GitHub Desktop
 ```sh
-curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/github-desktop-git.tar.gz | bsdtar xf -
+curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/github-desktop.tar.gz | bsdtar xf -
 cd github-desktop-git
-makepkg -A
+
+# get latest version: https://github.com/shiftkey/desktop/releases
+nano PKGBUILD
+
+makepkg -A --skipinteg
 ```
