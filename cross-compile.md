@@ -57,10 +57,10 @@ pacman -Sy distcc
 - `systemctl start distccd`
 - Setup and build as usual.
 - Monitor with another SSH: 
-```sh
-su USER
-distccmon-text 1  # 1: @ 1 second
-```
+	```sh
+	su USER
+	distccmon-text 1  # 1: @ 1 second
+	```
 - Copy to repository from Client:
 	```sh
 	scp root@MASTER_IP:/home/alarm/PKG_DIR/PKG.tar.xz /home/USER/GitHub/rern.github.io/ARCH
