@@ -16,36 +16,6 @@ Cross-Compiling
 - [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
 - [Toolchains](https://aur.archlinux.org/packages/distccd-alarm-armv7h/)
 
-**Client/Volunteer - x86-64 Arch Linux**
-- Install distcc
-```sh
-pacman -Sy distcc
-```
-- Toolchains
-	- Get package
-	```sh
-	for arch in armv6h armv7h armv8; do
-		wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-10.2.0.20200823-3-x86_64.pkg.tar.zst
-	done
-	```
-
-	- **OR** Build package
-	```sh
-	su USER
-	cd
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
-	cd distccd-alarm
-	makepkg -s
-
-	su
-	```
-
-	- Install
-	```sh
-	for arch in armv6h armv7h armv8; do
-		pacman -U distccd-alarm-$arch
-	done
-	```
 **Master - RPi**
 - Install distcc
 ```sh
@@ -94,9 +64,42 @@ sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\1'$jobs'"/
 
 systemctl start distccd
 ```
-- Build package
-	- Setup and build as usual.
-	- Monitor with another SSH: 
+
+**Client/Volunteer - x86-64 Arch Linux**
+- Install distcc
+```sh
+pacman -Sy distcc
+```
+- Toolchains
+	- Get package
+	```sh
+	for arch in armv6h armv7h armv8; do
+		wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-10.2.0.20200823-3-x86_64.pkg.tar.zst
+	done
+	```
+
+	- **OR** Build package
+	```sh
+	su USER
+	cd
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
+	cd distccd-alarm
+	makepkg -s
+
+	su
+	```
+
+	- Install
+	```sh
+	for arch in armv6h armv7h armv8; do
+		pacman -U distccd-alarm-$arch
+	done
+	```
+
+**Build package**
+- `systemctl start distccd`
+- Setup and build as usual.
+- Monitor with another SSH: 
 ```sh
 su USER
 distccmon-text 1  # 1: @ 1 second
