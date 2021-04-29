@@ -15,6 +15,11 @@ Client IP:
 
 " 0 0 192.168.1.9 )
 
+# MAKEFLAGS="-j12"                                --- 2x max threads per client
+# BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc
+# DISTCC_HOSTS="192.168.1.9:3636/8 192.168.1.4/4" --- CLIENT_IP:PORT/JOBS (JOBS: 2x max threads per client)
+# Single core CPU - Omit Master IP from DISTCC_HOSTS
+
 jobs=12
 if [[ -e /boot/kernel8.img ]]; then
   port=3636
