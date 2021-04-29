@@ -17,7 +17,7 @@ Cross-Compiling
 - Build package
 
 **Master - RPi**
-- Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-master.sh )`
+- Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )`
 
 **Client/Volunteer - x86-64 Arch Linux**
 - Install distcc: `pacman -Sy distcc`
