@@ -17,39 +17,15 @@ Cross-Compiling
 - Build package
 
 **Master - RPi**
-- Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )`
+- Install distcc + setup: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )`
 
 **Client/Volunteer - x86-64 Arch Linux**
-- Install distcc: `pacman -Sy distcc`
-
-- Toolchains
-	- Get
-	```sh
-	for arch in armv6h armv7h armv8; do
-		wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-10.2.0.20200823-3-x86_64.pkg.tar.zst
-	done
-	```
-
-	- **OR** Build
-	```sh
-	su USER
-	cd
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
-	cd distccd-alarm
-	makepkg -s
-
-	su
-	```
-
-	- Install
-	```sh
-	for arch in armv6h armv7h armv8; do
-		pacman -U distccd-alarm-$arch
-	done
-	```
+- Install distcc + toolchains: `bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-client.sh )`
 
 **Build package**
-- `systemctl start distccd`
+- Start Distcc
+	- Client `systemctl start distccd-ARCH` (`ARCH` - armv6h, armv7h, armv8)
+	- Master `systemctl start distccd`
 - Setup and build as usual.
 - Monitor with another SSH: 
 	```sh
