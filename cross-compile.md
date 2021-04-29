@@ -19,49 +19,6 @@ Cross-Compiling
 - Install distcc
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-master.sh )
-
-# OR
-pacman -Sy distcc
-
-# MAKEFLAGS="-j12"                                --- 2x max threads per client
-# BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc
-# DISTCC_HOSTS="192.168.1.9:3636/8 192.168.1.4/4" --- CLIENT_IP:PORT/JOBS (JOBS: 2x max threads per client)
-# Single core CPU - Omit Master IP from DISTCC_HOSTS
-
-clientip=CLIENT_IP
-
-if [[ -e /boot/kernel8.img ]]; then
-	port=3636  # armv8
-elif [[ -e /boot/kernel7.img ]]; then
-	port=3635  #armv7h
-else
-	port=3634  # armv6h
-fi
-
-cores=$( lscpu | awk '/^Core/ {print $NF}' )
-if (( $cores == 4 )); then
-	jobs=12
-	masterip=$( ifconfig | head -1 | awk '/inet.*broadcast 192/ {print $2}' )
-	hosts="$clientip:$port/$jobs $masterip:$port/$cores"
-	dir=/etc/systemd/system/distccd.service.d
-	mkdir -p $dir
-	cat << 'EOF' > $dir/override.conf
-[Service]
-ExecStart=
-ExecStart=/usr/bin/taskset -c 3 /usr/bin/distccd --no-detach --daemon $DISTCC_ARGS
-EOF
-	systemctl daemon-reload
-else
-	jobs=8
-	hosts="$clientip:$port/$jobs"
-fi
-
-sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\1'$jobs'"/
-' -e 's/!distcc/distcc/
-' -e "s|^#*\(DISTCC_HOSTS=\"\).*|\1$hosts\"|
-" /etc/makepkg.conf
-
-systemctl start distccd
 ```
 
 **Client/Volunteer - x86-64 Arch Linux**
@@ -70,14 +27,14 @@ systemctl start distccd
 pacman -Sy distcc
 ```
 - Toolchains
-	- Get package
+	- Get
 	```sh
 	for arch in armv6h armv7h armv8; do
 		wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-10.2.0.20200823-3-x86_64.pkg.tar.zst
 	done
 	```
 
-	- **OR** Build package
+	- **OR** Build
 	```sh
 	su USER
 	cd
@@ -95,7 +52,7 @@ pacman -Sy distcc
 	done
 	```
 
-**Build package**
+**Build `distccd`**
 - `systemctl start distccd`
 - Setup and build as usual.
 - Monitor with another SSH: 
