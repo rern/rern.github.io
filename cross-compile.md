@@ -12,8 +12,9 @@ Cross-Compiling
 	- `spotifyd` - RPi armv7h + Docker armv6h - `rust`/`cargo` - not support Distcc
 
 ### Distcc
-- [Wiki](https://archlinuxarm.org/wiki/Distributed_Compiling)
-- [Toolchains](https://aur.archlinux.org/packages/distccd-alarm-armv7h/)
+- Master - RPi
+- Client/Volunteer - x86-64 Arch Linux
+- Build package
 
 **Master - RPi**
 - Install distcc
@@ -52,7 +53,7 @@ pacman -Sy distcc
 	done
 	```
 
-**Build a package**
+**Build package**
 - `systemctl start distccd`
 - Setup and build as usual.
 - Monitor with another SSH: 
