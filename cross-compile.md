@@ -52,7 +52,7 @@ pacman -Sy distcc
 	done
 	```
 
-**Build `distccd`**
+**Build a package**
 - `systemctl start distccd`
 - Setup and build as usual.
 - Monitor with another SSH: 
