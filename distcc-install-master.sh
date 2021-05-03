@@ -9,11 +9,12 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-pacman -Sy --noconfirm distcc
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
 Client IP:
 
 " 0 0 192.168.1.9 )
+
+pacman -Sy --noconfirm distcc
 
 # MAKEFLAGS="-j12"                                --- 2x max threads per client
 # BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc
