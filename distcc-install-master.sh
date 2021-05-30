@@ -24,10 +24,13 @@ pacman -Sy --noconfirm distcc
 jobs=12
 if [[ -e /boot/kernel8.img ]]; then
   port=3636
+  arch=armv8/aarch64
 elif [[ -e /boot/kernel7.img ]]; then
   port=3635
+  arch=armv7h
 else
   port=3634
+  arch=armv6h
   jobs=8
 fi
 
@@ -40,5 +43,5 @@ systemctl start distccd
 status=$( systemctl status distccd | sed 's/active (running)/\\e[32m&\\e[0m/' )
 clear -x
 echo -e "\
-\e[32mdistccd-master\e[0m
+\e[32mdistccd-master $arch\e[0m
 $status"
