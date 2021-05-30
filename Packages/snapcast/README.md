@@ -1,6 +1,8 @@
 ### Synchronous multi-room audio player
 Source: [Snapcast](https://github.com/badaix/snapcast)
 ```sh
+# armv6h - may have to use docker
+
 pacman -Syu
 pacman -S --needed alsa-utils base-devel boost cmake git
 
