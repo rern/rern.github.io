@@ -5,7 +5,8 @@ Source: [bluealsa](https://github.com/Arkq/bluez-alsa)
 pacman -Syu
 pacman -S --needed base-devel bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc
 
-# setup distcc
+# docker - (short to compile)
+# OR setup distcc
 systemctl start distccd
 
 su alarm
