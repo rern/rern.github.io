@@ -20,7 +20,6 @@ sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
 
 makepkg
 ```
-Note: upgrade - uninstall existing then install
 
 ---
 
