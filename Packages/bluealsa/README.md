@@ -2,11 +2,11 @@
 Source: [bluealsa](https://github.com/Arkq/bluez-alsa)
 
 ```sh
+# docker - (short to compile)
 pacman -Syu
 pacman -S --needed base-devel bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc
 
-# setup distcc
-systemctl start distccd
+# native build - setup distcc > systemctl start distccd
 
 su alarm
 cd
@@ -14,14 +14,11 @@ curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/bluez-alsa-git.tar.gz | 
 cd bluez-alsa-git
 
 sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
-' -e '/^\s\+--enable-aac/ a\
-		--enable-ofono\
-		--enable-debug
+' -e '/--enable-ofono\|--enable-debug/ s/#//
 ' PKGBUILD
 
-makepkg -A
+makepkg
 ```
-Note: upgrade - uninstall existing then install
 
 ---
 

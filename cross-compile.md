@@ -80,7 +80,7 @@ docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
 
 # system upgrade
 sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
-pacman -Syu nano wget
+pacman -Syu nano wget openssh
 ```
 - Re-run image (changes maintained from last exit)
 ```sh
@@ -115,6 +115,10 @@ docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
 - Copy file to host:
 ```sh
+# scp
+scp sourcefile USER@IP_ADDRESS:/path/to/file
+
+# docker
 docker ps -a  # get NAME
 docker cp NAME:/path/to/file .
 ```
