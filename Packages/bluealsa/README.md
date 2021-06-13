@@ -2,12 +2,11 @@
 Source: [bluealsa](https://github.com/Arkq/bluez-alsa)
 
 ```sh
+# docker - (short to compile)
 pacman -Syu
 pacman -S --needed base-devel bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc
 
-# docker - (short to compile)
-# OR setup distcc
-systemctl start distccd
+# native build - setup distcc > systemctl start distccd
 
 su alarm
 cd
