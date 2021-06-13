@@ -18,7 +18,7 @@ sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
 ' -e '/--enable-ofono\|--enable-debug/ s/#//
 ' PKGBUILD
 
-makepkg -A
+makepkg
 ```
 Note: upgrade - uninstall existing then install
 
