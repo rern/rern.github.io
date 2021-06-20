@@ -4,9 +4,6 @@ Source: [hfsprogs](https://github.com/muflone/pkgbuilds/tree/master/hfsprogs)
 pacman -Syu
 pacman -S --needed base-devel libbsd
 
-# setup distcc
-systemctl start distccd
-
 su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/hfsprogs.tar.gz | bsdtar xf -
