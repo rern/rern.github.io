@@ -12,7 +12,7 @@ cd cava
 makepkg
 ```
 
-`/root/.config/cava/config`
+`/etc/cava.conf`
 ```sh
 [general]
 framerate = 4
@@ -55,4 +55,4 @@ done
 
 Run:
 - Direct stdout - `cava`
-- Pipe - `cava | vu.sh &> /dev/null &`
+- Pipe - `cava -p /etc/cava.conf | vu.sh &> /dev/null &`
