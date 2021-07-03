@@ -49,8 +49,10 @@ audio_output {
 ```sh
 #!/bin/bash
 while read vu; do
-	echo $vu
+	echo ${vu:0:-1}
 done
 ```
 
-Run: `cava | vu.sh`
+Run:
+- Direct stdout - `cava`
+- Pipe - `cava | vu.sh &> /dev/null &`
