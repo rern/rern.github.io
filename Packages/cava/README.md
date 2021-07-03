@@ -15,7 +15,7 @@ makepkg
 `/root/.config/cava/config`
 ```sh
 [general]
-framerate = 30
+framerate = 4
 autosens = 1
 bars = 1
 
@@ -31,7 +31,7 @@ channels = mono
 mono_option = average
 raw_target = /dev/stdout
 data_format = ascii
-ascii_max_range = 100
+ascii_max_range = 40
 ```
 
 `/etc/mpd.conf`
@@ -45,4 +45,12 @@ audio_output {
 }
 ```
 
-Run: `cava`
+`vu.sh`
+```sh
+#!/bin/bash
+while read vu; do
+	echo $vu
+done
+```
+
+Run: `cava | vu.sh`
