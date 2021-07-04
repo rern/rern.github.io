@@ -16,20 +16,16 @@ makepkg
 ```sh
 [general]
 framerate = 4
-autosens = 1
 bars = 1
 
 [input]
 method = fifo
 source = /tmp/mpd.fifo
-sample_rate = 44100
-sample_bits = 16
 
 [output]
 method = raw
 channels = mono
 mono_option = average
-raw_target = /dev/stdout
 data_format = ascii
 ascii_max_range = 40
 ```
@@ -41,11 +37,10 @@ audio_output {
 	type           "fifo"
 	name           "my_fifo"
 	path           "/tmp/mpd.fifo"
-	format         "44100:16:2"
 }
 ```
 
-`vu.sh`
+`vumeter.sh`
 ```sh
 #!/bin/bash
 while read vu; do
@@ -55,4 +50,4 @@ done
 
 Run:
 - Direct stdout - `cava`
-- Pipe - `cava -p /etc/cava.conf | vu.sh &> /dev/null &`
+- Pipe - `cava -p /etc/cava.conf | vumeter.sh &> /dev/null &`
