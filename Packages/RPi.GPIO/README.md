@@ -19,3 +19,18 @@ sed -i "s/\(pkgver=\).*/\1$version/" PKGBUILD
 
 makepkg -A
 ```
+
+Python
+```py
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings( 0 )
+GPIO.setmode( GPIO.BOARD )
+GPIO.setup( PIN_NO, GPIO.OUT )
+# on PIN_NO
+GPIO.output( PIN_NO, 1 )
+# pin status
+GPIO.input( PIN_NO )
+# off
+GPIO.output( PIN_NO, 0 )
+```
