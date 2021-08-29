@@ -23,15 +23,15 @@ git clone ssh://aur@aur.archlinux.org/pkgbase.git
 git init
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
-git remote add LABEL ssh://aur@aur.archlinux.org/pkgbase.git
-git fetch LABEL
+git remote add PKGNAME ssh://aur@aur.archlinux.org/pkgbase.git
+git fetch PKGNAME
 ```
 
 - Replace `PKGBUILD` template content with actual one
 
 - Upload:
 ```sh
-cd pkgbase
+cd PKGNAME
 makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO
 git commit -m "COMMIT MESSAGE"
