@@ -14,16 +14,22 @@ cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/libnpupnp.tar.gz | bsdtar xf -
 cd libnpupnp
 makepkg -A
-makepkg --install
+
+su
+pacman -U libnpupnp*.pkg.tar.xz
 
 # libupnpp - depend 2
+su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/libupnpp.tar.gz | bsdtar xf -
 cd libupnpp
 makepkg -A
-makepkg --install
+
+su
+pacman -U libupnpp*.pkg.tar.xz
 
 # upmpdcli
+su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/upmpdcli.tar.gz | bsdtar xf -
 cd upmpdcli
