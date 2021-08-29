@@ -18,9 +18,9 @@ ssh-keygen -f ~/.ssh/aur
 
 - Create new repo:
 ```sh
-git clone ssh://aur@aur.archlinux.org/PKGBASEDIR.git
+git clone ssh://aur@aur.archlinux.org/pkgbase.git
 git init
-git remote add LABEL ssh://aur@aur.archlinux.org/PKGBASEDIR.git
+git remote add LABEL ssh://aur@aur.archlinux.org/pkgbase.git
 git fetch LABEL
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
