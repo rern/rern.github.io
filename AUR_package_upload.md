@@ -3,11 +3,11 @@ AUR Package Upload
 
 - Generate SSH key:
 ```sh
-echo '\
+echo "\
 Host aur.archlinux.org
   IdentityFile ~/.ssh/aur
   User aur
-' >> /etc/ssh/ssh_config
+" >> /etc/ssh/ssh_config
 
 systemctl restart sshd
 
