@@ -22,9 +22,17 @@ git clone ssh://aur@aur.archlinux.org/PKGBASEDIR.git
 git init
 git remote add LABEL ssh://aur@aur.archlinux.org/PKGBASEDIR.git
 git fetch LABEL
+git config --global user.email "EMAIL@DOMAIN"
+git config --global user.name "NAME"
 ```
 
 - Replace `PKGBUILD` template content with actual one
 
 - Update package metadata ` makepkg --printsrcinfo > .SRCINFO`
-- 
+
+- Upload:
+```sh
+git add PKGBUILD .SRCINFO
+git commit -m "COMMIT MESSAGE"
+git push
+```
