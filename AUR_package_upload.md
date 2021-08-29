@@ -28,10 +28,9 @@ git config --global user.name "NAME"
 
 - Replace `PKGBUILD` template content with actual one
 
-- Update package metadata ` makepkg --printsrcinfo > .SRCINFO`
-
 - Upload:
 ```sh
+makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO
 git commit -m "COMMIT MESSAGE"
 git push
