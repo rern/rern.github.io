@@ -17,21 +17,32 @@ ssh-keygen -f ~/.ssh/aur
 
 - Login > My Account > SSH Public Key: Content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
 
-- Create new repo:
+- New repo:
 ```sh
 git clone ssh://aur@aur.archlinux.org/pkgbase.git
 git init
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
-git remote add PKGNAME ssh://aur@aur.archlinux.org/pkgbase.git
-git fetch PKGNAME
-cd PKGNAME
+git remote add REPONAME ssh://aur@aur.archlinux.org/pkgbase.git
+git fetch REPONAME
+cd REPONAME
+
+# Create PKGBUILD and other files if any.
 ```
 
-- Replace `PKGBUILD` template content with actual one.
+- Existing repo
+```sh
+git clone ssh://aur@aur.archlinux.org/REPONAME.git
+```
 
-- Edit `PKGBUILD` and other files if any.
-- 
+- Checksum
+```sh
+wget https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz
+shasum -a 256 RELEASE.tar.gz
+
+# sha256sums=( ... )
+```
+
 - Upload:
 ```sh
 makepkg --printsrcinfo > .SRCINFO
