@@ -30,6 +30,7 @@ git config --global user.name "NAME"
 
 - Upload:
 ```sh
+cd pkgbase
 makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO
 git commit -m "COMMIT MESSAGE"
