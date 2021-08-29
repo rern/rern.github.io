@@ -11,6 +11,7 @@ Host aur.archlinux.org
 
 systemctl restart sshd
 
+su USER
 ssh-keygen -f ~/.ssh/aur
 ```
 
@@ -20,10 +21,10 @@ ssh-keygen -f ~/.ssh/aur
 ```sh
 git clone ssh://aur@aur.archlinux.org/pkgbase.git
 git init
-git remote add LABEL ssh://aur@aur.archlinux.org/pkgbase.git
-git fetch LABEL
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
+git remote add LABEL ssh://aur@aur.archlinux.org/pkgbase.git
+git fetch LABEL
 ```
 
 - Replace `PKGBUILD` template content with actual one
