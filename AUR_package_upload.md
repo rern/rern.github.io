@@ -43,10 +43,12 @@ git config --global user.name "NAME"
 
 - Checksum source
 ```sh
-wget https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz
-shasum -a 256 RELEASE.tar.gz
+sha256sums=(SKIP)
 
-# sha256sums=( ... ) OR sha256sums=(SKIP)
+# OR
+curl -L https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz | shasum -a 256
+
+# sha256sums=( ... )
 ```
 
 - Push repo
