@@ -31,15 +31,15 @@ git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
 ```
 - Add new repo
-```sh
-git clone ssh://aur@aur.archlinux.org/pkgbase.git
-git remote add REPONAME ssh://aur@aur.archlinux.org/pkgbase.git
-git fetch REPONAME
-```
+	```sh
+	git clone ssh://aur@aur.archlinux.org/pkgbase.git
+	git remote add REPONAME ssh://aur@aur.archlinux.org/pkgbase.git
+	git fetch REPONAME
+	```
 - Fetch existing repo
-```sh
-git clone ssh://aur@aur.archlinux.org/REPONAME.git
-```
+	```sh
+	git clone ssh://aur@aur.archlinux.org/REPONAME.git
+	```
 
 - Checksum source
 ```sh
