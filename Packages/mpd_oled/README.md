@@ -11,6 +11,42 @@ curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/mpd_oled.tar.gz | bsdtar
 cd mpd_oled
 makepkg
 ```
+Note: `makepkg` - runtime error `Assertion '__builtin_expect(__n < this->size(), true)' failed`
+
+- Workaround 
+	- `make`
+	```sh
+	su alarm
+	cd
+	git clone https://github.com/rern/mpd_oled
+	cd mpd_oled
+	./bootstrap
+
+	su
+	make install-strip
+	cp /usr/local/bin/mpd_oled /home/alarm/mpd_oled
+	
+	su alarm
+	
+	cat << EOF > /home/alarm/mpd_oled
+	pkgname=mpd_oled
+	pkgver=0.02
+	pkgrel=1
+	pkgdesc='OLED Spectrum Display'
+	url=https://github.com/antiprism/mpd_oled
+	arch=(armv6h armv7h aarch64)
+	license=(MIT)
+	source=(https://github.com/rern/mpd_oled/archive/refs/heads/master.zip)
+	sha256sums=(SKIP)
+
+	package() {
+		install -d "$pkgdir/usr/bin/"
+		cp ../mpd_oled "$pkgdir/usr/bin/"
+	}
+	EOF
+	
+	makepkg
+
 `/boot/config.txt`
 ```sh
 ...
@@ -42,7 +78,7 @@ Description=MPD OLED Display
 
 [Service]
 Type=Idle
-ExecStart=/usr/local/bin/mpd_oled -o 6 -b 7 -f 25 -k -c 'fifo,/tmp/mpd.fifo'
+ExecStart=/usr/bin/mpd_oled -o 6 -b 7 -f 25 -k -c 'fifo,/tmp/mpd.fifo'
 
 [Install]
 WantedBy=multi-user.target
