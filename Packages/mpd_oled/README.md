@@ -29,12 +29,13 @@ cp /usr/local/bin/mpd_oled /home/alarm/mpd_oled
 
 su alarm
 
+rm -rf mpd_oled
+mkdir mpd_oled
+
 cat << EOF > /home/alarm/mpd_oled/PKGBUILD
 pkgname=mpd_oled
 pkgver=0.02
 pkgrel=1
-pkgdesc='OLED Spectrum Display'
-url=https://github.com/antiprism/mpd_oled
 arch=(armv6h armv7h aarch64)
 license=(MIT)
 source=(https://github.com/rern/mpd_oled/archive/refs/heads/master.zip)
@@ -42,7 +43,7 @@ sha256sums=(SKIP)
 
 package() {
 	install -d "$pkgdir/usr/bin/"
-	cp ../mpd_oled "$pkgdir/usr/bin/"
+	cp /usr/local/bin/mpd_oled "$pkgdir/usr/bin/"
 }
 EOF
 
