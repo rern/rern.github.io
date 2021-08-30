@@ -32,11 +32,11 @@ git config --global user.name "NAME"
 ```
 - Add new repo
 	```sh
-	git clone ssh://aur@aur.archlinux.org/pkgbase.git
-	git remote add REPONAME ssh://aur@aur.archlinux.org/pkgbase.git
+	git clone ssh://aur@aur.archlinux.org/REPONAME.git
+	git remote add origin REPONAME
 	git fetch REPONAME
 	```
-- Fetch existing repo
+- Clone existing repo
 	```sh
 	git clone ssh://aur@aur.archlinux.org/REPONAME.git
 	```
