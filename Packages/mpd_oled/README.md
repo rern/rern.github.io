@@ -29,7 +29,7 @@ cp /usr/local/bin/mpd_oled /home/alarm/mpd_oled
 
 su alarm
 
-cat << EOF > /home/alarm/mpd_oled
+cat << EOF > /home/alarm/mpd_oled/PKGBUILD
 pkgname=mpd_oled
 pkgver=0.02
 pkgrel=1
