@@ -15,37 +15,28 @@ Note:
 - `makepkg` - runtime error `Assertion '__builtin_expect(__n < this->size(), true)' failed`
 - `make` - no errors
 
-- Workaround 
+- Workaround
 ```sh
-su alarm
+# after makepkg
 cd
-git clone https://github.com/rern/mpd_oled
-cd mpd_oled
+curl -L https://github.com/rern/mpd_oled/archive/refs/heads/master.zip | bsdtar xf -
+cd mpd_oled-master
+chmod +x bootstrap
 ./bootstrap
 
 su
 make install-strip
-cp /usr/local/bin/mpd_oled /home/alarm/mpd_oled
 
 su alarm
+cd mpd_oled
 
-rm -rf mpd_oled
-mkdir mpd_oled
-
-cat << EOF > /home/alarm/mpd_oled/PKGBUILD
-pkgname=mpd_oled
-pkgver=0.02
-pkgrel=1
-arch=(armv6h armv7h aarch64)
-license=(MIT)
-source=(https://github.com/rern/mpd_oled/archive/refs/heads/master.zip)
-sha256sums=(SKIP)
-
-package() {
-	install -d "$pkgdir/usr/bin/"
-	cp /usr/bin/mpd_oled "$pkgdir/usr/bin/"
+sed -i -e '/^build/,$ d
+' -e '$ a\
+package() {\
+	install -d "$pkgdir/usr/bin/"\
+	cp -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"\
 }
-EOF
+' PKGBUILD
 
 makepkg
 ```
