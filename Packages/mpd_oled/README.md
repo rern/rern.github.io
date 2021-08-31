@@ -43,7 +43,7 @@ sha256sums=(SKIP)
 
 package() {
 	install -d "$pkgdir/usr/bin/"
-	cp /usr/local/bin/mpd_oled "$pkgdir/usr/bin/"
+	cp /usr/bin/mpd_oled "$pkgdir/usr/bin/"
 }
 EOF
 
