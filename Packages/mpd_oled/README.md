@@ -17,6 +17,9 @@ makepkg
 ...
 dtparam=i2c_arm=on
 dtparam=i2c_arm_baudrate=1200000
+
+# spi
+dtparam=spi=on
 ```
 
 `/etc/mpd.conf`
@@ -30,7 +33,7 @@ audio_output {
 }
 ```
 
-- `/etc/modules-load.d/raspberrypi.conf`
+- `/etc/modules-load.d/raspberrypi.conf` (no for SPI)
 ```sh
 ...
 i2c-dev
