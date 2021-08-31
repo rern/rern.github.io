@@ -11,38 +11,6 @@ curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/mpd_oled.tar.gz | bsdtar
 cd mpd_oled
 makepkg
 ```
-Note:
-- `makepkg` - runtime error `Assertion '__builtin_expect(__n < this->size(), true)' failed`
-- `make` - no runtime error
-
-- Workaround
-```sh
-# after makepkg
-cd
-curl -L https://github.com/rern/mpd_oled/archive/refs/heads/master.zip | bsdtar xf -
-cd mpd_oled-master
-chmod +x bootstrap
-./bootstrap
-
-su
-make install-strip
-
-su alarm
-cd
-cd mpd_oled
-
-sed '/^build/,$ d' PKGBUILD > PKGBUILD1
-echo '
-package() {
-	install -d "$pkgdir/usr/bin/"
-	cp -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"
-}
-' >> PKGBUILD1
-
-makepkg -fp PKGBUILD1
-
-rm /usr/bin/mpd_oled
-```
 
 `/boot/config.txt`
 ```sh
