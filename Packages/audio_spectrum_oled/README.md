@@ -1,4 +1,4 @@
-**mpd_oled** - MPD OLED Spectrum Display
+**audio_spectrum_oled** - MPD OLED Spectrum Display
 
 Source: [mpd_oled](https://github.com/antiprism/mpd_oled)
 ```sh
@@ -7,8 +7,8 @@ pacman -S --needed base-devel
 
 su alarm
 cd
-curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/mpd_oled.tar.gz | bsdtar xf -
-cd mpd_oled
+curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/audio_spectrum_oled.tar.gz | bsdtar xf -
+cd audio_spectrum_oled
 makepkg
 ```
 
