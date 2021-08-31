@@ -28,6 +28,7 @@ su
 make install-strip
 
 su alarm
+cd
 cd mpd_oled
 
 sed -i -e '/^build/,$ d
