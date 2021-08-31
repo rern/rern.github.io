@@ -34,7 +34,7 @@ sed -i -e '/^build/,$ d
 ' -e '$ a\
 package() {\
 	install -d "$pkgdir/usr/bin/"\
-	cp -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"\
+	mv -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"\
 }
 ' PKGBUILD
 
