@@ -31,15 +31,17 @@ su alarm
 cd
 cd mpd_oled
 
-sed -i -e '/^build/,$ d
-' -e '$ a\
-package() {\
-	install -d "$pkgdir/usr/bin/"\
-	mv -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"\
+sed '/^build/,$ d' PKGBUILD > PKGBUILD1
+echo '
+package() {
+	install -d "$pkgdir/usr/bin/"
+	cp -f /usr/bin/mpd_oled "$pkgdir/usr/bin/"
 }
-' PKGBUILD
+' >> PKGBUILD1
 
-makepkg
+makepkg -p PKGBUILD1
+
+rm /usr/bin/mpd_oled
 ```
 
 `/boot/config.txt`
