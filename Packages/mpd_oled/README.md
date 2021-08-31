@@ -39,7 +39,7 @@ package() {
 }
 ' >> PKGBUILD1
 
-makepkg -p PKGBUILD1
+makepkg -fp PKGBUILD1
 
 rm /usr/bin/mpd_oled
 ```
