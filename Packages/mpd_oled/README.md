@@ -13,7 +13,7 @@ makepkg
 ```
 Note:
 - `makepkg` - runtime error `Assertion '__builtin_expect(__n < this->size(), true)' failed`
-- `make` - no errors
+- `make` - no runtime error
 
 - Workaround
 ```sh
