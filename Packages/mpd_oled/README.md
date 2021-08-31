@@ -11,50 +11,15 @@ curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/mpd_oled.tar.gz | bsdtar
 cd mpd_oled
 makepkg
 ```
-Note:
-- `makepkg` - runtime error `Assertion '__builtin_expect(__n < this->size(), true)' failed`
-- `make` - no errors
-
-- Workaround 
-```sh
-su alarm
-cd
-git clone https://github.com/rern/mpd_oled
-cd mpd_oled
-./bootstrap
-
-su
-make install-strip
-cp /usr/local/bin/mpd_oled /home/alarm/mpd_oled
-
-su alarm
-
-rm -rf mpd_oled
-mkdir mpd_oled
-
-cat << EOF > /home/alarm/mpd_oled/PKGBUILD
-pkgname=mpd_oled
-pkgver=0.02
-pkgrel=1
-arch=(armv6h armv7h aarch64)
-license=(MIT)
-source=(https://github.com/rern/mpd_oled/archive/refs/heads/master.zip)
-sha256sums=(SKIP)
-
-package() {
-	install -d "$pkgdir/usr/bin/"
-	cp /usr/local/bin/mpd_oled "$pkgdir/usr/bin/"
-}
-EOF
-
-makepkg
-```
 
 `/boot/config.txt`
 ```sh
 ...
 dtparam=i2c_arm=on
 dtparam=i2c_arm_baudrate=1200000
+
+# spi
+dtparam=spi=on
 ```
 
 `/etc/mpd.conf`
@@ -68,7 +33,7 @@ audio_output {
 }
 ```
 
-- `/etc/modules-load.d/raspberrypi.conf`
+- `/etc/modules-load.d/raspberrypi.conf` (no for SPI)
 ```sh
 ...
 i2c-dev
