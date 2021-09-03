@@ -12,9 +12,6 @@ curl -s https://archlinuxarm.org/packages/aarch64/nginx-mainline | grep h1 | sed
 pacman -Syu
 pacman -S --needed base-devel geoip mailcap
 
-# setup distcc
-systemctl start distccd
-
 su alarm
 cd
 mkdir nginx
