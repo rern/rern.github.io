@@ -50,6 +50,8 @@ echo $depends
 
 pacman -S --noconfirm --needed $depends
 
+[[ -e /usr/bin/distcc ]] && systemctl start distccd
+
 currentdir=$PWD
 
 cd /home/alarm
