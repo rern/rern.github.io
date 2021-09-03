@@ -7,7 +7,7 @@ case $pkgname in
 audio_spectrum_oled )       depends='alsa-lib fftw i2c-tools'
 bluez-alsa-git )            depends='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc';;
 cava )                      depends=fftw;;
-fakepkg )                   ;;
+fakepkg )                   depends=gzip;;
 hfsprogs )                  depends=libbsd;;
 github-desktop )            depends='gconf git gnome-keyring libsecret libxss nspr nss unzip';;
 gconf )                     depends='polkit dbus-glib intltool gtk-doc gobject-introspection gnome-common';;
@@ -26,7 +26,7 @@ upmpdcli )                  depends='aspell-en id3lib jsoncpp libmicrohttpd libm
 
 esac
 
-[[ -n $depends ]] && pacman -S --noconfirm --needed $depends
+pacman -S --noconfirm --needed $depends
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$pkgname.tar.gz | bsdtar xf -
 cd $pkgname
 makepkg -A
