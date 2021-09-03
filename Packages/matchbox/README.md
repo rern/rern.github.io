@@ -5,9 +5,6 @@ pacman -Syu
 pacman -S --needed base-devel dbus-glib intltool gtk-doc gobject-introspection git gnome-common \
     libjpeg libpng libsm libxcursor libxext polkit pango startup-notification xsettings-client
 
-# setup distcc
-systemctl start distccd
-
 #1 - gconf - depend
 su alarm
 cd
