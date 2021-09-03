@@ -6,9 +6,6 @@ Source: [Snapcast](https://github.com/badaix/snapcast)
 pacman -Syu
 pacman -S --needed alsa-utils base-devel boost cmake git
 
-# setup distcc
-systemctl start distccd
-
 su alarm
 cd
 
