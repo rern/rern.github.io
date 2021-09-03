@@ -6,8 +6,6 @@ Source: [bluealsa](https://github.com/Arkq/bluez-alsa)
 pacman -Syu
 pacman -S --needed base-devel bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc
 
-# native build - setup distcc > systemctl start distccd
-
 su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/bluez-alsa-git.tar.gz | bsdtar xf -
