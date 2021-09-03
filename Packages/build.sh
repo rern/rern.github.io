@@ -1,6 +1,57 @@
 #!/bin/bash
 
-pkgname=$1
+optbox=( --colors --no-shadow --no-collapse )
+
+dialog "${optbox[@]}" --infobox "
+
+
+                    Build Packages
+" 9 58
+sleep 1
+
+pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
+ \Z1Package\Z0:
+" 0 0 0 \
+	1 audio_spectrum_oled \
+	2 bluez-alsa-git \
+	3 cava \
+	4 fakepkg \
+	5 hfsprogs \
+	6 github-desktop \
+	7 gconf \
+	8 libmatchbox \
+	9 matchbox-window-manager \
+	10 mpdscribble \
+	11 nginx-mainline-pushstream \
+	12 p7zip-gui \
+	13 python-raspberry-gpio \
+	14 rpi-imager \
+	15 snapcast \
+	16 libnpupnp \
+	17 libupnpp \
+	18 upmpdcli )
+
+case $pkg in
+	1 ) audio_spectrum_oled
+	2 ) bluez-alsa-git
+	3 ) cava
+	4 ) fakepkg
+	5 ) hfsprogs
+	6 ) github-desktop
+	7 ) gconf
+	8 ) libmatchbox
+	9 ) matchbox-window-manager
+	10 ) mpdscribble
+	11 ) nginx-mainline-pushstream
+	12 ) p7zip-gui
+	13 ) python-raspberry-gpio
+	14 ) rpi-imager
+	15 ) snapcast
+	16 ) libnpupnp
+	17 ) libupnpp
+	18 ) upmpdcli
+esac
+
 
 case $pkgname in
 
