@@ -30,13 +30,8 @@ git init
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
 ```
-- Add new repo
-	```sh
-	git clone ssh://aur@aur.archlinux.org/REPONAME.git
-	git remote add origin REPONAME
-	git fetch REPONAME
-	```
-- Clone existing repo
+
+- New / Clone repo
 	```sh
 	git clone ssh://aur@aur.archlinux.org/REPONAME.git
 	```
@@ -46,7 +41,7 @@ git config --global user.name "NAME"
 sha256sums=(SKIP)
 
 # OR
-curl -L https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz | shasum -a 256
+curl -L https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz | sha256sum
 
 # sha256sums=( ... )
 ```
