@@ -1,6 +1,6 @@
 NGINX Upgrade with pushstream
 ---
-- rAudio needs NGINx with **pushstream**
+- rAudio needs NGINX with **pushstream**
 - **pushstream** is not available as a separated package
 
 ###
