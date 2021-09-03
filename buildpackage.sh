@@ -61,3 +61,5 @@ cd $pkgname
 sudo -u alarm makepkg -A
 
 cd "$currentdir"
+
+systemctl stop distccd
