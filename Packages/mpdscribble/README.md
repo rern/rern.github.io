@@ -4,8 +4,6 @@ Source: [mpdscribble](https://github.com/MusicPlayerDaemon/mpdscribble)
 pacman -Syu
 pacman -S --needed base-devel boost libmpdclient libsoup meson ninja
 
-# small - no need for distcc
-
 su alarm
 cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/mpdscribble.tar.gz | bsdtar xf -
