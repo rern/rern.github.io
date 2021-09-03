@@ -55,4 +55,7 @@ chown -R alarm:alarm $pkgname
 cd $pkgname
 sudo -u alarm makepkg -A
 
+mv -f $pkgname* "$currentdir"
 cd "$currentdir"
+echo Package:
+ls $pkgname*
