@@ -45,9 +45,6 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 pkgname=${pkgs[$pkg]}
 depends=${packages[$pkgname]}
 
-echo $pkgname
-echo $depends
-
 pacman -S --noconfirm --needed $depends
 
 currentdir=$PWD
