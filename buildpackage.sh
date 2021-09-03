@@ -50,8 +50,6 @@ echo $depends
 
 pacman -S --noconfirm --needed $depends
 
-[[ -e /usr/bin/distcc ]] && systemctl start distccd
-
 currentdir=$PWD
 
 cd /home/alarm
@@ -61,5 +59,3 @@ cd $pkgname
 sudo -u alarm makepkg -A
 
 cd "$currentdir"
-
-systemctl stop distccd
