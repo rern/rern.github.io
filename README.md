@@ -4,7 +4,7 @@
   - Arch Linux package list: `https://github.com/archlinux/svntogit-community`
   - Source files: `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
 
-**Cross compile**: [How to](https://github.com/rern/rern.github.io/raw/master/cross-compile.md)
+**Cross compile**: [How to](https://github.com/rern/rern.github.io/blob/master/cross-compile.md)
 
 
 **Build package**
