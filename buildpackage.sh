@@ -45,9 +45,6 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 pkgname=${pkgs[$pkg]}
 depends=${packages[$pkgname]}
 
-echo $pkgname
-echo $depends
-
 pacman -S --noconfirm --needed $depends
 
 currentdir=$PWD
@@ -58,4 +55,7 @@ chown -R alarm:alarm $pkgname
 cd $pkgname
 sudo -u alarm makepkg -A
 
+mv -f $pkgname* "$currentdir"
 cd "$currentdir"
+echo Package:
+ls $pkgname*
