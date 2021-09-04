@@ -53,21 +53,21 @@ pacman -Sy --noconfirm --needed $pkgdepends
 currentdir=$PWD
 
 buildPackage() {
-	[[ $1 != -i ]] && pkgname=$1 || pkgname=$2
+	[[ $1 != -i ]] && name=$1 || name=$2
 	cd /home/alarm
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$pkgname.tar.gz | bsdtar xf -
-	chown -R alarm:alarm $pkgname
-	cd $pkgname
-	[[ $pkgname == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
+	chown -R alarm:alarm $name
+	cd $name
+	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	sudo -u alarm makepkg -fA
-	if [[ -z $( ls $pkgname*.xz 2> /dev/null ) ]]; then
+	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit
 	fi
 	
-	mv -f $pkgname*.xz "$currentdir"
+	mv -f $name*.xz "$currentdir"
 	cd "$currentdir"
-	[[ $1 == -i ]] && pacman -U --noconfirm $pkgname*
+	[[ $1 == -i ]] && pacman -U --noconfirm $name*
 }
 
 if [[ $pkgname == matchbox-window-manager ]]; then
