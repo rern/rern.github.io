@@ -21,7 +21,7 @@ cd
 curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/libmatchbox.tar.gz | bsdtar xf -
 cd libmatchbox
 
-sed -i "s/ 'libjpeg>=7'//" PKGBUILD
+sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 
 makepkg -A
 
