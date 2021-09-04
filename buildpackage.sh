@@ -17,16 +17,16 @@ declare -A packages=(
 	[cava]=fftw
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
-	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool \
-								libjpeg libmatchbox libpng libsm libxcursor libxext \
+	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
+								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[mpdscribble]='boost libmpdclient libsoup meson ninja'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
 	[snapcast]='boost cmake git'
-	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient libnpupnp libupnpp \
-				python python-requests python-setuptools python-bottle python-mutagen python-waitress \
+	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient libnpupnp libupnpp
+				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
 pkgs=( $( echo "${!packages[@]}" | tr ' ' '\n' | sort ) )
