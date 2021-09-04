@@ -48,7 +48,7 @@ echo -e "\e[46m  \e[0m Install depends ...\n"
 
 [[ ! -e /usr/bin/fakeroot ]] && depends="$base-devel depends"
 
-pacman -S --noconfirm --needed $depends
+pacman -Sy --noconfirm --needed $depends
 
 currentdir=$PWD
 
