@@ -58,7 +58,7 @@ buildPackage() {
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$pkgname.tar.gz | bsdtar xf -
 	chown -R alarm:alarm $pkgname
 	cd $pkgname
-	[[ $pkgname == libmatchbox ]] && sed -i "s/ libjpeg>=7/libjpeg/" PKGBUILD
+	[[ $pkgname == libmatchbox ]] && sed -i 's/ libjpeg>=7/libjpeg/' PKGBUILD
 	sudo -u alarm makepkg -fA
 	if [[ -z $( ls $pkgname*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
