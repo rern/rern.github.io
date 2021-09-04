@@ -59,6 +59,11 @@ buildPackage() {
 	chown -R alarm:alarm $pkgname
 	cd $pkgname
 	sudo -u alarm makepkg -fA
+	if [[ -z $( ls $pkgname*.xz ) ]]; then
+		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
+		exit
+	fi
+	
 	mv -f $pkgname*.xz "$currentdir"
 	cd "$currentdir"
 	[[ $1 == -i ]] && pacman -U --noconfirm $pkgname*
