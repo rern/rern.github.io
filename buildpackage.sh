@@ -59,7 +59,7 @@ buildPackage() {
 	chown -R alarm:alarm $pkgname
 	cd $pkgname
 	sudo -u alarm makepkg -fA
-	if [[ -z $( ls $pkgname*.xz ) ]]; then
+	if [[ -z $( ls $pkgname*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit
 	fi
