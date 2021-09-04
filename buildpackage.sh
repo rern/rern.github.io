@@ -58,7 +58,13 @@ buildPackage() {
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 	chown -R alarm:alarm $name
 	cd $name
-	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+	if [[ $name == bluez-alsa-git ]]; then
+		sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
+' -e '/--enable-ofono\|--enable-debug/ s/#//
+' PKGBUILD
+	elif [[ $name == libmatchbox ]]; then
+		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+	fi
 	sudo -u alarm makepkg -fA
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
