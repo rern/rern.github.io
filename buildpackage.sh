@@ -40,6 +40,8 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
  \Z1Package\Z0:
 " 0 0 0 $menu )
 
+[[ $? != 0 ]] && exit
+
 pkgname=${pkgs[$pkg]}
 pkgdepends=${packages[$pkgname]}
 
