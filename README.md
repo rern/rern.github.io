@@ -1,4 +1,4 @@
-**Download:** [rern.github.io](https://rern.github.io)
+**Download packages:** [rern.github.io](https://rern.github.io)
 
 **Source files not in** `https://github.com/archlinuxarm/PKGBUILDs`
   - Arch Linux package list: `https://github.com/archlinux/svntogit-community`
@@ -8,7 +8,7 @@
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
 - [Docker](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#docker)
 
-**Build package**
+**Build packages**
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/buildpackage.sh )
 ```
