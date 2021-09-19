@@ -38,14 +38,11 @@ git config --global user.name "NAME"
 
 - Checksum source
 ```sh
-#1 - skip
+# skip
 sha256sums=(SKIP)
 
-#2 - update existings
+# sha256sum - add to PKGBUILD
 makepkg -g
-
-#3 - new
-curl -L https://github.com/REPO/REPONAME/archive/refs/tags/RELEASE.tar.gz | sha256sum
 # sha256sums=( ... )
 ```
 
