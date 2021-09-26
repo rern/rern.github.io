@@ -49,7 +49,7 @@ pkgdepends=${packages[$pkgname]}
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 
-[[ ! -e /usr/bin/fakeroot ]] && pkgdepends="$base-devel pkgdepends"
+[[ ! -e /usr/bin/fakeroot ]] && pkgdepends="base-devel $pkgdepends"
 
 pacman -Sy --noconfirm --needed $pkgdepends
 
