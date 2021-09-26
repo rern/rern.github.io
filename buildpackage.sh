@@ -12,6 +12,7 @@ dialog "${optbox[@]}" --infobox "
 sleep 1
 
 declare -A packages=(
+	[alsaequal]=caps
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluez-alsa-git]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
 	[cava]=fftw
