@@ -43,13 +43,12 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ $? != 0 ]] && exit
 
+[[ ! -e /usr/bin/fakeroot ]] && pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
-pkgdepends=${packages[$pkgname]}
+pkgdepends+=${packages[$pkgname]}
 
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
-
-[[ ! -e /usr/bin/fakeroot ]] && pkgdepends+=' base-devel'
 
 pacman -Sy --noconfirm --needed $pkgdepends
 
