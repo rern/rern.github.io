@@ -69,7 +69,13 @@ buildPackage() {
 	elif [[ $name == libmatchbox ]]; then
 		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	fi
-	sudo -u alarm makepkg -fA
+	if [[ -n $pkgver ]]; then
+		sed -i "s/^pkgver.*/pkgver=$pkgver; s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
+		sudo -u alarm makepkg -fA --skipinteg
+	else
+		sudo -u alarm makepkg -fA $skipinteg
+	fi
+		
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit
@@ -79,7 +85,22 @@ buildPackage() {
 	cd "$currentdir"
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*
 }
-
+dialog "${optbox[@]}" --yesno "
+Default version?
+" 0 0
+if [[ $? != 0 ]]; then
+	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ pkgver:
+" 0 0 )
+	pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ pkgrel:
+" 0 0 )
+else
+	dialog "${optbox[@]}" --yesno "
+ Skip integrity check?
+" 0 0
+	[[ $? == 0 ]] && skipinteg=1
+fi
 if [[ $pkgname == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
