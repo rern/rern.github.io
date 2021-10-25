@@ -78,7 +78,7 @@ buildPackage() {
  pkgrel:
 " 0 0 $rel )
 	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
-		sed -i "s/^pkgver.*/pkgver=$pkgver" PKGBUILD
+		sed -i "s/^pkgver.*/pkgver=$pkgver/" PKGBUILD
 		[[ -n $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
 		skipinteg=--skipinteg
 	else
