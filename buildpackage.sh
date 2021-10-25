@@ -83,7 +83,9 @@ buildPackage() {
 		skipinteg=--skipinteg
 	else
 		dialog --defaultno "${optbox[@]}" --yesno "
+		
  Skip integrity check?
+ 
 " 0 0
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
