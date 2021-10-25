@@ -26,7 +26,7 @@ declare -A packages=(
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
 	[snapcast]='boost cmake git'
-	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient libnpupnp libupnpp
+	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
