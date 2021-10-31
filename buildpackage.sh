@@ -21,7 +21,6 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mpdscribble]='boost libmpdclient libsoup meson ninja'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
