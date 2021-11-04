@@ -8,7 +8,7 @@
 	var url = new URL( window.location.href );
 	var code = url.searchParams.get( 'code' );
 	var ip = url.searchParams.get( 'state' );
-	if ( !code ) var error = '&error='+ url.searchParams.get( 'error' );
+	var error = code ? '' : '&error='+ url.searchParams.get( 'error' );
 	window.location = 'http://'+ ip +'/settings.php?p=features&code='+ code + error;
 	</script>
 </body>
