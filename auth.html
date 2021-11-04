@@ -8,7 +8,6 @@
 	var url = new URL( window.location.href );
 	var code = url.searchParams.get( 'code' );
 	var ip = url.searchParams.get( 'state' );
-	console.log( 'http://'+ ip +'/settings.php?p=features&code='+ code )
 	window.location = 'http://'+ ip +'/settings.php?p=features&code='+ code;
 	</script>
 </body>
