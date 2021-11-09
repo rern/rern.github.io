@@ -1,6 +1,6 @@
 #!/bin/bash
 
-grep -q rasp <<< $( uname -a ) && echo Not Raspberry Pi && exit
+! grep -q rasp <<< $( uname -a ) && echo Not Raspberry Pi && exit
 
 optbox=( --colors --no-shadow --no-collapse )
 
