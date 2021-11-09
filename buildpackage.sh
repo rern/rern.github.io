@@ -1,5 +1,7 @@
 #!/bin/bash
 
+! grep -q rasp <<< $( uname -a ) && echo Not Raspberry Pi && exit
+
 optbox=( --colors --no-shadow --no-collapse )
 
 dialog "${optbox[@]}" --infobox "
@@ -21,12 +23,11 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mpdscribble]='boost libmpdclient libsoup meson ninja'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
 	[snapcast]='boost cmake git'
-	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient libnpupnp libupnpp
+	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
@@ -42,6 +43,8 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 " 0 0 0 $menu )
 
 [[ $? != 0 ]] && exit
+
+[[ ! -e /usr/bin/distccd ]] && bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )
 
 [[ ! -e /usr/bin/fakeroot ]] && pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
@@ -67,7 +70,29 @@ buildPackage() {
 	elif [[ $name == libmatchbox ]]; then
 		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	fi
-	sudo -u alarm makepkg -fA
+	ver=$( grep ^pkgver PKGBUILD | cut -d= -f2 )
+	rel=$( grep ^pkgrel PKGBUILD | cut -d= -f2 )
+	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ pkgver:
+" 0 0 $ver )
+	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ pkgrel:
+" 0 0 $rel )
+	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
+		sed -i "s/^pkgver.*/pkgver=$pkgver/" PKGBUILD
+		[[ -n $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
+		skipinteg=--skipinteg
+	else
+		dialog --defaultno "${optbox[@]}" --yesno "
+		
+ Skip integrity check?
+ 
+" 0 0
+		[[ $? == 0 ]] && skipinteg=--skipinteg
+	fi
+	
+	sudo -u alarm makepkg -fA $skipinteg
+	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit
