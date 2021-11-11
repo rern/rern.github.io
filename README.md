@@ -10,7 +10,7 @@
 
 **Build packages**
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/buildpackage.sh )
+bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 ```
 
 **Repo database update**
