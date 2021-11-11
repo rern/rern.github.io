@@ -16,12 +16,15 @@ sleep 1
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Distcc client IP:
 " 0 0 '192.168.1.' )
+clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ Distcc client Password:
+" 0 0 )
 case $( uname -m ) in
 	armv6l )  arch=armv6h;;
 	armv7l )  arch=armv7h;;
 	aarch64 ) arch=armv8;;
 esac
-sshpass -p 111 ssh -qo StrictHostKeyChecking=no root@$clientip \
+sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 			"systemctl stop distccd-arm*; systemctl start distccd-$arch"
 
 declare -A packages=(
