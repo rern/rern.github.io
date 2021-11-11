@@ -22,7 +22,7 @@ case $( uname -m ) in
 	aarch64 ) arch=armv8;;
 esac
 sshpass -p 111 ssh -qo StrictHostKeyChecking=no root@$clientip \
-			"systemctl start distccd-$arch"
+			"systemctl stop distccd-arm*; systemctl start distccd-$arch"
 
 declare -A packages=(
 	[alsaequal]=caps
