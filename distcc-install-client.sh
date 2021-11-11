@@ -21,4 +21,6 @@ for arch in armv6h armv7h armv8; do
 	pacman -U distccd-alarm-$arch
 done
 rm distccd-alarm-*
+# for ssh start distccd from master
+sed -i -e 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config
 systemctl enable sshd
