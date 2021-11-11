@@ -21,4 +21,4 @@ for arch in armv6h armv7h armv8; do
 	pacman -U distccd-alarm-$arch
 done
 rm distccd-alarm-*
- 
+systemctl enable sshd
