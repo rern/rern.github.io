@@ -1,7 +1,8 @@
-**Download packages:** [rern.github.io](https://rern.github.io)
+**Download packages**
+- [rern.github.io](https://rern.github.io)
 
 **Previous version pakages**
-- 
+- http://tardis.tiny-vps.com/aarm
 
 **Source files not in** `https://github.com/archlinuxarm/PKGBUILDs`
   - Arch Linux package list: `https://github.com/archlinux/svntogit-community`
