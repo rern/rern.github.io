@@ -1,3 +1,7 @@
+**Build packages**
+```sh
+bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
+```
 **Download packages**
 - [rern.github.io](https://rern.github.io)
 
@@ -11,11 +15,6 @@
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
 - [Docker](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#docker)
-
-**Build packages**
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
-```
 
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
