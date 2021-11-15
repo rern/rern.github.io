@@ -13,7 +13,14 @@
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 ```
 
-**Repo database update**
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/repoupdate.sh )
-```
+**JS plugins**
+- [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
+- [jquery.selectric](https://github.com/lcdsantos/jQuery-Selectric)
+- [jquery](https://jquery.com/)
+- [lazysizes](https://github.com/aFarkas/lazysizes)
+- [pica](https://github.com/nodeca/pica)
+- [pushstream](https://github.com/wandenberg/nginx-push-stream-module/tags)
+- [qrcode](https://github.com/datalog/qrcode-svg)
+- [roundslider](https://github.com/soundar24/roundSlider)
+- [simple-keyboard](https://github.com/hodgef/simple-keyboard)
+- [Sortable](https://github.com/SortableJS/Sortable)
