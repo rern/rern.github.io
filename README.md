@@ -2,8 +2,11 @@
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 ```
-**Download packages**
+**+R repo**
 - [rern.github.io](https://rern.github.io)
+
+**Arch Linux Arm PKGBUILDs**
+- https://github.com/archlinuxarm/PKGBUILDs/
 
 **Previous version pakages**
 - http://tardis.tiny-vps.com/aarm
