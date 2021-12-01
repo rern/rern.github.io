@@ -2,18 +2,17 @@
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 ```
-**+R repo**
-- [rern.github.io](https://rern.github.io)
+**+R repo**: [rern.github.io](https://rern.github.io)
 
-**Arch Linux Arm PKGBUILDs**
-- https://github.com/archlinuxarm/PKGBUILDs/
+**Arch Linux Arm Repo**:
+- Current - http://mirror.archlinuxarm.org
+- Archive - http://tardis.tiny-vps.com/aarm
 
-**Previous version pakages**
-- http://tardis.tiny-vps.com/aarm
-
-**Source files not in** `https://github.com/archlinuxarm/PKGBUILDs`
-  - Arch Linux package list: `https://github.com/archlinux/svntogit-community`
-  - Source files: `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
+**Arch Linux Arm Sources**:
+- `PKGBUILD`s - https://github.com/archlinuxarm/PKGBUILDs
+- Not in `https://github.com/archlinuxarm/PKGBUILDs`:
+  - List - `https://github.com/archlinux/svntogit-community`
+  - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
