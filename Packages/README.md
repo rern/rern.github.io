@@ -12,7 +12,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/buildpackage.s
 - matchbox-window-manager
 - mpdscribble
 - nginx-mainline-pushstream
-- p7zip-gui
 - python-raspberry-gpio
 - snapcast
 - upmpdcli
