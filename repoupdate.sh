@@ -39,14 +39,14 @@ updateRepo() {
 }
 
 arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
-	1 armv6h on \
+	1 aarch64 on \
 	2 armv7h on \
-	3 armv8/aarch64 on )
+	3 armv6h on )
 arch=" $arch "
-[[ $arch == *' 1 '* ]] && armv6h=1
+[[ $arch == *' 1 '* ]] && aarch64=1
 [[ $arch == *' 2 '* ]] && armv7h=1
-[[ $arch == *' 3 '* ]] && aarch64=1
-if [[ -z $armv6h && -z $armv7h && -z $aarch64 ]]; then
+[[ $arch == *' 3 '* ]] && armv6h=1
+if [[ -z $aarch64 && -z $armv7h && -z $armv6h ]]; then
 	dialog --colors --infobox '\n No \Z1Arch\Z0 selected.' 5 40
 	exit
 fi
@@ -55,9 +55,9 @@ clear
 
 currentdir=$( pwd )
 
-[[ -n $armv6h ]] && updateRepo armv6h
-[[ -n $armv7h ]] && updateRepo armv7h
 [[ -n $aarch64 ]] && updateRepo aarch64
+[[ -n $armv7h ]] && updateRepo armv7h
+[[ -n $armv6h ]] && updateRepo armv6h
 
 cd "$currentdir"
 
