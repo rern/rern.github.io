@@ -46,7 +46,7 @@ arch=" $arch "
 [[ $arch == *' 1 '* ]] && aarch64=1
 [[ $arch == *' 2 '* ]] && armv7h=1
 [[ $arch == *' 3 '* ]] && armv6h=1
-if [[ -z $aarch64 && -z $armv7h && -z $armv6h ]]; then
+if [[ ! $aarch64 && ! $armv7h && ! $armv6h ]]; then
 	dialog --colors --infobox '\n No \Z1Arch\Z0 selected.' 5 40
 	exit
 fi
@@ -55,9 +55,9 @@ clear
 
 currentdir=$( pwd )
 
-[[ -n $aarch64 ]] && updateRepo aarch64
-[[ -n $armv7h ]] && updateRepo armv7h
-[[ -n $armv6h ]] && updateRepo armv6h
+[[ $aarch64 ]] && updateRepo aarch64
+[[ $armv7h ]] && updateRepo armv7h
+[[ $armv6h ]] && updateRepo armv6h
 
 cd "$currentdir"
 
