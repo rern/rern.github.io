@@ -40,7 +40,7 @@ declare -A packages=(
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
-	[snapcast]='boost cmake git'
+	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
