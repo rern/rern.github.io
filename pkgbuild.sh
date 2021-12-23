@@ -60,7 +60,7 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ ! -e /usr/bin/distccd ]] && bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )
 
-[[ ! -e /usr/bin/fakeroot ]] && pkgdepends='base-devel '
+pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
 pkgdepends+=${packages[$pkgname]}
 
