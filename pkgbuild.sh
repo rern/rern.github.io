@@ -1,6 +1,6 @@
 #!/bin/bash
 
-! grep -q rasp <<< $( uname -a ) && echo Not Raspberry Pi && exit
+! grep -q rpi <<< $( uname -a ) && echo Not Raspberry Pi && exit
 
 optbox=( --colors --no-shadow --no-collapse )
 
@@ -40,7 +40,7 @@ declare -A packages=(
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-raspberry-gpio]=python-distribute
-	[snapcast]='boost cmake git'
+	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
@@ -60,7 +60,7 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ ! -e /usr/bin/distccd ]] && bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )
 
-[[ ! -e /usr/bin/fakeroot ]] && pkgdepends='base-devel '
+pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
 pkgdepends+=${packages[$pkgname]}
 
