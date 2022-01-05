@@ -16,7 +16,6 @@ sleep 1
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Distcc client IP:
 " 0 0 '192.168.1.' )
-echo $clientip > clientip # for distcc client install
 clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Distcc client Password:
 " 0 0 )
@@ -59,7 +58,7 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ $? != 0 ]] && exit
 
-[[ ! -e /usr/bin/distccd ]] && bash <( curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh )
+[[ ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh | bash -s $clientip
 
 pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
