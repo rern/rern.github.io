@@ -1,3 +1,4 @@
 #!/bin/bash
 
-echo xxx $1
+[[ $1 ]] && echo xxx $1
+[[ -n $1 ]] && echo nnn $1
