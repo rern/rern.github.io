@@ -9,11 +9,15 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+if [[ -e clientip ]]; then
+	clientip=$( cat clientip )
+	rm clientip
+else
+	clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
 Client IP:
 
 " 0 0 192.168.1.9 )
-
+fi
 pacman -Sy --noconfirm distcc
 
 # MAKEFLAGS="-j12"                                --- 2x max threads per client
