@@ -16,6 +16,7 @@ sleep 1
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Distcc client IP:
 " 0 0 '192.168.1.' )
+echo $clientip > clientip # for distcc client install
 clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Distcc client Password:
 " 0 0 )
