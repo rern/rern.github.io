@@ -9,7 +9,7 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-[[ ! $clientip ]] && clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+[[ $1 ]] && clientip=$1 || clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
 Client IP:
 
 " 0 0 192.168.1.9 )
