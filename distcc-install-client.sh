@@ -8,9 +8,6 @@ dialog "${optbox[@]}" --infobox "
 sleep 1
 
 pacman -Sy --noconfirm distcc
-clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
-Client IP:
-" 0 0 192.168.1.9 )
 
 # build toolchains:
 # curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
