@@ -13,14 +13,14 @@ Host aur.archlinux.org
 
 systemctl restart sshd
 
-# git
 pacman -Sy --needed git
+
+# ssh key
+su USER
 git init
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
 
-# ssh key
-su USER
 ssh-keygen -f ~/.ssh/aur
 ```
 - AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
