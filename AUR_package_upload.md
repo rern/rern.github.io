@@ -35,9 +35,10 @@ git clone ssh://aur@aur.archlinux.org/REPONAME.git
 # skip
 sha256sums=(SKIP)
 
-# sha256sum - add to PKGBUILD
+# replace existing in PKGBUILD
+#     md5sums=(...)
+#     sha512sums=(...)
 makepkg -g
-# sha256sums=( ... )
 ```
 
 ### Push repo
