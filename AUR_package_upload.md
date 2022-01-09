@@ -22,6 +22,7 @@ git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
 
 ssh-keygen -f ~/.ssh/aur
+cat ~/.ssh/aur.pub
 ```
 - AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
 
