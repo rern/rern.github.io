@@ -11,18 +11,12 @@ Host aur.archlinux.org
 
 systemctl restart sshd
 ```
-- New keys
-	```sh
-	su USER
-	ssh-keygen -f ~/.ssh/aur
-	```
-	- Login > My Account > SSH Public Key: Content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
-- Existing keys
-	```sh
-	chown -R alarm:alarm ~/.ssh
-	chmod 600 ~/.ssh/aur
-	chmod 644 ~/.ssh/aur.pub
-	```
+- SSH Public Key
+```sh
+su USER
+ssh-keygen -f ~/.ssh/aur
+```
+- AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
 
 - Init git
 ```sh
