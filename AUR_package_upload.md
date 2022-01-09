@@ -39,6 +39,8 @@ sha256sums=(SKIP)
 #     md5sums=(...)
 #     sha512sums=(...)
 makepkg -g
+
+# remove ./src and source files
 ```
 
 ### Push repo
