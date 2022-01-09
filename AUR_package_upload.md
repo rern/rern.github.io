@@ -10,6 +10,8 @@ Host aur.archlinux.org
 " >> /etc/ssh/ssh_config
 
 systemctl restart sshd
+
+pacman -Sy --needed git
 ```
 - SSH Public Key
 ```sh
