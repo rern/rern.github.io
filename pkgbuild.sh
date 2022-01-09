@@ -24,6 +24,7 @@ case $( uname -m ) in
 	armv7l )  arch=armv7h;;
 	aarch64 ) arch=armv8;;
 esac
+echo -e "\e[46m  \e[0m Start Distcc client ...\n"
 sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 			"systemctl stop distccd-arm*; systemctl start distccd-$arch"
 
@@ -105,6 +106,7 @@ buildPackage() {
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
 	
+	echo -e "\e[46m  \e[0m Start build ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then

@@ -1,8 +1,10 @@
 AUR Package Upload
 ---
 
-- Prepare SSH:
+### Prepare SSH
+- If already done, skip to **New / Clone repo**
 ```sh
+# ssh
 echo "
 Host aur.archlinux.org
   IdentityFile ~/.ssh/aur
@@ -10,43 +12,39 @@ Host aur.archlinux.org
 " >> /etc/ssh/ssh_config
 
 systemctl restart sshd
-```
-- New keys
-	```sh
-	su USER
-	ssh-keygen -f ~/.ssh/aur
-	```
-	- Login > My Account > SSH Public Key: Content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
-- Existing keys
-	```sh
-	chown -R alarm:alarm ~/.ssh
-	chmod 600 ~/.ssh/aur
-	chmod 644 ~/.ssh/aur.pub
-	```
 
-- Init git
-```sh
+pacman -Sy --needed git
+
+# ssh key
+su USER
 git init
 git config --global user.email "EMAIL@DOMAIN"
 git config --global user.name "NAME"
+
+ssh-keygen -f ~/.ssh/aur
+cat ~/.ssh/aur.pub
+```
+- AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
+
+### New / Clone repo
+```sh
+git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ```
 
-- New / Clone repo
-	```sh
-	git clone ssh://aur@aur.archlinux.org/REPONAME.git
-	```
-
-- Checksum source
+### Checksum source
 ```sh
 # skip
 sha256sums=(SKIP)
 
-# sha256sum - add to PKGBUILD
+# replace existing in PKGBUILD
+#     md5sums=(...)
+#     sha512sums=(...)
 makepkg -g
-# sha256sums=( ... )
+
+# remove ./src and source files
 ```
 
-- Push repo
+### Push repo
 ```sh
 cd REPONAME
 makepkg --printsrcinfo > .SRCINFO
