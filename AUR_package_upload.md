@@ -1,8 +1,10 @@
 AUR Package Upload
 ---
 
-- Prepare SSH:
+### Prepare SSH
+- If already done, skip to **New / Clone repo**
 ```sh
+# ssh
 echo "
 Host aur.archlinux.org
   IdentityFile ~/.ssh/aur
@@ -11,28 +13,24 @@ Host aur.archlinux.org
 
 systemctl restart sshd
 
+# git
 pacman -Sy --needed git
-```
-- SSH Public Key
-```sh
+git init
+git config --global user.email "EMAIL@DOMAIN"
+git config --global user.name "NAME"
+
+# ssh key
 su USER
 ssh-keygen -f ~/.ssh/aur
 ```
 - AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
 
-- Init git
+### New / Clone repo
 ```sh
-git init
-git config --global user.email "EMAIL@DOMAIN"
-git config --global user.name "NAME"
+git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ```
 
-- New / Clone repo
-	```sh
-	git clone ssh://aur@aur.archlinux.org/REPONAME.git
-	```
-
-- Checksum source
+### Checksum source
 ```sh
 # skip
 sha256sums=(SKIP)
@@ -42,7 +40,7 @@ makepkg -g
 # sha256sums=( ... )
 ```
 
-- Push repo
+### Push repo
 ```sh
 cd REPONAME
 makepkg --printsrcinfo > .SRCINFO
