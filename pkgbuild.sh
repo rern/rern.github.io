@@ -88,10 +88,10 @@ buildPackage() {
 	fi
 	ver=$( grep ^pkgver PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel PKGBUILD | cut -d= -f2 )
-	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  pkgver:
 " 0 0 $ver )
-	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  pkgrel:
 " 0 0 $rel )
 	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
