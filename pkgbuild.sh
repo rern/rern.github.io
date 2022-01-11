@@ -13,11 +13,11 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-clientip=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+clientip=$( dialog "${optbox[@]}" --output-fd 1 --cancel-label Skip --inputbox "
  Distcc client IP:
 " 0 0 '192.168.1.' )
 if [[ $? == 0 ]]; then
-	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  Distcc client Password:
 " 0 0 )
 	case $( uname -m ) in
