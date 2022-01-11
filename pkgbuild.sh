@@ -40,7 +40,7 @@ declare -A packages=(
 								pango polkit startup-notification xsettings-client'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[p7zip-gui]='p7zip yasm wxgtk2'
-	[python-raspberry-gpio]=python-distribute
+	[python-rpi-gpio]=python-distribute
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
