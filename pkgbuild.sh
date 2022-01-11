@@ -41,7 +41,6 @@ declare -A packages=(
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[nginx-mainline-pushstream]='geoip mailcap'
-	[p7zip-gui]='p7zip yasm wxgtk2'
 	[python-rpi-gpio]=python-distribute
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
