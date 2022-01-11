@@ -20,6 +20,13 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
 - [Docker](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#docker)
 
+**Custom packages**
+- [bluez-alsa](https://github.com/Arkq/bluez-alsa)
+- [nginx](https://nginx.org/)
+- [snapcast](https://github.com/badaix/snapcast)
+- [spotifyd](https://github.com/Spotifyd/spotifyd)
+- [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/pages/downloads.html)
+
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
 - [jquery.selectric](https://github.com/lcdsantos/jQuery-Selectric)
