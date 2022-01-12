@@ -42,6 +42,8 @@ declare -A packages=(
 								pango polkit startup-notification xsettings-client'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-rpi-gpio]=python-distribute
+	[python-rplcd]=python
+	[python-smbus2]=python
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
