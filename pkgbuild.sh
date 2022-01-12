@@ -28,6 +28,13 @@ if [[ $? == 0 ]]; then
 	echo -e "\e[46m  \e[0m Start Distcc client ...\n"
 	sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 				"systemctl stop distccd-arm*; systemctl start distccd-$arch"
+	if [[ $? == 0 ]]; then
+		sed -i 's/\(BUILDENV=(\)!distcc/\1distcc/' /etc/makepkg.conf
+	else
+		sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
+	fi
+else
+	sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
 fi
 
 declare -A packages=(
