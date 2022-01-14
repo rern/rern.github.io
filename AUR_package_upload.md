@@ -48,7 +48,7 @@ makepkg -g
 ```sh
 cd REPONAME
 makepkg --printsrcinfo > .SRCINFO
-git add PKGBUILD .SRCINFO
+git add PKGBUILD .SRCINFO OTHER.FILES
 git commit -m "COMMIT MESSAGE"
 git push
 ```
