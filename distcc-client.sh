@@ -12,14 +12,14 @@ sleep 1
 arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
  \Z1Distcc\Z0:
 " 8 0 0 \
-1 armv6h \
+1 aarch64 \
 2 armv7h \
-3 armv8/aarch64 )
+3 armv6h )
 
 case $arch in
-	1 ) arch=armv6h;;
+	1 ) arch=armv8;;
 	2 ) arch=armv7h;;
-	3 ) arch=armv8;;
+	3 ) arch=armv6h;;
 esac
 
 systemctl stop distccd-arm*
