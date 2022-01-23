@@ -29,10 +29,10 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
-- [jquery.selectric](https://github.com/lcdsantos/jQuery-Selectric)
+- [jquery.selectric](https://github.com/lcdsantos/jQuery-Selectric/tags)
 - [jquery](https://jquery.com/)
 - [lazysizes](https://github.com/aFarkas/lazysizes)
-- [pica](https://github.com/nodeca/pica)
+- [pica](https://github.com/nodeca/pica/tags)
 - [pushstream](https://github.com/wandenberg/nginx-push-stream-module/blob/master/misc/js/pushstream.js)
 - [qrcode](https://github.com/datalog/qrcode-svg)
 - [roundslider](https://github.com/soundar24/roundSlider)
