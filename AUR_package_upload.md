@@ -25,6 +25,8 @@ ssh-keygen -f ~/.ssh/aur
 cat ~/.ssh/aur.pub
 ```
 - AUR Login > My Account > SSH Public Key - Paste content of `~/.ssh/aur.pub` without last ` USER@HOSTNAME`
+- Fill `Your current password:`
+- If autofill password, make sure `PGP Key Fingerprint:` box is empty.
 
 ### New / Clone repo
 ```sh
