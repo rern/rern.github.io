@@ -1,6 +1,14 @@
 #!/bin/bash
 
-# ssh key
+optbox=( --colors --no-shadow --no-collapse )
+dialog "${optbox[@]}" --infobox "
+
+                          \Z1AUR\Z0
+
+                       Git Setup
+" 9 58
+sleep 2
+
 echo "
 Host aur.archlinux.org
   IdentityFile ~/.ssh/aur
@@ -11,7 +19,6 @@ systemctl restart sshd
 
 pacman -Sy --noconfirm --needed git
 
-optbox=( --colors --no-shadow --no-collapse )
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Email:
 " 0 0 )
