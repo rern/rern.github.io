@@ -21,10 +21,10 @@ pacman -Sy --noconfirm --needed git
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Email:
-" 0 0 )
+" 0 0 rernrern@gmail.com )
 username=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Username:
-" 0 0 )
+" 0 0 rern )
 
 su alarm
 git init
