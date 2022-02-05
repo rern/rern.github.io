@@ -17,7 +17,7 @@ Host aur.archlinux.org
 
 systemctl restart sshd
 
-pacman -Sy --noconfirm --needed git
+[[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  Email:
