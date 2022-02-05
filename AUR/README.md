@@ -3,6 +3,7 @@ AUR Package Upload
 
 ### Git setup
 ```sh
+su alarm
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/AUR/git_setup.sh )
 ```
 
