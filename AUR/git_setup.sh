@@ -10,8 +10,13 @@ dialog "${optbox[@]}" --infobox "
 sleep 2
 
 if grep -q '' /etc/ssh/ssh_config; then
-	echo -e "\nAUR Git has already setup.\n"
-	exit
+	dialog "${optbox[@]}" --yesno "
+AUR Git has already setup.
+
+\Z1Continue?\Z0
+
+" 0 0
+	[[ $? == 1 ]] && exit
 fi
 
 echo "
