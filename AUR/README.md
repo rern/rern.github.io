@@ -12,19 +12,18 @@ git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ```
 
 ### Checksum for files
+- Replace existing in PKGBUILD
 ```sh
-# skip
-sha256sums=(SKIP)
-
-# replace existing in PKGBUILD
-#     md5sums=(...)
-#     sha512sums=(...)
 makepkg -g
+```
+- To skip
+```sh
+sha256sums=(SKIP)
 ```
 
 ### Push to repo
 ```sh
-cd REPONAME
+cd /home/alarm/REPONAME
 makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO OTHER_BUILD_FILES
 git commit -m "COMMIT MESSAGE"
