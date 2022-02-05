@@ -26,7 +26,6 @@ username=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Username:\Z0
 " 0 0 rern )
 
-su alarm
 git init
 git config --global user.email $email
 git config --global user.name $username
