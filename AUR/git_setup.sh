@@ -9,6 +9,11 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 2
 
+if grep -q '' /etc/ssh/ssh_config; then
+	echo -e "\nAUR Git has already setup.\n"
+	exit
+fi
+
 echo "
 Host aur.archlinux.org
   IdentityFile ~/.ssh/aur
