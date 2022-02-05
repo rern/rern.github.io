@@ -20,10 +20,10 @@ systemctl restart sshd
 [[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- Email:
+ \Z1Email:\Z0
 " 0 0 rernrern@gmail.com )
 username=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- Username:
+ \Z1Username:\Z0
 " 0 0 rern )
 
 su alarm
