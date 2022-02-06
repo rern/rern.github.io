@@ -1,4 +1,4 @@
-AUR Package Upload
+AUR Package Repo
 ---
 
 ### Git setup
