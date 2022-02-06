@@ -13,14 +13,10 @@ git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ```
 
 ### Checksum for files
-- Replace existing in PKGBUILD
 ```sh
-makepkg -g
+makepkg -g # Replace existing in PKGBUILD
 ```
-- To skip
-```sh
-sha256sums=(SKIP)
-```
+(Skip: `sha256sums=(SKIP)`)
 
 ### Push to repo
 ```sh
