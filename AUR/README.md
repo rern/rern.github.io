@@ -7,18 +7,18 @@ su alarm
 bash <( curl -L https://github.com/rern/rern.github.io/raw/master/AUR/git_setup.sh )
 ```
 
-### New / Clone repo
+### New / Clone
 ```sh
 git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ```
 
-### Checksum for files
+### Checksum
 ```sh
 makepkg -g # Replace existing in PKGBUILD
 ```
 (Skip: `sha256sums=(SKIP)`)
 
-### Push to repo
+### Push
 ```sh
 cd /home/alarm/REPONAME
 makepkg --printsrcinfo > .SRCINFO
