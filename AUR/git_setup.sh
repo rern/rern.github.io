@@ -58,13 +58,7 @@ $( cat ~/.ssh/aur.pub | cut -d' ' -f1-2 )
 \Z1Your current password:\Z0 (password)
 " 24 58
 else
-	publickey=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
- AUR > My Account
- \Z1Publickey key:\Z0
-" 0 0 )
-	mkdir -p /home/alarm/.ssh
-	echo $publickey > /home/alarm/.ssh/aur.pub
 	dialog "${optbox[@]}" --msgbox "
- Copy \Z1aur\Z0 - private key to /home/alarm/.ssh
+ cp \Z1.ssh/{aur,aur.pub,known_hosts}\Z0 /home/alarm
 " 7 58
 fi
