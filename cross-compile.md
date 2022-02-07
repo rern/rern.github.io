@@ -119,7 +119,11 @@ docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 systemctl start sshd
 #   on docker
 scp sourcefile USER@IP_ADDRESS:/path/to/file
-
+```
+- Copy file from host:
+```sh
+scp USER@IP_ADDRESS:/path/to/file .
+```
 # docker
 docker ps -a  # get NAME
 docker cp NAME:/path/to/file .
