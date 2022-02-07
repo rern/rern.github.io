@@ -112,7 +112,7 @@ docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
 docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
-- Copy file to host:
+- On docker - Copy file to host:
 ```sh
 # on host (sed -i 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config)
 # systemctl start sshd
@@ -120,12 +120,12 @@ docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 # on docker
 scp sourcefile*.ext USER@IP_ADDRESS:/path/to
 ```
-- Copy file from host:
+- On docker - Copy file from host:
 ```sh
 # on docker
 scp USER@IP_ADDRESS:/path/to/file.ext .
 ```
-# docker
+- On host - Copy from docker
 ```sh
 docker ps -a  # get NAME
 docker cp NAME:/path/to/file .
