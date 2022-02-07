@@ -15,6 +15,10 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - Not in `https://github.com/archlinuxarm/PKGBUILDs`:
   - List - `https://github.com/archlinux/svntogit-community`
   - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
+  - Obsolete - (Browse Github history)
+- Download specific directory:
+  - https://download-directory.github.io/
+  - `download-directory.github.io?url=$URL`
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
