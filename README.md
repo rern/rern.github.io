@@ -15,7 +15,9 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - Not in `https://github.com/archlinuxarm/PKGBUILDs`:
   - List - `https://github.com/archlinux/svntogit-community`
   - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
-  - Obsolete - (Browse Github history)
+  - Obsolete 
+    - [ARMv6](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810)
+    - Browse GitHub history
 - Download specific directory:
   - https://download-directory.github.io/
   - `download-directory.github.io?url=$URL`
