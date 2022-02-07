@@ -114,15 +114,16 @@ docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 ```
 - Copy file to host:
 ```sh
-# scp - while running
-#   on host (sed -i 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config)
-systemctl start sshd
-#   on docker
-scp sourcefile USER@IP_ADDRESS:/path/to/file
+# on host (sed -i 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config)
+# systemctl start sshd
+
+# on docker
+scp sourcefile*.ext USER@IP_ADDRESS:/path/to
 ```
 - Copy file from host:
 ```sh
-scp USER@IP_ADDRESS:/path/to/file .
+# on docker
+scp USER@IP_ADDRESS:/path/to/file.ext .
 ```
 # docker
 ```sh
