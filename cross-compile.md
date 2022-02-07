@@ -125,6 +125,7 @@ scp sourcefile USER@IP_ADDRESS:/path/to/file
 scp USER@IP_ADDRESS:/path/to/file .
 ```
 # docker
+```sh
 docker ps -a  # get NAME
 docker cp NAME:/path/to/file .
 ```
