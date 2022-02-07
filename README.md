@@ -16,7 +16,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
   - List - `https://github.com/archlinux/svntogit-community`
   - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
   - Obsolete 
-    - Last available [ARMv6](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810) in GitHub history
+    - Last available [armv6h in GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 	- Download GitHub specific directory: https://download-directory.github.io/
 
 **Cross compile**:
