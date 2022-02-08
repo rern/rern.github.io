@@ -15,6 +15,7 @@ git clone ssh://aur@aur.archlinux.org/REPONAME.git
 ### Checksum
 ```sh
 makepkg -g # Replace existing in PKGBUILD
+# sha256sums=(...)
 ```
 (Skip: `sha256sums=(SKIP)`)
 
