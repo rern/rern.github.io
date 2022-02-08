@@ -9,6 +9,9 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - Archives
 	- http://tardis.tiny-vps.com/aarm/packages
 	- http://alaa.ad24.cz/packages
+	- As server `/etc/pacman.d/mirrorlist`:
+		- `Server = http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo`
+		- `Server = http://alaa.ad24.cz/aarm/repos/2022/02/06/$arch/$repo`
 
 **Arch Linux Arm Sources**:
 - `PKGBUILD`s - https://github.com/archlinuxarm/PKGBUILDs
