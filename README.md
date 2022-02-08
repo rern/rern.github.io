@@ -27,7 +27,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa)
 - [nginx](https://nginx.org/)
 - [snapcast](https://github.com/badaix/snapcast)
-- [spotifyd](https://github.com/Spotifyd/spotifyd)
 - [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/pages/downloads.html)
 
 **JS plugins**
