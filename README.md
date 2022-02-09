@@ -23,11 +23,11 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 		- Download GitHub specific directory: https://download-directory.github.io/
 	- Kernel: [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy)
 		- No Distcc
-		- Compile on ARMv6 Docker
+		- Compile on ARMv6 Docker (faster than native)
 	- Bootloader: `raspberrypi-bootloader`
 		- Either package for `armv7h` or `aarch64` can be used. (`any` package)
 	- Firmware: [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware)
-		- No need for Distcc - Compile is just copying of directories and files
+		- No need for Distcc - Compile just packs directories and files to package.
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
