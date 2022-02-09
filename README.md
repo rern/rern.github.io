@@ -20,7 +20,14 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
   - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
 - Obsolete ARMv6
 	- Last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
-	- Download GitHub specific directory: https://download-directory.github.io/
+		- Download GitHub specific directory: https://download-directory.github.io/
+	- Kernel: [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy)
+		- No Distcc
+		- Compile on ARMv6 Docker
+	- Bootloader: `raspberrypi-bootloader`
+		- `any` - Use package for armv7h
+	- Firmware: [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware)
+		- No need for Distcc - Compile is just copying of directories and files
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
