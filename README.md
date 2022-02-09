@@ -25,7 +25,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 		- No Distcc
 		- Compile on ARMv6 Docker
 	- Bootloader: `raspberrypi-bootloader`
-		- `any` - Use package for armv7h
+		- Either package for `armv7h` or `aarch64` can be used. (`any` package)
 	- Firmware: [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware)
 		- No need for Distcc - Compile is just copying of directories and files
 
