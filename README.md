@@ -17,8 +17,8 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
   - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
 - Obsolete ARMv6
 	- Set mirror server `/etc/pacman.d/mirrorlist`:
-		- `Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo`
-		- `Server = http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo`
+		- `Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo` (2022/02/06 as the latest)
+		- `Server = http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo` (2022/01/08 as the latest)
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 		- Download GitHub specific directory: https://download-directory.github.io/
 		- Kernel: [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy)
