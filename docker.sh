@@ -12,15 +12,15 @@ sleep 1
 arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
  \Z1Docker\Z0:
 " 8 0 0 \
-1 armv6h \
+1 armv8/aarch64 \
 2 armv7h \
-3 armv8/aarch64 \
+3 armv6h \
 4 'Stop all' )
 
 case $arch in
-	1 ) arch=armv6h;;
+	1 ) arch=aarch64;;
 	2 ) arch=armv7h;;
-	3 ) arch=aarch64;;
+	3 ) arch=armv6h;;
 	4 ) arch=stop;;
 esac
 
