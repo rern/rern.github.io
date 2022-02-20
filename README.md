@@ -34,7 +34,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - [Docker](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#docker)
 
 **Custom packages**
-- [bluez-alsa](https://github.com/Arkq/bluez-alsa)
+- [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)
 - [nginx](https://nginx.org/)
 - [snapcast](https://github.com/badaix/snapcast)
 - [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/pages/downloads.html)
