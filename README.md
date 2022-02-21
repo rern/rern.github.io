@@ -49,4 +49,5 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 - [qrcode](https://github.com/datalog/qrcode-svg)
 - [roundslider](https://github.com/soundar24/roundSlider)
 - [simple-keyboard](https://github.com/hodgef/simple-keyboard/blob/master/build/index.modern.js)
+	- Remove sourcemap - last line: //# sourceMappingURL=index.modern.js.map
 - [Sortable](https://github.com/SortableJS/Sortable)
