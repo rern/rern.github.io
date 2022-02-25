@@ -29,6 +29,34 @@ systemctl restart sshd
 
 [[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 
+keys=$( dialog "${opt[@]}" --output-fd 1 --nocancel --menu "
+\Z1Raspberry Pi:\Z0
+" 8 0 0 \
+1 'Use existing keys' \
+2 'Generate new keys' )
+
+if [[ $keys == 1 ]]; then
+	dialog "${optbox[@]}" --msgbox "
+ Copy \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
+ Then press OK to continue.
+" 7 58
+else
+	dirssh=/home/alarm/.ssh
+	ssh-keygen -t rsa -f ~/.ssh/aur -q -N ""
+	sed -i 's/= .*$/=/' ~/.ssh/aur.pub # remove trailing USER@HOSTNAME
+	mkdir -p $dirssh
+	cp -r ~/.ssh/aur* $dirssh
+	dialog "${optbox[@]}" --msgbox "
+AUR > My Account
+
+\Z1SSH Public Key:\Z0
+$( cat $dirssh/aur.pub )
+
+\Z1PGP Key Fingerprint:\Z0 (empty)
+\Z1Your current password:\Z0 (password)
+" 24 58
+fi
+
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Email:\Z0
 " 0 0 rernrern@gmail.com )
@@ -36,31 +64,12 @@ username=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Username:\Z0
 " 0 0 rern )
 
-keys=$( dialog "${opt[@]}" --output-fd 1 --nocancel --menu "
-\Z1Raspberry Pi:\Z0
-" 8 0 0 \
-1 ) Generate new keys
-2 ) Use existing keys )
+echo "\
+[user]
+	email = rernrern@gmail.com
+	name = rern
+" > /home/alarm/.gitconfig
 
-if [[ $keys == 1 ]]; then
-	ssh-keygen -f ~/.ssh/aur # remove trailing USER@HOSTNAME when paste in AUR
-	dialog "${optbox[@]}" --msgbox "
-AUR > My Account
+chown -R alarm:alarm /home/alarm/.gitconfig $dirssh
 
-\Z1SSH Public Key:\Z0
-$( cat ~/.ssh/aur.pub | cut -d' ' -f1-2 )
-
-\Z1PGP Key Fingerprint:\Z0 (empty)
-\Z1Your current password:\Z0 (password)
-" 24 58
-else
-	dialog "${optbox[@]}" --msgbox "
- cp \Z1.ssh/{aur,aur.pub,known_hosts}\Z0 /home/alarm
-" 7 58
-fi
-
-su alarm
-cd
-git init
-git config --global user.email $email
-git config --global user.name $username
+sudo -u alarm git init /home/alarm
