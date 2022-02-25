@@ -14,7 +14,7 @@ git clone ssh://aur@aur.archlinux.org/REPONAME.git
 cd REPONAME
 ```
 
-### Checksum
+### Set checksum
 ```sh
 # skip: chksum='sha256sums=(SKIP)'
 chksum=$( makepkg -g )
