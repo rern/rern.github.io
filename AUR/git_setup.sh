@@ -36,10 +36,6 @@ username=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Username:\Z0
 " 0 0 rern )
 
-git init
-git config --global user.email $email
-git config --global user.name $username
-
 keys=$( dialog "${opt[@]}" --output-fd 1 --nocancel --menu "
 \Z1Raspberry Pi:\Z0
 " 8 0 0 \
@@ -62,3 +58,9 @@ else
  cp \Z1.ssh/{aur,aur.pub,known_hosts}\Z0 /home/alarm
 " 7 58
 fi
+
+su alarm
+cd
+git init
+git config --global user.email $email
+git config --global user.name $username
