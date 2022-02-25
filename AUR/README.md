@@ -9,19 +9,19 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/AUR/git_setup.
 ### New / Clone
 ```sh
 su alarm
+cd
 git clone ssh://aur@aur.archlinux.org/REPONAME.git
+cd REPONAME
 ```
 
 ### Checksum
 ```sh
-makepkg -g # Replace existing in PKGBUILD
-# sha256sums=(...)
+chksum=$( makepkg -g ) # skip: chksum='sha256sums=(SKIP)'
+sed -i 's/^sha.*/$chksum/' PKGBUILD
 ```
-(Skip: `sha256sums=(SKIP)`)
 
 ### Push
 ```sh
-cd /home/alarm/REPONAME
 makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO OTHER_BUILD_FILES
 git commit -m "COMMIT MESSAGE"
