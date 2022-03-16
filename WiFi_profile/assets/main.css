@@ -1,23 +1,21 @@
 @font-face {
+	font-family: rern;
+	src: url( 'rern.woff2' ) format( 'woff2' );
+	font-display: block;
+	font-style: normal;
+	font-weight: normal;
+}
+@font-face {
 	font-family: Lato;
-	src: url( 'lato-regular-webfont.woff' ) format( 'woff' ),
-		url( 'lato-regular-webfont.ttf' ) format( 'truetype' );
+	src: url( 'Lato-Regular.woff2' ) format( 'woff2' );
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: Lato;
-	src: url( 'lato-light-webfont.woff' ) format( 'woff' ),
-		url( 'lato-light-webfont.ttf' ) format( 'truetype' );
+	src: url( 'Lato-Light.woff2' ) format( 'woff2' );
 	font-weight: 300;
 	font-style: normal;
-}
-@font-face {
-	font-family: enhance;
-	src        : url( 'enhance.woff' ) format( 'woff' ),
-				 url( 'enhance.ttf' ) format( 'truetype' );
-	font-weight: normal;
-	font-style : normal;
 }
 .fa {
 	display: inline-block;
@@ -25,9 +23,9 @@
 	font-style: normal;
 }
 .fa-lg { font-size: 22px; line-height: 18px; }
-.fa-addons:before { content: "\f581" }
 .fa-eye:before { content: "\f575" }
-.fa-wifi-3:before { content: "\f570" }
+.fa-system::before { content: '\f590' }
+.fa-wifi::before { content: '\f597' }
 body {
 	margin: 0;
 	font-family: "Lato";
