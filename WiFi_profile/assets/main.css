@@ -35,19 +35,14 @@ body {
 	background-color: #000;
 	overscroll-behavior: none; /* disable android pull-down refresh */
 }
-#splash {
-	position: relative;
-	height: 100vh;
-}
-#splash img {
+img {
 	position: absolute;
-	width: 90vw;
-	max-width: 750px;
+	margin: auto;
+	width: 50px;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	margin: auto;
 }
 .head {
 	position: fixed;
