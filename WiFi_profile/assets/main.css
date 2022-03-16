@@ -23,7 +23,7 @@
 	font-style: normal;
 }
 .fa-lg { font-size: 22px; line-height: 18px; }
-.fa-eye:before { content: "\f575" }
+.fa-eye:before { content: "\f567" }
 .fa-system::before { content: '\f590' }
 .fa-wifi::before { content: '\f597' }
 body {
