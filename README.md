@@ -1,6 +1,6 @@
 **Build packages**
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```
 **+R repo**: [rern.github.io](https://rern.github.io)
 
