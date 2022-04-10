@@ -1,6 +1,6 @@
 **Build packages**
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```
 **+R repo**: [rern.github.io](https://rern.github.io)
 
@@ -30,8 +30,8 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/master/pkgbuild.sh )
 			- No need for Distcc - Compile just packs directories and files to package.
 
 **Cross compile**:
-- [Distcc](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#distcc)
-- [Docker](https://github.com/rern/rern.github.io/blob/master/cross-compile.md#docker)
+- [Distcc](https://github.com/rern/rern.github.io/blob/main/cross-compile.md#distcc)
+- [Docker](https://github.com/rern/rern.github.io/blob/main/cross-compile.md#docker)
 
 **Custom packages**
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)

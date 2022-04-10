@@ -3,7 +3,7 @@ AUR Package Repo
 
 ### Git setup
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/master/AUR/git_setup.sh )
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/AUR/git_setup.sh )
 ```
 
 ### New / Clone

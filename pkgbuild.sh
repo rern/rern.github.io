@@ -69,7 +69,7 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ $? != 0 ]] && exit
 
-[[ ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/master/distcc-install-master.sh | bash -s $clientip
+[[ ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
 pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
