@@ -1,5 +1,6 @@
 **Build packages**
 - On RPi
+- Not for `armv6h` (GCC not up to date)
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```
