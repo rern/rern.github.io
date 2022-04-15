@@ -124,6 +124,7 @@ buildPackage() {
 	echo -e "\n\n\e[46m  \e[0m Start build ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
+	[[ $name == bluez-alsa-git ]] && name=${name/-git}
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit
