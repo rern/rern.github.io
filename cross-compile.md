@@ -126,5 +126,5 @@ scp USER@IP_ADDRESS:/path/to/file.ext .
 - On host - Copy files:
 ```sh
 docker ps -a  # get NAME
-docker cp NAME:/path/to/file .
+docker cp NAME:/path/to/file . # no wildcards
 ```
