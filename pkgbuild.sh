@@ -98,8 +98,8 @@ buildPackage() {
 	elif [[ $name == libmatchbox ]]; then
 		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	fi
-	ver=$( grep ^pkgver PKGBUILD | cut -d= -f2 )
-	rel=$( grep ^pkgrel PKGBUILD | cut -d= -f2 )
+	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
+	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  pkgver:
 " 0 0 $ver )
