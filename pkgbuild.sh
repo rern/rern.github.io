@@ -36,6 +36,7 @@ if [[ $? == 0 ]]; then
 		sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
 	fi
 else
+	nodistcc=1
 	sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
 fi
 
@@ -71,7 +72,7 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
 
 [[ $? != 0 ]] && exit
 
-[[ ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
+[[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
 pkgdepends='base-devel '
 pkgname=${pkgs[$pkg]}
