@@ -29,7 +29,9 @@ if [[ $? == 0 ]]; then
 	sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 				"systemctl stop distccd-arm*; systemctl start distccd-$arch"
 	if [[ $? == 0 ]]; then
-		sed -i 's/\(BUILDENV=(\)!distcc/\1distcc/' /etc/makepkg.conf
+		sed -i -e 's/\(BUILDENV=(\)!distcc/\1distcc/
+' -e 's/^\(DISTCC_HOSTS="\).*/D\1'$ip':3634/8"/
+' /etc/makepkg.conf
 	else
 		sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
 	fi
@@ -97,9 +99,11 @@ buildPackage() {
 	fi
 	ver=$( grep ^pkgver PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel PKGBUILD | cut -d= -f2 )
-	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
+	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  pkgver:
 " 0 0 $ver )
+	[[ $? != 0 ]] && return
+	
 	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  pkgrel:
 " 0 0 $rel )
@@ -116,7 +120,7 @@ buildPackage() {
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
 	
-	echo -e "\e[46m  \e[0m Start build ...\n"
+	echo -e "\n\n\e[46m  \e[0m Start build ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
