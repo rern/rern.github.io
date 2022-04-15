@@ -29,7 +29,9 @@ if [[ $? == 0 ]]; then
 	sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 				"systemctl stop distccd-arm*; systemctl start distccd-$arch"
 	if [[ $? == 0 ]]; then
-		sed -i 's/\(BUILDENV=(\)!distcc/\1distcc/' /etc/makepkg.conf
+		sed -i -e 's/\(BUILDENV=(\)!distcc/\1distcc/
+' -e 's/^\(DISTCC_HOSTS="\).*/D\1'$ip':3634/8"/
+' /etc/makepkg.conf
 	else
 		sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
 	fi
