@@ -120,7 +120,7 @@ buildPackage() {
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
 	
-	echo -e "\n\e[46m  \e[0m Start build ...\n"
+	echo -e "\n\n\e[46m  \e[0m Start build ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
