@@ -62,7 +62,7 @@ declare -A packages=(
 pkgs=( $( echo "${!packages[@]}" | tr ' ' '\n' | sort ) )
 pkgsL=${#pkgs[@]}
 for (( i=0; i < $pkgsL; i++ )); do
-menu+="
+	menu+="
 $i ${pkgs[$i]}"
 done
 
