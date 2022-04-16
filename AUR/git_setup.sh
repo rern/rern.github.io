@@ -29,7 +29,7 @@ systemctl restart sshd
 
 [[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 
-keys=$( dialog "${opt[@]}" --output-fd 1 --nocancel --menu "
+keys=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --menu "
 \Z1Raspberry Pi:\Z0
 " 8 0 0 \
 1 'Use existing keys' \
