@@ -44,6 +44,7 @@ declare -A packages=(
 	[alsaequal]=caps
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluez-alsa-git]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
+	[camilladp]=alsa-lib
 	[cava]=fftw
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
