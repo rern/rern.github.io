@@ -6,11 +6,12 @@ AUR Package Repo
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/AUR/git_setup.sh )
 ```
 
-### New / Clone
+### Git repo
+- New / Existing
 ```sh
 su alarm
 cd
-git clone ssh://aur@aur.archlinux.org/REPONAME.git
+git clone ssh://aur@aur.archlinux.org/REPONAME
 cd REPONAME
 ```
 
