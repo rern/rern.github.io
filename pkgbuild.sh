@@ -45,6 +45,7 @@ declare -A packages=(
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluez-alsa-git]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib cargo pkg-config'
+	[camillagui]=unzip
 	[cava]=fftw
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
@@ -52,6 +53,8 @@ declare -A packages=(
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[nginx-mainline-pushstream]='geoip mailcap'
+	[python-pycamilladsp]=python
+	[python-pycamilladsp-plot]=python
 	[python-rpi-gpio]=python-distribute
 	[python-rplcd]=python
 	[python-smbus2]=python
