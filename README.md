@@ -37,7 +37,11 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 
 **Custom packages**
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)
-- [camilladsp](https://github.com/HEnquist/camilladsp)
+- camilladsp
+	- [camilladsp](https://github.com/HEnquist/camilladsp)
+	- [camillagui](https://github.com/HEnquist/camillagui-backend)
+	- [pycamilladsp](https://github.com/HEnquist/pycamilladsp)
+	- [pycamilladsp-plot](https://github.com/HEnquist/pycamilladsp-plot)
 - [cava](https://github.com/karlstav/cava)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
 - [nginx](https://nginx.org/)
