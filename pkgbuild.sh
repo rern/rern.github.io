@@ -43,7 +43,7 @@ fi
 declare -A packages=(
 	[alsaequal]=caps
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
-	[bluez-alsa-git]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
+	[bluealsa]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib cargo pkg-config'
 	[camillagui]=unzip
 	[cava]=fftw
@@ -95,13 +95,7 @@ buildPackage() {
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 	chown -R alarm:alarm $name
 	cd $name
-	if [[ $name == bluez-alsa-git ]]; then
-		sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
-' -e '/--enable-ofono\|--enable-debug/ s/#//
-' PKGBUILD
-	elif [[ $name == libmatchbox ]]; then
-		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-	fi
+	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
@@ -128,7 +122,6 @@ buildPackage() {
 	echo -e "\n\n\e[46m  \e[0m Start build ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
-	[[ $name == bluez-alsa-git ]] && name=${name/-git}
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
 		exit

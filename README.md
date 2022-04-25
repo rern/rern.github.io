@@ -9,8 +9,8 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
 - Archives
-	- http://tardis.tiny-vps.com/aarm/packages
 	- http://alaa.ad24.cz/packages
+	- http://tardis.tiny-vps.com/aarm/packages
 
 **Arch Linux Arm Sources**:
 - `PKGBUILD`s - https://github.com/archlinuxarm/PKGBUILDs
