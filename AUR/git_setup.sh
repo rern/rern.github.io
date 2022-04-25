@@ -57,6 +57,8 @@ $( cat $dirssh/aur.pub )
 " 24 58
 fi
 chown -R alarm:alarm $dirssh
+chmod 700 $dirssh
+chmod 600 $dirssh/*
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Email:\Z0
