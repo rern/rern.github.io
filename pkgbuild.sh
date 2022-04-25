@@ -96,8 +96,10 @@ buildPackage() {
 	chown -R alarm:alarm $name
 	cd $name
 	if [[ $name == bluez-alsa-git ]]; then
-		sed -i -e 's/^\(pkgname=bluez-alsa\)-git/\1/
-' -e '/--enable-ofono\|--enable-debug/ s/#//
+		sed -i -e '/^pkgname=/ s/-git//
+' -e '/--enable-cli\|--enable-debug\|--enable-ofono/ s/#//
+' -e 's|^source.*|source=(git+https://github.com/Arkq/bluez-alsa)|
+' -e '/prepare()/,/}/ d
 ' PKGBUILD
 	elif [[ $name == libmatchbox ]]; then
 		sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
