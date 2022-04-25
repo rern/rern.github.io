@@ -35,13 +35,13 @@ keys=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --menu "
 1 'Use existing keys' \
 2 'Generate new keys' )
 
+dirssh=/home/alarm/.ssh
 if [[ $keys == 1 ]]; then
 	dialog "${optbox[@]}" --msgbox "
  Copy \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
  Then press OK to continue.
 " 7 58
 else
-	dirssh=/home/alarm/.ssh
 	ssh-keygen -t rsa -f ~/.ssh/aur -q -N ""
 	sed -i 's/= .*$/=/' ~/.ssh/aur.pub # remove trailing USER@HOSTNAME
 	mkdir -p $dirssh
@@ -56,6 +56,7 @@ $( cat $dirssh/aur.pub )
 \Z1Your current password:\Z0 (password)
 " 24 58
 fi
+chown -R alarm:alarm $dirssh
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Email:\Z0
