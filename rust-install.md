@@ -15,8 +15,3 @@ Rust custom install
 - `Modify PATH variable?` - `enter` for `Y`
 - `enter` to start install
 - Exit terminal and restart to activate new `PATH`
-
-- Switch TOOLCHAIN: `stable`/`beta`/`nightly`
-```sh
-rustup default TOOLCHAIN
-```
