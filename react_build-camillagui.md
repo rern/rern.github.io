@@ -15,9 +15,11 @@ node install reactjs
 cd camillagui-1.0.0
 ```
 
-- Edit
-	- `src/index.tsx` - VU meter size, omit dB marks
-	- `src/sidepanel/vumeter.tsx` - Add class to tab panels
+- Edit for CSS
+	- `src/index.tsx`
+		- VU meter size - `<canvas` w230 x h40
+		- Omit dB marks - `drawDbMarkers`, `drawDbMarkerLabels`
+	- `src/sidepanel/vumeter.tsx` - Add class to `TabPanel`
 
 - Compile
 ```sh
