@@ -1,7 +1,7 @@
-React - Build Project
+React - Build `camillagui`
 ---
 
-Compile `camillagui` for deployment
+Compile for deployment
 
 - Install
 ```sh
@@ -9,14 +9,25 @@ pacman -Sy npm
 node install reactjs
 ```
 
-- Download source > compile
+- Download source
 ```sh
 # curl -L https://github.com/HEnquist/camillagui/archive/refs/tags/v1.0.0.tar.gz | bsdtar xf -
 cd camillagui-1.0.0
-npm run build
 ```
 
-- Remove hashes (replace with appended `?v=xxxxxxxxx` by js)
+- Edit
+	- `src/index.tsx` - VU meter size, omit dB marks
+	- `src/sidepanel/vumeter.tsx` - Add class to tab panels
+
+- Compile
+```sh
+npm run build
+# result files in build directory
+```
+
+- Remove hashes from `*.css`, `*.js`
+	- Consistent names across upgrades
+	- On load - appended `?v=xxxxxxxxx` by js instead
 ```sh
 rm build/precache-manifest*.js
 
