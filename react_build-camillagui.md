@@ -17,9 +17,11 @@ cd camillagui-1.0.0
 
 - Edit for CSS
 	- `src/index.tsx`
-		- Change VU meter size - `<canvas` -+ w230 x h40
+		- Change VU meter size - `<canvas` -+ `width = '230px'`, -+`height = '40px'`
 		- Omit dB marks - + `//drawDbMarkers`, + `//drawDbMarkerLabels`, + `//console.log`
 		- Add Tooltip delay - `<ReactTooltip` + `delayShow={1000}`
+	- `src/compactview.tsx`
+		- Add class - `className="tabpanel"` + `compactview`
 	- `src/sidepanel/vumeter.tsx`
 		- Add class - `TabPanel` + `class=TABNAME`
 
