@@ -16,7 +16,7 @@ cd camillagui-1.0.0
 npm run build
 ```
 
-- Remove hashes
+- Remove hashes (replace with appended `?v=xxxxxxxxx` by js)
 ```sh
 rm build/precache-manifest*.js
 
