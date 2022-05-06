@@ -15,7 +15,7 @@ node install reactjs
 cd camillagui-1.0.0
 ```
 
-- Edit for CSS
+- Edit for custom css
 	- `src/index.tsx`
 		- Change VU meter size - `<canvas` -+ `width = '230px'`, -+`height = '40px'`
 		- Omit dB marks - + `//drawDbMarkers`, + `//drawDbMarkerLabels`, + `//console.log`
