@@ -18,7 +18,7 @@ cd camillagui-1.0.0
 - Edit for CSS
 	- `src/index.tsx`
 		- VU meter size - `<canvas` w230 x h40
-		- Omit dB marks - `drawDbMarkers`, `drawDbMarkerLabels`
+		- Omit dB marks - `drawDbMarkers`, `drawDbMarkerLabels`, `console.log`
 	- `src/sidepanel/vumeter.tsx` - Add class to `TabPanel`
 
 - Compile
