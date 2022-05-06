@@ -30,7 +30,7 @@ npm run build
 ```
 
 - Remove hashes from `*.css`, `*.js`
-	- Consistent names across upgrades
+	- Consistent names in custom `index.html` across upgrades
 	- On load - appended `?v=xxxxxxxxx` by js instead
 ```sh
 rm build/precache-manifest*.js
