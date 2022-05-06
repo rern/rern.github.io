@@ -41,5 +41,6 @@ readarray -t files <<< $( find build/static -name 2.*.* -o -name main.*.* )
 for file in "${files[@]}"; do
 	newfile=$( echo $file | sed 's/\..*\(.css.*\)/\1/; s/\..*\(.js.*\)/\1/' )
 	mv $file $newfile
+	[[ ${newfile: -3} != map ]] && sed -i '/sourceMappingURL/ s/\..*\(.css.*\)/\1/; s/\..*\(.js.*\)/\1/' $newfile
 done
 ```
