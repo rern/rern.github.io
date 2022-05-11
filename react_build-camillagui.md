@@ -1,6 +1,6 @@
 React - Build `camillagui`
 ---
-
+Require minimum 2GB RAM
 - Install
 ```sh
 curl -L https://github.com/HEnquist/camillagui/archive/refs/tags/v1.0.0.tar.gz | bsdtar xf -
