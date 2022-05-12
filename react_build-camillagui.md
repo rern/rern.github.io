@@ -6,7 +6,8 @@ Require minimum 2GB RAM (Only RPi 4 has more than 1GB)
 curl -L https://github.com/HEnquist/camillagui/archive/refs/tags/v1.0.0.tar.gz | bsdtar xf -
 cd camillagui-1.0.0
 pacman -Sy npm
-npm install reactjs # or symlink from another directory
+npm install reactjs
+npm audit fix --force
 ```
 
 
