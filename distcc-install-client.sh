@@ -14,7 +14,7 @@ pacman -Sy --noconfirm distcc
 # cd distccd-alarm
 # makepkg
 for arch in armv6h armv7h armv8; do
-	wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-10.2.0.20200823-3-x86_64.pkg.tar.zst
+	wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-11.2.0.20200823-3-x86_64.pkg.tar.zst
 	pacman -U distccd-alarm-$arch
 done
 rm distccd-alarm-*
