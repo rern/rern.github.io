@@ -9,12 +9,13 @@ sleep 1
 
 pacman -Sy --noconfirm distcc
 
-# build toolchains:
+# build toolchain packages:
 # curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
 # cd distccd-alarm
 # makepkg
-for arch in armv6h armv7h armv8; do
-	wget https://github.com/rern/distcc-alarm/releases/download/20200823/distccd-alarm-$arch-11.2.0.20200823-3-x86_64.pkg.tar.zst
+
+for arch in armv7h armv8; do
+	wget https://github.com/rern/rern.github.io/releases/download/20210307/distccd-alarm-$arch-11.2.0.20220216-1-x86_64.pkg.tar.zst
 	pacman -U distccd-alarm-$arch
 done
 rm distccd-alarm-*
