@@ -6,8 +6,8 @@
 ```sh
 dircamillagui=/srv/http/settings/camillagui
 mkdir -p $dircamillagui
-curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - -C $dircamillagui
-rm $dircamillagui/{.*,*.md,*.txt}
+curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - --strip=1 -C $dircamillagui
+rm -rf $dircamillagui/{.*,*.md,*.txt} 2> /dev/null
 ```
 
 ### Frontend - React
