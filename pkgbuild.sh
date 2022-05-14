@@ -45,6 +45,7 @@ declare -A packages=(
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluealsa]='bluez bluez-libs bluez-utils git libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib pkg-config'
+	[camillagui-backend]=python
 	[cava]=fftw
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
