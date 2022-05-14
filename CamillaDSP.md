@@ -1,11 +1,11 @@
 CamillaDSP
 ---
 
-- Build package
+### Build package
 	```sh
 	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
-	- `camilladsp` - requires recent version of `Rust`:
+	- `camilladsp` - Binary - requires recent version of `Rust`:
 		```sh
 		su alarm
 		cd
@@ -19,10 +19,11 @@ CamillaDSP
 		- `Modify PATH variable?` - `enter` for `Y`
 		- `enter` to start install
 		- Exit terminal and restart to activate new `PATH`
-	- `camillagui-backend` - gui
-	- `python-pycamilladsp` - gui
-	- `python-pycamilladsp-plot` - gui
-- Build GUI
+	- `camillagui-backend` - GUI
+	- `python-pycamilladsp` - GUI
+	- `python-pycamilladsp-plot` - GUI
+
+### Build GUI frontend
 	- `camillagui` - requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 		```sh
 		# forked:
