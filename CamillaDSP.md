@@ -21,6 +21,7 @@ CamillaDSP
 	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 	- `camilladsp` - binary
+	- `camillagui-backend` - gui
 	- `python-pycamilladsp` - gui
 	- `python-pycamilladsp-plot` - gui
 
