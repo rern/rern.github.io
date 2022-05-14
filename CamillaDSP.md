@@ -5,19 +5,13 @@ CamillaDSP
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```
-- `camilladsp` - Binary - requires recent version of `Rust`:
+- `camilladsp` - Binary - requires `Rust >= 1.61`:
 	```sh
 	su alarm
 	cd
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain beta
 	```
-	- Type `2` for `Customize installation`
-	- `Default host triple?` - `[Enter]` for default
-	- `Default toolchain?` - Type `beta`
-	- `Profile (which tools and data to install)?` - `[Enter]` for default
-	- `Modify PATH variable?` - `[Enter]` for `Y`
-	- `[Enter]` to start install
-	- Exit terminal and restart to activate new `PATH`
+	- Restart terminal to activate new `PATH`
 - `camillagui-backend` - GUI
 - `python-pycamilladsp` - GUI
 - `python-pycamilladsp-plot` - GUI
@@ -27,7 +21,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```sh
 	su
 	cd
-	pacman -Sy --needed npm
+	pacman -Sy --needed --noconfirm  npm
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/1.0.0.tar.gz | bsdtar xf -
 	cd camillagui-1.0.0
 	npm install reactjs
