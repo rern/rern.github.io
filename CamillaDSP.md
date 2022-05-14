@@ -1,8 +1,17 @@
 CamillaDSP
 ---
 
-### `camilladsp`
-- v1.0.0 needs recent version of `Rust`
+- Build package
+	```sh
+	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
+	```
+	- `camilladsp` - requires [recent version of Rust](#install-recent-version-of-rust)
+	- `camillagui-backend` - gui
+	- `python-pycamilladsp` - gui
+	- `python-pycamilladsp-plot` - gui
+	- `camillagui` - requires [React](#install-react)
+	
+### Install recent version of `Rust`
 	```sh
 	su alarm
 	cd
@@ -16,26 +25,8 @@ CamillaDSP
 	- `Modify PATH variable?` - `enter` for `Y`
 	- `enter` to start install
 	- Exit terminal and restart to activate new `PATH`
-- Build package
-	```sh
-	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
-	```
-	- `camilladsp` - binary
-	- `camillagui-backend` - gui
-	- `python-pycamilladsp` - gui
-	- `python-pycamilladsp-plot` - gui
 
-### `camillagui`
-- **Backend - Python**
-- `camillagui-backend`
-```sh
-dircamillagui=/srv/http/settings/camillagui
-mkdir -p $dircamillagui
-curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - --strip=1 -C $dircamillagui
-rm -rf $dircamillagui/{.*,*.md,*.txt} 2> /dev/null
-```
-
-- **Frontend - React**
+### Install `React`
 Require minimum 2GB RAM (Only RPi 4 has more than 1GB)
 ```sh
 curl -L https://github.com/HEnquist/camillagui/archive/refs/tags/v1.0.0.tar.gz | bsdtar xf -
@@ -48,3 +39,11 @@ npm audit fix --force
 	- Edit
 	- Build: `npm run build`
 	- Deploy: `cp -rf build $dircamillagui`
+
+- `camillagui-backend`
+```sh
+dircamillagui=/srv/http/settings/camillagui
+mkdir -p $dircamillagui
+curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - --strip=1 -C $dircamillagui
+rm -rf $dircamillagui/{.*,*.md,*.txt} 2> /dev/null
+```
