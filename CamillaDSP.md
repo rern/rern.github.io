@@ -16,24 +16,23 @@ CamillaDSP
 	- `Modify PATH variable?` - `enter` for `Y`
 	- `enter` to start install
 	- Exit terminal and restart to activate new `PATH`
-- Package
-```sh
-pacman -Sy --needed base-devel
-su alarm
-curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/camilladsp.tar.gz | bsdtar xf -
-cd camilladsp
-makepkg
-```
+- Build package
+	```sh
+	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
+	```
+	- `camilladsp` - binary
+	- `python-pycamilladsp` - gui
+	- `python-pycamilladsp-plot` - gui
 
 ### `camillagui`
 - **Backend - Python**
-	- `camillagui-backend`
-	```sh
-	dircamillagui=/srv/http/settings/camillagui
-	mkdir -p $dircamillagui
-	curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - --strip=1 -C $dircamillagui
-	rm -rf $dircamillagui/{.*,*.md,*.txt} 2> /dev/null
-	```
+- `camillagui-backend`
+```sh
+dircamillagui=/srv/http/settings/camillagui
+mkdir -p $dircamillagui
+curl -L https://github.com/HEnquist/camillagui-backend/archive/refs/tags/v1.0.0-rc2.tar.gz | bsdtar xf - --strip=1 -C $dircamillagui
+rm -rf $dircamillagui/{.*,*.md,*.txt} 2> /dev/null
+```
 
 - **Frontend - React**
 Require minimum 2GB RAM (Only RPi 4 has more than 1GB)
