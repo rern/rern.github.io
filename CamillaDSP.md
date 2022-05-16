@@ -28,3 +28,10 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	npm audit fix --force
 	npm run build
 	```
+
+- Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
+```sh
+# while playing - get from loopback cardN/pcmNp
+card=$( aplay -l | grep 'Loopback.*device 0' | sed 's/card \(.\): .*/\1/' )
+grep -r ^format: /proc/asound/card$card/pcm${card}p | sed 's|.*/\(card.\).*:\(format.*\)|\1 \2|'
+```
