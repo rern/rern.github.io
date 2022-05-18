@@ -32,6 +32,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	# build
 	npm run build
 	```
+	- Unminified codes: Developer tools > `URL:5000` > `gui` > `static`
 
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
 ```sh
