@@ -17,7 +17,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 - `python-pycamilladsp-plot` - GUI
 
 ### Build GUI frontend
-- `camillagui` - requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
+- `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 	```sh
 	su
 	cd
@@ -26,16 +26,22 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	cd camillagui-1.0.0
 	npm install reactjs
 	# >> NO: fix vulnerables - npm audit fix
-	
-	# development server
-	npm start
-	# >> stdout: Compiled successfully! > URL:PORT
-	
-	# build
-	npm run build
 	```
+	
+- Development server
+	- `npm start`
+	- `Starting the development server...` > `Compiled successfully!` - get `SERVER_URL:PORT` for browser
+	- Any changes recompile immediately
+	- Custom CSS files:
+		- Copy to `src`
+		- `index.tsx` - Add `import "./NAME.css"`
+	
+- Build
+	- `npm run build`
+	- Deployment files in `build` directory
 	- Unminified codes: Developer tools > `SERVER_IP_ADDRESS:5000` > `gui` > `static`
 
+### Tips
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
 ```sh
 # while playing - get from loopback cardN/pcmNp
