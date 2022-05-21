@@ -25,9 +25,12 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/1.0.0.tar.gz | bsdtar xf -
 	cd camillagui-1.0.0
 	npm install reactjs
-	# NO: fix vulnerables - npm audit fix
-	# restore versioned dependency tree
-	wget https://github.com/HEnquist/camillagui/raw/master/package-lock.json -O package-lock.json
+	# >> NO: fix vulnerables - npm audit fix
+	
+	# development server
+	npm start
+	# >> on complie finished - url: SERVER_IP_ADDRESS:3000
+	
 	# build
 	npm run build
 	```
