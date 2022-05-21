@@ -29,7 +29,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 	
 - Development server
-	- Open normal CamillaDSP page to force status output
+	- `systemctl start camilladsp camillagui` to enable status
 	- `npm start`
 	- `Starting the development server...` > `Compiled successfully!` - get `SERVER_URL:PORT` for browser
 	- Any changes recompile immediately
