@@ -27,14 +27,14 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	npm install reactjs
 	# >> NO: fix vulnerables - npm audit fix
 	
-	# development server
+	# development server at port:3000
 	npm start
 	# >> on complie finished - url: SERVER_IP_ADDRESS:3000
 	
 	# build
 	npm run build
 	```
-	- Unminified codes: Developer tools > `URL:5000` > `gui` > `static`
+	- Unminified codes: Developer tools > `SERVER_IP_ADDRESS:5000` > `gui` > `static`
 
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
 ```sh
