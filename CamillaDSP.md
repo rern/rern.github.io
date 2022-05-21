@@ -27,9 +27,9 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	npm install reactjs
 	# >> NO: fix vulnerables - npm audit fix
 	
-	# development server at port:3000
+	# development server
 	npm start
-	# >> on complie finished - url: SERVER_IP_ADDRESS:3000
+	# >> stdout: Compiled successfully! > URL:PORT
 	
 	# build
 	npm run build
