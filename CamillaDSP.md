@@ -35,6 +35,9 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	- Custom CSS files:
 		- Copy to `src`
 		- `index.tsx` - Add `import "./NAME.css"`
+	- Custom font-face, images, js
+		- Copy to `public`
+		- `public/index.html` - Add `%PUBLIC_URL%/NAME.EXT`
 	
 - Build
 	- `npm run build`
