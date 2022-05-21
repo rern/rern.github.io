@@ -29,15 +29,18 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 	
 - Development server
+	- Open normal CamillaDSP page to force status output
 	- `npm start`
 	- `Starting the development server...` > `Compiled successfully!` - get `SERVER_URL:PORT` for browser
 	- Any changes recompile immediately
 	- Custom CSS files:
 		- Copy to `src`
 		- `index.tsx` - Add `import "./NAME.css"`
-	- Custom font-face, images, js
+	- Custom css, font-face, js, images
 		- Copy to `public`
-		- `public/index.html` - Add `%PUBLIC_URL%/NAME.EXT`
+		- `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
+		- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` (after `#root` = after `main.css`)
+		- `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
 	- `npm run build`
