@@ -22,30 +22,37 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	su
 	cd
 	pacman -Sy --needed --noconfirm  npm
-	curl -L https://github.com/rern/camillagui/archive/refs/tags/1.0.0.tar.gz | bsdtar xf -
-	cd camillagui-1.0.0
+	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
+	cd camillagui-RELEASE
 	npm install reactjs
 	# >> NO: fix vulnerables - npm audit fix
 	```
 	
 - Development server
-	- `systemctl start camilladsp camillagui` to enable status
-	- `npm start`
-	- `Starting the development server...` > `Compiled successfully!` - get `SERVER_URL:PORT` for browser
+	```
+	systemctl start camilladsp camillagui
+	npm start
+	
+	> Starting the development server...
+
+	> Compiled successfully!
+
+	> You can now view camillagui in the browser.
+
+	> Local:            http://localhost:3000
+	> On Your Network:  http://192.168.1.4:3000
+	```
 	- Any changes recompile immediately
-	- Custom CSS files:
-		- Copy to `src`
-		- `index.tsx` - Add `import "./NAME.css"`
-	- Custom css, font-face, js, images
-		- Copy to `public`
-		- `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
-		- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` (after `#root` = after `main.css`)
-		- `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
+	- `public/...` for custom css, font-face, js, images
+		- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
+		- css:
+			- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
+			- @font-face: `../fonts/rern.woff2` - relative path
+		- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
 	- `npm run build`
 	- Deployment files in `build` directory
-	- Unminified codes: Developer tools > `SERVER_IP_ADDRESS:5000` > `gui` > `static`
 
 ### Tips
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
