@@ -42,7 +42,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	> Local:            http://localhost:3000
 	> On Your Network:  http://192.168.1.4:3000
 	```
-	- Any changes recompile immediately
+	- Any changes to files recompile and refresh browser immediately
 	- `public/...` for custom css, font-face, js, images
 		- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
 		- css:
