@@ -1,7 +1,7 @@
 CamillaDSP
 ---
 
-### Build package
+### Build binary and Python libraries
 - `camilladsp` - Binary
 	```sh
 	su alarm
