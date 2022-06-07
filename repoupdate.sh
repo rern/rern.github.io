@@ -2,9 +2,11 @@
 
 rm $0
 
+currentdir=$( pwd )
+
 updateRepo() {
 	# recreate database
-	cd /home/x/BIG/RPi/Git/rern.github.io/$1
+	cd $currentdir/Git/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
@@ -51,13 +53,23 @@ if [[ ! $aarch64 && ! $armv7h && ! $armv6h ]]; then
 	exit
 fi
 
+localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+ Local \Z1rern.github.io\Z0 IP:
+" 0 0 '192.168.1.9' )
+
 clear
 
-currentdir=$( pwd )
+if [[ ! -e $currentdir/Git/aarch64 ]]; then
+	mkdir -p $currentdir/Git
+	mount -t cifs //$localip/rern.github.io $currentdir/Git
+fi
 
 [[ $aarch64 ]] && updateRepo aarch64
 [[ $armv7h ]] && updateRepo armv7h
 [[ $armv6h ]] && updateRepo armv6h
+
+umount -l $currentdir/Git
+rmdir $currentdir/Git
 
 cd "$currentdir"
 
