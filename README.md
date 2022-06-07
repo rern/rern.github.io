@@ -1,9 +1,14 @@
 **Build packages**
-- On RPi
-- `armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.
+- On RPi (`armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.)
+- Build
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```
+- Update repo
+```sh
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
+```
+
 **+R repo**: [rern.github.io](https://rern.github.io)
 
 **Arch Linux Arm Repo**:
