@@ -2,9 +2,11 @@
 
 rm $0
 
+currentdir=$( pwd )
+
 updateRepo() {
 	# recreate database
-	cd /mnt/Git/$1
+	cd $currentdir/Git/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
@@ -57,20 +59,18 @@ localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
 
 clear
 
-if [[ ! -e /mnt/Git/aarch64 ]]; then
-	mkdir -p /mnt/Git
-	mount -t cifs //$localip/rern.github.io /mnt/Git
+if [[ ! -e $currentdir/Git/aarch64 ]]; then
+	mkdir -p $currentdir/Git
+	mount -t cifs //$localip/rern.github.io $currentdir/Git
 fi
-
-currentdir=$( pwd )
 
 [[ $aarch64 ]] && updateRepo aarch64
 [[ $armv7h ]] && updateRepo armv7h
 [[ $armv6h ]] && updateRepo armv6h
 
-cd "$currentdir"
+umount -l $currentdir/Git
+rmdir $currentdir/Git
 
-umount -l /mnt/Git
-rmdir /mnt/Git
+cd "$currentdir"
 
 dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
