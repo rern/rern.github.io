@@ -41,16 +41,12 @@ Cross-Compiling
 
 ### Docker
 - Setup
-	- x86 PC
+	- x86 PC - build and install:
+		- [`binfmt-qemu-static`](https://aur.archlinux.org/packages/binfmt-qemu-static)
+		- [`glib2-static`](https://aur.archlinux.org/packages/glib2-static)
+		- [`pcre-static`](https://aur.archlinux.org/packages/pcre-static)
+		- [`qemu-user-static`](https://aur.archlinux.org/packages/qemu-user-static)
 	```sh
-	# pakages for running ARM images on x86
-	path=https://github.com/rern/rern.github.io/releases/download/20210307
-	wget $path/binfmt-qemu-static-20210119-1-any.pkg.tar.zst
-	wget $path/glib2-static-2.66.6-1-x86_64.pkg.tar.zst
-	wget $path/pcre-static-8.44-5-x86_64.pkg.tar.zst
-	wget $path/qemu-user-static-5.2.0-1-x86_64.pkg.tar.zst
-	pacman -U *.zst
-
 	pacman -Sy docker
 
 	systemctl start docker
