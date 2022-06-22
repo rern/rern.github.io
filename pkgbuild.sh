@@ -49,6 +49,7 @@ declare -A packages=(
 	[cava]=fftw
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
+	[linux-rpi-legacy]='bc kmod inetutils'
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
