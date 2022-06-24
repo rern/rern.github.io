@@ -2,7 +2,7 @@ Cross-Compiling
 ---
 - [Distcc](#distcc)
 - [Docker](#docker)
-- [crosstool-NG](#crosstool-ng)
+- [crosstool-NG](#crosstool-ng) for Distcc
 
 ### Selection
 - aarch64 / armv7h
@@ -126,16 +126,16 @@ docker ps -a  # get NAME
 docker cp NAME:/path/to/file . # no wildcards
 ```
 
-### crosstool-NG
-On Linux host:
-- Install
+### crosstool-NG for Distcc
+- On Linux host:
 ```sh
 pacman -S crosstool-ng
-su user
+su USER
 cd
 mkdir build
 cd build
 wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
+# armv7h|aarch64 - wget http://archlinuxarm.org/builder/xtools/xtools-dotconfig-[v7|v8]
 ct-ng oldconfig
 # review all settings and set all packages to latest versions if any (glibc 2.35 might failed)
 ct-ng build
