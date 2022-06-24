@@ -2,7 +2,7 @@ Cross-Compiling
 ---
 - [Distcc](#distcc)
 - [Docker](#docker)
-- [crosstool-NG](#crosstoolng)
+- [crosstool-NG](#crosstool-ng)
 
 ### Selection
 - aarch64 / armv7h
