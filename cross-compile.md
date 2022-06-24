@@ -126,7 +126,8 @@ docker ps -a  # get NAME
 docker cp NAME:/path/to/file . # no wildcards
 ```
 
-### crosstool-NG for armv6h Distcc
+### crosstool-NG
+(For armv6h Distcc)
 - On Linux host:
 ```sh
 pacman -S crosstool-ng
