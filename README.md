@@ -20,8 +20,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 **Arch Linux Arm Sources**:
 - `PKGBUILD`s - https://github.com/archlinuxarm/PKGBUILDs
 - Not in `https://github.com/archlinuxarm/PKGBUILDs`:
-  - List - https://github.com/archlinux/svntogit-community
-  - Source - `https://github.com/archlinux/svntogit-community/blob/master/PKG_NAME`
+  - Source - `https://github.com/archlinux/svntogit-packages/tree/packages/PACKAGE_NAME`
 - Obsolete ARMv6
 	- Set mirror server `/etc/pacman.d/mirrorlist`:
 		- `Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo` (2022/02/06 as the latest)
