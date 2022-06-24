@@ -137,6 +137,6 @@ mkdir build
 cd build
 wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
 ct-ng oldconfig
-# review all settings and set all packages to latest versions if any
+# review all settings and set all packages to latest versions if any (glibc 2.35 might failed)
 ct-ng build
 ```
