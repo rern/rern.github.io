@@ -144,6 +144,6 @@ cd build
 wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6
 cp xtools-dotconfig-v6 .config
 ct-ng oldconfig
-# review all settings / set packages to latest versions
+# review all settings and set all packages to latest versions if any
 ct-ng build
 ```
