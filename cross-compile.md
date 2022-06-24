@@ -1,8 +1,8 @@
 Cross-Compiling
 ---
 - [Distcc](#distcc)
+    - [crosstool-NG](#crosstool-ng) for armv6h Distcc
 - [Docker](#docker)
-- [crosstool-NG](#crosstool-ng) for Distcc
 
 ### Selection
 - aarch64 / armv7h
@@ -126,17 +126,24 @@ docker ps -a  # get NAME
 docker cp NAME:/path/to/file . # no wildcards
 ```
 
-### crosstool-NG for Distcc
+### crosstool-NG for armv6h Distcc
 - On Linux host:
 ```sh
 pacman -S crosstool-ng
-su USER
+su $USER
 cd
 mkdir build
 cd build
 wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
-# armv7h|aarch64 - wget http://archlinuxarm.org/builder/xtools/xtools-dotconfig-[v7|v8]
 ct-ng oldconfig
-# review all settings and set all packages to latest versions if any (glibc 2.35 might failed)
+# set all packages to latest versions if any (glibc 2.35 might failed)
 ct-ng build
+
+files=( $( ls x-tools6h/arm-unknown-linux-gnueabihf/bin ) )
+for file in ${files[@]}; do
+    ln -s $file{,#arm-unknown-linux-gnueabihf-}
+done
+
+# tarball for AUR package
+bsdtar cjpf x-tools6h-$DATE.tar.xz x-tools6h
 ```
