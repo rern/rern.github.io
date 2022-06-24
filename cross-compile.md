@@ -2,6 +2,7 @@ Cross-Compiling
 ---
 - [Distcc](#distcc)
 - [Docker](#docker)
+- [crosstool-NG](#crosstoolng)
 
 ### Selection
 - aarch64 / armv7h
@@ -123,4 +124,26 @@ scp USER@IP_ADDRESS:/path/to/file.ext .
 ```sh
 docker ps -a  # get NAME
 docker cp NAME:/path/to/file . # no wildcards
+```
+
+### crosstool-NG
+On Linux host:
+- Install
+```sh
+cd
+version=1.25.0
+wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$version.tar.xz
+bsdtar xf crosstool-ng-$version.tar.xz
+cd crosstool-ng-$version
+./configure --prefix=/home/x/ct-ng
+make
+make install
+export PATH=$PATH:/home/x/ct-ng/bin
+mkdir build
+cd build
+wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6
+cp xtools-dotconfig-v6 .config
+ct-ng oldconfig
+# review all settings / set packages to latest versions
+ct-ng build
 ```
