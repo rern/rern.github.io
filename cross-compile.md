@@ -130,19 +130,12 @@ docker cp NAME:/path/to/file . # no wildcards
 On Linux host:
 - Install
 ```sh
+pacman -S crosstool-ng
+su user
 cd
-version=1.25.0
-wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$version.tar.xz
-bsdtar xf crosstool-ng-$version.tar.xz
-cd crosstool-ng-$version
-./configure --prefix=/home/x/ct-ng
-make
-make install
-export PATH=$PATH:/home/x/ct-ng/bin
 mkdir build
 cd build
-wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6
-cp xtools-dotconfig-v6 .config
+wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
 ct-ng oldconfig
 # review all settings and set all packages to latest versions if any
 ct-ng build
