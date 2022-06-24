@@ -1,21 +1,17 @@
-# Maintainer: graysky <graysky@archlinux.us>
-# Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
-# Maintainer: Oleg Rakhmanov <oleg@archlinuxarm.org>
-# Maintainer: Dave Higham <pepedog@archlinuxarm.org>
-# Contributer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Maintainer: rern <rernrern@gmail.us>
 
 buildarch=20
 
 pkgbase=linux-rpi-legacy
-_commit=1fe617a917eac75800a8174373b3c0a5c1df26e1
+_commit=b34bf3273cfe492daa04fc57eb88782df1714a66
 _srcname=linux-${_commit}
 _kernelname=${pkgbase#linux}
 _desc="RPi 1/Zero/Zero W only"
-pkgver=5.15.30
-pkgrel=3
+pkgver=5.15.48
+pkgrel=1
 pkgdesc='Linux'
 url="http://www.kernel.org/"
-arch=(armv6h armv6h armv7h)
+arch=(armv6h armv7h)
 license=(GPL2)
 makedepends=(
   bc kmod inetutils
@@ -29,7 +25,7 @@ source=("linux-$pkgver-${_commit:0:10}.tar.gz::https://github.com/raspberrypi/li
         60-linux.hook
         90-linux.hook
 )
-md5sums=('0f31de4e4a03115db47bfa63adc4fb97'
+md5sums=('42d49846a4a9b2612d0b958cee04dc4c'
          '31c02f4518d46deb5f0c2ad1f8b083cd'
          '7c2cace68dd229483b28ba7147347811'
          '8c9f4df9503130411595ddd7b482d885'
