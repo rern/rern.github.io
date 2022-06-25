@@ -10,7 +10,7 @@ su $USER
 cd
 mkdir build
 cd build
-wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
+wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
 
 # load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
 ct-ng oldconfig
