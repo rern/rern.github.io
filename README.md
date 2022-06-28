@@ -27,13 +27,14 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 		- `Server = http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo` (2022/01/08 as the latest)
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 		- Download GitHub specific directory: https://download-directory.github.io/
-		- Kernel: [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy)
-			- No Distcc
-			- Compile on ARMv6 Docker (faster than native)
-		- Bootloader: [`raspberrypi-bootloader`](https://archlinuxarm.org/packages/any/raspberrypi-bootloader)
-			- Either package for `armv7h` or `aarch64` can be used. (`any` package)
-		- Firmware: [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware)
-			- No need for Distcc - Compile just packs directories and files to package.
+	- Kernel and firmware
+		- `firmware-raspberrypi` - `any`
+		- `linux-api-headers` - `any`
+		- `linux-firmware` - `any`
+		- `linux-firmware-whence` - `any`
+		- [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy) - `armv6h`
+		- `raspberrypi-bootloader` - `any`
+		- [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware) - `armv6h`
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/main/cross-compile.md#distcc)
