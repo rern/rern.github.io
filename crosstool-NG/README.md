@@ -5,16 +5,23 @@ For armv6h Distcc
 
 **Build**
 ```sh
-pacman -S crosstool-ng
+# build crosstool-ng binary on armv6h
 su $USER
 cd
+wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
+cd crosstool-ng-$VERSION
+./configure --prefix=/usr
+make
+make install
+
+# configure
 mkdir build
 cd build
-wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
-
 # load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
+wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
 ct-ng oldconfig
 
+# build toolchain
 ct-ng build
 
 # set symlinks
