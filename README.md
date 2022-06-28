@@ -28,13 +28,13 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 		- Download GitHub specific directory: https://download-directory.github.io/
 	- Kernel and firmware
-		- `firmware-raspberrypi` - `any` package
-		- `linux-api-headers` - `any` package
-		- `linux-firmware` - `any` package
-		- `linux-firmware-whence` - `any` package
-		- [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy)
-		- `raspberrypi-bootloader` - `any` package
-		- [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware)
+		- `firmware-raspberrypi` - `any`
+		- `linux-api-headers` - `any`
+		- `linux-firmware` - `any`
+		- `linux-firmware-whence` - `any`
+		- [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy) - `armv6h`
+		- `raspberrypi-bootloader` - `any`
+		- [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware) - `armv6h`
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/main/cross-compile.md#distcc)
