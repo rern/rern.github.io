@@ -1,7 +1,7 @@
 crosstool-NG
 ---
 
-For armv6h Distcc
+For armv6h Distcc (Version 10.2.0: [distccd-alarm-armv6h](https://github.com/rern/rern.github.io/tree/main/crosstool-NG/distccd-alarm-armv6h))
 
 **Build**
 ```sh
