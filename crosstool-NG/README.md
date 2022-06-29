@@ -1,9 +1,18 @@
 crosstool-NG
 ---
+**`armv7h` `aarch64`**
+- [distccd-alarm](https://aur.archlinux.org/pkgbase/distccd-alarm)
+```sh
+su $USER
+cd
+curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
+cd distccd-alarm
+makepkg
+```
 
-For armv6h Distcc (Version 10.2.0: [distccd-alarm-armv6h](https://github.com/rern/rern.github.io/tree/main/crosstool-NG/distccd-alarm-armv6h))
-
-**Build**
+**`armv6h`**
+- [distccd-alarm-armv6h-10.2.0](https://github.com/rern/rern.github.io/tree/main/crosstool-NG/distccd-alarm-armv6h)
+- Latest version
 ```sh
 # build crosstool-ng binary on armv6h
 su $USER
