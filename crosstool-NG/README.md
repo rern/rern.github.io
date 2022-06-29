@@ -18,7 +18,7 @@ make install
 mkdir build
 cd build
 # load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
-wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
+wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
 ct-ng oldconfig
 
 # build toolchain
