@@ -1,14 +1,11 @@
 **Build packages**
-- On RPi (`armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.)
-	- Some packages need swapfile:
-		- upmpdcli
-	```sh
-	dd if=/dev/zero of=/swapfile bs=1M count=2G status=progress
-	mkswap -U clear /swapfile
-	swapon /swapfile
-	
-	echo /swapfile none swap defaults 0 0 >> /etc/fstab
-	```
+- On RPi
+	- RPi Zero: Some packages need swapfile: (`upmpdcli`)
+		- Gparted > Resize > Create 4GB `linux-swap` partition
+		```sh
+		partuuid=$( blkid /dev/mmcblk0p3 -o value | tail -1 )
+		echo PARTUUID=$partuuid  swap   swap  defaults          0  0 > /etc/fstab
+		```
 - Build
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
