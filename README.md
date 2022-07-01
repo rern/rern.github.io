@@ -3,7 +3,7 @@
 	- Some packages need swapfile:
 		- upmpdcli
 	```sh
-	fallocate -l 2G /swapfile
+	fallocate -l 4G /swapfile
 	mkswap /swapfile
 	swapon /swapfile
 	```
