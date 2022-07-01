@@ -1,5 +1,11 @@
 **Build packages**
 - On RPi (`armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.)
+	- if necessary, create swapfile:
+	```sh
+	fallocate -l 2G /swapfile
+	mkswap /swapfile
+	swapon /swapfile
+	```
 - Build
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
