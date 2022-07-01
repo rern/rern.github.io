@@ -1,5 +1,14 @@
 **Build packages**
 - On RPi (`armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.)
+	- Some packages need swapfile:
+		- upmpdcli
+	```sh
+	dd if=/dev/zero of=/swapfile bs=1M count=2G status=progress
+	mkswap -U clear /swapfile
+	swapon /swapfile
+	
+	echo /swapfile none swap defaults 0 0 >> /etc/fstab
+	```
 - Build
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
