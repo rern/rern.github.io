@@ -3,9 +3,11 @@
 	- Some packages need swapfile:
 		- upmpdcli
 	```sh
-	fallocate -l 4G /swapfile
-	mkswap /swapfile
+	dd if=/dev/zero of=/swapfile bs=1M count=2G status=progress
+	mkswap -U clear /swapfile
 	swapon /swapfile
+	
+	echo /swapfile none swap defaults 0 0 >> /etc/fstab
 	```
 - Build
 ```sh
