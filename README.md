@@ -1,6 +1,7 @@
 **Build packages**
 - On RPi (`armv6h`: Run manually on Docker. `gcc` on RPi0,1 is not up to date.)
-	- if necessary, create swapfile:
+	- Some packages need swapfile:
+		- upmpdcli
 	```sh
 	fallocate -l 2G /swapfile
 	mkswap /swapfile
