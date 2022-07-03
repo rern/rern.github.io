@@ -1,6 +1,6 @@
 **Build packages**
 - On RPi
-	- RPi Zero: Some packages need swapfile: (`upmpdcli`)
+	- RPi Zero: Setup swap partition (Needed by: `gcc` `upmpdcli`)
 		- Gparted > Resize > Create 4GB `linux-swap` partition
 		```sh
 		partuuid=$( blkid /dev/mmcblk0p3 -o value | tail -1 )
