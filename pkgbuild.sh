@@ -59,6 +59,7 @@ declare -A packages=(
 	[python-rpi-gpio]=python-distribute
 	[python-rplcd]=python
 	[python-smbus2]=python
+	[rtsp-simple-server]=go
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
