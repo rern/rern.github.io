@@ -47,6 +47,7 @@ declare -A packages=(
 	[camilladsp]='alsa-lib pkg-config'
 	[camillagui-backend]=python
 	[cava]=fftw
+	[dab-scanner]='cmake rtl-sdr'
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
 	[linux-rpi-legacy]='bc kmod inetutils'
