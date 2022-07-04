@@ -95,10 +95,10 @@ currentdir=$PWD
 buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	cd /home/alarm
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
-	chown -R alarm:alarm $name
+	sudo -u alarm curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 	cd $name
 	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+	[[ $name == rtsp-simple-server ]] && sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
