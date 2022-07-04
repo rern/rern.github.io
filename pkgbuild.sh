@@ -95,7 +95,7 @@ currentdir=$PWD
 buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	cd /home/alarm
-	sudo -u alarm curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
 	cd $name
 	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	[[ $name == rtsp-simple-server ]] && sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD
