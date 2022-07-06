@@ -16,16 +16,17 @@ cd REPONAME
 ```
 
 ### Set checksum
+- Skip: `sha256sums=(SKIP [SKIP ...])`
+- Create
 ```sh
-# skip: chksum='sha256sums=(SKIP)'
-chksum=$( makepkg -g )
-sed -i "s/^sha.*/$chksum/" PKGBUILD
+makepkg -g
+# paste stdout in PKGBUILD
 ```
 
 ### Push
 ```sh
 makepkg --printsrcinfo > .SRCINFO
-git add PKGBUILD .SRCINFO OTHER_BUILD_FILES
-git commit -m "COMMIT MESSAGE"
+git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...]
+git commit -m "MESSAGE"
 git push
 ```
