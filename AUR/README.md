@@ -16,10 +16,11 @@ cd REPONAME
 ```
 
 ### Set checksum
+- Skip: `sha256sums=(SKIP [SKIP ...])`
+- Create
 ```sh
-# skip: chksum='sha256sums=(SKIP)'
-chksum=$( makepkg -g )
-sed -i "s/^sha.*/$chksum/" PKGBUILD
+makepkg -g
+# paste stdout in PKGBUILD
 ```
 
 ### Push
