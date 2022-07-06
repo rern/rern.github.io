@@ -26,7 +26,7 @@ makepkg -g
 ### Push
 ```sh
 makepkg --printsrcinfo > .SRCINFO
-git add PKGBUILD .SRCINFO OTHER_BUILD_FILES
-git commit -m "COMMIT MESSAGE"
+git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...]
+git commit -m "MESSAGE"
 git push
 ```
