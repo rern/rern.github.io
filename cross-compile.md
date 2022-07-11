@@ -7,10 +7,11 @@ Cross-Compiling
 ### Selection
 - aarch64 / armv7h
 	- Native + Distcc
-	- Native alone is faster than Docker
+	- Lone native is faster than Docker
 - armv6h
 	- Native + Distcc
-	- `spotifyd` - RPi armv7h + Docker armv6h - `rust`/`cargo` - not support Distcc
+	- Docker is faster than lone native
+- `rust`/`cargo` - not support Distcc
 
 ### Distcc
 - Master - RPi
@@ -38,31 +39,6 @@ Cross-Compiling
 	bash <( curl -L https://github.com/rern/rAudio-addons/raw/main/0Packages/repoupdate.sh )	
 	```
 	- GitHub Desktop > Push
-
-### Build `armv6h` package on `armv7h`
-- On client/volunteer - `systemctl start distccd-armv6h`
-- On master - RPi
-```sh
-pacman -S devtools
-
-dirarmv6h=/home/alarm/armv6h
-mkdir $dirarmv6h
-mkdir /var/cache/pacman/pkg6
-sed -i '/^Server/ i\Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/mirrorlist
-sed -e '/Architecture =/ s,7h,6h,' /etc/pacman.conf > /tmp/pac6.conf
-mkarchroot -C /tmp/pac6.conf -c /var/cache/pacman/pkg6 $dirarmv6h/root base-devel distcc
-
-sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\112"/
-' -e 's/!distcc/distcc/
-' -e "s|^#*\(DISTCC_HOSTS=\"\).*|\1192.168.1.9:3634/12\"|
-" $dirarmv6h/root/etc/makepkg.conf
-
-systemctl start distccd
-
-su alarm
-cd PACKAGE
-PKGBUILD
-```
 
 ### Docker
 - Setup
