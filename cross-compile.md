@@ -4,7 +4,7 @@ Cross-Compiling
     - [crosstool-NG](https://github.com/rern/rern.github.io/tree/main/crosstool-NG) for armv6h Distcc
 - [Docker](#docker)
 
-### Selection
+### Method Selection
 - aarch64 / armv7h
 	- Native + Distcc
 	- Lone native is faster than Docker
