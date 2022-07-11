@@ -66,41 +66,31 @@ PKGBUILD
 
 ### Docker
 - Setup
-	- x86 PC - build and install:
+	- on x86 PC only - build and install:
 		- [`binfmt-qemu-static`](https://aur.archlinux.org/packages/binfmt-qemu-static)
 		- [`glib2-static`](https://aur.archlinux.org/packages/glib2-static)
 		- [`pcre-static`](https://aur.archlinux.org/packages/pcre-static)
 		- [`qemu-user-static`](https://aur.archlinux.org/packages/qemu-user-static)
-	```sh
-	pacman -Sy docker
+```sh
+pacman -Sy docker
 
-	systemctl start docker
+systemctl start docker
 
-	# get image: https://github.com/mydatakeeper/archlinuxarm
-	for arch in armv6h armv7h aarch64; do
-		docker pull mydatakeeper/archlinuxarm:$arch
-	done
-	```
-	- RPi 4
-	```sh
-	pacman -Sy docker
-
-	systemctl start docker
-	
-	docker pull mydatakeeper/archlinuxarm:armv6h
-	```
+docker pull mydatakeeper/archlinuxarm:armv6h
+```
 - Run
 ```sh
 # run
-docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
+docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
 
 ########## docker container ##########
 
-# root password: root
+# root password: default = root > ros
+passwd
 
 # system upgrade
-sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
-pacman -Syu nano wget openssh
+echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/mirrorlist
+pacman -Syu base-devel nano openssh wget
 ```
 - Re-run image (changes maintained from last exit)
 ```sh
