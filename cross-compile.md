@@ -102,8 +102,8 @@ docker rm CONTAINER
 ```
 - Remove REPOSITORY (image)
 ```sh
-docker image ls  # get REPOSITORY
-docker image rm REPOSITORY  # or REPOSITORY:TAG if more than 1
+docker image ls  # get IMAGE_ID
+docker image rm IMAGE_ID  # or REPOSITORY:TAG if more than 1
 ```
 - Backup updated image
 ```sh
