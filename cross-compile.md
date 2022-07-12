@@ -65,7 +65,7 @@ pacman -Sy docker
 systemctl start docker
 docker pull mydatakeeper/archlinuxarm:armv6h
 ```
-- Run
+- Run - create a new CONTAINER
 ```sh
 # run
 docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
@@ -80,38 +80,38 @@ echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/m
 sed -i 's/^#IgnorePkg.*/IgnorePkg = linux-api-headers/' /etc/pacman.conf
 pacman -Syu base-devel nano openssh wget
 ```
-- Re-run image (changes maintained from last exit)
+- Start - start a CONTAINER
 ```sh
 docker ps -a  # get NAME
 docker start NAME
 docker exec -it NAME bash
 ```
-- Rename run image `--name NAME`
+- Rename a CONTAINER
 ```sh
 docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 ```
-- Stop all running images
+- Stop all running CONTAINERs
 ```sh
 docker stop $( docker ps -aq )
 ```
-- Remove CONTAINER (run image)
+- Remove CONTAINER
 ```sh
 docker ps -a  # get CONTAINER
 docker rm CONTAINER
 ```
-- Remove REPOSITORY (image)
+- Remove IMAGE
 ```sh
 docker image ls  # get IMAGE_ID
 docker image rm IMAGE_ID  # or REPOSITORY:TAG if more than 1
 ```
-- Backup updated image
+- Backup a CONTAINER
 ```sh
 docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
 docker save -o IMG_NAME.tar IMG_NAME
 ```
-- Restore backup image
+- Restore from a backup CONTAINER
 ```sh
 docker image load -i IMG_NAME.tar 
 ```
