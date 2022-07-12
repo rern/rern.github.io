@@ -41,17 +41,25 @@ Cross-Compiling
 	- GitHub Desktop > Push
 
 ### Docker
-- Setup
-	- on x86 PC only - build and install:
-		- [`binfmt-qemu-static`](https://aur.archlinux.org/packages/binfmt-qemu-static)
-		- [`glib2-static`](https://aur.archlinux.org/packages/glib2-static)
-		- [`pcre-static`](https://aur.archlinux.org/packages/pcre-static)
-		- [`qemu-user-static`](https://aur.archlinux.org/packages/qemu-user-static)
+- Setup (x86 host requires: `glib2-static` `pcre-static` `qemu-user-static` `binfmt-qemu-static`)
 ```sh
+su USER
+
+# on x86 host only
+currentdir=$PWD
+cd
+for name in glib2-static pcre-static qemu-user-static binfmt-qemu-static; do # keep order
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+	cd $name
+	sudo -u alarm makepkg -fA $skipinteg
+	pacman -U *.zst
+	cd
+done
+cd $currentdir
+
+# install docker
 pacman -Sy docker
-
 systemctl start docker
-
 docker pull mydatakeeper/archlinuxarm:armv6h
 ```
 - Run
