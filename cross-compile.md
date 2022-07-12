@@ -121,13 +121,15 @@ docker image load -i IMG_NAME.tar
 # systemctl start sshd
 
 # to docker
-scp sourcefile*.ext USER@IP_ADDRESS:/path/to
+scp SOURCE_FILE USER@IP_ADDRESS:/path/to
+scp -r SOURCE_DIR USER@IP_ADDRESS:/path/to
 
 # from docker
-scp USER@IP_ADDRESS:/path/to/file.ext .
+scp USER@IP_ADDRESS:/path/to/SOURCE_FILE .
+scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
 ```
-- On host - Copy files:
+- On host - Copy file from docker
 ```sh
 docker ps -a  # get NAME
-docker cp NAME:/path/to/file . # no wildcards
+docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
 ```
