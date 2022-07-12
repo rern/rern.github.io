@@ -105,11 +105,15 @@ docker rm CONTAINER
 docker image ls  # get REPOSITORY
 docker image rm REPOSITORY  # or REPOSITORY:TAG if more than 1
 ```
-- Save updated image for later uses with another ssh:
+- Backup updated image
 ```sh
 docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
-docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
+docker save -o IMG_NAME.tar IMG_NAME
+```
+- Restore backup image
+```sh
+docker image load -i IMG_NAME.tar 
 ```
 - On docker - Copy files:
 ```sh
