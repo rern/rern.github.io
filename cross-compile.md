@@ -43,7 +43,7 @@ Cross-Compiling
 ### Docker
 - Setup (x86 host requires: `glib2-static` `pcre-static` `qemu-user-static` `binfmt-qemu-static`)
 ```sh
-# on x86 host only
+# x86 host only ##############################################################################
 su
 currentdir=$PWD
 USER=x
@@ -58,6 +58,7 @@ for name in glib2-static pcre-static qemu-user-static binfmt-qemu-static; do # k
 done
 
 cd $currentdir
+# x86 host only ##############################################################################
 
 # install docker
 pacman -Sy docker
