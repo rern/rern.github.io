@@ -43,18 +43,20 @@ Cross-Compiling
 ### Docker
 - Setup (x86 host requires: `glib2-static` `pcre-static` `qemu-user-static` `binfmt-qemu-static`)
 ```sh
-su USER
-
 # on x86 host only
+su
 currentdir=$PWD
-cd
+USER=x
+cd /home/$USER
+
 for name in glib2-static pcre-static qemu-user-static binfmt-qemu-static; do # keep order
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u $USER bsdtar xf -
 	cd $name
-	sudo -u alarm makepkg -fA $skipinteg
+	sudo -u $USER makepkg -A --skipinteg
 	pacman -U *.zst
-	cd
+	cd ..
 done
+
 cd $currentdir
 
 # install docker
