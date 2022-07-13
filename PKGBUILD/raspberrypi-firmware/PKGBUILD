@@ -3,7 +3,7 @@
 # Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
 
 pkgname=raspberrypi-firmware
-pkgver=20220324
+pkgver=20220504
 pkgrel=1
 _commitfirmware=ea4c803c57697aad951a27fcd64c01ef16f9fe7f
 _commituserland=c4fd1b8986c6d6d4ae5cd51e65a8bbeb495dfa4e
@@ -18,12 +18,14 @@ options=(!strip)
 source=('00-raspberrypi-firmware.conf'
         '10-raspberrypi-firmware.rules'
         'raspberrypi-firmware.sh')
+source_armv6h=("firmware-$pkgver-$pkgrel-${_commitfirmware:0:10}.tar.gz::https://github.com/raspberrypi/firmware/archive/$_commitfirmware.tar.gz")
 source_armv7h=("firmware-$pkgver-$pkgrel-${_commitfirmware:0:10}.tar.gz::https://github.com/raspberrypi/firmware/archive/$_commitfirmware.tar.gz")
 source_aarch64=("userland-$pkgver-$pkgrel-${_commituserland:0:10}.tar.gz::https://github.com/raspberrypi/userland/archive/$_commituserland.tar.gz"
                 "https://raw.githubusercontent.com/raspberrypi/firmware/master/opt/vc/LICENCE")
 md5sums=('72e0d5818fc513ece1b964f25f7e7882'
          '2ad54baf398afe59ff5a70eb655f1b96'
          '60919cb17f31b4698b6650bbb46f18ed')
+md5sums_armvh=('SKIP')
 md5sums_armv7h=('f20977c370d447924e61de6e6b2d702e')
 md5sums_aarch64=('486f5fe428936d32810bf6a346183e9d'
                  '86e53f5f5909ee66900418028de11780')
