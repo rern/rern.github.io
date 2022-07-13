@@ -4,13 +4,14 @@ Cross-Compiling
     - [crosstool-NG](https://github.com/rern/rern.github.io/tree/main/crosstool-NG) for armv6h Distcc
 - [Docker](#docker)
 
-### Selection
+### Method Selection
 - aarch64 / armv7h
 	- Native + Distcc
-	- Native alone is faster than Docker
+	- Lone native is faster than Docker
 - armv6h
 	- Native + Distcc
-	- `spotifyd` - RPi armv7h + Docker armv6h - `rust`/`cargo` - not support Distcc
+	- Docker is faster than lone native
+- `rust`/`cargo` - not support Distcc
 
 ### Distcc
 - Master - RPi
@@ -39,99 +40,80 @@ Cross-Compiling
 	```
 	- GitHub Desktop > Push
 
-### Build `armv6h` package on `armv7h`
-- On client/volunteer - `systemctl start distccd-armv6h`
-- On master - RPi
-```sh
-pacman -S devtools
-
-dirarmv6h=/home/alarm/armv6h
-mkdir $dirarmv6h
-mkdir /var/cache/pacman/pkg6
-sed -i '/^Server/ i\Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/mirrorlist
-sed -e '/Architecture =/ s,7h,6h,' /etc/pacman.conf > /tmp/pac6.conf
-mkarchroot -C /tmp/pac6.conf -c /var/cache/pacman/pkg6 $dirarmv6h/root base-devel distcc
-
-sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\112"/
-' -e 's/!distcc/distcc/
-' -e "s|^#*\(DISTCC_HOSTS=\"\).*|\1192.168.1.9:3634/12\"|
-" $dirarmv6h/root/etc/makepkg.conf
-
-systemctl start distccd
-
-su alarm
-cd PACKAGE
-PKGBUILD
-```
-
 ### Docker
-- Setup
-	- x86 PC - build and install:
-		- [`binfmt-qemu-static`](https://aur.archlinux.org/packages/binfmt-qemu-static)
-		- [`glib2-static`](https://aur.archlinux.org/packages/glib2-static)
-		- [`pcre-static`](https://aur.archlinux.org/packages/pcre-static)
-		- [`qemu-user-static`](https://aur.archlinux.org/packages/qemu-user-static)
-	```sh
-	pacman -Sy docker
+- Setup (x86 host requires: `glib2-static` `pcre-static` `qemu-user-static` `binfmt-qemu-static`)
+```sh
+# x86 host only ##############################################################################
+su
+currentdir=$PWD
+USER=x
+cd /home/$USER
 
-	systemctl start docker
+for name in glib2-static pcre-static qemu-user-static binfmt-qemu-static; do # keep order
+	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u $USER bsdtar xf -
+	cd $name
+	sudo -u $USER makepkg -A --skipinteg
+	pacman -U *.zst
+	cd ..
+done
 
-	# get image: https://github.com/mydatakeeper/archlinuxarm
-	for arch in armv6h armv7h aarch64; do
-		docker pull mydatakeeper/archlinuxarm:$arch
-	done
-	```
-	- RPi 4
-	```sh
-	pacman -Sy docker
+cd $currentdir
+# x86 host only ##############################################################################
 
-	systemctl start docker
-	
-	docker pull mydatakeeper/archlinuxarm:armv6h
-	```
-- Run
+# install docker
+pacman -Sy docker
+systemctl start docker
+docker pull mydatakeeper/archlinuxarm:armv6h
+```
+- Run - create a new CONTAINER
 ```sh
 # run
-docker run -it --name ARCH mydatakeeper/archlinuxarm:ARCH bash
+docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
 
 ########## docker container ##########
 
-# root password: root
+# root password: default = root > ros
+passwd
 
 # system upgrade
-sed -i 's|^Server = http://|&REPO.|' /etc/pacman.d/mirrorlist
-pacman -Syu nano wget openssh
+echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/mirrorlist
+sed -i 's/^#IgnorePkg.*/IgnorePkg = linux-api-headers/' /etc/pacman.conf
+pacman -Syu base-devel nano openssh wget
 ```
-- Re-run image (changes maintained from last exit)
+- Start - start a CONTAINER
 ```sh
 docker ps -a  # get NAME
 docker start NAME
 docker exec -it NAME bash
 ```
-- Rename run image `--name NAME`
+- Rename a CONTAINER
 ```sh
 docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 ```
-- Stop all running images
+- Stop all running CONTAINERs
 ```sh
 docker stop $( docker ps -aq )
 ```
-- Remove CONTAINER (run image)
+- Remove CONTAINER
 ```sh
 docker ps -a  # get CONTAINER
 docker rm CONTAINER
 ```
-- Remove REPOSITORY (image)
+- Remove IMAGE
 ```sh
-docker image ls  # get REPOSITORY
-docker image rm REPOSITORY  # or REPOSITORY:TAG if more than 1
+docker image ls  # get IMAGE_ID
+docker image rm IMAGE_ID  # or REPOSITORY:TAG if more than 1
 ```
-- Save updated image for later uses with another ssh:
+- Backup a CONTAINER
 ```sh
 docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
-docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
+docker save -o IMG_NAME.tar IMG_NAME
+```
+- Restore from a backup CONTAINER
+```sh
+docker image load -i IMG_NAME.tar 
 ```
 - On docker - Copy files:
 ```sh
@@ -139,13 +121,15 @@ docker save IMG_NAME:latest | gzip > IMG_NAME.tar.gz
 # systemctl start sshd
 
 # to docker
-scp sourcefile*.ext USER@IP_ADDRESS:/path/to
+scp SOURCE_FILE USER@IP_ADDRESS:/path/to
+scp -r SOURCE_DIR USER@IP_ADDRESS:/path/to
 
 # from docker
-scp USER@IP_ADDRESS:/path/to/file.ext .
+scp USER@IP_ADDRESS:/path/to/SOURCE_FILE .
+scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
 ```
-- On host - Copy files:
+- On host - Copy file from docker
 ```sh
 docker ps -a  # get NAME
-docker cp NAME:/path/to/file . # no wildcards
+docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
 ```
