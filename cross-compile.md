@@ -113,7 +113,7 @@ docker save -o IMG_NAME.tar IMG_NAME
 ```
 - Restore from a backup CONTAINER
 ```sh
-docker image load -i IMG_NAME.tar 
+docker image load -i /path/to/IMG_NAME.tar 
 ```
 - On docker - Copy files:
 ```sh
