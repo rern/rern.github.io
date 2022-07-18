@@ -114,7 +114,7 @@ docker save -o IMG_NAME.tar IMG_NAME
 - Run a backup CONTAINER
 ```sh
 docker image load -i /path/to/IMG_NAME.tar
-docker run -it --name NAME IMG_NAME
+docker run -it --name NAME IMG_NAME bash
 ```
 - On docker - Copy files:
 ```sh
