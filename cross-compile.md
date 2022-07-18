@@ -111,9 +111,10 @@ docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMG_NAME
 docker save -o IMG_NAME.tar IMG_NAME
 ```
-- Restore from a backup CONTAINER
+- Run a backup CONTAINER
 ```sh
-docker image load -i /path/to/IMG_NAME.tar 
+docker image load -i /path/to/IMG_NAME.tar
+docker run -it --name NAME IMG_NAME
 ```
 - On docker - Copy files:
 ```sh
