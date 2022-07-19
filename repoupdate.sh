@@ -2,7 +2,7 @@
 
 rm $0
 
-currentdir=$( pwd )
+currentdir=$PWD
 
 updateRepo() {
 	# recreate database
