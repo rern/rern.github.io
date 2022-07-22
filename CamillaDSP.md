@@ -3,10 +3,11 @@ CamillaDSP
 
 ### Build binary and Python libraries
 - `camilladsp` - Binary
+	- Only `armv6h` - `rust` >= 1.62
 	```sh
 	su alarm
 	cd
-	curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain beta
+	curl https://sh.rustup.rs -sSf | sh
 	# Restart terminal to activate new PATH
 	```
 - `camillagui-backend` - GUI
