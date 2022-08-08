@@ -1,4 +1,5 @@
 [Unit]
+Description=Ready-to-use and zero-dependency server and proxy
 After=network.target
 
 [Service]
