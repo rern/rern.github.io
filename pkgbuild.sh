@@ -102,6 +102,7 @@ buildPackage() {
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+ $pkg
  pkgver:
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
@@ -122,7 +123,7 @@ buildPackage() {
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
 	
-	echo -e "\n\n\e[46m  \e[0m Start build ...\n"
+	echo -e "\n\n\e[46m  \e[0m Start build $pkg ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
