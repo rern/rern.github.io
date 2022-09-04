@@ -102,7 +102,7 @@ buildPackage() {
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- $pkg
+ ${pkgs[$pkg]}
  pkgver:
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
