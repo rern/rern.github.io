@@ -67,7 +67,7 @@ pacman -Sy docker
 systemctl start docker
 docker pull mydatakeeper/archlinuxarm:armv6h
 ```
-- 1st `run` - Create new CONTAINER > `start` > `run`
+- Initialize and start new CONTAINER: `run`
 ```sh
 docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
 # reboot if any errors
@@ -82,10 +82,11 @@ echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' > /etc/pacman.d
 sed -i 's/^#IgnorePkg.*/IgnorePkg = linux-api-headers/' /etc/pacman.conf
 pacman -Syu base-devel nano openssh wget
 ```
-- `start` > `run` - Run CONTAINER
+- Start CONTAINER: `start` > `run`
 ```sh
 docker ps -a  # get NAME
-docker start NAME; docker exec -it NAME bash
+docker start NAME
+docker exec -it NAME bash
 ```
 - `rename` - Rename CONTAINER
 ```sh
