@@ -70,6 +70,7 @@ docker pull mydatakeeper/archlinuxarm:armv6h
 - `run` - Create new CONTAINER > `start` > `run`
 ```sh
 docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
+# reboot if any errors
 
 ########## docker container ##########
 
