@@ -78,7 +78,7 @@ docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
 passwd
 
 # system upgrade
-echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' /etc/pacman.d/mirrorlist
+echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' > /etc/pacman.d/mirrorlist
 sed -i 's/^#IgnorePkg.*/IgnorePkg = linux-api-headers/' /etc/pacman.conf
 pacman -Syu base-devel nano openssh wget
 ```
