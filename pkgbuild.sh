@@ -102,13 +102,13 @@ buildPackage() {
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- $name
+ \Z1$name\Z0
  pkgver:
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
 	
 	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
- $name
+ \Z1$name\Z0
  pkgrel:
 " 0 0 $rel )
 	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
