@@ -41,15 +41,16 @@ Cross-Compiling
 	- GitHub Desktop > Push
 
 ### Docker
-- Setup (x86 host requires: `glib2-static` `pcre-static` `qemu-user-static` `binfmt-qemu-static`)
+- Setup
 ```sh
 # x86 host only ##############################################################################
 su
+pacman -Sy --needed base-devel cmake make meson pkg-config
+
 currentdir=$PWD
-USER=x
 cd /home/$USER
 
-for name in glib2-static pcre-static qemu-user-static binfmt-qemu-static; do # keep order
+for name in binfmt-qemu-static glib2-static pcre2-static qemu-user-static; do # keep order
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u $USER bsdtar xf -
 	cd $name
 	sudo -u $USER makepkg -A --skipinteg
