@@ -14,7 +14,7 @@ dialog "${optbox[@]}" --infobox "
 sleep 1
 
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --cancel-label Skip --inputbox "
- Distcc client IP:
+ \Z1Distcc\Z0 client IP:
 " 0 0 '192.168.1.' )
 if [[ $? == 0 ]]; then
 	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
