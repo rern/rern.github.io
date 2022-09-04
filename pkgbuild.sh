@@ -101,13 +101,15 @@ buildPackage() {
 	[[ $name == rtsp-simple-server ]] && sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
+	pkgname=${pkgs[$pkg]}
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- ${pkgs[$pkg]}
+ $pkgname
  pkgver:
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
 	
 	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
+ $pkgname
  pkgrel:
 " 0 0 $rel )
 	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
