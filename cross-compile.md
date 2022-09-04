@@ -59,6 +59,7 @@ for name in binfmt-qemu-static glib2-static pcre2-static qemu-user-static; do # 
 done
 
 cd $currentdir
+rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-static}
 # x86 host only ##############################################################################
 
 # install docker
