@@ -43,7 +43,7 @@ Cross-Compiling
 ### Docker
 - Setup
 ```sh
-# x86 host only ##############################################################################
+# skip if arm host >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 su
 pacman -Sy --needed base-devel cmake make meson pkg-config
 
@@ -60,7 +60,7 @@ done
 
 cd $currentdir
 rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-static}
-# x86 host only ##############################################################################
+# skip if arm host <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # install docker
 pacman -Sy docker
