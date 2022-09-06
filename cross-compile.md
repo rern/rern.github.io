@@ -7,10 +7,10 @@ Cross-Compiling
 ### Method Selection
 - aarch64 / armv7h
 	- Native + Distcc
-	- Lone native is faster than Docker
+	- Native, without Distcc, is faster than Docker
 - armv6h
 	- Native + Distcc
-	- Docker is faster than lone native
+	- Docker is faster than native
 - `rust`/`cargo` - not support Distcc
 
 ### Distcc
