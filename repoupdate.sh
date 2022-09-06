@@ -62,6 +62,11 @@ clear
 if [[ ! -e $currentdir/Git/aarch64 ]]; then
 	mkdir -p $currentdir/Git
 	mount -t cifs //$localip/rern.github.io $currentdir/Git
+	if [[ ! -e $currentdir/Git/aarch64 ]]; then
+		rmdir $currentdir/Git
+		echo 'Mount failed.'
+		exit
+	fi
 fi
 
 [[ $aarch64 ]] && updateRepo aarch64

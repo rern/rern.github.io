@@ -14,7 +14,7 @@ dialog "${optbox[@]}" --infobox "
 sleep 1
 
 clientip=$( dialog "${optbox[@]}" --output-fd 1 --cancel-label Skip --inputbox "
- Distcc client IP:
+ \Z1Distcc\Z0 client IP:
 " 0 0 '192.168.1.' )
 if [[ $? == 0 ]]; then
 	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
@@ -102,12 +102,13 @@ buildPackage() {
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
- $pkg
+ \Z1$name\Z0
  pkgver:
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
 	
 	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
+ \Z1$name\Z0
  pkgrel:
 " 0 0 $rel )
 	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
@@ -123,7 +124,7 @@ buildPackage() {
 		[[ $? == 0 ]] && skipinteg=--skipinteg
 	fi
 	
-	echo -e "\n\n\e[46m  \e[0m Start build $pkg ...\n"
+	echo -e "\n\n\e[46m  \e[0m Start build $name ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
