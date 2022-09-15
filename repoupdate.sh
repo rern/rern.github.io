@@ -1,12 +1,12 @@
 #!/bin/bash
 
-rm $0
+[[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo -e "\e[43m  \e[0m Run with SSH in WinSCP." && exit
 
-currentdir=$PWD
+dircurrent=$PWD
 
 updateRepo() {
-	# recreate database
-	cd $currentdir/Git/$1
+	echo -e "\n\n\e[44m  \e[0m Update repository $1 ...\n"
+	cd $dirrepo/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
@@ -40,42 +40,41 @@ updateRepo() {
 	echo -e "$html" > ../$1.html
 }
 
+localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+ Local \Z1rern.github.io\Z0 IP:
+" 0 0 '192.168.1.9' )
+dirrepo=$PWD/repo
+mkdir -p repo
+mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
+if [[ $? != 0 ]]; then
+	error="
+\e[41m  \e[0m Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
+"
+elif [[ ! -e $dirrepo/aarch64 ]]; then
+	error="
+\e[41m  \e[0m Not found: //$localip/rern.github.io/aarch64
+"
+fi
+if [[ $error ]]; then
+	umount -l repo &> /dev/null
+	rmdir $dirrepo &> /dev/null
+	echo -e "$error"
+	exit
+fi
+
 arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	1 aarch64 on \
 	2 armv7h on \
 	3 armv6h on )
-arch=" $arch "
-[[ $arch == *' 1 '* ]] && aarch64=1
-[[ $arch == *' 2 '* ]] && armv7h=1
-[[ $arch == *' 3 '* ]] && armv6h=1
-if [[ ! $aarch64 && ! $armv7h && ! $armv6h ]]; then
-	dialog --colors --infobox '\n No \Z1Arch\Z0 selected.' 5 40
-	exit
-fi
+for i in $arch; do
+	case $i in
+		1 ) updateRepo aarch64;;
+		2 ) updateRepo armv7h;;
+		3 ) updateRepo armv6h;;
+	esac
+done
+cd "$dircurrent"
+umount -l repo &> /dev/null
+rmdir $dirrepo &> /dev/null
 
-localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
- Local \Z1rern.github.io\Z0 IP:
-" 0 0 '192.168.1.9' )
-
-clear
-
-if [[ ! -e $currentdir/Git/aarch64 ]]; then
-	mkdir -p $currentdir/Git
-	mount -t cifs //$localip/rern.github.io $currentdir/Git
-	if [[ ! -e $currentdir/Git/aarch64 ]]; then
-		rmdir $currentdir/Git
-		echo 'Mount failed.'
-		exit
-	fi
-fi
-
-[[ $aarch64 ]] && updateRepo aarch64
-[[ $armv7h ]] && updateRepo armv7h
-[[ $armv6h ]] && updateRepo armv6h
-
-umount -l $currentdir/Git
-rmdir $currentdir/Git
-
-cd "$currentdir"
-
-dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
+echo -e "\n\e[44m  \e[0m Done."
