@@ -2,11 +2,9 @@
 
 rm $0
 
-currentdir=$PWD
-
 updateRepo() {
 	# recreate database
-	cd $currentdir/Git/$1
+	cd $dirgit/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
@@ -44,38 +42,38 @@ arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	1 aarch64 on \
 	2 armv7h on \
 	3 armv6h on )
+[[ ! $arch ]] && exit
+
 arch=" $arch "
 [[ $arch == *' 1 '* ]] && aarch64=1
 [[ $arch == *' 2 '* ]] && armv7h=1
 [[ $arch == *' 3 '* ]] && armv6h=1
-if [[ ! $aarch64 && ! $armv7h && ! $armv6h ]]; then
-	dialog --colors --infobox '\n No \Z1Arch\Z0 selected.' 5 40
-	exit
-fi
-
-localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
- Local \Z1rern.github.io\Z0 IP:
-" 0 0 '192.168.1.9' )
 
 clear
 
-if [[ ! -e $currentdir/Git/aarch64 ]]; then
-	mkdir -p $currentdir/Git
-	mount -t cifs //$localip/rern.github.io $currentdir/Git
-	if [[ ! -e $currentdir/Git/aarch64 ]]; then
-		rmdir $currentdir/Git
-		echo 'Mount failed.'
-		exit
+dirgit=/home/x/BIG/RPi/Git  # on PC
+if [[ ! -d $dirgit ]]; then # on RPi
+	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+ Local \Z1rern.github.io\Z0 IP:
+" 0 0 '192.168.1.9' )
+	dirgit=$PWD/Git
+	if [[ ! -e $dirgit/aarch64 ]]; then
+		mkdir -p $dirgit
+		mount -t cifs //$localip/rern.github.io $dirgit
+		if [[ ! -e $dirgit/aarch64 ]]; then
+			rmdir $currentdir/Git
+			echo 'Mount failed.'
+			exit
+		fi
 	fi
 fi
-
 [[ $aarch64 ]] && updateRepo aarch64
 [[ $armv7h ]] && updateRepo armv7h
 [[ $armv6h ]] && updateRepo armv6h
 
-umount -l $currentdir/Git
-rmdir $currentdir/Git
+umount -l $dirgit 
+rmdir $dirgit
 
-cd "$currentdir"
+cd ..
 
 dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
