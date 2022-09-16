@@ -46,12 +46,15 @@ localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 mount -t cifs //$localip/rern.github.io $dirrepo
-[[ $! != 0 ]] && echo "Mount failed." && exit
-
-if [[ ! -e $dirrepo/aarch64 ]]; then
+if [[ $? != 0 ]]; then
+	error='Mount failed.'
+elif [[ ! -e $dirrepo/aarch64 ]]; then
+	error="aarch64 not found at //$localip/rern.github.io"
+fi
+if [[ $error ]]; then
 	umount -l $dirrepo
 	rmdir $dirrepo
-	echo "aarch64 not found at //$localip/rern.github.io"
+	echo "$error"
 	exit
 fi
 
