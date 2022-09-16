@@ -1,10 +1,4 @@
 **Build packages**
-- RPi Zero: Might need swap partition (Needed by: `gcc` `upmpdcli`)
-		- Gparted > Resize > Create 4GB `linux-swap` partition
-		```sh
-		partuuid=$( blkid /dev/mmcblk0p3 -o value | tail -1 )
-		echo PARTUUID=$partuuid  swap   swap  defaults          0  0 > /etc/fstab
-		```
 - Build (on RPi)
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
@@ -13,7 +7,13 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 ```sh
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 ```
-
+- RPi Zero: Might need swap partition (eg.: `gcc` `upmpdcli`)
+	- Gparted > Resize > Create 4GB `linux-swap` partition
+	```sh
+	partuuid=$( blkid /dev/mmcblk0p3 -o value | tail -1 )
+	echo PARTUUID=$partuuid  swap   swap  defaults          0  0 > /etc/fstab
+	mount -a
+	```
 **+R repo**: [rern.github.io](https://rern.github.io)
 
 **Arch Linux Arm Repo**:
