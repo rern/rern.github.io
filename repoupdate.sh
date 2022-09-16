@@ -38,15 +38,6 @@ updateRepo() {
 	echo -e "$html" > ../$1.html
 }
 
-arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
-	1 aarch64 on \
-	2 armv7h on \
-	3 armv6h on )
-arch=" $arch "
-[[ $arch == *' 1 '* ]] && aarch64=1
-[[ $arch == *' 2 '* ]] && armv7h=1
-[[ $arch == *' 3 '* ]] && armv6h=1
-
 clear
 
 dirgit=/home/x/BIG/RPi/Git  # on PC
@@ -59,6 +50,7 @@ if [[ ! -d $dirgit ]]; then # on RPi
 		mkdir -p $dirgit
 		mount -t cifs //$localip/rern.github.io $dirgit
 		if [[ ! -e $dirgit/aarch64 ]]; then
+			umount -l $dirgit
 			rmdir $dirgit
 			echo "$dirgit/aarch64 not found."
 			exit
@@ -66,9 +58,16 @@ if [[ ! -d $dirgit ]]; then # on RPi
 	fi
 fi
 dircurrent=$PWD
-[[ $aarch64 ]] && updateRepo aarch64
-[[ $armv7h ]] && updateRepo armv7h
-[[ $armv6h ]] && updateRepo armv6h
+arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
+	1 aarch64 on \
+	2 armv7h on \
+	3 armv6h on )
+for i in $arch; do
+	case $i in
+		1 ) updateRepo aarch64
+		2 ) updateRepo armv7h
+		3 ) updateRepo armv6h
+done
 cd $dircurrent
 if [[ $localip ]]; then
 	umount -l $dirgit 
