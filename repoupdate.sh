@@ -2,6 +2,8 @@
 
 rm $0
 
+[[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo 'Run with SSH in WinSCP.' && exit
+
 updateRepo() {
 	# recreate database
 	cd $dirgit/rern.github.io/$1
