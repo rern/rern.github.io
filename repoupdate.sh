@@ -38,8 +38,6 @@ updateRepo() {
 	echo -e "$html" > ../$1.html
 }
 
-clear
-
 dirgit=/home/x/BIG/RPi/Git  # on PC
 if [[ ! -d $dirgit ]]; then # on RPi
 	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
