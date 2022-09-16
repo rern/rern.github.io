@@ -64,9 +64,10 @@ arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	3 armv6h on )
 for i in $arch; do
 	case $i in
-		1 ) updateRepo aarch64
-		2 ) updateRepo armv7h
-		3 ) updateRepo armv6h
+		1 ) updateRepo aarch64;;
+		2 ) updateRepo armv7h;;
+		3 ) updateRepo armv6h;;
+	esac
 done
 cd $dircurrent
 if [[ $localip ]]; then
