@@ -1,7 +1,5 @@
 #!/bin/bash
 
-trap exit INT
-
 [[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo -e "\e[43m  \e[0m Run with SSH in WinSCP." && exit
 
 dircurrent=$PWD
