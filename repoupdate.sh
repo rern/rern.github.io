@@ -1,11 +1,15 @@
 #!/bin/bash
 
+trap exit INT
+
 rm $0
 
-[[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo 'Run with SSH in WinSCP.' && exit
+[[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo -e "\e[43m  \e[0m Run with SSH in WinSCP." && exit
+
+dircurrent=$PWD
 
 updateRepo() {
-	# recreate database
+	echo -e "\n\n\e[44m  \e[0m Update repository $1 ...\n"
 	cd $dirrepo/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
@@ -44,21 +48,24 @@ localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
 " 0 0 '192.168.1.9' )
 dirrepo=$PWD/repo
-mkdir -p $dirrepo
-mount -t cifs //$localip/rern.github.io $dirrepo
+mkdir -p repo
+mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
 if [[ $? != 0 ]]; then
-	error='Mount failed.'
+	error="
+\e[41m  \e[0m Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
+"
 elif [[ ! -e $dirrepo/aarch64 ]]; then
-	error="aarch64 not found at //$localip/rern.github.io"
+	error="
+\e[41m  \e[0m Not found: //$localip/rern.github.io/aarch64
+"
 fi
 if [[ $error ]]; then
-	umount -l $dirrepo
-	rmdir $dirrepo
-	echo "$error"
+	umount -l repo &> /dev/null
+	rmdir $dirrepo &> /dev/null
+	echo -e "$error"
 	exit
 fi
 
-dircurrent=$PWD
 arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	1 aarch64 on \
 	2 armv7h on \
@@ -70,10 +77,8 @@ for i in $arch; do
 		3 ) updateRepo armv6h;;
 	esac
 done
-cd $dircurrent
-if [[ $localip ]]; then
-	umount -l $dirrepo 
-	rmdir $dirrepo
-fi
+cd "$dircurrent"
+umount -l repo &> /dev/null
+rmdir $dirrepo &> /dev/null
 
-dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
+echo -e "\n\e[44m  \e[0m Done."
