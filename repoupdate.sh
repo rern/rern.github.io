@@ -42,8 +42,6 @@ arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	1 aarch64 on \
 	2 armv7h on \
 	3 armv6h on )
-[[ ! $arch ]] && exit
-
 arch=" $arch "
 [[ $arch == *' 1 '* ]] && aarch64=1
 [[ $arch == *' 2 '* ]] && armv7h=1
@@ -61,19 +59,20 @@ if [[ ! -d $dirgit ]]; then # on RPi
 		mkdir -p $dirgit
 		mount -t cifs //$localip/rern.github.io $dirgit
 		if [[ ! -e $dirgit/aarch64 ]]; then
-			rmdir $currentdir/Git
-			echo 'Mount failed.'
+			rmdir $dirgit
+			echo "$dirgit/aarch64 not found."
 			exit
 		fi
 	fi
 fi
+dircurrent=$PWD
 [[ $aarch64 ]] && updateRepo aarch64
 [[ $armv7h ]] && updateRepo armv7h
 [[ $armv6h ]] && updateRepo armv6h
-
-umount -l $dirgit 
-rmdir $dirgit
-
-cd ..
+cd $dircurrent
+if [[ $localip ]]; then
+	umount -l $dirgit 
+	rmdir $dirgit
+fi
 
 dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
