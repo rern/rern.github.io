@@ -6,7 +6,7 @@ rm $0
 
 updateRepo() {
 	# recreate database
-	cd $dirgit/rern.github.io/$1
+	cd $dirrepo/$1
 	rm -f +R*
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	
@@ -40,23 +40,21 @@ updateRepo() {
 	echo -e "$html" > ../$1.html
 }
 
-dirgit=/home/x/BIG/RPi/Git  # on PC
-if [[ ! -d $dirgit ]]; then # on RPi
-	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
 " 0 0 '192.168.1.9' )
-	dirgit=$PWD/Git
-	if [[ ! -e $dirgit/aarch64 ]]; then
-		mkdir -p $dirgit
-		mount -t cifs //$localip/rern.github.io $dirgit
-		if [[ ! -e $dirgit/aarch64 ]]; then
-			umount -l $dirgit
-			rmdir $dirgit
-			echo "$dirgit/aarch64 not found."
-			exit
-		fi
-	fi
+dirrepo=$PWD/repo
+mkdir -p $dirrepo
+mount -t cifs //$localip/rern.github.io $dirrepo
+[[ $! != 0 ]] && echo "Mount failed." && exit
+
+if [[ ! -e $dirrepo/aarch64 ]]; then
+	umount -l $dirrepo
+	rmdir $dirrepo
+	echo "aarch64 not found at //$localip/rern.github.io"
+	exit
 fi
+
 dircurrent=$PWD
 arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
 	1 aarch64 on \
@@ -71,8 +69,8 @@ for i in $arch; do
 done
 cd $dircurrent
 if [[ $localip ]]; then
-	umount -l $dirgit 
-	rmdir $dirgit
+	umount -l $dirrepo 
+	rmdir $dirrepo
 fi
 
 dialog --colors --infobox "\n \Z1+R\Z0 repo updated succesfully." 5 40
