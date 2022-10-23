@@ -54,7 +54,7 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mpd]=
+	[mpd]='boost meson python-sphinx'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]=
 	[python-pycamilladsp-plot]=
