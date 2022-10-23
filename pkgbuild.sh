@@ -73,7 +73,7 @@ for (( i=0; i < $pkgsL; i++ )); do
 	menu+="
 $i ${pkgs[$i]}"
 done
-[[ $arch != armv6h ]] && menu=$( sed '/raspberrypi-firmware/ d' <<< "$menu" )
+[[ $arch != armv6h ]] && menu=$( sed -E '/^r/ d' <<< "$menu" )
 
 pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
  \Z1Package\Z0:
@@ -99,8 +99,17 @@ buildPackage() {
 	cd /home/alarm
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
 	cd $name
-	[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-	[[ $name == rtsp-simple-server ]] && sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD
+	case $name in
+		libmatchbox )
+			sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
+		mpd )
+			;;
+		raspberrypi-firmware )
+			source=$( grep ^source_armv7h PKGBUILD | sed -E 's/^(source_armv)7h/\16h/' )
+			sed -i "/^source_armv7h/ i$source" PKGBUILD;;
+		rtsp-simple-server)
+			sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD;;
+	esac
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
