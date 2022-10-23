@@ -70,7 +70,7 @@ declare -A packages=(
 )
 
 [[ $arch == armv6h ]] && omit='^rtsp' || omit='^mpd|^rasp|^linux'
-menu=$( tr ' ' '\n' <<< ${!packages[@]} | grep -Ev $omit | sort )
+menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
  \Z1Package\Z0:
