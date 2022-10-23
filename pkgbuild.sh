@@ -68,8 +68,9 @@ declare -A packages=(
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
-menu=$( tr ' ' '\n' <<< ${!packages[@]} | sort )
-[[ $arch == armv6h ]] && menu=$( grep -v ^rtsp <<< "$menu" ) || menu=$( grep -E -v '^mpd|^rasp|^linux' <<< "$menu" )
+
+[[ $arch == armv6h ]] && omit='^rtsp' || omit='^mpd|^rasp|^linux'
+menu=$( tr ' ' '\n' <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
  \Z1Package\Z0:
