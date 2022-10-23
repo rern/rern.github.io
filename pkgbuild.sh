@@ -72,7 +72,7 @@ declare -A packages=(
 [[ $arch == armv6h ]] && omit='^rtsp' || omit='^mpd|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
-pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
+pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
  \Z1Package\Z0:
 " 0 0 0 $menu )
 
@@ -80,14 +80,10 @@ pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
-pkgdepends='base-devel '
-pkgname=${pkgs[$pkg]}
-pkgdepends+=${packages[$pkgname]}
-
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 
-pacman -Sy --noconfirm --needed $pkgdepends
+pacman -Sy --noconfirm --needed base-devel ${packages[$pkgname]}
 
 currentdir=$PWD
 
