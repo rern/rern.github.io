@@ -54,6 +54,7 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
+	[mpd]=
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]=
 	[python-pycamilladsp-plot]=
@@ -67,15 +68,10 @@ declare -A packages=(
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
-pkgs=( $( echo "${!packages[@]}" | tr ' ' '\n' | sort ) )
-pkgsL=${#pkgs[@]}
-for (( i=0; i < $pkgsL; i++ )); do
-	menu+="
-$i ${pkgs[$i]}"
-done
-[[ $arch != armv6h ]] && menu=$( sed -E '/^r/ d' <<< "$menu" )
+menu=$( tr ' ' '\n' <<< ${!packages[@]} )
+[[ $arch == armv6h ]] && menu=$( grep -v ^rtsp <<< "$menu" ) || menu=$( grep -v '^mpd\|^rasp' <<< "$menu" )
 
-pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
+pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
  \Z1Package\Z0:
 " 0 0 0 $menu )
 
@@ -102,11 +98,8 @@ buildPackage() {
 	case $name in
 		libmatchbox )
 			sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
-		mpd )
-			;;
-		raspberrypi-firmware )
-			source=$( grep ^source_armv7h PKGBUILD | sed -E 's/^(source_armv)7h/\16h/' )
-			sed -i "/^source_armv7h/ i$source" PKGBUILD;;
+		mpd | raspberrypi-firmware )
+			sed -i 's/armv7h/armv6h' PKGBUILD;;
 		rtsp-simple-server)
 			sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD;;
 	esac
@@ -122,7 +115,7 @@ buildPackage() {
  \Z1$name\Z0
  pkgrel:
 " 0 0 $rel )
-	if [[ $ver != $pkgver || $rel != $pkgrel ]]; then
+	if [[ $ver != $pkgver || $rel != $pkgrel || $name == mpd || $name == raspberrypi-firmware ]]; then
 		sed -i "s/^pkgver.*/pkgver=$pkgver/" PKGBUILD
 		[[ -n $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
 		skipinteg=--skipinteg
