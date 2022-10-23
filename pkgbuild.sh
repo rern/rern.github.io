@@ -69,7 +69,7 @@ declare -A packages=(
 				recoll sqlite'
 )
 menu=$( tr ' ' '\n' <<< ${!packages[@]} )
-[[ $arch == armv6h ]] && menu=$( grep -v ^rtsp <<< "$menu" ) || menu=$( grep -v '^mpd\|^rasp' <<< "$menu" )
+[[ $arch == armv6h ]] && menu=$( grep -v '^rtsp\|^linux' <<< "$menu" ) || menu=$( grep -v '^mpd\|^rasp' <<< "$menu" )
 
 pkg=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
  \Z1Package\Z0:
