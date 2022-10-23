@@ -1,6 +1,6 @@
 #!/bin/bash
 
-! grep -q arm <<< $( uname -a ) && echo Not Raspberry Pi && exit
+[[ $( uname -r ) != *rpi* ]]  && echo This is not a Raspberry Pi. && exit
 
 optbox=( --colors --no-shadow --no-collapse )
 
