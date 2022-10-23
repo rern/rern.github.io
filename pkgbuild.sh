@@ -45,7 +45,7 @@ declare -A packages=(
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluealsa]='bluez bluez-libs bluez-utils libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib pkg-config'
-	[camillagui-backend]=python
+	[camillagui-backend]=
 	[cava]=fftw
 	[dab-scanner]='cmake rtl-sdr'
 	[fakepkg]=gzip
@@ -55,11 +55,12 @@ declare -A packages=(
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[nginx-mainline-pushstream]='geoip mailcap'
-	[python-pycamilladsp]=python
-	[python-pycamilladsp-plot]=python
+	[python-pycamilladsp]=
+	[python-pycamilladsp-plot]=
 	[python-rpi-gpio]=python-distribute
-	[python-rplcd]=python
-	[python-smbus2]=python
+	[python-rplcd]=
+	[python-smbus2]=
+	[raspberrypi-firmware]=
 	[rtsp-simple-server]=go
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
@@ -72,6 +73,7 @@ for (( i=0; i < $pkgsL; i++ )); do
 	menu+="
 $i ${pkgs[$i]}"
 done
+[[ $arch != armv6h ]] && menu=$( sed '/raspberrypi-firmware/ d' <<< "$menu" )
 
 pkg=$( dialog "${optbox[@]}" --output-fd 1 --menu "
  \Z1Package\Z0:
