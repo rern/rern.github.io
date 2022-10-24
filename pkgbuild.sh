@@ -65,7 +65,13 @@ declare -A packages=(
 				recoll sqlite'
 )
 
-[[ $arch == armv6h ]] && omit='^dab|^rtsp' || omit='^mpd|^rasp|^linux'
+if [[ $arch == armv6h ]]; then
+	omit='^dab|^rtsp'
+	source_mpd=http://mirror.archlinuxarm.org/armv7h/extra/mpd-0.23.10-2-armv7h.pkg.tar.xz
+	source_firmware=
+else
+	omit='^mpd|^rasp|^linux'
+fi
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
@@ -73,6 +79,12 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 " 0 0 0 $menu )
 
 [[ $? != 0 ]] && exit
+
+if [[ $arch == armv6h && ( $pkgname == mpd || $pkgname == raspberrypi-firmware ) ]]; then # not on AUR
+	source=$( curl -s https://archlinuxarm.org/packages/armv7h/$pkgname \
+			| grep tar.xz.*Download \
+			| cut -d'"' -f2 )
+fi
 
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
@@ -86,7 +98,8 @@ currentdir=$PWD
 buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	cd /home/alarm
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+	[[ ! $source ]] && source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	curl -L $source | sudo -u alarm bsdtar xf -
 	cd $name
 	case $name in
 		libmatchbox )
