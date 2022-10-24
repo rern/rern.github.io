@@ -1,6 +1,7 @@
 #!/bin/bash
 
-[[ ! $( uname -a ) =~ .*(aarch|armv).* ]] && echo This is not a Raspberry Pi. && exit
+arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
+[[ ! $arch =~ .*(aarch|armv).* ]] && echo This is not a Raspberry Pi. && exit
 
 optbox=( --colors --no-shadow --no-collapse )
 
@@ -20,11 +21,6 @@ if [[ $? == 0 ]]; then
 	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  Distcc client Password:
 " 0 0 )
-	case $( uname -m ) in
-		armv6l )  arch=armv6h;;
-		armv7l )  arch=armv7h;;
-		aarch64 ) arch=armv8;;
-	esac
 	echo -e "\e[46m  \e[0m Start Distcc client ...\n"
 	sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
 				"systemctl stop distccd-arm*; systemctl start distccd-$arch"
