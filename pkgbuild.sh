@@ -65,7 +65,7 @@ declare -A packages=(
 				recoll sqlite'
 )
 
-[[ $arch == armv6h ]] && omit='^rtsp' || omit='^mpd|^rasp|^linux'
+[[ $arch == armv6h ]] && omit='^dab|^rtsp' || omit='^mpd|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
