@@ -80,12 +80,6 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ $arch == armv6h && ( $pkgname == mpd || $pkgname == raspberrypi-firmware ) ]]; then # not on AUR
-	source=$( curl -s https://archlinuxarm.org/packages/armv7h/$pkgname \
-			| grep tar.xz.*Download \
-			| cut -d'"' -f2 )
-fi
-
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
 clear
@@ -96,8 +90,8 @@ pacman -Sy --noconfirm --needed base-devel ${packages[$pkgname]}
 currentdir=$PWD
 
 buildPackage() {
-	[[ $1 != -i ]] && name=$1 || name=$2
 	cd /home/alarm
+	[[ $1 != -i ]] && name=$1 || name=$2
 	[[ ! $source ]] && source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
 	curl -L $source | sudo -u alarm bsdtar xf -
 	cd $name
@@ -153,6 +147,10 @@ if [[ $pkgname == matchbox-window-manager ]]; then
 elif [[ $pkgname == upmpdcli ]]; then
 	buildPackage -i libnpupnp
 	buildPackage -i libupnpp
+elif [[ $arch == armv6h && ( $pkgname == mpd || $pkgname == raspberrypi-firmware ) ]]; then # not on AUR
+	source=$( curl -s https://archlinuxarm.org/packages/armv7h/$pkgname \
+			| grep tar.xz.*Download \
+			| cut -d'"' -f2 )
 fi
 
 buildPackage $pkgname
