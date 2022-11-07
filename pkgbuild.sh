@@ -147,10 +147,8 @@ if [[ $pkgname == matchbox-window-manager ]]; then
 elif [[ $pkgname == upmpdcli ]]; then
 	buildPackage -i libnpupnp
 	buildPackage -i libupnpp
-elif [[ $arch == armv6h && ( $pkgname == mpd || $pkgname == raspberrypi-firmware ) ]]; then # not on AUR
-	source=$( curl -s https://archlinuxarm.org/packages/armv7h/$pkgname \
-			| grep tar.xz.*Download \
-			| cut -d'"' -f2 )
+elif [[ $arch == armv6h && $pkgname == mpd ]]; then # not on AUR
+	source='https://github.com/rern/rern.github.io/raw/main/PKGBUILD/mpd.zip'
 fi
 
 buildPackage $pkgname
