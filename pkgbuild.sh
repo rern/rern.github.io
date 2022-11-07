@@ -50,7 +50,10 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mpd]='boost meson python-sphinx'
+	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack lame libao libcdio
+		   libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs libogg
+		   libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
+		   meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]=
 	[python-pycamilladsp-plot]=
