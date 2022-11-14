@@ -42,7 +42,7 @@ declare -A packages=(
 	[bluealsa]='bluez bluez-libs bluez-utils libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib pkg-config'
 	[camillagui-backend]=
-	[cava]=fftw
+	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
@@ -50,14 +50,17 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mpd]='boost meson python-sphinx'
+	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack lame libao libcdio
+		   libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs libogg
+		   libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
+		   meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]=
 	[python-pycamilladsp-plot]=
 	[python-rpi-gpio]=python-distribute
 	[python-rplcd]=
 	[python-smbus2]=
-	[raspberrypi-firmware]=
+#	[raspberrypi-firmware]=
 	[rtsp-simple-server]=go
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
@@ -92,7 +95,11 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	[[ ! $source ]] && source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	if [[ $pkgname == mpd ]]; then
+		source=https://github.com/rern/rern.github.io/raw/main/PKGBUILD/mpd.zip
+	else
+		source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	fi
 	curl -L $source | sudo -u alarm bsdtar xf -
 	cd $name
 	case $name in
@@ -147,10 +154,6 @@ if [[ $pkgname == matchbox-window-manager ]]; then
 elif [[ $pkgname == upmpdcli ]]; then
 	buildPackage -i libnpupnp
 	buildPackage -i libupnpp
-elif [[ $arch == armv6h && ( $pkgname == mpd || $pkgname == raspberrypi-firmware ) ]]; then # not on AUR
-	source=$( curl -s https://archlinuxarm.org/packages/armv7h/$pkgname \
-			| grep tar.xz.*Download \
-			| cut -d'"' -f2 )
 fi
 
 buildPackage $pkgname
