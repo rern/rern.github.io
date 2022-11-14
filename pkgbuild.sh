@@ -95,7 +95,11 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	[[ ! $source ]] && source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	if [[ $pkgname == mpd ]]; then
+		source=https://github.com/rern/rern.github.io/raw/main/PKGBUILD/mpd.zip
+	else
+		source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	fi
 	curl -L $source | sudo -u alarm bsdtar xf -
 	cd $name
 	case $name in
@@ -150,8 +154,6 @@ if [[ $pkgname == matchbox-window-manager ]]; then
 elif [[ $pkgname == upmpdcli ]]; then
 	buildPackage -i libnpupnp
 	buildPackage -i libupnpp
-elif [[ $arch == armv6h && $pkgname == mpd ]]; then # not on AUR
-	source='https://github.com/rern/rern.github.io/raw/main/PKGBUILD/mpd.zip'
 fi
 
 buildPackage $pkgname
