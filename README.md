@@ -23,9 +23,8 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 	- http://tardis.tiny-vps.com/aarm/packages
 
 **Arch Linux Arm Sources**:
-- `PKGBUILD`s - https://github.com/archlinuxarm/PKGBUILDs
-- Not in `https://github.com/archlinuxarm/PKGBUILDs`:
-  - Source - `https://github.com/archlinux/svntogit-packages/tree/packages/PACKAGE_NAME`
+- `PKGBUILD` - [https://github.com/archlinuxarm/PKGBUILDs](https://github.com/archlinuxarm/PKGBUILDs)
+	- Not found: Go to: [https://archlinux.org](https://archlinux.org) > Package search > Source Files
 - Obsolete ARMv6
 	- Set mirror server `/etc/pacman.d/mirrorlist`:
 		- `Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo` (2022/02/06 as the latest)
