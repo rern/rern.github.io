@@ -1,0 +1,4 @@
+u shairport-sync - "ShairportSync AirPort receiver" /var/lib/shairport-sync
+g shairport-sync
+m shairport-sync audio
+
