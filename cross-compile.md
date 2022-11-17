@@ -9,7 +9,7 @@ Cross-Compiling
 	- Native + Distcc
 	- Native, without Distcc, is faster than Docker
 - armv6h
-	- Native + Distcc
+	- Native + Distcc (Note: Currently not working with `gcc` of host)
 	- Docker is faster than native
 - `rust`/`cargo` - not support Distcc
 
