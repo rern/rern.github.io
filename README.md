@@ -60,13 +60,13 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
-- [jquery.selectric](https://github.com/lcdsantos/jQuery-Selectric/tags)
 - [jquery](https://jquery.com/)
 - [lazysizes](https://github.com/aFarkas/lazysizes)
 - [pica](https://github.com/nodeca/pica/tags)
 - [pushstream](https://github.com/wandenberg/nginx-push-stream-module/blob/master/misc/js/pushstream.js)
 - [qrcode](https://github.com/datalog/qrcode-svg)
 - [roundslider](https://github.com/soundar24/roundSlider)
+- [Select2](https://github.com/select2/select2)
 - [simple-keyboard](https://github.com/hodgef/simple-keyboard/blob/master/build/index.modern.js)
 	- Remove sourcemap - last line: //# sourceMappingURL=index.modern.js.map
 - [Sortable](https://github.com/SortableJS/Sortable)
