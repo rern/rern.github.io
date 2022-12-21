@@ -158,4 +158,4 @@ fi
 
 buildPackage $pkgname
 
-echo -e "\n\e[46m  \e[0m Package: $( ls $pkgname*.xz )\n"
+echo -e "\n\e[46m  \e[0m Package: $( ls -1 $pkgname*.xz | tail -1 )\n"
