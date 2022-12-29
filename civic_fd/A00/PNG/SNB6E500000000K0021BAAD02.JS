@@ -1,0 +1,1 @@
+function ISNB6E500000000K0021BAAD02(){var i=0;this.Title=" Driver's doorjamb:";this.Name="SNB6E500000000K0021BAAD02";this.Width=475;this.Height=497;this.CallOut=new Array;this.CallOut[i++]=FS4(253,417,13,0,"'Arial','sans-serif'",0,"<b>Chassis Number and<br>Engine Number<br>Built Data and Vehicle<br>Identification Number (VIN)</b>");}

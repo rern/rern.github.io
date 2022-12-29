@@ -1,0 +1,1 @@
+function ISNB6E00F00000000000MAAD01(){var i=0;this.Title="Steering Wheel Rotational Play Check";this.Name="SNB6E00F00000000000MAAD01";this.Width=475;this.Height=385;this.CallOut=new Array;}

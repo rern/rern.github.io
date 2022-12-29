@@ -1,0 +1,1 @@
+function ISNB6E00K791000R333XFAAD02(){var i=0;this.Title="DTC Troubleshooting: 33-3x";this.Name="SNB6E00K791000R333XFAAD02";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(83,16,13,0,"'Arial','sans-serif'",0,"<b>FLOOR WIRE HARNESS<br>2P CONNECTOR</b>");this.CallOut[i++]=FS4(122,214,13,0,"'Arial','sans-serif'",0,"<b>070AZ-SNA0400</b>");}

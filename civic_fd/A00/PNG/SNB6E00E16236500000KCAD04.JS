@@ -1,0 +1,1 @@
+function ISNB6E00E16236500000KCAD04(){var i=0;this.Title=" Procedure for K20Z2 engine model";this.Name="SNB6E00E16236500000KCAD04";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(201,344,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(32,105,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

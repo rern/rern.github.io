@@ -1,0 +1,1 @@
+function ISNB6E3AE34116300000KBAD20(){var i=0;this.Title=" Crankshaft Pilot Bushing Replacement";this.Name="SNB6E3AE34116300000KBAD20";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(218,79,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(192,17,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

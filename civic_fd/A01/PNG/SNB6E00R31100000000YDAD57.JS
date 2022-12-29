@@ -1,0 +1,1 @@
+function ISNB6E00R31100000000YDAD57(){var i=0;this.Title="Rear Panel Installation";this.Name="SNB6E00R31100000000YDAD57";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(117,76,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(72,130,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

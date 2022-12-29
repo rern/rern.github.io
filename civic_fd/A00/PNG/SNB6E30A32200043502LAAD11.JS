@@ -1,0 +1,1 @@
+function ISNB6E30A32200043502LAAD11(){var i=0;this.Title=" Installation";this.Name="SNB6E30A32200043502LAAD11";this.Width=475;this.Height=208;this.CallOut=new Array;this.CallOut[i++]=FS4(215,159,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

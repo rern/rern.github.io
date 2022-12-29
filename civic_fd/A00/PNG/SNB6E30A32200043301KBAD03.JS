@@ -1,0 +1,1 @@
+function ISNB6E30A32200043301KBAD03(){var i=0;this.Title="Engine Oil Filter Replacement";this.Name="SNB6E30A32200043301KBAD03";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(39,252,13,0,"'Arial','sans-serif'",0,"<b>Mark when rubber seal<br>is seated</b>");this.CallOut[i++]=FS4(270,252,13,0,"'Arial','sans-serif'",0,"<b>Mark after tightening</b>");}

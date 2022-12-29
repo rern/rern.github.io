@@ -1,0 +1,1 @@
+function ISNB6E00J32133100000FAAD01(){var i=0;this.Title="HID Lamp System Troubleshooting";this.Name="SNB6E00J32133100000FAAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(66,17,13,0,"'Arial','sans-serif'",0,"<b>Black Discoloration</b>");this.CallOut[i++]=FS4(278,17,13,0,"'Arial','sans-serif'",0,"<b>Transformation</b>");}

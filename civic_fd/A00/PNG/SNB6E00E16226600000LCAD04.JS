@@ -1,0 +1,1 @@
+function ISNB6E00E16226600000LCAD04(){var i=0;this.Title=" Low Profile Type";this.Name="SNB6E00E16226600000LCAD04";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(398,206,13,0,"'Arial','sans-serif'",0,"<b>G</b>");this.CallOut[i++]=FS4(337,289,13,0,"'Arial','sans-serif'",0,"<b>F</b>");}

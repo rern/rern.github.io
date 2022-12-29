@@ -1,0 +1,1 @@
+function ISNB6E00J46166453949KBAD18(){var i=0;this.Title=" Seat-back - Split Fold Down";this.Name="SNB6E00J46166453949KBAD18";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(205,28,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(375,225,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

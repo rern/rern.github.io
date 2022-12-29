@@ -1,0 +1,1 @@
+function ISNB6E30A14600000000KCAD04(){var i=0;this.Title="Cylinder Head Installation";this.Name="SNB6E30A14600000000KCAD04";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(269,18,13,0,"'Arial','sans-serif'",0,"<b>B 50 mm (2.0 in.)</b>");this.CallOut[i++]=FS4(318,58,13,0,"'Arial','sans-serif'",0,"<b>A 45 mm (1.8 in.)</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00B20200036401KBAD02(){var i=0;this.Title=" Knuckle/Hub Replacement";this.Name="SNB6E00B20200036401KBAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(342,104,13,0,"'Arial','sans-serif'",0,"<b>108 N&middot;m <br>(11.0 kgf&middot;m, <br>79.6 lbf&middot;ft)</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E4AE34150139533KBAD04(){var i=0;this.Title="M/T Clutch Housing Mainshaft Bearing and Oil Seal Replacement";this.Name="SNB6E4AE34150139533KBAD04";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(308,66,13,0,"'Arial','sans-serif'",0,"<b>07JAD-PL90100</b>");this.CallOut[i++]=FS4(399,268,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

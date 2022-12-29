@@ -1,0 +1,1 @@
+function ISNB6E3PE1041165528JMAAD02(){var i=0;this.Title="A/T Differential Carrier Bearing Side Clearance Inspection";this.Name="SNB6E3PE1041165528JMAAD02";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(73,140,13,0,"'Arial','sans-serif'",0,"<b>07746-0030100</b>");this.CallOut[i++]=FS4(39,193,13,0,"'Arial','sans-serif'",0,"<b>07746-0030300</b>");}

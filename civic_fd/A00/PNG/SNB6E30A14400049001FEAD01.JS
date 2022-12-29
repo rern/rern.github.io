@@ -1,0 +1,1 @@
+function ISNB6E30A14400049001FEAD01(){var i=0;this.Title="Radiator Test";this.Name="SNB6E30A14400049001FEAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(305,18,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(260,19,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E30A18316617512KCAD01(){var i=0;this.Title="Crankshaft Oil Seal (Oil Pump End) Installation";this.Name="SNB6E30A18316617512KCAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(194,16,13,0,"'Arial','sans-serif'",0,"<b>07749-0010000</b>");this.CallOut[i++]=FS4(38,323,13,0,"'Arial','sans-serif'",0,"<b>07LAD-SM40100</b>");}

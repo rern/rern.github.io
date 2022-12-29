@@ -1,0 +1,1 @@
+function ISNB6E30A14100022201KDAD02(){var i=0;this.Title=" Without A/C";this.Name="SNB6E30A14100022201KDAD02";this.Width=475;this.Height=385;this.CallOut=new Array;}

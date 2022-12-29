@@ -1,0 +1,1 @@
+function ISNB6E00J16166221401KDAD04(){var i=0;this.Title="Rear Door Panel Removal/Installation";this.Name="SNB6E00J16166221401KDAD04";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>Fastener Location</b>");this.CallOut[i++]=FS4(58,40,13,0,"'Arial','sans-serif'",0,"<b>: Screw, 1</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00J54460647102FEAD02(){var i=0;this.Title=" REAR:";this.Name="SNB6E00J54460647102FEAD02";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(361,273,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

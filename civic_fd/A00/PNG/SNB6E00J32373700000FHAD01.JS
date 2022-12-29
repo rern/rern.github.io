@@ -1,0 +1,1 @@
+function ISNB6E00J32373700000FHAD01(){var i=0;this.Title="Trunk Light Test/Replacement";this.Name="SNB6E00J32373700000FHAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(321,350,13,0,"'Arial','sans-serif'",0,"<b>(-)</b>");this.CallOut[i++]=FS4(137,351,13,0,"'Arial','sans-serif'",0,"<b>(+)</b>");}

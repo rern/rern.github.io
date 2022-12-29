@@ -1,0 +1,1 @@
+function ISNB6E4PE10410459801KCAD05(){var i=0;this.Title="A/T Shaft Assembly and Housing Installation ";this.Name="SNB6E4PE10410459801KCAD05";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(72,212,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(69,81,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

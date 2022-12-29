@@ -1,0 +1,1 @@
+function ISNB6E05K791000R119XFAAD03(){var i=0;this.Title="DTC Troubleshooting: 11-9x, 11-Bx";this.Name="SNB6E05K791000R119XFAAD03";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>DASHBOARD WIRE HARNESS<br>4P CONNECTOR</b>");this.CallOut[i++]=FS4(104,165,13,0,"'Arial','sans-serif'",0,"<b>070AZ-SNA0100</b>");}

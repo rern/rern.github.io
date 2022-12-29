@@ -1,0 +1,1 @@
+function ISNB6E00H46400055381KBAD03(){var i=0;this.Title=" Installation";this.Name="SNB6E00H46400055381KBAD03";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(60,72,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(365,166,13,0,"'Arial','sans-serif'",0,"<b>B<br>6.3 N&middot;m<br>(0.64 kgf&middot;m, <br>4.65 lbf&middot;ft)</b>");}

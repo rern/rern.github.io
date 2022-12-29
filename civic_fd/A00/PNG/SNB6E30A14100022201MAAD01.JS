@@ -1,0 +1,1 @@
+function ISNB6E30A14100022201MAAD01(){var i=0;this.Title="Drive Belt Inspection";this.Name="SNB6E30A14100022201MAAD01";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(349,31,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(390,223,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

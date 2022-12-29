@@ -1,0 +1,1 @@
+function ISNB6E30A18300024751MAAD01(){var i=0;this.Title="Engine Block and Piston Inspection";this.Name="SNB6E30A18300024751MAAD01";this.Width=475;this.Height=256;this.CallOut=new Array;this.CallOut[i++]=FS4(252,17,13,0,"'Arial','sans-serif'",0,"<b>SKIRT DIAMETER</b>");this.CallOut[i++]=FS4(55,27,13,0,"'Arial','sans-serif'",0,"<b>14 mm<br>(0.55 in.)</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E30A14600017811KCAD02(){var i=0;this.Title="Cylinder Head Cover Installation";this.Name="SNB6E30A14600017811KCAD02";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(163,339,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>to these points.");}

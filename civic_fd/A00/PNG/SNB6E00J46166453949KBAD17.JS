@@ -1,0 +1,1 @@
+function ISNB6E00J46166453949KBAD17(){var i=0;this.Title=" Right seat-back";this.Name="SNB6E00J46166453949KBAD17";this.Width=475;this.Height=481;this.CallOut=new Array;this.CallOut[i++]=FS4(335,451,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(383,71,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

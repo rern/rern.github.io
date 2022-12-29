@@ -1,0 +1,1 @@
+function ISNB6E00B20200000000MBAD05(){var i=0;this.Title=" Front Camber Adjustment";this.Name="SNB6E00B20200000000MBAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(267,31,13,0,"'Arial','sans-serif'",0,"<b>A<br>14 x 1.5 mm<br>90 N&middot;m <br>(9.2 kgf&middot;m, 67 lbf&middot;ft)</b>");}

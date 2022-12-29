@@ -1,0 +1,1 @@
+function ISNB6E12G10500016711KDAD01(){var i=0;this.Title="Climate Control Unit/Rear Window Defogger Switch Removal and Installation";this.Name="SNB6E12G10500016711KDAD01";this.Width=475;this.Height=513;this.CallOut=new Array;this.CallOut[i++]=FS4(178,28,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(341,482,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

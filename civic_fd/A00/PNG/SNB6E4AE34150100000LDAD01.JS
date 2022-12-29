@@ -1,0 +1,1 @@
+function ISNB6E4AE34150100000LDAD01(){var i=0;this.Title="M/T Assembly Reassembly";this.Name="SNB6E4AE34150100000LDAD01";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(41,23,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(394,110,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

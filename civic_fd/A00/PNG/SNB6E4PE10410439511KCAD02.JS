@@ -1,0 +1,1 @@
+function ISNB6E4PE10410439511KCAD02(){var i=0;this.Title="A/T Housing Bearing Installation";this.Name="SNB6E4PE10410439511KCAD02";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(142,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(317,304,13,0,"'Arial','sans-serif'",0,"<b>07LGC-0010100</b>");}

@@ -1,0 +1,1 @@
+function FST(){var i=0;tDT[i++]=FS3(0,"010000","General Information");tDT[i++]=FS3(0,"020000","Paint Information");tDT[i++]=FS3(0,"030000","Replacement");tDT[i++]=FS3(0,"040000","Body Dimensional Drawings");tDT[i++]=FS3(0,"050000","Rust Prevention");tDT[i++]=FS3(0,"060000","Others");}

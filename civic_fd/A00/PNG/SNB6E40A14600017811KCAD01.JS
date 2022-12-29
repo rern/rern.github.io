@@ -1,0 +1,1 @@
+function ISNB6E40A14600017811KCAD01(){var i=0;this.Title="Cylinder Head Cover Installation";this.Name="SNB6E40A14600017811KCAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(384,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(91,324,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

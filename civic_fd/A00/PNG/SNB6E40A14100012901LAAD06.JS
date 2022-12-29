@@ -1,0 +1,1 @@
+function ISNB6E40A14100012901LAAD06(){var i=0;this.Title="Alternator Overhaul";this.Name="SNB6E40A14100012901LAAD06";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(87,308,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(409,120,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

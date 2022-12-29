@@ -1,0 +1,1 @@
+function ISNB6E30A14100012901LAAD14(){var i=0;this.Title=" Alternator Disassembly";this.Name="SNB6E30A14100012901LAAD14";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(38,148,13,0,"'Arial','sans-serif'",0,"<b>07749-0010000</b>");this.CallOut[i++]=FS4(311,241,13,0,"'Arial','sans-serif'",0,"<b>07746-0010400</b>");}

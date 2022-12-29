@@ -1,0 +1,1 @@
+function ISNB6E30A26100000000MAAD02(){var i=0;this.Title="Ignition Timing Inspection";this.Name="SNB6E30A26100000000MAAD02";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(326,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(167,385,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

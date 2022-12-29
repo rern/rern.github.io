@@ -1,0 +1,1 @@
+function ISNB6E10G24123700000KBAD05(){var i=0;this.Title="Heater Unit/Core Replacement";this.Name="SNB6E10G24123700000KBAD05";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(103,15,13,8,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(39,201,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

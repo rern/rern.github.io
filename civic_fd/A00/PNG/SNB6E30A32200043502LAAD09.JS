@@ -1,0 +1,1 @@
+function ISNB6E30A32200043502LAAD09(){var i=0;this.Title=" Inspection";this.Name="SNB6E30A32200043502LAAD09";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(42,227,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(118,33,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

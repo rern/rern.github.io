@@ -1,0 +1,1 @@
+function ISNB6E40A18316600000KCAD04(){var i=0;this.Title="Crankshaft/Oil Seal (Transmission End) Installation";this.Name="SNB6E40A18316600000KCAD04";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(262,354,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

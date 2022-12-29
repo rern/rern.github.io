@@ -1,0 +1,1 @@
+function ISNB6E00D14300000000BAAD03(){var i=0;this.Title=" Front";this.Name="SNB6E00D14300000000BAAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(172,16,13,0,"'Arial','sans-serif'",0,"<b>B<br>9 N&middot;m (0.9 kgf&middot;m, 7 lbf&middot;ft)</b>");this.CallOut[i++]=FS4(402,228,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

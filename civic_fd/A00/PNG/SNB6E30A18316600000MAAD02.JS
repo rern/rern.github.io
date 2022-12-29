@@ -1,0 +1,1 @@
+function ISNB6E30A18316600000MAAD02(){var i=0;this.Title=" Straightness";this.Name="SNB6E30A18316600000MAAD02";this.Width=475;this.Height=401;this.CallOut=new Array;}

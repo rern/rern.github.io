@@ -1,0 +1,1 @@
+function ISNB6E00H46400000000CAAD04(){var i=0;this.Title=" SRS Unit Inputs and Outputs at Connector B (28P)";this.Name="SNB6E00H46400000000CAAD04";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(372,260,12,0,"'Arial','sans-serif'",0,"<b></b>Wire side of female terminals");}

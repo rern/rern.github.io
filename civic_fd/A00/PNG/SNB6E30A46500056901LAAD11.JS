@@ -1,0 +1,1 @@
+function ISNB6E30A46500056901LAAD11(){var i=0;this.Title=" Starter Field Winding Test";this.Name="SNB6E30A46500056901LAAD11";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(109,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(439,287,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

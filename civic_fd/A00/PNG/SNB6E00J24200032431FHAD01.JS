@@ -1,0 +1,1 @@
+function ISNB6E00J24200032431FHAD01(){var i=0;this.Title="Horn Test/Replacement";this.Name="SNB6E00J24200032431FHAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(40,221,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(58,96,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

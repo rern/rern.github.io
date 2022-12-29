@@ -1,0 +1,1 @@
+function ISNB6E4AE34116317081KBAD05(){var i=0;this.Title=" RPD6 Manual Transmission";this.Name="SNB6E4AE34116317081KBAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(52,204,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(204,290,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

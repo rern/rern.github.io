@@ -1,0 +1,1 @@
+function ISNB6E3BE34150400000LDAD04(){var i=0;this.Title="M/T Mainshaft Reassembly";this.Name="SNB6E3BE34150400000LDAD04";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(377,200,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(113,157,13,0,"'Arial','sans-serif'",0,"<b>07746-0030100</b>");}

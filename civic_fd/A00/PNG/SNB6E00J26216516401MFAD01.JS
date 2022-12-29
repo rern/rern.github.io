@@ -1,0 +1,1 @@
+function ISNB6E00J26216516401MFAD01(){var i=0;this.Title="Center Console Disassembly/Reassembly";this.Name="SNB6E00J26216516401MFAD01";this.Width=475;this.Height=559;this.CallOut=new Array;this.CallOut[i++]=FS4(41,17,14,0,"'Arial','sans-serif'",0,"<b>Fastener Locations</b>");this.CallOut[i++]=FS4(61,44,14,0,"'Arial','sans-serif'",0,"<b>: Screw, 8</b>");}

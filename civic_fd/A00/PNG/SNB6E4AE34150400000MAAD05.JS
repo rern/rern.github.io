@@ -1,0 +1,1 @@
+function ISNB6E4AE34150400000MAAD05(){var i=0;this.Title="M/T Mainshaft Assembly Clearance Inspection";this.Name="SNB6E4AE34150400000MAAD05";this.Width=475;this.Height=320;this.CallOut=new Array;}

@@ -1,0 +1,1 @@
+function ISNB6E20E34116317010KBAD04(){var i=0;this.Title="Clutch Hose Replacement";this.Name="SNB6E20E34116317010KBAD04";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(298,291,13,0,"'Arial','sans-serif'",0,"<b>A<br>15 N&middot;m<br>(1.5 kgf&middot;m, 11 lbf&middot;ft)</b>");this.CallOut[i++]=FS4(256,332,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

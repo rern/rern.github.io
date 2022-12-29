@@ -1,0 +1,1 @@
+function ISNB6E30A18300043401KAAD02(){var i=0;this.Title=" M/T";this.Name="SNB6E30A18300043401KAAD02";this.Width=475;this.Height=385;this.CallOut=new Array;}

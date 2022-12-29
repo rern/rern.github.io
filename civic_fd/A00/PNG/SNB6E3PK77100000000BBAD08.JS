@@ -1,0 +1,1 @@
+function ISNB6E3PK77100000000BBAD08(){var i=0;this.Title=" How to Substitute the PCM";this.Name="SNB6E3PK77100000000BBAD08";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(388,31,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

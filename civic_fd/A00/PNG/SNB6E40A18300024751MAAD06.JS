@@ -1,0 +1,1 @@
+function ISNB6E40A18300024751MAAD06(){var i=0;this.Title="Engine Block and Piston Inspection";this.Name="SNB6E40A18300024751MAAD06";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(197,16,13,0,"'Arial','sans-serif'",0,"<b>SERVICE LIMIT<br>0.05 mm (0.002 in.)</b>");}

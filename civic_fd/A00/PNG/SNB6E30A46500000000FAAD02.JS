@@ -1,0 +1,1 @@
+function ISNB6E30A46500000000FAAD02(){var i=0;this.Title="Starter Circuit Troubleshooting";this.Name="SNB6E30A46500000000FAAD02";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(259,16,13,0,"'Arial','sans-serif'",0,"<b>S</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00J54300065704KBAD02(){var i=0;this.Title="Windshield Wiper Blade Replacement";this.Name="SNB6E00J54300065704KBAD02";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(323,40,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(329,364,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

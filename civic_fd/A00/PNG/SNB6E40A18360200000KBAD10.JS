@@ -1,0 +1,1 @@
+function ISNB6E40A18360200000KBAD10(){var i=0;this.Title=" Reassembly";this.Name="SNB6E40A18360200000KBAD10";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(127,290,13,0,"'Arial','sans-serif'",0,"<b>D</b>");this.CallOut[i++]=FS4(329,229,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

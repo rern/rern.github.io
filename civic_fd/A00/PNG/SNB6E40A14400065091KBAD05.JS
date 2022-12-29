@@ -1,0 +1,1 @@
+function ISNB6E40A14400065091KBAD05(){var i=0;this.Title="Water Passage Replacement";this.Name="SNB6E40A14400065091KBAD05";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(28,368,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

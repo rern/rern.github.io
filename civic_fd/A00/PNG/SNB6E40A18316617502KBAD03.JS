@@ -1,0 +1,1 @@
+function ISNB6E40A18316617502KBAD03(){var i=0;this.Title=" Main Journal Code Location";this.Name="SNB6E40A18316617502KBAD03";this.Width=475;this.Height=240;this.CallOut=new Array;}

@@ -1,0 +1,1 @@
+function ISNB6E00R31100000000YDAD48(){var i=0;this.Title="Roof Panel Installation";this.Name="SNB6E00R31100000000YDAD48";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(97,268,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

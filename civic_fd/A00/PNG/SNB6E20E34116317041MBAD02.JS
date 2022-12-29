@@ -1,0 +1,1 @@
+function ISNB6E20E34116317041MBAD02(){var i=0;this.Title="Clutch Pedal and Clutch Pedal Position Switch Adjustment";this.Name="SNB6E20E34116317041MBAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(406,41,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(57,35,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

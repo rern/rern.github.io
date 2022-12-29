@@ -1,0 +1,1 @@
+function ISNB6E3CE34150100000LDAD11(){var i=0;this.Title="M/T Assembly Reassembly";this.Name="SNB6E3CE34150100000LDAD11";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(338,287,13,0,"'Arial','sans-serif'",0,"<b>Liquid gasket</b>");}

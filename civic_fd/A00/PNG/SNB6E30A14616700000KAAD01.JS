@@ -1,0 +1,1 @@
+function ISNB6E30A14616700000KAAD01(){var i=0;this.Title="Camshaft Removal";this.Name="SNB6E30A14616700000KAAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(145,35,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(434,126,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

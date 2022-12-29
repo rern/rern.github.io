@@ -1,0 +1,1 @@
+function ISNB6E40A18316200000MAAD02(){var i=0;this.Title="Connecting Rod and Crankshaft End Play Inspection";this.Name="SNB6E40A18316200000MAAD02";this.Width=475;this.Height=401;this.CallOut=new Array;}

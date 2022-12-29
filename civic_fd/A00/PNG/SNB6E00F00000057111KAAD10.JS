@@ -1,0 +1,1 @@
+function ISNB6E00F00000057111KAAD10(){var i=0;this.Title="Steering Gearbox Removal - Power Steering";this.Name="SNB6E00F00000057111KAAD10";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(24,48,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

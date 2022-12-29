@@ -1,0 +1,1 @@
+function ISNB6E00R11100000000YCAD05(){var i=0;this.Title=" Frame Hoist";this.Name="SNB6E00R11100000000YCAD05";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(225,351,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(33,288,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(421,297,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

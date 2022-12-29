@@ -1,0 +1,1 @@
+function ISNB6E40A20336334854FEAD01(){var i=0;this.Title="Intake Air Bypass Control Thermal Valve Test";this.Name="SNB6E40A20336334854FEAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(401,134,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(431,183,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

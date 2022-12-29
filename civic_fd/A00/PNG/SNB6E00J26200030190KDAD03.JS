@@ -1,0 +1,1 @@
+function ISNB6E00J26200030190KDAD03(){var i=0;this.Title="Grab Handle Removal/Installation";this.Name="SNB6E00J26200030190KDAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(216,276,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

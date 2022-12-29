@@ -1,0 +1,1 @@
+function ISNB6E4PE10410400000KCAD01(){var i=0;this.Title="A/T Assembly Installation";this.Name="SNB6E4PE10410400000KCAD01";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(239,17,13,0,"'Arial','sans-serif'",0,"<b>6 x 1.0 mm<br>12 N&middot;m (1.2 kgf&middot;m, 8.7 lbf&middot;ft)</b>");}

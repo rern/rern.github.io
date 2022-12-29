@@ -1,0 +1,1 @@
+function ISNB6E30A14600017801MAAD01(){var i=0;this.Title="Cylinder Head Inspection for Warpage";this.Name="SNB6E30A14600017801MAAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(229,16,13,0,"'Arial','sans-serif'",0,"<b>PRECISION STRAIGHT EDGE</b>");}

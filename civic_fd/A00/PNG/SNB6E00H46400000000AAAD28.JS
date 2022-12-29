@@ -1,0 +1,1 @@
+function ISNB6E00H46400000000AAAD28(){var i=0;this.Title=" SRS Unit";this.Name="SNB6E00H46400000000AAAD28";this.Width=475;this.Height=288;this.CallOut=new Array;this.CallOut[i++]=FS4(280,258,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(157,256,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

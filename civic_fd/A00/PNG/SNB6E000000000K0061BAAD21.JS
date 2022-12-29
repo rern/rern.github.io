@@ -1,0 +1,1 @@
+function ISNB6E000000000K0061BAAD21(){var i=0;this.Title=" Handling Wires and Harnesses";this.Name="SNB6E000000000K0061BAAD21";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(173,66,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(426,66,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00H46200053401KBAD18(){var i=0;this.Title=" Driver's seat";this.Name="SNB6E00H46200053401KBAD18";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(380,28,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(386,267,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

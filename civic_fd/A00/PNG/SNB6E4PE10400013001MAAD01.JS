@@ -1,0 +1,1 @@
+function ISNB6E4PE10400013001MAAD01(){var i=0;this.Title="ATF Level Check";this.Name="SNB6E4PE10400013001MAAD01";this.Width=475;this.Height=513;this.CallOut=new Array;this.CallOut[i++]=FS4(300,18,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

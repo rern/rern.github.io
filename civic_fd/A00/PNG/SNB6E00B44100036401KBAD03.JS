@@ -1,0 +1,1 @@
+function ISNB6E00B44100036401KBAD03(){var i=0;this.Title=" Hub Bearing Unit Replacement-Disc Brake Type";this.Name="SNB6E00B44100036401KBAD03";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(374,112,13,0,"'Arial','sans-serif'",0,"<b>A<br>108 N&middot;m<br>(11 kgf&middot;m,<br>79.6 lbf&middot;ft)</b>");}

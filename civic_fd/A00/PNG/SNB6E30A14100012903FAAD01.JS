@@ -1,0 +1,1 @@
+function ISNB6E30A14100012903FAAD01(){var i=0;this.Title="Alternator and Regulator Circuit Troubleshooting";this.Name="SNB6E30A14100012903FAAD01";this.Width=475;this.Height=465;this.CallOut=new Array;}

@@ -1,0 +1,1 @@
+function ISNB6E4AE34150100000LCAD13(){var i=0;this.Title="M/T Assembly Disassembly";this.Name="SNB6E4AE34150100000LCAD13";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(387,114,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(30,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00B44100059701KDAD03(){var i=0;this.Title="Rear Trailing Arm Removal/Installation";this.Name="SNB6E00B44100059701KDAD03";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(353,286,13,0,"'Arial','sans-serif'",0,"<b>A<br>12 x 1.25 mm<br>108 N&middot;m <br>(11.0 kgf&middot;m, <br>79.6 lbf&middot;ft)</b>");}

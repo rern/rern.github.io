@@ -1,0 +1,1 @@
+function ISNB6E30A46500056901LAAD14(){var i=0;this.Title=" Overrunning Clutch Inspection";this.Name="SNB6E30A46500056901LAAD14";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(125,20,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(386,103,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

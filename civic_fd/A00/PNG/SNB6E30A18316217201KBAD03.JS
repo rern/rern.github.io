@@ -1,0 +1,1 @@
+function ISNB6E30A18316217201KBAD03(){var i=0;this.Title=" Connecting Rod Journal Code Location";this.Name="SNB6E30A18316217201KBAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(33,292,13,0,"'Arial','sans-serif'",0,"<b>No. 4 JOURNAL</b>");this.CallOut[i++]=FS4(331,290,13,0,"'Arial','sans-serif'",0,"<b>No. 1 JOURNAL</b>");}

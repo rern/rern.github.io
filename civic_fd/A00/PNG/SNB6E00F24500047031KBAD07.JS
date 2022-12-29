@@ -1,0 +1,1 @@
+function ISNB6E00F24500047031KBAD07(){var i=0;this.Title="Power Steering Pump Replacement";this.Name="SNB6E00F24500047031KBAD07";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(347,12,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(397,217,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

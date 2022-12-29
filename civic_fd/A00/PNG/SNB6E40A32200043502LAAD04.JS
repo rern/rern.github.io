@@ -1,0 +1,1 @@
+function ISNB6E40A32200043502LAAD04(){var i=0;this.Title=" Oil Pump Removal";this.Name="SNB6E40A32200043502LAAD04";this.Width=475;this.Height=513;this.CallOut=new Array;this.CallOut[i++]=FS4(369,216,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(373,336,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

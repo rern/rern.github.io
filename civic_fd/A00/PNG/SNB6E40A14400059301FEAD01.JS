@@ -1,0 +1,1 @@
+function ISNB6E40A14400059301FEAD01(){var i=0;this.Title="Thermostat Test";this.Name="SNB6E40A14400059301FEAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(163,20,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(123,372,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E4PE10410612223FEAD12(){var i=0;this.Title="A/T Clutch Pressure Control Solenoid Valve C Test";this.Name="SNB6E4PE10410612223FEAD12";this.Width=475;this.Height=433;this.CallOut=new Array;this.CallOut[i++]=FS4(379,401,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

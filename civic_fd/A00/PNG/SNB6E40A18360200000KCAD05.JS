@@ -1,0 +1,1 @@
+function ISNB6E40A18360200000KCAD05(){var i=0;this.Title=" If the Crankshaft is Not Installed";this.Name="SNB6E40A18360200000KCAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(297,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(85,29,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

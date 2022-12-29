@@ -1,0 +1,1 @@
+function ISNB6E500000000K0031BAAD02(){var i=0;this.Title=" Steering Wheel:";this.Name="SNB6E500000000K0031BAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(10,17,13,0,"'Arial','sans-serif'",0,"<b>CABLE REEL CAUTION</b>");this.CallOut[i++]=FS4(305,16,13,0,"'Arial','sans-serif'",0,"<b>DRIVER <br>MODULE DANGER</b>");}

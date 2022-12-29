@@ -1,0 +1,1 @@
+function FIN(){var i=0;var GL1=new Array;GL1[i++]="SNB6E00R00000000000YCAT01";GL1[i++]="SNB6E00R00000000000YCAT02";return(GL1);}

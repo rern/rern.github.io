@@ -1,0 +1,1 @@
+function ISNB6E00D52100063651FEAD03(){var i=0;this.Title="VSA Off Switch Test";this.Name="SNB6E00D52100063651FEAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(114,32,13,0,"'Arial','sans-serif'",0,"<b>VSA OFF SWITCH 5P CONNECTOR</b>");this.CallOut[i++]=FS4(122,272,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of male terminals");}

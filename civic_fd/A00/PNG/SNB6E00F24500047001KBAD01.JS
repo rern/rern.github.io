@@ -1,0 +1,1 @@
+function ISNB6E00F24500047001KBAD01(){var i=0;this.Title="Power Steering Fluid Replacement";this.Name="SNB6E00F24500047001KBAD01";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(279,42,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

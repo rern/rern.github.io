@@ -1,0 +1,1 @@
+function ISNB6E00F00000057111KDAD36(){var i=0;this.Title=" Installation";this.Name="SNB6E00F00000057111KDAD36";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(112,15,13,0,"'Arial','sans-serif'",0,"<b>A<br>12 x 1.25 mm<br>64 N&middot;m<br>(6.5 kgf&middot;m, 47 lbf&middot;ft)</b>");}

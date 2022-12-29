@@ -1,0 +1,1 @@
+function ISNB6E00J10300013151KDAD07(){var i=0;this.Title=" 1CD type";this.Name="SNB6E00J10300013151KDAD07";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(237,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(309,315,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

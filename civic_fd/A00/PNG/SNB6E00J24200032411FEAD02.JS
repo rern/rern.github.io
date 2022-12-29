@@ -1,0 +1,1 @@
+function ISNB6E00J24200032411FEAD02(){var i=0;this.Title="Horn Switch Test";this.Name="SNB6E00J24200032411FEAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(83,26,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(385,28,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(412,319,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

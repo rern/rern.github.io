@@ -1,0 +1,1 @@
+function ISNB6E30A18316600000MAAD01(){var i=0;this.Title=" Out-of-Round and Taper";this.Name="SNB6E30A18316600000MAAD01";this.Width=475;this.Height=449;this.CallOut=new Array;}

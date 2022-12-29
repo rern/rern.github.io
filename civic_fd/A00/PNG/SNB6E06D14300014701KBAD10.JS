@@ -1,0 +1,1 @@
+function ISNB6E06D14300014701KBAD10(){var i=0;this.Title=" K20Z2 engine model";this.Name="SNB6E06D14300014701KBAD10";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(286,12,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

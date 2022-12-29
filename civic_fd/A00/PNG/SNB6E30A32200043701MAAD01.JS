@@ -1,0 +1,1 @@
+function ISNB6E30A32200043701MAAD01(){var i=0;this.Title="Engine Oil Level Check";this.Name="SNB6E30A32200043701MAAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(195,83,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(195,131,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

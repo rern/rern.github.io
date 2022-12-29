@@ -1,0 +1,1 @@
+function ISNB6E30A20336335001KDAD03(){var i=0;this.Title=" Removal";this.Name="SNB6E30A20336335001KDAD03";this.Width=475;this.Height=369;this.CallOut=new Array;}

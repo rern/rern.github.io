@@ -1,0 +1,1 @@
+function ISNB6E3PE10410757156FEAD03(){var i=0;this.Title="Steering Wheel Downshift (-) Switch Test";this.Name="SNB6E3PE10410757156FEAD03";this.Width=475;this.Height=529;this.CallOut=new Array;this.CallOut[i++]=FS4(102,420,13,0,"'Arial','sans-serif'",0,"<b></b>Wire side of <br>female terminals");}

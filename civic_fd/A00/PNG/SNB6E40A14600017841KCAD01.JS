@@ -1,0 +1,1 @@
+function ISNB6E40A14600017841KCAD01(){var i=0;this.Title="Cylinder Head Sealing Bolt Installation";this.Name="SNB6E40A14600017841KCAD01";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(322,323,13,0,"'Arial','sans-serif'",0,"<b>22 x 1.5 mm<br>74 N&middot;m<br>(7.5 kgf&middot;m, 54 lbf&middot;ft)</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E40A46500056941FEAD01(){var i=0;this.Title="Starter Solenoid Test";this.Name="SNB6E40A46500056941FEAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(432,274,13,0,"'Arial','sans-serif'",0,"<b>M</b>");this.CallOut[i++]=FS4(82,32,13,0,"'Arial','sans-serif'",0,"<b>S</b>");}

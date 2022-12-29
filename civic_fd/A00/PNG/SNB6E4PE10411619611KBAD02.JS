@@ -1,0 +1,1 @@
+function ISNB6E4PE10411619611KBAD02(){var i=0;this.Title="A/T Differential Carrier Bearing Replacement";this.Name="SNB6E4PE10411619611KBAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(262,36,13,0,"'Arial','sans-serif'",0,"<b>07LAD-PW50601</b>");this.CallOut[i++]=FS4(318,118,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

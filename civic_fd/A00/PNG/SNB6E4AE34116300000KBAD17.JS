@@ -1,0 +1,1 @@
+function ISNB6E4AE34116300000KBAD17(){var i=0;this.Title=" Release Bearing Replacement";this.Name="SNB6E4AE34116300000KBAD17";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(373,238,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(45,307,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00K76300000000BBAD01(){var i=0;this.Title=" Check for DTCs";this.Name="SNB6E00K76300000000BBAD01";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(651,292,12,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E06D14300014701KBAD09(){var i=0;this.Title=" Except K20Z2 engine model";this.Name="SNB6E06D14300014701KBAD09";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(432,295,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

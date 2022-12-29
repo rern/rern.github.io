@@ -1,0 +1,1 @@
+function ISNB6E10G10100049112FAAD11(){var i=0;this.Title="Radiator and A/C Condenser Fan Low Speed Circuit Troubleshooting";this.Name="SNB6E10G10100049112FAAD11";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(142,32,13,0,"'Arial','sans-serif'",0,"<b>A/C DIODE A 2P SOCKET</b>");this.CallOut[i++]=FS4(175,155,13,0,"'Arial','sans-serif'",0,"<b>BRN</b>");}

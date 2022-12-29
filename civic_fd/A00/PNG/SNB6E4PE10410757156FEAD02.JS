@@ -1,0 +1,1 @@
+function ISNB6E4PE10410757156FEAD02(){var i=0;this.Title="Steering Wheel Upshift (+) Switch Test";this.Name="SNB6E4PE10410757156FEAD02";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(194,72,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of <br>male terminals");}

@@ -1,0 +1,1 @@
+function ISNB6E00J32173631001FHAD01(){var i=0;this.Title="Hazard Warning Switch Test/Replacement";this.Name="SNB6E00J32173631001FHAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(197,340,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

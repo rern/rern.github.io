@@ -1,0 +1,1 @@
+function ISNB6E4PE10410454202KBAD02(){var i=0;this.Title="Torque Converter Housing Secondary Shaft Bearing Replacement";this.Name="SNB6E4PE10410454202KBAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(51,127,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(367,251,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

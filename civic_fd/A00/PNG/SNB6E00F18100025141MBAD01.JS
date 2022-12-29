@@ -1,0 +1,1 @@
+function ISNB6E00F18100025141MBAD01(){var i=0;this.Title="EPS Torque Sensor Neutral Position Memorization/DTC Troubleshooting: 31-01";this.Name="SNB6E00F18100025141MBAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(419,222,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

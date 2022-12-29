@@ -1,0 +1,1 @@
+function ISNB6E30A32200043502LAAD13(){var i=0;this.Title=" Installation";this.Name="SNB6E30A32200043502LAAD13";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(294,30,13,0,"'Arial','sans-serif'",0,"<b>D</b>");this.CallOut[i++]=FS4(69,32,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(104,283,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

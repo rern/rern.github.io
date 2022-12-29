@@ -1,0 +1,1 @@
+function ISNB6E10G10100000000FEAD01(){var i=0;this.Title=" Performance Test";this.Name="SNB6E10G10100000000FEAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(285,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(194,385,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

@@ -1,0 +1,1 @@
+function ISNB6E00G24113622401KBAD01(){var i=0;this.Title="Dust and Pollen Filter Replacement";this.Name="SNB6E00G24113622401KBAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(24,198,13,8,"'Arial','sans-serif'",0,"<b>A</b>");}

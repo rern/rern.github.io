@@ -1,0 +1,1 @@
+function ISNB6E12G10500035301KBAD01(){var i=0;this.Title="In-car Temperature Sensor Replacement";this.Name="SNB6E12G10500035301KBAD01";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(121,125,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(352,406,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

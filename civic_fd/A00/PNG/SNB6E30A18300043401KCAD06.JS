@@ -1,0 +1,1 @@
+function ISNB6E30A18300043401KCAD06(){var i=0;this.Title="Engine Oil Pan Installation";this.Name="SNB6E30A18300043401KCAD06";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(39,15,13,0,"'Arial','sans-serif'",0,"<b>10 x 1.25 mm<br>44 N&middot;m<br>(4.5 kgf&middot;m, 33 lbf&middot;ft)</b>");}

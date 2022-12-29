@@ -1,0 +1,1 @@
+function ISNB6E00H46200053401KBAD02(){var i=0;this.Title=" Front Seat Belt - Without Outer Lap Tensioner";this.Name="SNB6E00H46200053401KBAD02";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(322,227,13,0,"'Arial','sans-serif'",0,"<b>A<br>7/16-20 UNF<br>32 N&middot;m<br>(3.3 kgf&middot;m, 24 lbf&middot;ft)</b>");}

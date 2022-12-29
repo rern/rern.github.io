@@ -1,0 +1,1 @@
+function ISNB6E30A14674300000KCAD01(){var i=0;this.Title="Cam Chain Installation";this.Name="SNB6E30A14674300000KCAD01";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(439,63,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(147,15,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

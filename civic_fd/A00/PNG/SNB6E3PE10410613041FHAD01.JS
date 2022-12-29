@@ -1,0 +1,1 @@
+function ISNB6E3PE10410613041FHAD01(){var i=0;this.Title="ATF Temperature Sensor Test and Replacement";this.Name="SNB6E3PE10410613041FHAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(41,372,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of male terminals");}

@@ -1,0 +1,1 @@
+function ISNB6E00R21100000000YCAD05(){var i=0;this.Title=" Coating Procedures";this.Name="SNB6E00R21100000000YCAD05";this.Width=475;this.Height=320;this.CallOut=new Array;}

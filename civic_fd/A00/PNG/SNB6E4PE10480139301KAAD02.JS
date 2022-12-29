@@ -1,0 +1,1 @@
+function ISNB6E4PE10480139301KAAD02(){var i=0;this.Title="A/T Valve Body and ATF Strainer Removal";this.Name="SNB6E4PE10480139301KAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(198,16,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(414,204,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

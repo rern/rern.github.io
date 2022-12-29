@@ -1,0 +1,1 @@
+function ISNB6E00J32300030111FHAD01(){var i=0;this.Title="Glove Box Light Test/Replacement";this.Name="SNB6E00J32300030111FHAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(262,18,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(112,182,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

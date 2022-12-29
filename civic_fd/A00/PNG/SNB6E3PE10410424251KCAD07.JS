@@ -1,0 +1,1 @@
+function ISNB6E3PE10410424251KCAD07(){var i=0;this.Title="A/T End Cover Installation";this.Name="SNB6E3PE10410424251KCAD07";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(381,254,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(382,32,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

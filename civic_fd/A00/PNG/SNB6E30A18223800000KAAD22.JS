@@ -1,0 +1,1 @@
+function ISNB6E30A18223800000KAAD22(){var i=0;this.Title="Engine Removal";this.Name="SNB6E30A18223800000KAAD22";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(326,32,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(39,13,13,0,"'Arial','sans-serif'",0,"<b>B<br>07MAK-PY30100</b>");}

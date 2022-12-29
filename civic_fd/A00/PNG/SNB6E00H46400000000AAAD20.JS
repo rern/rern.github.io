@@ -1,0 +1,1 @@
+function ISNB6E00H46400000000AAAD20(){var i=0;this.Title=" Seats with Side Airbags";this.Name="SNB6E00H46400000000AAAD20";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(322,181,13,0,"'Arial','sans-serif'",0,"<b>SIDE AIRBAG<br>LABEL</b>");}

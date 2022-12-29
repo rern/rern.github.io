@@ -1,0 +1,1 @@
+function ISNB6E30A18223800000KAAD24(){var i=0;this.Title=" M/T";this.Name="SNB6E30A18223800000KAAD24";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(256,385,13,0,"'Arial','sans-serif'",0,"<b></b>Replace.");this.CallOut[i++]=FS4(357,368,13,0,"'Arial','sans-serif'",0,"<b></b>Replace.");}
