@@ -21,7 +21,6 @@ input.abbrev {
 	font-size: 26px;
 	line-height: 40px;
 	padding-left: 10px;
-	cursor: pointer;
 }
 #logo {
 	width: 40px;
@@ -29,9 +28,9 @@ input.abbrev {
 	vertical-align: -9px;
 }
 #back {
-	position: absolute;
-	right: 0;
-	margin: -40px 40px;
+	font-size: 24px;
+	line-height: 50px;
+	cursor: pointer;
 }
 .link {
 	text-decoration: underline;
@@ -49,7 +48,7 @@ li img {
 <html>
 <body>
 
-<div id="titlebar"><img id="logo" src="./_COM/PNG/logo.svg">Civic FD - Service Manual<div id="back" class="hide">&#11164;</div></div>
+<div id="titlebar"><img id="logo" src="./_COM/PNG/logo.svg">Civic FD - Service Manual</div>
 <ul id="main"></ul>
 <ul id="sub" class="hide"></ul>
 <script src="level_js_title.js"></script>
@@ -57,16 +56,6 @@ li img {
 <script>
 var main = document.getElementById( 'main' );
 var sub = document.getElementById( 'sub' );
-var titlebar = document.getElementById( 'titlebar' );
-var back = document.getElementById( 'back' );
-
-titlebar.addEventListener( 'click', function() {
-	if ( ! back.classList.contains( 'hide' ) ) {
-		sub.classList.add( 'hide' );
-		back.classList.add( 'hide' );
-		main.classList.remove( 'hide' );
-	}
-} );
 
 var htmlmain = '';
 var level = 0;
@@ -88,11 +77,13 @@ main.innerHTML = htmlmain;
 var li = document.querySelectorAll( '#main li' );
 li.forEach( el => {
 	el.addEventListener( 'click', function() {
+		var title = this.textContent;
 		var js = this.dataset.js;
 		var script = document.createElement( 'script' );
 		script.onload = function () {
 			var list   = FIN();
-			var htmlsub = '';
+			var htmlsub = '<li><a id="back">&#11164; '+ title +'</a></li>';
+			console.log(title)
 			var data;
 			list.forEach( html => {
 				data = html_img_title[ html ]
@@ -101,7 +92,11 @@ li.forEach( el => {
 			main.classList.add( 'hide' );
 			sub.innerHTML = htmlsub;
 			sub.classList.remove( 'hide' );
-			back.classList.remove( 'hide' );
+			var back = document.getElementById( 'back' );
+			back.addEventListener( 'click', function() {
+				sub.innerHTML = '';
+				main.classList.remove( 'hide' );
+			} );
 		}	
 		script.src = 'A00/TABLE/INDEX/6/'+ js +'.JS';
 		document.body.appendChild( script );
