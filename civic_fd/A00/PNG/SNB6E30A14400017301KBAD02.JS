@@ -1,1 +1,0 @@
-function ISNB6E30A14400017301KBAD02(){var i=0;this.Title="Coolant Replacement";this.Name="SNB6E30A14400017301KBAD02";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(248,338,13,0,"'Arial','sans-serif'",0,"<b>A<br>28 x 1.5 mm<br>83 N&middot;m (8.5 kgf&middot;m, 61 lbf&middot;ft)</b>");}

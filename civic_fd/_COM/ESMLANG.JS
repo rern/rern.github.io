@@ -1,1 +1,0 @@
-function SetLang(){var i=0;gLng[i++]=new FSL("A","English");gLng[i++]=new FSL("P","Portuguese");gLng[i++]=new FSL("R","Russian");gLng[i++]=new FSL("C","Czech");}

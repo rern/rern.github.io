@@ -1,1 +1,0 @@
-function ISNB6E40A18360245611KBAD01(){var i=0;this.Title="Piston Ring Replacement";this.Name="SNB6E40A18360245611KBAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(92,44,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(338,198,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

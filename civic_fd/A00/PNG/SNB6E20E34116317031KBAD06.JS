@@ -1,1 +1,0 @@
-function ISNB6E20E34116317031KBAD06(){var i=0;this.Title="Clutch Master Cylinder Replacement";this.Name="SNB6E20E34116317031KBAD06";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(413,182,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(73,92,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

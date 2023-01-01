@@ -1,1 +1,0 @@
-function ISNB6E06F18100025145KDAD02(){var i=0;this.Title=" RHD type";this.Name="SNB6E06F18100025145KDAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(185,280,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

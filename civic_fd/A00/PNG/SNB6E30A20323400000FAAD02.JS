@@ -1,1 +1,0 @@
-function ISNB6E30A20323400000FAAD02(){var i=0;this.Title="EVAP System Troubleshooting";this.Name="SNB6E30A20323400000FAAD02";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(334,182,13,0,"'Arial','sans-serif'",0,"<b>07YAJ-0010610</b>");this.CallOut[i++]=FS4(329,256,13,0,"'Arial','sans-serif'",0,"<b>07410-5790501</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00J12100000000CAAD03(){var i=0;this.Title=" Network &lsquo;&lsquo;Loss of Communication'' Error Checking Function";this.Name="SNB6E00J12100000000CAAD03";this.Width=950;this.Height=143;this.CallOut=new Array;this.CallOut[i++]=FS4(304,16,12,0,"'Arial','sans-serif'",0,"<b>Example: Error 1</b>");}

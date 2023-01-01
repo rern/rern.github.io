@@ -1,1 +1,0 @@
-function ISNB6E00J46127053632KBAD13(){var i=0;this.Title="Front Seat Cushion Cover Replacement";this.Name="SNB6E00J46127053632KBAD13";this.Width=475;this.Height=346;this.CallOut=new Array;this.CallOut[i++]=FS4(296,282,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

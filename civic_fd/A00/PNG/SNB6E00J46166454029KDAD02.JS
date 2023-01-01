@@ -1,1 +1,0 @@
-function ISNB6E00J46166454029KDAD02(){var i=0;this.Title=" Fold Down/Split Fold Down";this.Name="SNB6E00J46166454029KDAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(383,24,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(207,279,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

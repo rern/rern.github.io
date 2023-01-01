@@ -1,1 +1,0 @@
-function ISNB6E30A32200043355KBAD01(){var i=0;this.Title="Engine Oil Jet Bolt Inspection";this.Name="SNB6E30A32200043355KBAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(207,17,13,0,"'Arial','sans-serif'",0,"<b>1.2 mm<br>(0.05 in.)</b>");this.CallOut[i++]=FS4(147,151,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

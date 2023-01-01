@@ -1,1 +1,0 @@
-function ISNB6E4PE10410759811FEAD04(){var i=0;this.Title="Transmission Range Switch Test";this.Name="SNB6E4PE10410759811FEAD04";this.Width=475;this.Height=369;this.CallOut=new Array;}

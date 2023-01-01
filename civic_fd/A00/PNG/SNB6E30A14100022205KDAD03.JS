@@ -1,1 +1,0 @@
-function ISNB6E30A14100022205KDAD03(){var i=0;this.Title="Drive Belt Auto-tensioner Removal/Installation";this.Name="SNB6E30A14100022205KDAD03";this.Width=475;this.Height=369;this.CallOut=new Array;}

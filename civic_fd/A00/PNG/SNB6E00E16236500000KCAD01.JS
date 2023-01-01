@@ -1,1 +1,0 @@
-function ISNB6E00E16236500000KCAD01(){var i=0;this.Title=" Procedure for R16A1, R18A1 engine models";this.Name="SNB6E00E16236500000KCAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(206,369,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(43,119,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

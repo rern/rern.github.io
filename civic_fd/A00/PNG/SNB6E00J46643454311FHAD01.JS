@@ -1,1 +1,0 @@
-function ISNB6E00J46643454311FHAD01(){var i=0;this.Title="Security Horn Test/Replacement";this.Name="SNB6E00J46643454311FHAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(418,161,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(40,119,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

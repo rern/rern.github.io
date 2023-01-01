@@ -1,1 +1,0 @@
-function ISNB6E4PE10411412282KCAD10(){var i=0;this.Title="A/T Shift Lever Installation";this.Name="SNB6E4PE10411412282KCAD10";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(284,351,13,0,"'Arial','sans-serif'",0,"<b>8 x 1.25 mm<br>22 N&middot;m <br>(2.2 kgf&middot;m, 16 lbf&middot;ft)</b>");}

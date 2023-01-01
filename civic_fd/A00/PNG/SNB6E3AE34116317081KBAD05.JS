@@ -1,1 +1,0 @@
-function ISNB6E3AE34116317081KBAD05(){var i=0;this.Title=" SPFM, SPGM Manual Transmission";this.Name="SNB6E3AE34116317081KBAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(66,104,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(376,269,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

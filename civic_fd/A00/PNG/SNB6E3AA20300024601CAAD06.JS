@@ -1,1 +1,0 @@
-function ISNB6E3AA20300024601CAAD06(){var i=0;this.Title=" ECM/PCM Inputs and Outputs at Connector B ([utri]) (44P)";this.Name="SNB6E3AA20300024601CAAD06";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(359,288,12,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of female terminals");}

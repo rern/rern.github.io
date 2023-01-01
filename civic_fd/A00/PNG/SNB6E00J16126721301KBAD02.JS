@@ -1,1 +1,0 @@
-function ISNB6E00J16126721301KBAD02(){var i=0;this.Title=" Without Super Locking";this.Name="SNB6E00J16126721301KBAD02";this.Width=475;this.Height=449;this.CallOut=new Array;this.CallOut[i++]=FS4(63,184,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

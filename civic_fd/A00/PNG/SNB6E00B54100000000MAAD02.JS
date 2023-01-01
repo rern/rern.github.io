@@ -1,1 +1,0 @@
-function ISNB6E00B54100000000MAAD02(){var i=0;this.Title="Wheel Runout Inspection";this.Name="SNB6E00B54100000000MAAD02";this.Width=475;this.Height=336;this.CallOut=new Array;}

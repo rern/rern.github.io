@@ -1,1 +1,0 @@
-function ISNB6E00H46400000000AAAD14(){var i=0;this.Title=" Front Airbag Connectors";this.Name="SNB6E00H46400000000AAAD14";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(208,15,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

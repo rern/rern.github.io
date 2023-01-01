@@ -1,1 +1,0 @@
-function ISNB6E00J10300000000CAAD05(){var i=0;this.Title=" Cassette Player Unit Connector for Inputs and Outputs";this.Name="SNB6E00J10300000000CAAD05";this.Width=950;this.Height=495;this.CallOut=new Array;}

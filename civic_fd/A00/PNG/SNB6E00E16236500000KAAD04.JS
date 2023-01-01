@@ -1,1 +1,0 @@
-function ISNB6E00E16236500000KAAD04(){var i=0;this.Title=" Procedure for K20Z2 engine model";this.Name="SNB6E00E16236500000KAAD04";this.Width=475;this.Height=369;this.CallOut=new Array;}

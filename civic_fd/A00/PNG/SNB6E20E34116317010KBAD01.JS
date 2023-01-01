@@ -1,1 +1,0 @@
-function ISNB6E20E34116317010KBAD01(){var i=0;this.Title="Clutch Hose Replacement";this.Name="SNB6E20E34116317010KBAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(340,278,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(258,328,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

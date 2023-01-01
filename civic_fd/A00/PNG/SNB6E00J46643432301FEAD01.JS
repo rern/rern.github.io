@@ -1,1 +1,0 @@
-function ISNB6E00J46643432301FEAD01(){var i=0;this.Title=" With security system";this.Name="SNB6E00J46643432301FEAD01";this.Width=475;this.Height=417;this.CallOut=new Array;}

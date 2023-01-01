@@ -1,1 +1,0 @@
-function ISNB6E30A14400065101MAAD03(){var i=0;this.Title="Water Pump Inspection";this.Name="SNB6E30A14400065101MAAD03";this.Width=475;this.Height=369;this.CallOut=new Array;}

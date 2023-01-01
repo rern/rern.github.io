@@ -1,1 +1,0 @@
-function ISNB6E30A20326428521KDAD06(){var i=0;this.Title=" Installation";this.Name="SNB6E30A20326428521KDAD06";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(196,19,13,0,"'Arial','sans-serif'",0,"<b>07AAA-SNA0100</b>");this.CallOut[i++]=FS4(62,353,13,0,"'Arial','sans-serif'",0,"<b>A<br>120 N&middot;m<br>(12.2 kgf&middot;m, 88.2 lbf&middot;ft)</b>");}

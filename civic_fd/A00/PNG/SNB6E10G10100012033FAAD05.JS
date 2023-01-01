@@ -1,1 +1,0 @@
-function ISNB6E10G10100012033FAAD05(){var i=0;this.Title="A/C Condenser Fan High Speed Circuit Troubleshooting";this.Name="SNB6E10G10100012033FAAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(142,32,13,0,"'Arial','sans-serif'",0,"<b>A/C DIODE B 2P SOCKET</b>");}

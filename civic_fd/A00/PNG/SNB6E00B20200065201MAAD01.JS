@@ -1,1 +1,0 @@
-function ISNB6E00B20200065201MAAD01(){var i=0;this.Title=" Front";this.Name="SNB6E00B20200065201MAAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(297,297,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(73,306,13,0,"'Arial','sans-serif'",0,"<b>108 N&middot;m<br>(11.0 kgf&middot;m, 79.6 lbf&middot;ft)</b>");}

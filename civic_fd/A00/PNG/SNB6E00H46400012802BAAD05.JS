@@ -1,1 +1,0 @@
-function ISNB6E00H46400012802BAAD05(){var i=0;this.Title=" Seat Belt Tensioner";this.Name="SNB6E00H46400012802BAAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(221,289,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E30A14400065101MAAD04(){var i=0;this.Title="Water Pump Inspection";this.Name="SNB6E30A14400065101MAAD04";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(184,354,13,0,"'Arial','sans-serif'",0,"<b>6 x 1.0 mm<br>14 N&middot;m <br>(1.4 kgf&middot;m, 10 lbf&middot;ft)</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00J10300000000CAAD06(){var i=0;this.Title=" Auxiliary Jack Assembly Connector for Inputs and Outputs";this.Name="SNB6E00J10300000000CAAD06";this.Width=950;this.Height=319;this.CallOut=new Array;}

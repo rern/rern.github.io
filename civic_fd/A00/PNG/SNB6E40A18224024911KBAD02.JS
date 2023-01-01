@@ -1,1 +1,0 @@
-function ISNB6E40A18224024911KBAD02(){var i=0;this.Title=" A/T";this.Name="SNB6E40A18224024911KBAD02";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(343,16,13,0,"'Arial','sans-serif'",0,"<b></b>Replace.");this.CallOut[i++]=FS4(54,154,13,0,"'Arial','sans-serif'",0,"<b></b>Replace.");}

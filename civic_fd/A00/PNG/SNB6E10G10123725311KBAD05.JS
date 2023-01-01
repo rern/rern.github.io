@@ -1,1 +1,0 @@
-function ISNB6E10G10123725311KBAD05(){var i=0;this.Title="A/C Evaporator Core Replacement";this.Name="SNB6E10G10123725311KBAD05";this.Width=475;this.Height=513;this.CallOut=new Array;this.CallOut[i++]=FS4(137,482,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(415,440,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

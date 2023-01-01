@@ -1,1 +1,0 @@
-function ISNB6E00J16166220361KBAD03(){var i=0;this.Title="Rear Door Glass Outer Weatherstrip Replacement";this.Name="SNB6E00J16166220361KBAD03";this.Width=475;this.Height=545;this.CallOut=new Array;this.CallOut[i++]=FS4(178,515,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(327,39,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

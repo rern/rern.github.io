@@ -1,1 +1,0 @@
-function ISNB6E4AE34116300000KBAD18(){var i=0;this.Title=" Crankshaft Pilot Bushing Inspection";this.Name="SNB6E4AE34116300000KBAD18";this.Width=475;this.Height=353;this.CallOut=new Array;}

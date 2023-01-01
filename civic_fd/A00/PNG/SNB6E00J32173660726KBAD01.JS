@@ -1,1 +1,0 @@
-function ISNB6E00J32173660726KBAD01(){var i=0;this.Title=" Side Turn";this.Name="SNB6E00J32173660726KBAD01";this.Width=475;this.Height=561;this.CallOut=new Array;this.CallOut[i++]=FS4(77,531,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(86,56,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

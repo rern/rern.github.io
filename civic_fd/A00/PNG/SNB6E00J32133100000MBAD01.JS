@@ -1,1 +1,0 @@
-function ISNB6E00J32133100000MBAD01(){var i=0;this.Title="Headlight Adjustment";this.Name="SNB6E00J32133100000MBAD01";this.Width=475;this.Height=545;this.CallOut=new Array;this.CallOut[i++]=FS4(91,494,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

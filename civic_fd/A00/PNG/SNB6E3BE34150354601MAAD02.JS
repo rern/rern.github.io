@@ -1,1 +1,0 @@
-function ISNB6E3BE34150354601MAAD02(){var i=0;this.Title="M/T Shift Arm Clearance Inspection";this.Name="SNB6E3BE34150354601MAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;}

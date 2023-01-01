@@ -1,1 +1,0 @@
-function ISNB6E00R51100000000YDAD09(){var i=0;this.Title=" Anti-rust Agents";this.Name="SNB6E00R51100000000YDAD09";this.Width=475;this.Height=320;this.CallOut=new Array;}

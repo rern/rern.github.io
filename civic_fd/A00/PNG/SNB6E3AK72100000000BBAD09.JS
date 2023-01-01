@@ -1,1 +1,0 @@
-function ISNB6E3AK72100000000BBAD09(){var i=0;this.Title=" How to Substitute the ECM/PCM";this.Name="SNB6E3AK72100000000BBAD09";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(388,31,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

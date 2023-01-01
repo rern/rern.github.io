@@ -1,1 +1,0 @@
-function ISNB6E00J26220200000KDAD08(){var i=0;this.Title=" Passenger's side";this.Name="SNB6E00J26220200000KDAD08";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(390,191,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(225,334,13,0,"'Arial','sans-serif'",0,"<b>21 mm <br>(0.83 in.)</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00D00060845102KBAD06(){var i=0;this.Title=" Lever Grip";this.Name="SNB6E00D00060845102KBAD06";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(56,171,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

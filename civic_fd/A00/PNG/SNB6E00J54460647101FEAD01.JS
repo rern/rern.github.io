@@ -1,1 +1,0 @@
-function ISNB6E00J54460647101FEAD01(){var i=0;this.Title="Power Window Driver's Motor Test";this.Name="SNB6E00J54460647101FEAD01";this.Width=475;this.Height=449;this.CallOut=new Array;this.CallOut[i++]=FS4(109,418,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of male terminals");}

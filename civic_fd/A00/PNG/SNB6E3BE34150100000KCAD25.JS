@@ -1,1 +1,0 @@
-function ISNB6E3BE34150100000KCAD25(){var i=0;this.Title="M/T Assembly Installation";this.Name="SNB6E3BE34150100000KCAD25";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(142,14,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

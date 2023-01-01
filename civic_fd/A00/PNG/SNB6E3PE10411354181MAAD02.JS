@@ -1,1 +1,0 @@
-function ISNB6E3PE10411354181MAAD02(){var i=0;this.Title="A/T Secondary Shaft 2nd Gear Axial Clearance Inspection";this.Name="SNB6E3PE10411354181MAAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(207,29,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(254,156,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

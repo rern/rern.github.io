@@ -1,1 +1,0 @@
-function ISNB6E40A32200043502LAAD18(){var i=0;this.Title=" Balancer Shaft Inspection";this.Name="SNB6E40A32200043502LAAD18";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(16,352,13,0,"'Arial','sans-serif'",0,"<b>6 x 1.0 mm<br>12 N&middot;m<br>(1.2 kgf&middot;m, 8.7 lbf&middot;ft)</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E4PE10410417424KBAD01(){var i=0;this.Title="Torque Converter Housing Countershaft Bearing Replacement";this.Name="SNB6E4PE10410417424KBAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(157,29,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(60,95,13,0,"'Arial','sans-serif'",0,"<b>07JAC-PH80000</b>");}

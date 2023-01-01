@@ -1,1 +1,0 @@
-function ISNB6E40A14674300000KCAD10(){var i=0;this.Title="Cam Chain Installation";this.Name="SNB6E40A14674300000KCAD10";this.Width=475;this.Height=176;this.CallOut=new Array;this.CallOut[i++]=FS4(173,131,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

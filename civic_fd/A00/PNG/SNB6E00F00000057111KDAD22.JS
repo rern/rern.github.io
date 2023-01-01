@@ -1,1 +1,0 @@
-function ISNB6E00F00000057111KDAD22(){var i=0;this.Title=" Removal";this.Name="SNB6E00F00000057111KDAD22";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(429,319,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(224,27,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

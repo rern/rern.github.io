@@ -1,1 +1,0 @@
-function ISNB6E00J10300000000CAAD04(){var i=0;this.Title=" 1DIN 1CD type";this.Name="SNB6E00J10300000000CAAD04";this.Width=950;this.Height=367;this.CallOut=new Array;this.CallOut[i++]=FS4(166,245,12,0,"'Arial','sans-serif'",0,"<b>CONNECTOR B (14P)</b>");this.CallOut[i++]=FS4(573,245,12,0,"'Arial','sans-serif'",0,"<b>CONNECTOR A (20P)</b>");}

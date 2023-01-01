@@ -1,1 +1,0 @@
-function ISNB6E00J10300000000BBAD01(){var i=0;this.Title=" How to check for audio system condition";this.Name="SNB6E00J10300000000BBAD01";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(227,200,12,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00J26200016101KBAD07(){var i=0;this.Title="Carpet Replacement";this.Name="SNB6E00J26200016101KBAD07";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>Fastener Locations</b>");this.CallOut[i++]=FS4(58,42,13,0,"'Arial','sans-serif'",0,"<b>: Clip, 2</b>");}

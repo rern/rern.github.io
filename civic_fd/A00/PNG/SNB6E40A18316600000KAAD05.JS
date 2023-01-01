@@ -1,1 +1,0 @@
-function ISNB6E40A18316600000KAAD05(){var i=0;this.Title="Crankshaft and Piston Removal";this.Name="SNB6E40A18316600000KAAD05";this.Width=475;this.Height=513;this.CallOut=new Array;}

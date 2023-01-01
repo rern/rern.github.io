@@ -1,1 +1,0 @@
-function ISNB6E40A20336359401LBAD01(){var i=0;this.Title="Throttle Body Cleaning";this.Name="SNB6E40A20336359401LBAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(107,194,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(377,163,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E40A14100022205MAAD01(){var i=0;this.Title="Drive Belt Auto-tensioner Inspection";this.Name="SNB6E40A14100022205MAAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(238,15,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

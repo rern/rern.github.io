@@ -1,1 +1,0 @@
-function ISNB6E30A14616716091KDAD05(){var i=0;this.Title=" Installation";this.Name="SNB6E30A14616716091KDAD05";this.Width=475;this.Height=417;this.CallOut=new Array;}

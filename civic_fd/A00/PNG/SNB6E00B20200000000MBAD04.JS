@@ -1,1 +1,0 @@
-function ISNB6E00B20200000000MBAD04(){var i=0;this.Title=" Front Camber Adjustment";this.Name="SNB6E00B20200000000MBAD04";this.Width=477;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(39,71,13,0,"'Arial','sans-serif'",0,"<b>Damper Pinch Bolt:</b>");this.CallOut[i++]=FS4(259,72,13,0,"'Arial','sans-serif'",0,"<b>Adjusting Bolt:<br>P/N 90119-SNA-000</b>");}

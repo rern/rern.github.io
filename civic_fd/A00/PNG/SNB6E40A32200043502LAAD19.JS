@@ -1,1 +1,0 @@
-function ISNB6E40A32200043502LAAD19(){var i=0;this.Title=" Oil Pump Installation";this.Name="SNB6E40A32200043502LAAD19";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(347,319,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(353,18,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

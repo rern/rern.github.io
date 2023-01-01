@@ -1,1 +1,0 @@
-function ISNB6E40A18224024904KBAD02(){var i=0;this.Title="Lower Torque Rod Replacement";this.Name="SNB6E40A18224024904KBAD02";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(348,31,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

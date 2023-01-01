@@ -1,1 +1,0 @@
-function ISNB6E00F00000057111LAAD11(){var i=0;this.Title=" Disassembly";this.Name="SNB6E00F00000057111LAAD11";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(294,45,13,0,"'Arial','sans-serif'",0,"<b>07NAD-SR30101</b>");this.CallOut[i++]=FS4(301,246,13,0,"'Arial','sans-serif'",0,"<b>07NAD-SR30200</b>");}

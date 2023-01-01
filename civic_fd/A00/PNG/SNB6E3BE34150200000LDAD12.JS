@@ -1,1 +1,0 @@
-function ISNB6E3BE34150200000LDAD12(){var i=0;this.Title="M/T Countershaft Reassembly";this.Name="SNB6E3BE34150200000LDAD12";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(289,167,13,0,"'Arial','sans-serif'",0,"<b>A<br>101 N&middot;m<br>(10.3 kgf&middot;m, 74 lbf&middot;ft)</b>");}

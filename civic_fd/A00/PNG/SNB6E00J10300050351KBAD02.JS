@@ -1,1 +1,0 @@
-function ISNB6E00J10300050351KBAD02(){var i=0;this.Title=" Rear Speaker";this.Name="SNB6E00J10300050351KBAD02";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(217,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(178,319,13,0,"'Arial','sans-serif'",0,"<b>C</b>");this.CallOut[i++]=FS4(14,243,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

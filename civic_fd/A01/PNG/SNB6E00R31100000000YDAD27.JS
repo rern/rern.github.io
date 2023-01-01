@@ -1,1 +1,0 @@
-function ISNB6E00R31100000000YDAD27(){var i=0;this.Title="Front Side Frame/Outrigger Installation";this.Name="SNB6E00R31100000000YDAD27";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(400,265,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(244,12,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

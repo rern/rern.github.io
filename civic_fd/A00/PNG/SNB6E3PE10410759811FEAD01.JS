@@ -1,1 +1,0 @@
-function ISNB6E3PE10410759811FEAD01(){var i=0;this.Title="Transmission Range Switch Test";this.Name="SNB6E3PE10410759811FEAD01";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(317,354,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of <br>male terminals");this.CallOut[i++]=FS4(228,274,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

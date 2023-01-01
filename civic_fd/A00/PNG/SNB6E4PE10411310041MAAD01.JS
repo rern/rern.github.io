@@ -1,1 +1,0 @@
-function ISNB6E4PE10411310041MAAD01(){var i=0;this.Title="A/T Clutch Assembly Inspection";this.Name="SNB6E4PE10411310041MAAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(80,34,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E30A20326428521KDAD03(){var i=0;this.Title=" Removal";this.Name="SNB6E30A20326428521KDAD03";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(196,19,13,0,"'Arial','sans-serif'",0,"<b>07AAA-SNA0100</b>");this.CallOut[i++]=FS4(73,347,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

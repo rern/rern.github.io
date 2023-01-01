@@ -1,1 +1,0 @@
-function ISNB6E00J46127031221MAAD03(){var i=0;this.Title=" Inspection";this.Name="SNB6E00J46127031221MAAD03";this.Width=475;this.Height=449;this.CallOut=new Array;this.CallOut[i++]=FS4(152,19,13,0,"'Arial','sans-serif'",0,"<b>Above 50 mm (2.0 in.)<br>(Level)</b>");this.CallOut[i++]=FS4(402,180,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

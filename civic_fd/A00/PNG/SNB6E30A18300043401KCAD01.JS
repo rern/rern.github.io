@@ -1,1 +1,0 @@
-function ISNB6E30A18300043401KCAD01(){var i=0;this.Title="Engine Oil Pan Installation";this.Name="SNB6E30A18300043401KCAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(137,271,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

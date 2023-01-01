@@ -1,1 +1,0 @@
-function ISNB6E00J46166453049KBAD01(){var i=0;this.Title=" Fold Down/Split Fold Down - For Some Models";this.Name="SNB6E00J46166453049KBAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(406,24,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(41,27,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

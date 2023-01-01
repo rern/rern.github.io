@@ -1,1 +1,0 @@
-function ISNB6E00J54460647124FHAD01(){var i=0;this.Title="Power Window Passenger's Switch Test/Replacement";this.Name="SNB6E00J54460647124FHAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(395,69,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(40,321,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00F00000057073KDAD02(){var i=0;this.Title="Steering Column Cover Removal and Installation";this.Name="SNB6E00F00000057073KDAD02";this.Width=475;this.Height=497;this.CallOut=new Array;this.CallOut[i++]=FS4(401,375,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

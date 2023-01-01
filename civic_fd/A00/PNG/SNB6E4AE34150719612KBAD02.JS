@@ -1,1 +1,0 @@
-function ISNB6E4AE34150719612KBAD02(){var i=0;this.Title="M/T Differential Carrier Bearings Replacement";this.Name="SNB6E4AE34150719612KBAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(342,69,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(324,180,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

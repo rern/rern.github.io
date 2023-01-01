@@ -1,1 +1,0 @@
-function ISNB6E3PE10410654801FEAD02(){var i=0;this.Title="A/T Shift Solenoid Valve Test";this.Name="SNB6E3PE10410654801FEAD02";this.Width=475;this.Height=433;this.CallOut=new Array;this.CallOut[i++]=FS4(25,394,13,0,"'Arial','sans-serif'",0,"<b></b>Terminal side of male terminals");}

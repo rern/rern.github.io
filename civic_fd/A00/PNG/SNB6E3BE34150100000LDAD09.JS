@@ -1,1 +1,0 @@
-function ISNB6E3BE34150100000LDAD09(){var i=0;this.Title="M/T Assembly Reassembly";this.Name="SNB6E3BE34150100000LDAD09";this.Width=475;this.Height=465;this.CallOut=new Array;}

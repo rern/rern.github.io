@@ -1,1 +1,0 @@
-function ISNB6E40A14100012901LAAD13(){var i=0;this.Title=" Alternator Reassembly";this.Name="SNB6E40A14100012901LAAD13";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(395,159,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(235,274,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

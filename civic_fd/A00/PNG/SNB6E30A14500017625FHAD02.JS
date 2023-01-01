@@ -1,1 +1,0 @@
-function ISNB6E30A14500017625FHAD02(){var i=0;this.Title="Cruise Control Combination Switch Test/Replacement";this.Name="SNB6E30A14500017625FHAD02";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(311,79,13,0,"'Arial','sans-serif'",0,"<b></b>Wire side of <br>female terminals");}

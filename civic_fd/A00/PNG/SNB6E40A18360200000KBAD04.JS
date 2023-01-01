@@ -1,1 +1,0 @@
-function ISNB6E40A18360200000KBAD04(){var i=0;this.Title=" Inspection";this.Name="SNB6E40A18360200000KBAD04";this.Width=475;this.Height=320;this.CallOut=new Array;}

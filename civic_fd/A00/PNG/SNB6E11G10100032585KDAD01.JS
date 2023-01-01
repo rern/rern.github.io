@@ -1,1 +1,0 @@
-function ISNB6E11G10100032585KDAD01(){var i=0;this.Title="HVAC Control Unit/Rear Window Defogger Switch Removal and Installation";this.Name="SNB6E11G10100032585KDAD01";this.Width=475;this.Height=484;this.CallOut=new Array;this.CallOut[i++]=FS4(404,419,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(162,28,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

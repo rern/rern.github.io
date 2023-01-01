@@ -1,1 +1,0 @@
-function ISNB6E4AK72100000000BBAD07(){var i=0;this.Title=" How to Update the ECM/PCM";this.Name="SNB6E4AK72100000000BBAD07";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(39,306,13,0,"'Arial','sans-serif'",0,"<b></b>*: This illustration shows LHD model.");this.CallOut[i++]=FS4(399,195,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

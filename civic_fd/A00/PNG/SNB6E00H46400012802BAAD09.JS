@@ -1,1 +1,0 @@
-function ISNB6E00H46400012802BAAD09(){var i=0;this.Title=" Seat Belt Outer Lap Tensioner";this.Name="SNB6E00H46400012802BAAD09";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(363,79,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

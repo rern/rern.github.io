@@ -1,1 +1,0 @@
-function IS6M2E00S757PJ1T0100000D01(){var i=0;this.Title=" Special Tools Required";this.Name="S6M2E00S757PJ1T0100000D01";this.Width=950;this.Height=669;this.CallOut=new Array;}

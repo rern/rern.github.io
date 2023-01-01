@@ -1,1 +1,0 @@
-function ISNB6E30A32200043711KCAD02(){var i=0;this.Title="Engine Oil/Air Separator Installation";this.Name="SNB6E30A32200043711KCAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(317,310,13,0,"'Arial','sans-serif'",0,"<b>6 x 1.0 mm<br>9.8 N&middot;m<br>(1.0 kgf&middot;m, 7.2 lbf&middot;ft)</b>");}

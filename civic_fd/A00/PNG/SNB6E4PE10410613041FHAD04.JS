@@ -1,1 +1,0 @@
-function ISNB6E4PE10410613041FHAD04(){var i=0;this.Title="ATF Temperature Sensor Test and Replacement";this.Name="SNB6E4PE10410613041FHAD04";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(295,331,13,0,"'Arial','sans-serif'",0,"<b>6 x 1.0 mm<br>12 N&middot;m<br>(1.2 kgf&middot;m, 8.7 lbf&middot;ft)</b>");}

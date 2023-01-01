@@ -1,1 +1,0 @@
-function ISNB6E40A46500056901LAAD14(){var i=0;this.Title=" Planetary Gear Inspection";this.Name="SNB6E40A46500056901LAAD14";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(64,16,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(133,354,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00J26273415801KDAD06(){var i=0;this.Title=" Center Pillar Upper/Lower Trim";this.Name="SNB6E00J26273415801KDAD06";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(73,29,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(51,215,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

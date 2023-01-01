@@ -1,1 +1,0 @@
-function ISNB6E00E16226600000LDAD21(){var i=0;this.Title=" Outboard Joint Side";this.Name="SNB6E00E16226600000LDAD21";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(151,276,13,0,"'Arial','sans-serif'",0,"<b>10 cm<br>(4 in.)</b>");this.CallOut[i++]=FS4(164,174,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

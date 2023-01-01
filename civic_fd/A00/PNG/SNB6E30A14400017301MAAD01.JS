@@ -1,1 +1,0 @@
-function ISNB6E30A14400017301MAAD01(){var i=0;this.Title="Coolant Check";this.Name="SNB6E30A14400017301MAAD01";this.Width=475;this.Height=433;this.CallOut=new Array;this.CallOut[i++]=FS4(426,248,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(426,308,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

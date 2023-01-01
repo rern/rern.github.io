@@ -1,1 +1,0 @@
-function ISNB6E4AK72100000000BBAD01(){var i=0;this.Title=" If the MIL (Malfunction Indicator Lamp) has come on";this.Name="SNB6E4AK72100000000BBAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(300,297,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

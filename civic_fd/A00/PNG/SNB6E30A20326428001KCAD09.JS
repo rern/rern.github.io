@@ -1,1 +1,0 @@
-function ISNB6E30A20326428001KCAD09(){var i=0;this.Title=" Connection to new fuel line";this.Name="SNB6E30A20326428001KCAD09";this.Width=475;this.Height=369;this.CallOut=new Array;}

@@ -1,1 +1,0 @@
-function ISNB6E4PE10480113021MAAD02(){var i=0;this.Title="ATF Pump Inspection";this.Name="SNB6E4PE10480113021MAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(362,256,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(275,301,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

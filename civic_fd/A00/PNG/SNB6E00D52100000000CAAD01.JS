@@ -1,1 +1,0 @@
-function ISNB6E00D52100000000CAAD01(){var i=0;this.Title=" VSA Modulator-Control Unit Inputs and Outputs for 37P Connector";this.Name="SNB6E00D52100000000CAAD01";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(377,271,12,0,"'Arial','sans-serif'",0,"<b></b>Wire side of female terminals");}

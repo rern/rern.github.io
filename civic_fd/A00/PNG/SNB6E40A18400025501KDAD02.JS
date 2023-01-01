@@ -1,1 +1,0 @@
-function ISNB6E40A18400025501KDAD02(){var i=0;this.Title="Exhaust Manifold Removal and Installation";this.Name="SNB6E40A18400025501KDAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(255,328,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

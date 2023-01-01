@@ -1,1 +1,0 @@
-function ISNB6E30A20326924001KBAD01(){var i=0;this.Title="ELD Replacement";this.Name="SNB6E30A20326924001KBAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(31,132,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(366,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E40A14680200000MBAD03(){var i=0;this.Title="Cylinder Head Valve Clearance Adjustment";this.Name="SNB6E40A14680200000MBAD03";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(205,304,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(257,304,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

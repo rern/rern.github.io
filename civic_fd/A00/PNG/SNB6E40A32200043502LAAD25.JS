@@ -1,1 +1,0 @@
-function ISNB6E40A32200043502LAAD25(){var i=0;this.Title=" Oil Pump Installation";this.Name="SNB6E40A32200043502LAAD25";this.Width=475;this.Height=385;this.CallOut=new Array;}

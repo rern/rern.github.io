@@ -1,1 +1,0 @@
-function ISNB6E00J54283250501DBAD01(){var i=0;this.Title="Rear Wire Harness/Rear Window Defogger Ground Wire Locations";this.Name="SNB6E00J54283250501DBAD01";this.Width=950;this.Height=575;this.CallOut=new Array;this.CallOut[i++]=FS4(592,46,12,0,"'Arial','sans-serif'",0,"<b>REAR WIRE HARNESS</b>");this.CallOut[i++]=FS4(646,406,12,0,"'Arial','sans-serif'",0,"<b>G701</b>");}

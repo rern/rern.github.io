@@ -1,1 +1,0 @@
-function ISNB6E12K71100000000BBAD01(){var i=0;this.Title=" How to Check for DTCs with the HDS";this.Name="SNB6E12K71100000000BBAD01";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(638,198,12,0,"'Arial','sans-serif'",0,"<b>A</b>");}

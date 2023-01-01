@@ -1,1 +1,0 @@
-function ISNB6E00J32173660726KBAD03(){var i=0;this.Title=" Mirror Turn";this.Name="SNB6E00J32173660726KBAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(62,186,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(105,25,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

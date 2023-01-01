@@ -1,1 +1,0 @@
-function ISNB6E30A20326400000BAAD05(){var i=0;this.Title=" Without the HDS";this.Name="SNB6E30A20326400000BAAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(334,16,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

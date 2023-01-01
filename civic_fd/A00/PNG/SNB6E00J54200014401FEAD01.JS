@@ -1,1 +1,0 @@
-function ISNB6E00J54200014401FEAD01(){var i=0;this.Title=" Test Equipment Required";this.Name="SNB6E00J54200014401FEAD01";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(240,76,13,0,"'Arial','sans-serif'",0,"<b>BATTERY CODE</b>");this.CallOut[i++]=FS4(165,14,13,0,"'Arial','sans-serif'",0,"<b>44B19<br>46B24</b>");}

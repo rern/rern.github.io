@@ -1,1 +1,0 @@
-function ISNB6E00D14300000000BAAD05(){var i=0;this.Title=" Rear-drum type";this.Name="SNB6E00D14300000000BAAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(13,177,13,0,"'Arial','sans-serif'",0,"<b>B<br>7 N&middot;m <br>(0.7 kgf&middot;m, <br>5 lbf&middot;ft)</b>");this.CallOut[i++]=FS4(441,70,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

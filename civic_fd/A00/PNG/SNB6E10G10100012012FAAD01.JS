@@ -1,1 +1,0 @@
-function ISNB6E10G10100012012FAAD01(){var i=0;this.Title="A/C Compressor Clutch Circuit Troubleshooting";this.Name="SNB6E10G10100012012FAAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(54,32,13,0,"'Arial','sans-serif'",0,"<b>A/C COMPRESSOR CLUTCH RELAY 4P SOCKET</b>");}

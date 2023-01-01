@@ -1,1 +1,0 @@
-function ISNB6E40A46500056901KDAD04(){var i=0;this.Title=" Removal";this.Name="SNB6E40A46500056901KDAD04";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(297,365,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(11,272,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(228,383,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E30A14616700000MAAD02(){var i=0;this.Title="Camshaft Inspection";this.Name="SNB6E30A14616700000MAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;}

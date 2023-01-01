@@ -1,1 +1,0 @@
-function ISNB6E00J26220219251KDAD03(){var i=0;this.Title=" Passenger's Vent";this.Name="SNB6E00J26220219251KDAD03";this.Width=475;this.Height=372;this.CallOut=new Array;this.CallOut[i++]=FS4(325,86,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(306,19,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

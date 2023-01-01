@@ -1,1 +1,0 @@
-function ISNB6E3PE10410417256KBAD02(){var i=0;this.Title="A/T End Cover Selector Control Shaft Oil Seal Replacement";this.Name="SNB6E3PE10410417256KBAD02";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(277,166,13,0,"'Arial','sans-serif'",0,"<b>07746-0010800</b>");this.CallOut[i++]=FS4(254,50,13,0,"'Arial','sans-serif'",0,"<b>07749-0010000</b>");}

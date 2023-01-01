@@ -1,1 +1,0 @@
-function ISNB6E40A32200043502LAAD07(){var i=0;this.Title=" Oil Pump Inspection";this.Name="SNB6E40A32200043502LAAD07";this.Width=475;this.Height=304;this.CallOut=new Array;this.CallOut[i++]=FS4(378,21,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(193,264,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

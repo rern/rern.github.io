@@ -1,1 +1,0 @@
-function ISNB6E4PE10411210251LDAD08(){var i=0;this.Title="A/T 4th and 5th Clutch Reassembly";this.Name="SNB6E4PE10411210251LDAD08";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(298,322,13,0,"'Arial','sans-serif'",0,"<b>07LGC-0010100</b>");}

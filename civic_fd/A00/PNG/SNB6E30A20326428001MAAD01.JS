@@ -1,1 +1,0 @@
-function ISNB6E30A20326428001MAAD01(){var i=0;this.Title="Fuel Line Inspection";this.Name="SNB6E30A20326428001MAAD01";this.Width=950;this.Height=719;this.CallOut=new Array;this.CallOut[i++]=FS4(47,653,12,0,"'Arial','sans-serif'",0,"<b></b>Make sure the connections are<br>secure and the quick-connect<br>fitting covers are firmly locked in place.");}

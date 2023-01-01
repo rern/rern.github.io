@@ -1,1 +1,0 @@
-function ISNB6E00J26220219354KDAD01(){var i=0;this.Title="Dashboard Subdisplay Visor Removal/Installation";this.Name="SNB6E00J26220219354KDAD01";this.Width=475;this.Height=433;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>Fastener Location</b>");this.CallOut[i++]=FS4(58,42,13,0,"'Arial','sans-serif'",0,"<b>: Screw, 1</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00D00060800000MCAD01(){var i=0;this.Title=" Inspection";this.Name="SNB6E00D00060800000MCAD01";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(93,16,13,0,"'Arial','sans-serif'",0,"<b>Pulled back with <br>196 N (20 kgf, 44 lbf)</b>");this.CallOut[i++]=FS4(379,153,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

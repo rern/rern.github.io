@@ -1,1 +1,0 @@
-function ISNB6E3CK72100000000BBAD01(){var i=0;this.Title=" How to Troubleshoot Circuits at the ECM";this.Name="SNB6E3CK72100000000BBAD01";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(227,93,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(38,242,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

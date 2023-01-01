@@ -1,1 +1,0 @@
-function ISNB6E00J18526226945KBAD01(){var i=0;this.Title="Front Fender Enclosure Replacement";this.Name="SNB6E00J18526226945KBAD01";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>Fastener Locations</b>");this.CallOut[i++]=FS4(58,42,13,0,"'Arial','sans-serif'",0,"<b>: Clip, 2</b>");}

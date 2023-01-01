@@ -1,1 +1,0 @@
-function ISNB6E12K711000Y1241FAAD10(){var i=0;this.Title="DTC Troubleshooting: B1241 (P)";this.Name="SNB6E12K711000Y1241FAAD10";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(95,32,13,0,"'Arial','sans-serif'",0,"<b>BLOWER MOTOR RELAY 4P SOCKET</b>");this.CallOut[i++]=FS4(179,204,13,0,"'Arial','sans-serif'",0,"<b>BLK</b>");}

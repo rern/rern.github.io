@@ -1,1 +1,0 @@
-function FSM(){var i=0;gMY[i++]=FS2("6","2006");}

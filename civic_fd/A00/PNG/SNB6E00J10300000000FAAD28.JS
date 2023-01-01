@@ -1,1 +1,0 @@
-function ISNB6E00J10300000000FAAD28(){var i=0;this.Title=" Poor AM or FM radio reception or interference (1DIN 1CD type)";this.Name="SNB6E00J10300000000FAAD28";this.Width=475;this.Height=385;this.CallOut=new Array;this.CallOut[i++]=FS4(167,14,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

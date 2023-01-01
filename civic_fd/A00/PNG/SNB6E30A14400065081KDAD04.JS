@@ -1,1 +1,0 @@
-function ISNB6E30A14400065081KDAD04(){var i=0;this.Title=" Installation";this.Name="SNB6E30A14400065081KDAD04";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(40,272,13,0,"'Arial','sans-serif'",0,"<b></b>Apply liquid gasket<br>along the broken line.");}

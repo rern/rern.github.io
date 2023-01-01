@@ -1,1 +1,0 @@
-function ISNB6E00K791000R861XFAAD01(){var i=0;this.Title="DTC Troubleshooting: 86-1x, 86-2x";this.Name="SNB6E00K791000R861XFAAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(124,328,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(268,334,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

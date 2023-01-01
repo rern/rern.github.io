@@ -1,1 +1,0 @@
-function ISNB6E30A20326936301KBAD01(){var i=0;this.Title="Knock Sensor Replacement";this.Name="SNB6E30A20326936301KBAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(164,300,13,0,"'Arial','sans-serif'",0,"<b>B<br>31 N&middot;m <br>(3.2 kgf&middot;m, 23 lbf&middot;ft)</b>");this.CallOut[i++]=FS4(434,117,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

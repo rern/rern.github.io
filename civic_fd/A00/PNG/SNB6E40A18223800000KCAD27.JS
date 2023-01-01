@@ -1,1 +1,0 @@
-function ISNB6E40A18223800000KCAD27(){var i=0;this.Title="Engine Installation";this.Name="SNB6E40A18223800000KCAD27";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(285,291,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

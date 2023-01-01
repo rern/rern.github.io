@@ -1,1 +1,0 @@
-function ISNB6E10G10110112011FEAD03(){var i=0;this.Title="A/C Compressor Clutch Check";this.Name="SNB6E10G10110112011FEAD03";this.Width=475;this.Height=417;this.CallOut=new Array;}

@@ -1,1 +1,0 @@
-function ISNB6E3PK77100000000BBAD03(){var i=0;this.Title=" How to Troubleshoot Circuits at the PCM";this.Name="SNB6E3PK77100000000BBAD03";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(39,306,13,0,"'Arial','sans-serif'",0,"<b></b>*: This illustration shows LHD model.");this.CallOut[i++]=FS4(399,195,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

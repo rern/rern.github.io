@@ -1,1 +1,0 @@
-function ISNB6E40A14400065091KBAD02(){var i=0;this.Title="Water Passage Replacement";this.Name="SNB6E40A14400065091KBAD02";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(238,14,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(149,13,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

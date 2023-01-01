@@ -1,1 +1,0 @@
-function ISNB6E40A14666351511MAAD02(){var i=0;this.Title="Cylinder Head Rocker Arm and Shaft Inspection";this.Name="SNB6E40A14666351511MAAD02";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(292,96,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

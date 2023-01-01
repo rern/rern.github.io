@@ -1,1 +1,0 @@
-function ISNB6E3PE10410800000FEAD01(){var i=0;this.Title="A/T Pressure Test";this.Name="SNB6E3PE10410800000FEAD01";this.Width=475;this.Height=529;this.CallOut=new Array;this.CallOut[i++]=FS4(125,16,13,0,"'Arial','sans-serif'",0,"<b>A/T OIL PRESSURE GAUGE SET<br>07406-0020004</b>");this.CallOut[i++]=FS4(399,279,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

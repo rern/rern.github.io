@@ -1,1 +1,0 @@
-function ISNB6E00D10600000000CAAD01(){var i=0;this.Title=" ABS Modulator-Control Unit Inputs and Outputs for 25P Connector";this.Name="SNB6E00D10600000000CAAD01";this.Width=950;this.Height=319;this.CallOut=new Array;this.CallOut[i++]=FS4(372,271,12,0,"'Arial','sans-serif'",0,"<b></b>Wire side of female terminals");}

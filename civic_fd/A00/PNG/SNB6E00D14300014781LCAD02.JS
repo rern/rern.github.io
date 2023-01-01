@@ -1,1 +1,0 @@
-function ISNB6E00D14300014781LCAD02(){var i=0;this.Title="Brake Master Cylinder Disassembly";this.Name="SNB6E00D14300014781LCAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(143,323,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(212,266,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

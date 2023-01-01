@@ -1,1 +1,0 @@
-function ISNB6E00F00000057111KCAD05(){var i=0;this.Title="Steering Gearbox Installation - Power Steering";this.Name="SNB6E00F00000057111KCAD05";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(272,280,13,0,"'Arial','sans-serif'",0,"<b>A<br>14 x 1.5 mm<br>103 N&middot;m<br>(10.5 kgf&middot;m, 75.9 lbf&middot;ft)</b>");}

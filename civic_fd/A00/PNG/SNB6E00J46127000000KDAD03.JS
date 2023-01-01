@@ -1,1 +1,0 @@
-function ISNB6E00J46127000000KDAD03(){var i=0;this.Title="Front Seat Removal/Installation";this.Name="SNB6E00J46127000000KDAD03";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(425,103,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

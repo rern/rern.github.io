@@ -1,1 +1,0 @@
-function ISNB6E00J32320500000KBAD01(){var i=0;this.Title="Door Courtesy Light Replacement";this.Name="SNB6E00J32320500000KBAD01";this.Width=475;this.Height=449;this.CallOut=new Array;this.CallOut[i++]=FS4(442,313,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(301,27,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

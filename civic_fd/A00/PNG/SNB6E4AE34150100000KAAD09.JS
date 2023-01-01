@@ -1,1 +1,0 @@
-function ISNB6E4AE34150100000KAAD09(){var i=0;this.Title="M/T Assembly Removal";this.Name="SNB6E4AE34150100000KAAD09";this.Width=475;this.Height=369;this.CallOut=new Array;}

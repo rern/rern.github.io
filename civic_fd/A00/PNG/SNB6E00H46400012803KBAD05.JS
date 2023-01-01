@@ -1,1 +1,0 @@
-function ISNB6E00H46400012803KBAD05(){var i=0;this.Title=" Installation";this.Name="SNB6E00H46400012803KBAD05";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(149,71,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

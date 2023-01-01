@@ -1,1 +1,0 @@
-function ISNB6E40A14674359528KCAD02(){var i=0;this.Title="Cam Chain Case Oil Seal Installation";this.Name="SNB6E40A14674359528KCAD02";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(203,353,13,0,"'Arial','sans-serif'",0,"<b>33.0-33.7 mm<br>(1.30-1.33 in.)</b>");}

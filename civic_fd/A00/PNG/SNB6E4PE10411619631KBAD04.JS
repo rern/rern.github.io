@@ -1,1 +1,0 @@
-function ISNB6E4PE10411619631KBAD04(){var i=0;this.Title="A/T Differential Oil Seal Replacement";this.Name="SNB6E4PE10411619631KBAD04";this.Width=475;this.Height=491;this.CallOut=new Array;this.CallOut[i++]=FS4(52,116,13,0,"'Arial','sans-serif'",0,"<b>07749-0010000</b>");this.CallOut[i++]=FS4(32,147,13,0,"'Arial','sans-serif'",0,"<b>07JAD-PH80000</b>");}

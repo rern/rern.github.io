@@ -1,1 +1,0 @@
-function ISNB6E4PE10480139301KCAD03(){var i=0;this.Title="A/T Valve Body and ATF Strainer Installation";this.Name="SNB6E4PE10480139301KCAD03";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(39,337,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(286,337,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

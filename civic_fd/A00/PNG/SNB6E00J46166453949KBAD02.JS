@@ -1,1 +1,0 @@
-function ISNB6E00J46166453949KBAD02(){var i=0;this.Title=" Seat-back - Fold Down";this.Name="SNB6E00J46166453949KBAD02";this.Width=475;this.Height=609;this.CallOut=new Array;this.CallOut[i++]=FS4(396,366,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(412,36,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

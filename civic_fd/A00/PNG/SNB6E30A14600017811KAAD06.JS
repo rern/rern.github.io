@@ -1,1 +1,0 @@
-function ISNB6E30A14600017811KAAD06(){var i=0;this.Title="Cylinder Head Cover Removal";this.Name="SNB6E30A14600017811KAAD06";this.Width=475;this.Height=336;this.CallOut=new Array;}

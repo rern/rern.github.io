@@ -1,1 +1,0 @@
-function ISNB6E12G10500057401KBAD01(){var i=0;this.Title="Sunlight Sensor Replacement";this.Name="SNB6E12G10500057401KBAD01";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(339,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(339,82,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

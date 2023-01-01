@@ -1,1 +1,0 @@
-function ISNB6E4AE34150339091MAAD02(){var i=0;this.Title="M/T Change Lever Clearance Inspection";this.Name="SNB6E4AE34150339091MAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;}

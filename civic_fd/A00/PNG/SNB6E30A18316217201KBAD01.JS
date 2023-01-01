@@ -1,1 +1,0 @@
-function ISNB6E30A18316217201KBAD01(){var i=0;this.Title=" Rod Bearing Clearance Inspection";this.Name="SNB6E30A18316217201KBAD01";this.Width=475;this.Height=401;this.CallOut=new Array;}

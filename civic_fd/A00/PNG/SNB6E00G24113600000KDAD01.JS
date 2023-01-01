@@ -1,1 +1,0 @@
-function ISNB6E00G24113600000KDAD01(){var i=0;this.Title="Blower Unit Removal and Installation";this.Name="SNB6E00G24113600000KDAD01";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(189,340,13,0,"'Arial','sans-serif'",0,"<b></b>Cut here.");this.CallOut[i++]=FS4(419,180,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

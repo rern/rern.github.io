@@ -1,1 +1,0 @@
-function ISNB6E00J54200000000BBAD06(){var i=0;this.Title=" Handling Connectors";this.Name="SNB6E00J54200000000BBAD06";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(323,200,13,0,"'Arial','sans-serif'",0,"<b>(P/N 08798-9001)</b>");}

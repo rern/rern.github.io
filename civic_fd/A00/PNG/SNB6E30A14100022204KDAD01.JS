@@ -1,1 +1,0 @@
-function ISNB6E30A14100022204KDAD01(){var i=0;this.Title=" With EPS  model";this.Name="SNB6E30A14100022204KDAD01";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(16,16,13,0,"'Arial','sans-serif'",0,"<b>8 x 1.25 mm<br>24 N&middot;m <br>(2.4 kgf&middot;m, 17 lbf&middot;ft)</b>");}

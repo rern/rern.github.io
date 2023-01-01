@@ -1,1 +1,0 @@
-function ISNB6E05D14300014701KBAD06(){var i=0;this.Title=" LHD Type";this.Name="SNB6E05D14300014701KBAD06";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(194,17,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

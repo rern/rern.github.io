@@ -1,1 +1,0 @@
-function ISNB6E3AA20300024601KBAD02(){var i=0;this.Title="ECM/PCM Replacement";this.Name="SNB6E3AA20300024601KBAD02";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(388,31,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

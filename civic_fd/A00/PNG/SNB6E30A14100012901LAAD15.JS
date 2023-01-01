@@ -1,1 +1,0 @@
-function ISNB6E30A14100012901LAAD15(){var i=0;this.Title=" Alternator Brush Inspection";this.Name="SNB6E30A14100012901LAAD15";this.Width=475;this.Height=397;this.CallOut=new Array;}

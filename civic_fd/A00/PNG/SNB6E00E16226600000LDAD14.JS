@@ -1,1 +1,0 @@
-function ISNB6E00E16226600000LDAD14(){var i=0;this.Title=" Inboard Joint Side";this.Name="SNB6E00E16226600000LDAD14";this.Width=475;this.Height=391;this.CallOut=new Array;this.CallOut[i++]=FS4(96,81,13,0,"'Arial','sans-serif'",0,"<b>90 degrees</b>");}

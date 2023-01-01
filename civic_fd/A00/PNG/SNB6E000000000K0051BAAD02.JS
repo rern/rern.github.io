@@ -1,1 +1,0 @@
-function ISNB6E000000000K0051BAAD02(){var i=0;this.Title=" Rear:";this.Name="SNB6E000000000K0051BAAD02";this.Width=475;this.Height=641;this.CallOut=new Array;this.CallOut[i++]=FS4(424,573,13,0,"'Arial','sans-serif'",0,"<b>D</b>");this.CallOut[i++]=FS4(16,192,13,0,"'Arial','sans-serif'",0,"<b>C</b>");}

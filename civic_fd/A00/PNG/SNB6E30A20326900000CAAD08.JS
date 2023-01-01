@@ -1,1 +1,0 @@
-function ISNB6E30A20326900000CAAD08(){var i=0;this.Title=" Oil Level Sensor (KE, KG, TR models)";this.Name="SNB6E30A20326900000CAAD08";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(336,128,13,0,"'Arial','sans-serif'",0,"<b>O-RING</b>");}

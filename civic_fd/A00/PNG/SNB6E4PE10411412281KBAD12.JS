@@ -1,1 +1,0 @@
-function ISNB6E4PE10411412281KBAD12(){var i=0;this.Title="A/T Shift Cable Replacement";this.Name="SNB6E4PE10411412281KBAD12";this.Width=475;this.Height=465;this.CallOut=new Array;this.CallOut[i++]=FS4(405,339,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(54,277,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

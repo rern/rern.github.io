@@ -1,1 +1,0 @@
-function ISNB6E30A46500056901LAAD05(){var i=0;this.Title=" Armature Inspection and Test";this.Name="SNB6E30A46500056901LAAD05";this.Width=475;this.Height=353;this.CallOut=new Array;this.CallOut[i++]=FS4(253,317,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

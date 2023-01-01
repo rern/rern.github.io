@@ -1,1 +1,0 @@
-function ISNB6E40A14400049001KBAD06(){var i=0;this.Title="Radiator and Fan Replacement";this.Name="SNB6E40A14400049001KBAD06";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(37,268,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(287,276,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

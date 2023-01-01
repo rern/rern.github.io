@@ -1,1 +1,0 @@
-function ISNB6E4PE10411212211MAAD07(){var i=0;this.Title="A/T Clutch Clearance Inspection";this.Name="SNB6E4PE10411212211MAAD07";this.Width=475;this.Height=353;this.CallOut=new Array;}

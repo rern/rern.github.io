@@ -1,1 +1,0 @@
-function ISNB6E00J54200000000BBAD03(){var i=0;this.Title=" Handling Connectors";this.Name="SNB6E00J54200000000BBAD03";this.Width=475;this.Height=320;this.CallOut=new Array;}

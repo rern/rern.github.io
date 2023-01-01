@@ -1,1 +1,0 @@
-function ISNB6E4AK72100090135FAAD10(){var i=0;this.Title="DTC Troubleshooting: P0135 (41)";this.Name="SNB6E4AK72100090135FAAD10";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(349,45,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00D14300014721MAAD04(){var i=0;this.Title=" Thickness and Parallelism";this.Name="SNB6E00D14300014721MAAD04";this.Width=475;this.Height=369;this.CallOut=new Array;this.CallOut[i++]=FS4(169,20,13,0,"'Arial','sans-serif'",0,"<b>10 mm (0.39 in.)</b>");}

@@ -1,1 +1,0 @@
-function ISNB6E00F00000057118KBAD05(){var i=0;this.Title="Steering Gearbox Mount Cushion Replacement - EPS";this.Name="SNB6E00F00000057118KBAD05";this.Width=475;this.Height=336;this.CallOut=new Array;this.CallOut[i++]=FS4(19,137,13,0,"'Arial','sans-serif'",0,"<b>A</b>");this.CallOut[i++]=FS4(259,304,13,0,"'Arial','sans-serif'",0,"<b>B</b>");}

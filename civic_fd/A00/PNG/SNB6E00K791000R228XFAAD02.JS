@@ -1,1 +1,0 @@
-function ISNB6E00K791000R228XFAAD02(){var i=0;this.Title="DTC Troubleshooting: 22-8x";this.Name="SNB6E00K791000R228XFAAD02";this.Width=475;this.Height=320;this.CallOut=new Array;this.CallOut[i++]=FS4(120,32,13,0,"'Arial','sans-serif'",0,"<b>SRS UNIT CONNECTOR B (28P)</b>");this.CallOut[i++]=FS4(124,274,13,0,"'Arial','sans-serif'",0,"<b></b>Wire side of female terminals");}

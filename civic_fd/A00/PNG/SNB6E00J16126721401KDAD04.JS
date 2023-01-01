@@ -1,1 +1,0 @@
-function ISNB6E00J16126721401KDAD04(){var i=0;this.Title="Front Door Panel Removal/Installation";this.Name="SNB6E00J16126721401KDAD04";this.Width=475;this.Height=417;this.CallOut=new Array;this.CallOut[i++]=FS4(39,16,13,0,"'Arial','sans-serif'",0,"<b>Fastener Location</b>");this.CallOut[i++]=FS4(58,42,13,0,"'Arial','sans-serif'",0,"<b>: Screw, 1</b>");}

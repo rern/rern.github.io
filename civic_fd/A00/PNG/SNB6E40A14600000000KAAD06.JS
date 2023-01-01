@@ -1,1 +1,0 @@
-function ISNB6E40A14600000000KAAD06(){var i=0;this.Title="Cylinder Head Removal";this.Name="SNB6E40A14600000000KAAD06";this.Width=475;this.Height=401;this.CallOut=new Array;this.CallOut[i++]=FS4(277,16,13,0,"'Arial','sans-serif'",0,"<b>B</b>");this.CallOut[i++]=FS4(332,371,13,0,"'Arial','sans-serif'",0,"<b>A</b>");}
