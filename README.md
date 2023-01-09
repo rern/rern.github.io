@@ -1,3 +1,5 @@
+**+R repo**: [rern.github.io](https://rern.github.io)
+
 **Build packages**
 - Build (on RPi)
 ```sh
@@ -14,7 +16,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 	echo PARTUUID=$partuuid  swap   swap  defaults          0  0 > /etc/fstab
 	mount -a
 	```
-**+R repo**: [rern.github.io](https://rern.github.io)
 
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
