@@ -38,7 +38,7 @@ keys=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --menu "
 dirssh=/home/alarm/.ssh
 if [[ $keys == 1 ]]; then
 	dialog "${optbox[@]}" --msgbox "
- Copy \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
+ Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
  Then press OK to continue.
 " 7 58
 else
