@@ -18,6 +18,27 @@ CamillaDSP
 	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 
+### Build GUI backend
+- `backend/routes.py`
+	```sh
+	...
+	app.router.add_static("/gui/", path=BASEPATH / "build", follow_symlinks=True)
+	...
+	```
+- `backend/view.py`
+	```sh
+	...
+	    if name == "volume":
+        result = cdsp.get_volume()
+    elif name == "configmutevolume":
+        config = cdsp.get_config()
+        mute = True if cdsp.get_mute() else False
+        volume = cdsp.get_volume()
+        result = {"config": config, "mute": mute, "volume": volume}
+        return web.json_response(result)
+	...
+	```
+	
 ### Build GUI frontend
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 	```sh
