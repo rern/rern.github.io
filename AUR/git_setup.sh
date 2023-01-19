@@ -9,8 +9,6 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 2
 
-cd
-
 if [[ -e /home/alarm/.ssh/aur ]]; then
 	dialog "${optbox[@]}" --yesno "
 AUR Git has already setup.
