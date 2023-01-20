@@ -19,11 +19,12 @@ CamillaDSP
 	```
 
 ### Build GUI backend
-- Modify `PKGBUILD`:
+- Modify for `PKGBUILD`:
 ```sh
+sed -i 's/5000/5005/' ./src/setupProxy.js
 sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
 sed -i -e '/cdsp.get_volume/ a\
-    elif name == "configmutevolume":\
+    elif name == "mute":\
         config = cdsp.get_config()\
         mute = True if cdsp.get_mute() else False\
         volume = cdsp.get_volume()\
@@ -32,78 +33,78 @@ sed -i -e '/cdsp.get_volume/ a\
         
 ' -e '/cdsp.set_volume/ a\
     elif name == "mute":\
-        cdsp.set_mute(value)
+        cdsp.set_mute(value == "true")
 ' $installdir/backend/views.py
 ```
-	
-### Build GUI frontend
-- Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
-- Setup Loopback (on **rAudio**: Features > enable DSP)
-	```sh
-	echo '
-	pcm.!default { 
-		type plug 
-		slave.pcm camilladsp
-	}
-	pcm.camilladsp {
-		type plug
-		slave {
-			pcm {
-				type     hw
-				card     Loopback
-				device   0
-				channels 2
-				format   S32LE
-				rate     44100
-			}
+
+### Setup Loopback
+- on **rAudio**: Features > enable DSP
+```sh
+echo '
+pcm.!default { 
+	type plug 
+	slave.pcm camilladsp
+}
+pcm.camilladsp {
+	type plug
+	slave {
+		pcm {
+			type     hw
+			card     Loopback
+			device   0
+			channels 2
+			format   S32LE
+			rate     44100
 		}
 	}
-	ctl.!default {
-		type hw
-		card Loopback
-	}
-	ctl.camilladsp {
-		type hw
-		card Loopback
-	}' >> /etc/asound.conf
-	```
+}
+ctl.!default {
+	type hw
+	card Loopback
+}
+ctl.camilladsp {
+	type hw
+	card Loopback
+}' >> /etc/asound.conf
+```
+### Build GUI frontend
+- Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
-	```sh
-	su
-	cd
-	pacman -Sy --needed --noconfirm npm
-	
-	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
-	
-	cd camillagui-RELEASE
-	npm install reactjs
-	# >> DO NOT: fix vulnerables / npm audit fix
-	```
+```sh
+su
+cd
+pacman -Sy --needed --noconfirm npm
+
+curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
+
+cd camillagui-RELEASE
+npm install reactjs
+
+ln -s /srv/http/assets public/static
+chmod +x postbuild.sh
+```
 	
 - Development server
-	```sh
-	# set port
-	sed -i 's/5000/5005/' ./src/setupProxy.js
-	
-	systemctl start camilladsp camillagui
-	
-	npm start
-	
-	> Starting the development server...
-	# (wait for compiling ...)
-	> Compiled successfully!
-	# You can now view camillagui in the browser.
-	# Local:            http://localhost:3000
-	# On Your Network:  http://192.168.1.4:3000
-	```
-	- On browser: http://192.168.1.4:3000
-	- Any changes to files recompile and refresh browser immediately
-	- `public/...` for custom css, font-face, js, image
-		- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
-		- css:
-			- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
-			- @font-face: `../fonts/rern.woff2` - relative path
-		- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
+```sh
+systemctl start camilladsp camillagui
+
+npm start
+
+> Starting the development server...
+# (wait for compiling ...)
+> Compiled successfully!
+# You can now view camillagui in the browser.
+# Local:            http://localhost:3000
+# On Your Network:  http://192.168.1.4:3000
+```
+- On browser: http://192.168.1.4:3000
+- Any changes to files recompile and refresh browser immediately
+- `public/...` for custom css, font-face, js, image
+	- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
+	- css:
+		- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
+		- @font-face: `../fonts/rern.woff2` - relative path
+	- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
 	- `npm run build`
