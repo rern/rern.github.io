@@ -71,7 +71,7 @@ sed -i -e '/cdsp.get_volume/ a\
 	```sh
 	su
 	cd
-	pacman -Sy --needed --noconfirm camilladsp camillagui-backend npm
+	pacman -Sy --needed --noconfirm npm
 	
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
 	
