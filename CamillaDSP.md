@@ -48,22 +48,21 @@ CamillaDSP
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
 	cd camillagui-RELEASE
 	npm install reactjs
-	# >> NO: fix vulnerables - npm audit fix
+	# >> DO NOT: fix vulnerables / npm audit fix
 	```
 	
 - Development server
-	```
+	```sh
 	systemctl start camilladsp camillagui
+	
 	npm start
 	
 	> Starting the development server...
-
+	# (wait for compiling ...)
 	> Compiled successfully!
-
-	> You can now view camillagui in the browser.
-
-	> Local:            http://localhost:3000
-	> On Your Network:  http://192.168.1.4:3000
+	# You can now view camillagui in the browser.
+	# Local:            http://localhost:3000
+	# On Your Network:  http://192.168.1.4:3000
 	```
 	- Any changes to files recompile and refresh browser immediately
 	- `public/...` for custom css, font-face, js, images
