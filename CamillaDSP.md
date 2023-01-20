@@ -1,7 +1,7 @@
 CamillaDSP
 ---
 
-### Build binary and Python libraries
+### 1. Build binary and Python libraries
 - `camilladsp` - Binary
 	- Only `armv6h` - `rust` >= 1.62
 	```sh
@@ -11,6 +11,23 @@ CamillaDSP
 	# Restart terminal to activate new PATH
 	```
 - `camillagui-backend` - GUI
+	- Modify for `PKGBUILD`:
+	```sh
+	sed -i 's/5000/5005/' ./src/setupProxy.js
+	sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
+	sed -i -e '/cdsp.get_volume/ a\
+		elif name == "mute":\
+			config = cdsp.get_config()\
+			mute = True if cdsp.get_mute() else False\
+			volume = cdsp.get_volume()\
+			result = {"config": config, "mute": mute, "volume": volume}\
+			return web.json_response(result)\
+
+	' -e '/cdsp.set_volume/ a\
+		elif name == "mute":\
+			cdsp.set_mute(value == "true")
+	' $installdir/backend/views.py
+	```
 - `python-pycamilladsp` - GUI
 - `python-pycamilladsp-plot` - GUI
 - Build:
@@ -18,26 +35,7 @@ CamillaDSP
 	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 
-### Build GUI backend
-- Modify for `PKGBUILD`:
-```sh
-sed -i 's/5000/5005/' ./src/setupProxy.js
-sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
-sed -i -e '/cdsp.get_volume/ a\
-    elif name == "mute":\
-        config = cdsp.get_config()\
-        mute = True if cdsp.get_mute() else False\
-        volume = cdsp.get_volume()\
-        result = {"config": config, "mute": mute, "volume": volume}\
-        return web.json_response(result)\
-        
-' -e '/cdsp.set_volume/ a\
-    elif name == "mute":\
-        cdsp.set_mute(value == "true")
-' $installdir/backend/views.py
-```
-
-### Setup Loopback
+### 2. Setup Loopback
 - on **rAudio**: Features > enable DSP
 ```sh
 echo '
@@ -67,7 +65,7 @@ ctl.camilladsp {
 	card Loopback
 }' >> /etc/asound.conf
 ```
-### Build GUI frontend
+### 3. Build GUI Frontend
 - Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 ```sh
@@ -84,7 +82,7 @@ ln -s /srv/http/assets public/static
 chmod +x postbuild.sh
 ```
 	
-- Development server
+- Start Development server
 ```sh
 systemctl start camilladsp camillagui
 
