@@ -19,25 +19,22 @@ CamillaDSP
 	```
 
 ### Build GUI backend
-- `backend/routes.py`
-	```sh
-	...
-	app.router.add_static("/gui/", path=BASEPATH / "build", follow_symlinks=True)
-	...
-	```
-- `backend/view.py`
-	```sh
-	...
-	    if name == "volume":
-        result = cdsp.get_volume()
-    elif name == "configmutevolume":
-        config = cdsp.get_config()
-        mute = True if cdsp.get_mute() else False
-        volume = cdsp.get_volume()
-        result = {"config": config, "mute": mute, "volume": volume}
-        return web.json_response(result)
-	...
-	```
+- Modify `PKGBUILD`:
+```sh
+sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
+sed -i -e '/cdsp.get_volume/ a\
+    elif name == "configmutevolume":\
+        config = cdsp.get_config()\
+        mute = True if cdsp.get_mute() else False\
+        volume = cdsp.get_volume()\
+        result = {"config": config, "mute": mute, "volume": volume}\
+        return web.json_response(result)\
+        
+' -e '/cdsp.set_volume/ a\
+    elif name == "mute":\
+        cdsp.set_mute(value)
+' $installdir/backend/views.py
+```
 	
 ### Build GUI frontend
 - Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
