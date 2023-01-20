@@ -40,11 +40,41 @@ CamillaDSP
 	```
 	
 ### Build GUI frontend
+- Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
+- Setup Loopback (on **rAudio**: Features > enable DSP)
+	```sh
+	echo '
+	pcm.!default { 
+		type plug 
+		slave.pcm camilladsp
+	}
+	pcm.camilladsp {
+		type plug
+		slave {
+			pcm {
+				type     hw
+				card     Loopback
+				device   0
+				channels 2
+				format   S32LE
+				rate     44100
+			}
+		}
+	}
+	ctl.!default {
+		type hw
+		card Loopback
+	}
+	ctl.camilladsp {
+		type hw
+		card Loopback
+	}' >> /etc/asound.conf
+	```
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 	```sh
 	su
 	cd
-	pacman -Sy --needed --noconfirm  camilladsp camillagui-backend npm
+	pacman -Sy --needed --noconfirm camilladsp camillagui-backend npm
 	
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
 	
@@ -69,8 +99,9 @@ CamillaDSP
 	# Local:            http://localhost:3000
 	# On Your Network:  http://192.168.1.4:3000
 	```
+	- On browser: http://192.168.1.4:3000
 	- Any changes to files recompile and refresh browser immediately
-	- `public/...` for custom css, font-face, js, images
+	- `public/...` for custom css, font-face, js, image
 		- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
 		- css:
 			- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
@@ -82,7 +113,7 @@ CamillaDSP
 	- Deployment files: `./build` (copied to `/srv/http/settings/camillagui/build` by `postbuild.sh`)
 
 ### Tips
-- Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
+- Get audio hardware parameters (RPi on-board audio - `sample format: S16LE`)
 ```sh
 # while playing - get from loopback cardN/pcmNp
 card=$( aplay -l | grep 'Loopback.*device 0' | sed 's/card \(.\): .*/\1/' )
