@@ -44,7 +44,7 @@ CamillaDSP
 	```sh
 	su
 	cd
-	pacman -Sy --needed --noconfirm  npm
+	pacman -Sy --needed --noconfirm  camilladsp camillagui-backend npm
 	
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
 	
