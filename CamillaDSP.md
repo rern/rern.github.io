@@ -56,7 +56,7 @@ CamillaDSP
 - Development server
 	```sh
 	# set port
-	sed -i 's/^port: .*/port: 5000/' /srv/http/settings/camillagui/config/camillagui.yml
+	sed -i 's/5000/5005/' ./src/setupProxy.js
 	
 	systemctl start camilladsp camillagui
 	
@@ -78,13 +78,8 @@ CamillaDSP
 		- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
-	```sh
-	npm run build
-	# Deployment files in ./build directory > copied to /srv/http/settings/camillagui by postbuild.sh
-	
-	# reset port
-	sed -i 's/^port: .*/port: 5005/' /srv/http/settings/camillagui/config/camillagui.yml
-	```
+	- `npm run build`
+	- Deployment files: `./build` (copied to `/srv/http/settings/camillagui/build` by `postbuild.sh`)
 
 ### Tips
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
