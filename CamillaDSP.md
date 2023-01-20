@@ -45,7 +45,9 @@ CamillaDSP
 	su
 	cd
 	pacman -Sy --needed --noconfirm  npm
+	
 	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
+	
 	cd camillagui-RELEASE
 	npm install reactjs
 	# >> DO NOT: fix vulnerables / npm audit fix
@@ -53,6 +55,9 @@ CamillaDSP
 	
 - Development server
 	```sh
+	# set port
+	sed -i 's/^port: .*/port: 5000/' /srv/http/settings/camillagui/config/camillagui.yml
+	
 	systemctl start camilladsp camillagui
 	
 	npm start
@@ -73,8 +78,13 @@ CamillaDSP
 		- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
-	- `npm run build`
-	- Deployment files in `build` directory
+	```sh
+	npm run build
+	# Deployment files in ./build directory > copied to /srv/http/settings/camillagui by postbuild.sh
+	
+	# reset port
+	sed -i 's/^port: .*/port: 5005/' /srv/http/settings/camillagui/config/camillagui.yml
+	```
 
 ### Tips
 - Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
