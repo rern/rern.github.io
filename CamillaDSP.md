@@ -1,7 +1,7 @@
 CamillaDSP
 ---
 
-### Build binary and Python libraries
+### 1. Build binary and Python libraries
 - `camilladsp` - Binary
 	- Only `armv6h` - `rust` >= 1.62
 	```sh
@@ -11,6 +11,23 @@ CamillaDSP
 	# Restart terminal to activate new PATH
 	```
 - `camillagui-backend` - GUI
+	- Modify for `PKGBUILD`:
+	```sh
+	sed -i 's/5000/5005/' ./src/setupProxy.js
+	sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
+	sed -i -e '/cdsp.get_volume/ a\
+		elif name == "mute":\
+			config = cdsp.get_config()\
+			mute = True if cdsp.get_mute() else False\
+			volume = cdsp.get_volume()\
+			result = {"config": config, "mute": mute, "volume": volume}\
+			return web.json_response(result)\
+
+	' -e '/cdsp.set_volume/ a\
+		elif name == "mute":\
+			cdsp.set_mute(value == "true")
+	' $installdir/backend/views.py
+	```
 - `python-pycamilladsp` - GUI
 - `python-pycamilladsp-plot` - GUI
 - Build:
@@ -18,67 +35,81 @@ CamillaDSP
 	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
 	```
 
-### Build GUI backend
-- `backend/routes.py`
-	```sh
-	...
-	app.router.add_static("/gui/", path=BASEPATH / "build", follow_symlinks=True)
-	...
-	```
-- `backend/view.py`
-	```sh
-	...
-	    if name == "volume":
-        result = cdsp.get_volume()
-    elif name == "configmutevolume":
-        config = cdsp.get_config()
-        mute = True if cdsp.get_mute() else False
-        volume = cdsp.get_volume()
-        result = {"config": config, "mute": mute, "volume": volume}
-        return web.json_response(result)
-	...
-	```
-	
-### Build GUI frontend
+### 2. Setup Loopback
+- on **rAudio**: Features > enable DSP
+```sh
+echo '
+pcm.!default { 
+	type plug 
+	slave.pcm camilladsp
+}
+pcm.camilladsp {
+	type plug
+	slave {
+		pcm {
+			type     hw
+			card     Loopback
+			device   0
+			channels 2
+			format   S32LE
+			rate     44100
+		}
+	}
+}
+ctl.!default {
+	type hw
+	card Loopback
+}
+ctl.camilladsp {
+	type hw
+	card Loopback
+}' >> /etc/asound.conf
+```
+### 3. Build GUI Frontend
+- Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
-	```sh
-	su
-	cd
-	pacman -Sy --needed --noconfirm  npm
-	curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
-	cd camillagui-RELEASE
-	npm install reactjs
-	# >> NO: fix vulnerables - npm audit fix
-	```
+```sh
+su
+cd
+pacman -Sy --needed --noconfirm npm
+
+curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
+
+cd camillagui-RELEASE
+npm install reactjs
+
+ln -s /srv/http/assets public/static
+chmod +x postbuild.sh
+```
 	
-- Development server
-	```
-	systemctl start camilladsp camillagui
-	npm start
-	
-	> Starting the development server...
+- Start Development server
+```sh
+systemctl start camilladsp camillagui
 
-	> Compiled successfully!
+npm start
 
-	> You can now view camillagui in the browser.
-
-	> Local:            http://localhost:3000
-	> On Your Network:  http://192.168.1.4:3000
-	```
-	- Any changes to files recompile and refresh browser immediately
-	- `public/...` for custom css, font-face, js, images
-		- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
-		- css:
-			- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
-			- @font-face: `../fonts/rern.woff2` - relative path
-		- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
+> Starting the development server...
+# (wait for compiling ...)
+> Compiled successfully!
+# You can now view camillagui in the browser.
+# Local:            http://localhost:3000
+# On Your Network:  http://192.168.1.4:3000
+```
+- On browser: http://192.168.1.4:3000
+- Any changes to files recompile and refresh browser immediately
+- `public/...` for custom css, font-face, js, image
+	- img: `src="%PUBLIC_URL%/assets/img/camillagui.svg"`
+	- css:
+		- `<link rel="stylesheet" href="%PUBLIC_URL%/assets/css/camillagui.css">` - after `#root` to force after `main.css`
+		- @font-face: `../fonts/rern.woff2` - relative path
+	- js: `<script defer="defer" src="%PUBLIC_URL%/assets/js/camillagui.js"></script>`
 	
 - Build
 	- `npm run build`
-	- Deployment files in `build` directory
+	- Deployment files: `./build` (copied to `/srv/http/settings/camillagui/build` by `postbuild.sh`)
 
 ### Tips
-- Get audio hardware parameters (RPi on-board audio - sample format: S16LE)
+- Get audio hardware parameters (RPi on-board audio - `sample format: S16LE`)
 ```sh
 # while playing - get from loopback cardN/pcmNp
 card=$( aplay -l | grep 'Loopback.*device 0' | sed 's/card \(.\): .*/\1/' )
