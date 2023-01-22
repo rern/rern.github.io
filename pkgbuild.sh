@@ -69,7 +69,7 @@ declare -A packages=(
 )
 
 if [[ $arch == armv6h ]]; then
-	omit='^dab|^rtsp'
+	omit='camilla|^dab|^rtsp'
 	source_mpd=http://mirror.archlinuxarm.org/armv7h/extra/mpd-0.23.10-2-armv7h.pkg.tar.xz
 	source_firmware=
 else
