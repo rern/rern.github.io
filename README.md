@@ -34,7 +34,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
 		- Download GitHub specific directory: https://download-directory.github.io/
 	- Kernel and firmware
 		- `firmware-raspberrypi` - `any`
-		- `linux-api-headers` - `any`
 		- `linux-firmware` - `any`
 		- `linux-firmware-whence` - `any`
 		- [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy) - `armv6h`
