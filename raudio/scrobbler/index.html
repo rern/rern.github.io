@@ -7,10 +7,9 @@
 	<script>
 	var url = new URL( window.location.href );
 	var token = url.searchParams.get( 'token' );
-	var ip = url.searchParams.get( 'state' );
-	var error = token ? '' : '&error='+ url.searchParams.get( 'error' );
-//	window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token + error;
-	console.log( 'http://'+ ip +'/settings.php?p=features&token='+ token + error )
+	var ip = url.searchParams.get( 'ip' );
+//	window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
+	console.log( 'http://'+ ip +'/settings.php?p=features&token='+ token )
 	</script>
 </body>
 </html>
