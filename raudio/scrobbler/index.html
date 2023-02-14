@@ -6,9 +6,10 @@
 <body>
 	<script>
 	var url = new URL( window.location.href );
-	var ip = url.searchParams.get( 'ip' );
 	var token = url.searchParams.get( 'token' );
-	window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
+	var ip = url.searchParams.get( 'ip' );
+//	window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
+	console.log( 'http://'+ ip +'/settings.php?p=features&token='+ token )
 	</script>
 </body>
 </html>
