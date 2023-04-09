@@ -3,10 +3,10 @@
 # Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
 
 pkgname=raspberrypi-firmware
-pkgver=20220723
+pkgver=20230322
 pkgrel=1
-_commitfirmware=a75a129d59320b5828791ecc4c1b422fc110d3f1
-_commituserland=54fd97ae4066a10b6b02089bc769ceed328737e0
+_commitfirmware=c4122b8708d2d1e8a123e45b188d0bc2d0105bca
+_commituserland=9d5250fd98679e09c4c1a44883f9312a21f1ac6d
 pkgdesc="Firmware tools, libraries, and headers for Raspberry Pi"
 arch=('armv6h' 'armv7h' 'aarch64')
 url="https://github.com/raspberrypi/firmware"
