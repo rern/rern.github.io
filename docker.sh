@@ -9,7 +9,7 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-arch=$( dialog "${optbox[@]}" --output-fd 1 --menu "
+arch=$( dialog "${optbox[@]}" --output-fd 1 --default-item 3 --menu "
  \Z1Docker\Z0:
 " 8 0 0 \
 1 armv8/aarch64 \

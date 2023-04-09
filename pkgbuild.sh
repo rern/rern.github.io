@@ -105,9 +105,9 @@ buildPackage() {
 	case $name in
 		libmatchbox )
 			sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
-		mpd | raspberrypi-firmware )
+		mpd )
 			sed -i 's/armv7h/armv6h' PKGBUILD;;
-		rtsp-simple-server)
+		rtsp-simple-server )
 			sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD;;
 	esac
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
