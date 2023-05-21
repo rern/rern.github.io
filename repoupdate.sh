@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[[ ! $( ls /boot/kernel* 2> /dev/null ) ]] && echo -e "\e[43m  \e[0m Run with SSH in WinSCP." && exit
-
 dircurrent=$PWD
 
 updateRepo() {
@@ -40,26 +38,30 @@ updateRepo() {
 	echo -e "$html" > ../$1.html
 }
 
-localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+dirrepo=$PWD/repo
+mkdir -p $dirrepo
+if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then
+	ln -s /home/x/BIG/RPi/Git/rern.github.io $dirrepo
+else
+	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
 " 0 0 '192.168.1.9' )
-dirrepo=$PWD/repo
-mkdir -p repo
-mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
-if [[ $? != 0 ]]; then
-	error="
+	mount -t cifs //$localip/rern.github.io $dirrepo -o username=guest,password=
+	if [[ $? != 0 ]]; then
+		error="
 \e[41m  \e[0m Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
 "
-elif [[ ! -e $dirrepo/aarch64 ]]; then
-	error="
+	elif [[ ! -e $dirrepo/aarch64 ]]; then
+		error="
 \e[41m  \e[0m Not found: //$localip/rern.github.io/aarch64
 "
-fi
-if [[ $error ]]; then
-	umount -l repo &> /dev/null
-	rmdir $dirrepo &> /dev/null
-	echo -e "$error"
-	exit
+	fi
+	if [[ $error ]]; then
+		umount -l repo &> /dev/null
+		rmdir $dirrepo &> /dev/null
+		echo -e "$error"
+		exit
+	fi
 fi
 
 arch=$( dialog --colors --output-fd 1 --checklist '\n\Z1Arch:\Z0' 9 30 0 \
