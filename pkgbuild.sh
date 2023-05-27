@@ -56,11 +56,11 @@ declare -A packages=(
 			libopenmpt libpipewire libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
-	[python-pycamilladsp]=
-	[python-pycamilladsp-plot]=
-	[python-rpi-gpio]=python-distribute
-	[python-rplcd]=
-	[python-smbus2]=
+	[python-pycamilladsp]='python-setuptools'
+	[python-pycamilladsp-plot]='python-setuptools'
+	[python-rpi-gpio]='python-distribute python-setuptools'
+	[python-rplcd]='python-setuptools'
+	[python-smbus2]='python-setuptools'
 #	[raspberrypi-firmware]=
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
