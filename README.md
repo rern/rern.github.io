@@ -1,14 +1,7 @@
 **+R repo**: [rern.github.io](https://rern.github.io)
 
 **Build packages**
-- Build (on RPi)
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
-```
-- Update repo (on RPi)
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/main/repoupdate.sh )
-```
+- Build / Repo pdate (on rAudio): `package`
 - RPi Zero: Might need swap partition (eg.: `gcc` `upmpdcli`)
 	- Gparted > Resize > Create 4GB `linux-swap` partition
 	```sh
