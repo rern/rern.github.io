@@ -3,11 +3,11 @@
 buildarch=20
 
 pkgbase=linux-rpi-legacy
-_commit=b34bf3273cfe492daa04fc57eb88782df1714a66
+_commit=bb63dc31e48948bc2649357758c7a152210109c4
 _srcname=linux-${_commit}
 _kernelname=${pkgbase#linux}
 _desc="RPi 1/Zero/Zero W only"
-pkgver=5.15.48
+pkgver=6.1.32
 pkgrel=1
 pkgdesc='Linux'
 url="http://www.kernel.org/"
