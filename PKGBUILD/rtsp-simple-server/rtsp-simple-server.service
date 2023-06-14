@@ -1,9 +1,0 @@
-[Unit]
-Description=Ready-to-use and zero-dependency server and proxy
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/rtsp-simple-server /etc/rtsp-simple-server/rtsp-simple-server.yml
-
-[Install]
-WantedBy=multi-user.target

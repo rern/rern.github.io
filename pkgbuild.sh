@@ -89,14 +89,10 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	if [[ $name != mpd && $name != raspberrypi-firmware ]]; then
-		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
-		cd $name
-		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-	elif [[ $name == mpd ]]; then
+	if [[ $name == mpd ]]; then
 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
 		mv mpd{-main,}
-	elif [[ ! -e raspberrypi-firmware ]]; then
+	elif [[ $name == raspberrypi-firmware && ! -e raspberrypi-firmware ]]; then
 		mkdir -p raspberrypi-firmware
 		cd raspberrypi-firmware
 		files="\
@@ -109,7 +105,12 @@ raspberrypi-firmware.sh"
 		done
 		sed -i 's/armv7h/armv6h/' PKGBUILD
 		chown -R alarm:alarm /home/alarm/raspberrypi-firmware
+		cd ..
+	else
+		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 	fi
+	cd $name
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
@@ -118,13 +119,13 @@ raspberrypi-firmware.sh"
 " 0 0 $ver )
 	[[ $? != 0 ]] && return
 	
-	[[ -n $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
+	[[ $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
  \Z1$name\Z0
  pkgrel:
 " 0 0 $rel )
-	if [[ $ver != $pkgver || $rel != $pkgrel || $name == mpd || $name == raspberrypi-firmware ]]; then
+	if [[ $ver != $pkgver || $rel != $pkgre ]]; then
 		sed -i "s/^pkgver.*/pkgver=$pkgver/" PKGBUILD
-		[[ -n $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
+		[[ $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
 		skipinteg=--skipinteg
 	else
 		dialog --defaultno "${optbox[@]}" --yesno "
