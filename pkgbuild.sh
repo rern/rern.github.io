@@ -53,8 +53,8 @@ declare -A packages=(
 	[mediamtx]=go
 	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs libogg
-			libopenmpt libpipewire libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
-			meson mpg123 openal opus python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
+			libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
+			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]='python-setuptools'
 	[python-pycamilladsp-plot]='python-setuptools'
@@ -89,10 +89,7 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	if [[ $name == mpd ]]; then
-		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
-		mv mpd{-main,}
-	elif [[ $name == raspberrypi-firmware && ! -e raspberrypi-firmware ]]; then
+	if [[ $name == raspberrypi-firmware ]]; then
 		mkdir -p raspberrypi-firmware
 		cd raspberrypi-firmware
 		files="\
@@ -101,11 +98,15 @@ buildPackage() {
 PKGBUILD
 raspberrypi-firmware.sh"
 		for file in $files; do
-			curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/raspberrypi-firmware/$file
+			curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/raspberrypi-firmware/$file
 		done
 		sed -i 's/armv7h/armv6h/' PKGBUILD
 		chown -R alarm:alarm /home/alarm/raspberrypi-firmware
 		cd ..
+	elif [[ $name == mpd ]]; then
+		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
+		mv mpd{-main,}
+		sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
 	else
 		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
 		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
