@@ -24,7 +24,7 @@ build() {
 
 package() {
     gccver=$( pacman -Q gcc | cut -c 5-10 )
-    depends=( 'gcc>='$gccver 'gcc-libs>='$gccver rtl-sdr rtsp-simple-server )
+    depends=( 'gcc>='$gccver 'gcc-libs>='$gccver rtl-sdr mediamtx )
     subdir=$srcdir/dab-cmdline-master
     cd $subdir/dab-scanner
     install -Dm 755 dab-scanner-rtlsdr -t $pkgdir/usr/bin
