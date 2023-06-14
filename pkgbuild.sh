@@ -93,27 +93,22 @@ buildPackage() {
 		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
 		cd $name
 		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-	elif [[ ! -e $name ]]; then
-		mkdir -p $name
-		cd $name
-		if [[ $name == mpd ]]; then
-			files="\
-PKGBUILD
-keys
-mpd.conf
-mpd.service.override
-mpd.sysusers
-mpd.tmpfiles"
-		else
-			files="\
-PKGBUILD
+	elif [[ $name == mpd ]]; then
+		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
+		mv mpd{-main,}
+	elif [[ ! -e raspberrypi-firmware ]]; then
+		mkdir -p raspberrypi-firmware
+		cd raspberrypi-firmware
+		files="\
 00-raspberrypi-firmware.conf
 10-raspberrypi-firmware.rules
+PKGBUILD
 raspberrypi-firmware.sh"
-		fi
 		for file in $files; do
-			curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
+			curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/raspberrypi-firmware/$file
 		done
+		sed -i 's/armv7h/armv6h/' PKGBUILD
+		chown -R alarm:alarm /home/alarm/raspberrypi-firmware
 	fi
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
