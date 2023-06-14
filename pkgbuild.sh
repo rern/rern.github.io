@@ -86,14 +86,23 @@ pacman -Sy --noconfirm --needed base-devel ${packages[$pkgname]}
 
 currentdir=$PWD
 
+fileList() {
+	name=$1
+	mkdir -p $name
+	cd $name
+	url=https://api.github.com/repos/
+	case $name in
+		linux-rpi-legacy | mediamtx ) url+=rern/rern.github.io/contents/PKGBUILD/$name;;
+		raspberrypi-firmware )        url+=archlinuxarm/PKGBUILDs/contents/alarm/$name;;
+	esac
+	curl -s $url | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}'
+}
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
 		linux-rpi-legacy | mediamtx )
-			mkdir -p $name
-			cd $name
-			files=$( curl -s https://api.github.com/repos/rern/rern.github.io/contents/PKGBUILD/$name | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+			files=$( fileList $name )
 			for file in $files; do
 				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
 			done
@@ -105,14 +114,12 @@ buildPackage() {
 			sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
 			;;
 		raspberrypi-firmware )
-			mkdir -p $name
-			cd $name
-			files=$( curl -s https://api.github.com/repos/archlinuxarm/PKGBUILDs/contents/alarm/$name | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+			files=$( fileList $name )
 			for file in $files; do
 				curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/raspberrypi-firmware/$file
 			done
-			sed -i 's/armv7h/armv6h/' PKGBUILD
 			chown -R alarm:alarm /home/alarm/$name
+			sed -i 's/armv7h/armv6h/' PKGBUILD
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
