@@ -89,29 +89,37 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	if [[ $name == raspberrypi-firmware ]]; then
-		mkdir -p raspberrypi-firmware
-		cd raspberrypi-firmware
-		files="\
-00-raspberrypi-firmware.conf
-10-raspberrypi-firmware.rules
-PKGBUILD
-raspberrypi-firmware.sh"
-		for file in $files; do
-			curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/raspberrypi-firmware/$file
-		done
-		sed -i 's/armv7h/armv6h/' PKGBUILD
-		chown -R alarm:alarm /home/alarm/raspberrypi-firmware
-		cd ..
-	elif [[ $name == mpd ]]; then
-		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
-		mv mpd{-main,}
-		sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
-	else
-		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
-		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-	fi
-	cd $name
+	case $name in
+		linux-rpi-legacy | mediamtx )
+			mkdir -p $name
+			cd $name
+			files=$( curl -s https://api.github.com/repos/rern/rern.github.io/contents/PKGBUILD/$name | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+			for file in $files; do
+				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
+			done
+			chown -R alarm:alarm /home/alarm/$name
+			;;
+		mpd )
+			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
+			mv mpd{-main,}
+			sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
+			;;
+		raspberrypi-firmware )
+			mkdir -p $name
+			cd $name
+			files=$( curl -s https://api.github.com/repos/archlinuxarm/PKGBUILDs/contents/alarm/$name | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+			for file in $files; do
+				curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/raspberrypi-firmware/$file
+			done
+			sed -i 's/armv7h/armv6h/' PKGBUILD
+			chown -R alarm:alarm /home/alarm/$name
+			;;
+		* )
+			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+			;;
+	esac
+	cd /home/alarm/$name
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
