@@ -61,20 +61,14 @@ declare -A packages=(
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]='python-setuptools'
 	[python-smbus2]='python-setuptools'
-#	[raspberrypi-firmware]=
+	[raspberrypi-firmware]=
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
 )
 
-if [[ $arch == armv6h ]]; then
-	omit='camilla|^dab|^rtsp'
-	source_mpd=http://mirror.archlinuxarm.org/armv7h/extra/mpd-0.23.10-2-armv7h.pkg.tar.xz
-	source_firmware=
-else
-	omit='^mpd|^rasp|^linux'
-fi
+[[ $arch == armv6h ]] && omit='camilla|^dab|^rtsp' || omit='^mpd|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
@@ -95,21 +89,32 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	if [[ $pkgname == mpd ]]; then
-		source=https://github.com/rern/rern.github.io/raw/main/PKGBUILD/mpd.zip
-	else
-		source=https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz # AUR
+	if [[ $name != mpd && $name != raspberrypi-firmware ]]; then
+		curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+		cd $name
+		[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+	elif [[ ! -e $name ]]; then
+		mkdir -p $name
+		cd $name
+		if [[ $name == mpd ]]; then
+			files="\
+PKGBUILD
+keys
+mpd.conf
+mpd.service.override
+mpd.sysusers
+mpd.tmpfiles"
+		else
+			files="\
+PKGBUILD
+00-raspberrypi-firmware.conf
+10-raspberrypi-firmware.rules
+raspberrypi-firmware.sh"
+		fi
+		for file in $files; do
+			curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
+		done
 	fi
-	curl -L $source | sudo -u alarm bsdtar xf -
-	cd $name
-	case $name in
-		libmatchbox )
-			sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
-		mpd )
-			sed -i 's/armv7h/armv6h' PKGBUILD;;
-		rtsp-simple-server )
-			sed -i "s/arch=('any')/arch=('armv6h' 'armv7h' 'aarch64')/" PKGBUILD;;
-	esac
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
