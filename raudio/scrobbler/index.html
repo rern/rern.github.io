@@ -8,8 +8,7 @@
 	var url = new URL( window.location.href );
 	var token = url.searchParams.get( 'token' );
 	var ip = url.searchParams.get( 'ip' );
-	alert( 'http://'+ ip +'/settings.php?p=features&token='+ toke );
-	//window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
+	window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
 	</script>
 </body>
 </html>
