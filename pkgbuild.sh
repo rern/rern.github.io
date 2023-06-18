@@ -66,7 +66,7 @@ declare -A packages=(
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
-	[wireless-regdom]=
+	[wirelessregdom-codes]=
 )
 
 [[ $arch == armv6h ]] && omit='camilla|^dab|^rtsp' || omit='^mpd|^rasp|^linux'
@@ -77,6 +77,11 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 " 0 0 0 $menu )
 
 [[ $? != 0 ]] && exit
+
+if [[ $pkgname == wirelessregdom-codes ]]; then
+	bash <( curl -skL https://github.com/rern/rern.github.io/raw/main/wirelessregdom.sh )
+	exit
+fi
 
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
 
@@ -121,10 +126,6 @@ buildPackage() {
 			done
 			chown -R alarm:alarm /home/alarm/$name
 			sed -i 's/armv7h/armv6h/' PKGBUILD
-			;;
-		wireless-regdom )
-			bash <( curl -skL https://github.com/rern/rOS/raw/main/wirelessregdom.sh )
-			exit
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
