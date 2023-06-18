@@ -66,6 +66,7 @@ declare -A packages=(
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress
 				recoll sqlite'
+	[wireless-regdom]=
 )
 
 [[ $arch == armv6h ]] && omit='camilla|^dab|^rtsp' || omit='^mpd|^rasp|^linux'
@@ -120,6 +121,10 @@ buildPackage() {
 			done
 			chown -R alarm:alarm /home/alarm/$name
 			sed -i 's/armv7h/armv6h/' PKGBUILD
+			;;
+		wireless-regdom )
+			bash <( curl -skL https://github.com/rern/rOS/raw/main/wirelessregdom.sh )
+			exit
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
