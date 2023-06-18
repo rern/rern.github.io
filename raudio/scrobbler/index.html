@@ -9,6 +9,7 @@
 	var url = new URL( window.location.href );
 	var token = url.searchParams.get( 'token' );
 	var ip = url.searchParams.get( 'ip' );
+	document.getElementsByTagName( 'body' )[ 0 ].prepend( ip +' - '+ token );
 	//window.location = 'http://'+ ip +'/settings.php?p=features&token='+ token;
 	</script>
 </body>
