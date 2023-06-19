@@ -28,12 +28,14 @@ sudo make install
 # configure
 mkdir build
 cd build
-# load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
+
 wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
+# load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
 ct-ng oldconfig
 
 # build toolchain
 ct-ng build
+# if package failed to download, verify available version in build/.config
 
 # set symlinks
 cd
