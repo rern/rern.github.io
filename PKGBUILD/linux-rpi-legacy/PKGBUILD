@@ -3,42 +3,34 @@
 buildarch=20
 
 pkgbase=linux-rpi-legacy
-_commit=bb63dc31e48948bc2649357758c7a152210109c4
+_commit=a72a720bfd4d2093ce9e51239cd7067dd060ff81 #####
 _srcname=linux-${_commit}
 _kernelname=${pkgbase#linux}
-_desc="RPi 1/Zero/Zero W only"
-pkgver=6.1.32
+_desc="RPi 1 / Zero only (armv6h)"
+pkgver=6.1.34 #####
 pkgrel=1
 pkgdesc='Linux'
 url="http://www.kernel.org/"
-arch=(armv6h armv7h)
+arch=(armv6h)
 license=(GPL2)
 makedepends=(
-  bc kmod inetutils
+  bc
+  kmod
+  inetutils
 )
-options=('!strip' '!distcc')
+options=('!strip')
 source=("linux-$pkgver-${_commit:0:10}.tar.gz::https://github.com/raspberrypi/linux/archive/${_commit}.tar.gz"
-        cmdline.txt
-        config.txt
-        config
-        linux.preset
-        60-linux.hook
-        90-linux.hook
+  cmdline.txt
+  config
+  config.txt
+  linux.preset
+  60-linux.hook
+  90-linux.hook
 )
-md5sums=('42d49846a4a9b2612d0b958cee04dc4c'
-         '31c02f4518d46deb5f0c2ad1f8b083cd'
-         '7c2cace68dd229483b28ba7147347811'
-         '8c9f4df9503130411595ddd7b482d885'
-         '86d4a35722b5410e3b29fc92dae15d4b'
-         '0a5f16bfec6ad982a2f6782724cca8ba'
-         '69e1db90d78f691dc446fe2ab94727eb')
+md5sums=('SKIP')
 
 # setup vars
-if [[ $CARCH == "armv6h" ]]; then
-  _kernel=kernel.img
-elif [[ $CARCH == "armv7h" ]]; then
-  _kernel=kernel7.img
-fi
+_kernel=kernel.img
 _image=zImage
 _config=config
 _bconfig=config.txt
@@ -99,27 +91,23 @@ _package() {
   install -m644 ../$_bconfig "${pkgdir}/boot/config.txt"
   install -m644 ../cmdline.txt "${pkgdir}/boot"
 
-  if [[ $CARCH == "armv6h" ]]; then
-    rm -f "${pkgdir}"/boot/bcm{2836,2837,2838,2709,2710,2711}*.dtb
-  elif [[ $CARCH == "armv7h" ]]; then
-    rm -f "${pkgdir}"/boot/bcm{2835,2838,2708,2711}*.dtb
-  fi
+  rm -f "${pkgdir}"/boot/bcm{2836,2837,2838,2709,2710,2711}*.dtb
 
   # sed expression for following substitutions
   local _subst="
-    s|%PKGBASE%|${pkgbase}|g
-    s|%KERNVER%|${kernver}|g
+  s|%PKGBASE%|${pkgbase}|g
+  s|%KERNVER%|${kernver}|g
   "
 
   # install mkinitcpio preset file
   sed "${_subst}" ../linux.preset |
-    install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+  install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # install pacman hooks
   sed "${_subst}" ../60-linux.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}.hook"
+  install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/60-${pkgbase}.hook"
   sed "${_subst}" ../90-linux.hook |
-    install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/90-${pkgbase}.hook"
+  install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/90-${pkgbase}.hook"
 }
 
 _package-headers() {
@@ -133,7 +121,7 @@ _package-headers() {
 
   echo "Installing build files..."
   install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
-    localversion.* version
+  localversion.* version
   install -Dt "$builddir/kernel" -m644 kernel/Makefile
   install -Dt "$builddir/arch/$KARCH" -m644 "arch/$KARCH/Makefile"
   cp -t "$builddir" -a scripts
@@ -166,9 +154,9 @@ _package-headers() {
   echo "Removing unneeded architectures..."
   local _arch
   for _arch in "$builddir"/arch/*/; do
-    [[ $_arch = */"$KARCH"/ ]] && continue
-    echo "Removing $(basename "$_arch")"
-    rm -r "$_arch"
+  [[ $_arch = */"$KARCH"/ ]] && continue
+  echo "Removing $(basename "$_arch")"
+  rm -r "$_arch"
   done
 
   echo "Removing documentation..."
@@ -183,16 +171,16 @@ _package-headers() {
   echo "Stripping build tools..."
   local file
   while read -rd '' file; do
-    case "$(file -bi "$file")" in
-      application/x-sharedlib\;*)      # Libraries (.so)
-        strip -v $STRIP_SHARED "$file" ;;
-      application/x-archive\;*)        # Libraries (.a)
-        strip -v $STRIP_STATIC "$file" ;;
-      application/x-executable\;*)     # Binaries
-        strip -v $STRIP_BINARIES "$file" ;;
-      application/x-pie-executable\;*) # Relocatable binaries
-        strip -v $STRIP_SHARED "$file" ;;
-    esac
+  case "$(file -bi "$file")" in
+    application/x-sharedlib\;*)    # Libraries (.so)
+    strip -v $STRIP_SHARED "$file" ;;
+    application/x-archive\;*)    # Libraries (.a)
+    strip -v $STRIP_STATIC "$file" ;;
+    application/x-executable\;*)   # Binaries
+    strip -v $STRIP_BINARIES "$file" ;;
+    application/x-pie-executable\;*) # Relocatable binaries
+    strip -v $STRIP_SHARED "$file" ;;
+  esac
   done < <(find "$builddir" -type f -perm -u+x)
 
   echo "Adding symlink..."
@@ -203,6 +191,6 @@ _package-headers() {
 pkgname=("${pkgbase}" "${pkgbase}-headers")
 for _p in ${pkgname[@]}; do
   eval "package_${_p}() {
-    _package${_p#${pkgbase}}
+  _package${_p#${pkgbase}}
   }"
 done
