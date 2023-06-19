@@ -18,6 +18,7 @@ makepkg
 pacman -Sy --needed bison byacc flex help2man patch unzip
 su $USER
 cd
+# build binary: /bin/ct-ng 
 # VERSION: http://crosstool-ng.org/download/crosstool-ng
 wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
 cd crosstool-ng-$VERSION
@@ -26,11 +27,14 @@ make
 sudo make install
 
 # configure
-mkdir build
-cd build
+mkdir distcc
+cd distcc
 
-wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
-# load custom config and set all packages to latest versions if any (glibc 2.35 might failed)
+wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
+#wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
+# set:
+#     options  to default
+#     packages to latest versions except glibc 2.34, not 2.35 which will failed
 ct-ng oldconfig
 
 # build toolchain
