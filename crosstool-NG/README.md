@@ -15,7 +15,7 @@ makepkg
 - Latest version
 ```sh
 # build crosstool-ng binary on armv6h
-pacman -Sy bison byacc flex help2man patch unzip
+pacman -Sy --needed bison byacc flex help2man patch unzip
 su $USER
 cd
 # VERSION: http://crosstool-ng.org/download/crosstool-ng
