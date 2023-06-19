@@ -18,6 +18,7 @@ makepkg
 pacman -Sy bison byacc flex help2man patch unzip
 su $USER
 cd
+# VERSION: http://crosstool-ng.org/download/crosstool-ng
 wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
 cd crosstool-ng-$VERSION
 ./configure --prefix=/usr
