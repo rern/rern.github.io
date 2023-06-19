@@ -36,7 +36,8 @@ ct-ng oldconfig
 ct-ng build
 
 # set symlinks
-dir=x-tools6h/arm-unknown-linux-gnueabihf/bin
+cd
+dir=x-tools6h-new/arm-unknown-linux-gnueabihf/bin
 chmod +w $dir
 dircurrent=$PWD
 cd $dir
@@ -50,5 +51,5 @@ chmod -w $dir
 
 **Tarball for AUR package**
 ```sh
-bsdtar cjpf x-tools6h-$DATE.tar.xz x-tools6h
+bsdtar cjpf x-tools6h-$( date +%Y%m%d ).tar.xz x-tools6h-new
 ```
