@@ -15,13 +15,14 @@ makepkg
 - Latest version
 ```sh
 # build crosstool-ng binary on armv6h
+pacman -Sy bison byacc flex help2man patch unzip
 su $USER
 cd
 wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
 cd crosstool-ng-$VERSION
 ./configure --prefix=/usr
 make
-make install
+sudo make install
 
 # configure
 mkdir build
