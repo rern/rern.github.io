@@ -45,7 +45,7 @@
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
 - [nginx](https://nginx.org)
 - [snapcast](https://github.com/badaix/snapcast)
-- [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/pages/downloads.html)
+- [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/downloads/?C=N;O=D))
 
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
