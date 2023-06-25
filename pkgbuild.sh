@@ -53,8 +53,8 @@ declare -A packages=(
 								pango polkit startup-notification xsettings-client'
 	[mediamtx]=go
 	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack
-			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs libogg
-			libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
+			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
+			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp]='python-setuptools'
@@ -93,45 +93,25 @@ pacman -Sy --noconfirm --needed base-devel ${packages[$pkgname]}
 
 currentdir=$PWD
 
-fileList() {
-	name=$1
-	mkdir -p /home/alarm/$name
-	cd /home/alarm/$name
-	contentsurl=https://api.github.com/repos/
-	case $name in
-		distcc | raspberrypi-firmware )
-			[[ $name == distcc ]] && pathname+=extra/$name || pathname+=alarm/$name
-			contentsurl+=archlinuxarm/PKGBUILDs/contents/$pathname
-			;;
-		linux-rpi-legacy | mediamtx )
-			contentsurl+=rern/rern.github.io/contents/PKGBUILD/$name
-			;;
-	esac
-	files=$( curl -s $contentsurl | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
-}
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
-		distcc | raspberrypi-firmware )
-			fileList $name
-			if [[ $name == distcc ]]; then
-				files=$( grep -v keys <<< $files )
-				dir=/home/alarm/distcc/keys/pgp
-				mkdir -p $dir
-				file=$( curl -s $contentsurl/keys/pgp | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
-				curl -LO $url/keys/pgp/$file --output-dir $dir
-			fi
-			for file in $files; do
-				curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/$pathname/$file
-			done
-			[[ $name != distcc ]] && sed -i 's/armv7h/armv6h/' PKGBUILD
-			;;
-		linux-rpi-legacy | mediamtx )
-			fileList $name
-			for file in $files; do
-				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
-			done
+		distcc | linux-rpi-legacy | mediamtx | raspberrypi-firmware )
+			case $name in
+				distcc )
+					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/extra/$name
+					;;
+				raspberrypi-firmware )
+					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/alarm/$name
+					;;
+				linux-rpi-legacy | mediamtx )
+					url=https://github.com/rern/rern.github.io/tree/main/PKGBUILD/$name
+					;;
+			esac
+			curl -L https://github.com/rern/rern.github.io/raw/main/github-download.sh | bash -s "$url"
+			cd $name
+			[[ $name == raspberrypi-firmware ]] && sed -i 's/armv7h/armv6h/' PKGBUILD
 			;;
 		mpd )
 			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | bsdtar xf -
