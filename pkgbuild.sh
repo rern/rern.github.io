@@ -99,9 +99,13 @@ fileList() {
 	cd /home/alarm/$name
 	contentsurl=https://api.github.com/repos/
 	case $name in
-		distcc )                      contentsurl+=archlinuxarm/PKGBUILDs/contents/extra/$name;;
-		linux-rpi-legacy | mediamtx ) contentsurl+=rern/rern.github.io/contents/PKGBUILD/$name;;
-		raspberrypi-firmware )        contentsurl+=archlinuxarm/PKGBUILDs/contents/alarm/$name;;
+		distcc | raspberrypi-firmware )
+			[[ $name == distcc ]] && pathname+=extra/$name || pathname+=alarm/$name
+			contentsurl+=archlinuxarm/PKGBUILDs/contents/$pathname
+			;;
+		linux-rpi-legacy | mediamtx )
+			contentsurl+=rern/rern.github.io/contents/PKGBUILD/$name
+			;;
 	esac
 	files=$( curl -s $contentsurl | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
 }
@@ -111,42 +115,37 @@ buildPackage() {
 	case $name in
 		distcc | raspberrypi-firmware )
 			fileList $name
-			url=https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/$name
 			if [[ $name == distcc ]]; then
-				url=${url/alarm/extra}
 				files=$( grep -v keys <<< $files )
 				dir=/home/alarm/distcc/keys/pgp
 				mkdir -p $dir
 				file=$( curl -s $contentsurl/keys/pgp | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
-				echo $file
 				curl -LO $url/keys/pgp/$file --output-dir $dir
 			fi
 			for file in $files; do
-				echo $file
-				curl -LO $url/$file
+				curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/$pathname/$file
 			done
 			[[ $name != distcc ]] && sed -i 's/armv7h/armv6h/' PKGBUILD
-			chown -R alarm:alarm /home/alarm/$name
 			;;
 		linux-rpi-legacy | mediamtx )
 			fileList $name
 			for file in $files; do
 				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
 			done
-			chown -R alarm:alarm /home/alarm/$name
 			;;
 		mpd )
-			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
+			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | bsdtar xf -
 			mv mpd{-main,}
 			cd $name
 			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
 		* )
-			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			cd $name
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			;;
 	esac
+	chown -R alarm:alarm /home/alarm/$name
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
