@@ -95,37 +95,41 @@ currentdir=$PWD
 
 fileList() {
 	name=$1
-	mkdir -p $name
-	cd $name
-	url=https://api.github.com/repos/
+	mkdir -p /home/alarm/$name
+	cd /home/alarm/$name
+	contentsurl=https://api.github.com/repos/
 	case $name in
-		linux-rpi-legacy | mediamtx ) url+=rern/rern.github.io/contents/PKGBUILD/$name;;
-		raspberrypi-firmware )        url+=archlinuxarm/PKGBUILDs/contents/alarm/$name;;
+		distcc )                      contentsurl+=archlinuxarm/PKGBUILDs/contents/extra/$name;;
+		linux-rpi-legacy | mediamtx ) contentsurl+=rern/rern.github.io/contents/PKGBUILD/$name;;
+		raspberrypi-firmware )        contentsurl+=archlinuxarm/PKGBUILDs/contents/alarm/$name;;
 	esac
-	curl -s $url | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}'
+	files=$( curl -s $contentsurl | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
 }
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
-		distcc|raspberrypi-firmware )
-			files=$( fileList $name )
-			url=https://github.com/archlinuxarm/PKGBUILDs/raw/master/
-			[[ $name == distcc ]] && url+=extra/$name || url+=alarm/$name
+		distcc | raspberrypi-firmware )
+			fileList $name
+			url=https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/$name
+			if [[ $name == distcc ]]; then
+				url=${url/alarm/extra}
+				files=$( grep -v keys <<< $files )
+				dir=/home/alarm/distcc/keys/pgp
+				mkdir -p $dir
+				file=$( curl -s $contentsurl/keys/pgp | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+				echo $file
+				curl -LO $url/keys/pgp/$file --output-dir $dir
+			fi
 			for file in $files; do
+				echo $file
 				curl -LO $url/$file
 			done
-			if [[ $name == distcc ]]; then
-				file=$( curl -s $url/keys/pgp | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
-				mkdir -p keys/pgp
-				curl -LO $url/$file --output-dir keys/pgp
-			else
-				sed -i 's/armv7h/armv6h/' PKGBUILD
-			fi
+			[[ $name != distcc ]] && sed -i 's/armv7h/armv6h/' PKGBUILD
 			chown -R alarm:alarm /home/alarm/$name
 			;;
-		linux-rpi-legacy|mediamtx )
-			files=$( fileList $name )
+		linux-rpi-legacy | mediamtx )
+			fileList $name
 			for file in $files; do
 				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
 			done
@@ -134,14 +138,15 @@ buildPackage() {
 		mpd )
 			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
 			mv mpd{-main,}
-			sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
+			cd $name
+			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
+			cd $name
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			;;
 	esac
-	cd /home/alarm/$name
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
 	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
