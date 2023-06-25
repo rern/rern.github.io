@@ -44,6 +44,7 @@ declare -A packages=(
 	[camillagui-backend]=
 	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
+	[distcc]='git gtk3'
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
 	[linux-rpi-legacy]='bc kmod inetutils'
@@ -107,7 +108,23 @@ buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
-		linux-rpi-legacy | mediamtx )
+		distcc|raspberrypi-firmware )
+			files=$( fileList $name )
+			url=https://github.com/archlinuxarm/PKGBUILDs/raw/master/
+			[[ $name == distcc ]] && url+=extra/$name || url+=alarm/$name
+			for file in $files; do
+				curl -LO $url/$file
+			done
+			if [[ $name == distcc ]]; then
+				file=$( curl -s $url/keys/pgp | sed -E -n '/"name":/ {s/.*: "(.*)",$/\1/; p}' )
+				mkdir -p keys/pgp
+				curl -LO $url/$file --output-dir keys/pgp
+			else
+				sed -i 's/armv7h/armv6h/' PKGBUILD
+			fi
+			chown -R alarm:alarm /home/alarm/$name
+			;;
+		linux-rpi-legacy|mediamtx )
 			files=$( fileList $name )
 			for file in $files; do
 				curl -LO https://github.com/rern/rern.github.io/raw/main/PKGBUILD/$name/$file
@@ -118,14 +135,6 @@ buildPackage() {
 			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | sudo -u alarm bsdtar xf -
 			mv mpd{-main,}
 			sed -E -i 's/lib(pipewire\s*)/\1/' mpd/PKGBUILD
-			;;
-		raspberrypi-firmware )
-			files=$( fileList $name )
-			for file in $files; do
-				curl -LO https://github.com/archlinuxarm/PKGBUILDs/raw/master/alarm/raspberrypi-firmware/$file
-			done
-			chown -R alarm:alarm /home/alarm/$name
-			sed -i 's/armv7h/armv6h/' PKGBUILD
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u alarm bsdtar xf -
