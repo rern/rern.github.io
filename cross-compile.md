@@ -25,7 +25,8 @@ Cross-Compiling
 - Install distcc + toolchains: `bash <( curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-client.sh )`
 
 **Build package**
-- Start Distcc - needed on client only
+- Start Distcc
+	- Master `systemctl start distccd`
 	- Client `systemctl start distccd-ARCH` (`ARCH` - armv6h, armv7h, armv8)
 - Setup and build as usual.
 - Monitor with another SSH: 
