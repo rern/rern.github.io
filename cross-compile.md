@@ -26,7 +26,7 @@ Cross-Compiling
 
 **Build package**
 - Start Distcc
-	- Master `systemctl start distccd`
+	- Master - No need
 	- Client `systemctl start distccd-ARCH` (`ARCH` - armv6h, armv7h, armv8)
 - Setup and build as usual.
 - Monitor with another SSH: 
