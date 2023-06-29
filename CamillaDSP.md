@@ -1,44 +1,39 @@
 CamillaDSP
 ---
-
-### 1. Build binary and Python libraries
-- `camilladsp` - Binary
-	- Only `armv6h` - `rust` >= 1.62
-	```sh
-	su alarm
-	cd
-	curl https://sh.rustup.rs -sSf | sh
-	# Restart terminal to activate new PATH
-	```
-- `camillagui-backend` - GUI
-	- Modify for `PKGBUILD`:
-	```sh
-	sed -i 's/5000/5005/' ./src/setupProxy.js
-	sed -i 's/"build")$/"build", follow_symlinks=True)/' $installdir/backend/routes.py
-	sed -i -e '/cdsp.get_volume/ a\
-		elif name == "mute":\
-			config = cdsp.get_config()\
-			mute = True if cdsp.get_mute() else False\
-			volume = cdsp.get_volume()\
-			result = {"config": config, "mute": mute, "volume": volume}\
-			return web.json_response(result)\
-
-	' -e '/cdsp.set_volume/ a\
-		elif name == "mute":\
-			cdsp.set_mute(value == "true")
-	' $installdir/backend/views.py
-	```
-- `python-pycamilladsp` - GUI
-- `python-pycamilladsp-plot` - GUI
-- Build:
-	```sh
-	bash <( curl -L https://github.com/rern/rern.github.io/raw/main/pkgbuild.sh )
-	```
-
-### 2. Setup Loopback
-- on **rAudio**: Features > enable DSP
+- Binary: `https://github.com/HEnquist/camilladsp/releases/download/RELEASE/camilladsp-linux-ARC.tar.gz`
+- GUI: `https://github.com/HEnquist/camillagui-backend/releases/download/RELEASE/camillagui.zip`
+- Directory tree:
 ```sh
-echo '
+./
+	camilladsp/
+		coeffs/
+		configs/
+			active_config.txt (ln - 1.0.3)
+			active_config.yml (ln)
+			camilladsp.yml
+			default_config.yml
+	camillagui/
+		backend/
+			filemanagement.py
+			filters.py
+			filters_test.py
+			routes.py
+			settings.py
+			version.py
+			views.py
+		build/
+			static/
+				css/
+				js/
+				media/
+			index.html
+		config/
+			camillagui.yml
+			gui-config.yml
+		main.py
+```
+- Loopback
+```sh
 pcm.!default { 
 	type plug 
 	slave.pcm camilladsp
@@ -63,9 +58,37 @@ ctl.!default {
 ctl.camilladsp {
 	type hw
 	card Loopback
-}' >> /etc/asound.conf
+}
 ```
-### 3. Build GUI Frontend
+- Run
+	- CamillaDSP: `camilladsp ./camilladsp/configs/camilladsp.yml -p 1234 -o /var/log/camilladsp.log`
+	- HTML Server: `python camillagui/main.py`
+- Get / Set volume
+```py
+#!/usr/bin/python
+
+from camilladsp import CamillaConnection
+import os.path
+import sys
+
+cdsp = CamillaConnection( '127.0.0.1', 1234 )
+cdsp.connect()
+
+### views.py
+# cdsp.is_connected()
+# cdsp.get_KEY()
+# cdsp.set_KEY( VALUE )
+# KEY:
+#   version : version
+#	volume  : mute, capture_signal_rms, capture_signal_peak, volume, playback_signal_rms, playback_signal_peak
+#	status  : state().name, capture_rate, rate_adjust, clipped_samples, buffer_level
+#   config  : config_name, config, config_raw
+#	param   : capture_rate_raw, signal_range, signal_range_dB, update_interval 
+cdsp.get_volume()
+cdsp.set_volume( -10.0 )
+```
+
+### Build GUI Frontend
 - Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 ```sh
