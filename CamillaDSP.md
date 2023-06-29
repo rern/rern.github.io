@@ -89,16 +89,17 @@ cdsp.set_volume( -10.0 )
 ```
 
 ### Build GUI Frontend
-- Install `camilladsp`, `camillagui-backend` (on **rAudio**: already installed)
+- Install `camilladsp`
 - `camillagui` - Frontend requires `React` (minimum 2GB RAM - only RPi 4 has more than 1GB)
 ```sh
 su
 cd
 pacman -Sy --needed --noconfirm npm
 
-curl -L https://github.com/rern/camillagui/archive/refs/tags/RELEASE.tar.gz | bsdtar xf -
+curl -L https://github.com/HEnquist/camillagui/archive/refs/heads/master.zip | bsdtar xf -
 
-cd camillagui-RELEASE
+cd camillagui-master
+sed -i 's/5000/3000/' ./src/setupProxy.js
 npm install reactjs
 
 ln -s /srv/http/assets public/static
@@ -107,7 +108,7 @@ chmod +x postbuild.sh
 	
 - Start Development server
 ```sh
-systemctl start camilladsp camillagui
+systemctl start camilladsp
 
 npm start
 
