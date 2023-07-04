@@ -42,17 +42,10 @@ Cross-Compiling
 	- GitHub Desktop > Push
 
 ### Docker
-- `rAudio-armv6h` container
-```sh
-xz -kd rAudio-RPi0-1-xxxxxxxx.img.xz
-# file explorer: mount the rAudio-RPi0-1-xxxxxxxx.img
-cd /run/media/$USER/ROOT/
-bsdtar cvf /home/$USER/rAudio-armv6h.tar .
-docker import rAudio-armv6h.tar raudio
-docker run --privileged linuxkit/binfmt:v0.8
-docker run --rm -ti raudio:latest
-```
-
+- Prcedure
+	- `import` tar of  `/` or `get` IMAGE
+ 	- `run` - create CONATAINER
+	- `start` CONTAINER
 - Setup
 ```sh
 # skip if arm host >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -61,7 +54,6 @@ pacman -Sy --needed base-devel cmake make meson pkg-config
 
 currentdir=$PWD
 cd /home/$USER
-
 for name in binfmt-qemu-static glib2-static pcre2-static qemu-user-static; do # keep order
 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u $USER bsdtar xf -
 	cd $name
@@ -69,7 +61,6 @@ for name in binfmt-qemu-static glib2-static pcre2-static qemu-user-static; do # 
 	pacman -U *.zst
 	cd ..
 done
-
 cd $currentdir
 rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-static}
 # skip if arm host <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -78,23 +69,35 @@ rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-stati
 pacman -Sy docker
 systemctl start docker
 ```
-- Initialize new CONTAINER: `run`
+
+- `import` - rAudio CONTAINER from image file
 ```sh
-docker pull IMAGE_NAME # mydatakeeper/archlinuxarm:armv6h
-docker run -it --name NAME IMAGE_NAME bash
-# reboot if any errors
+# extract / from rAudio image
+xz -kd rAudio-ARCH-VERSION.img.xz
+# file explorer: mount the rAudio-ARCH-VERSION.img
+# create tar of /
+cd /run/media/$USER/ROOT/
+bsdtar cvf /home/$USER/rAudio-ARCH.tar .
+# import - tar to docker IMAGE
+cd /home/$USER
+docker import rAudio-ARCH.tar ARCH
+# run - create CONTAINER
+docker run -it --name IMAGE_NAME ARCH bash
 
-########## docker container ##########
-
-# root password: default = root > ros
-passwd
-
-# system upgrade
-echo 'Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo' > /etc/pacman.d/mirrorlist
-sed -i 's/^#IgnorePkg.*/IgnorePkg = linux-api-headers/' /etc/pacman.conf
-pacman -Syu base-devel nano openssh wget
+# armv6h only
+docker run --privileged linuxkit/binfmt:v0.8 # fix: armv7l > armv6l
+docker run -it --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
-- Start CONTAINER: `start` > `run`
+
+- `get' - Docker's CONTAINER
+```sh
+# pull - get IMAGE
+docker pull IMAGE_NAME # mydatakeeper/archlinuxarm:armv6h
+# run - create CONTAINER
+docker run -it --name NAME IMAGE_NAME bash
+```
+
+- `run` - Create CONTAINER
 ```sh
 docker ps -a  # get NAME
 
@@ -111,7 +114,7 @@ docker start NAME
 docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 ```
-- `stop` - Stop CONTAINER
+- `stop` - CONTAINER
 ```sh
 docker stop NAME
 # all running
@@ -124,21 +127,22 @@ docker rm CONTAINER
 ```
 - `rm` - Remove IMAGE
 ```sh
-docker image ls  # get IMAGE_ID
-docker image rm IMAGE_ID  # or REPOSITORY:TAG if more than 1
+docker image ls  # get IMAGE_NAME
+docker image rm IMAGE_NAME  # or REPOSITORY:TAG if more than 1
 ```
 - `commit` > `save` - Backup CONTAINER
 ```sh
 docker ps -a  # get CONTAINER_ID
-docker commit CONTAINER_ID IMG_NAME
-docker save -o IMG_NAME.tar IMG_NAME
+docker commit CONTAINER_ID IMAGE_NAME
+docker save -o IMAGE_NAME.tar IMAGE_NAME
 ```
 - Run a backup CONTAINER
 ```sh
-docker image load -i /path/to/IMG_NAME.tar
-docker run -it --name NAME IMG_NAME bash
+docker image load -i /path/to/IMAGE_NAME.tar
+docker run -it --name NAME IMAGE_NAME bash
 ```
-- On docker - Copy files:
+
+- On docker - Copy files
 ```sh
 # on host (sed -i 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config)
 # systemctl start sshd
@@ -151,7 +155,7 @@ scp -r SOURCE_DIR USER@IP_ADDRESS:/path/to
 scp USER@IP_ADDRESS:/path/to/SOURCE_FILE .
 scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
 ```
-- On host - Copy file from docker
+- On host - Copy file
 ```sh
 docker ps -a  # get NAME
 docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
