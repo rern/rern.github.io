@@ -46,7 +46,8 @@ Cross-Compiling
 ```sh
 xz -kd rAudio-RPi0-1-xxxxxxxx.img.xz
 # file explorer: mount the rAudio-RPi0-1-xxxxxxxx.img
-bsdtar cvf rAudio-armv6h.tar /run/media/$USER/ROOT/
+cd /run/media/$USER/ROOT/
+bsdtar cvf /home/$USER/rAudio-armv6h.tar .
 docker import rAudio-armv6h.tar raudio
 docker run --privileged linuxkit/binfmt:v0.8
 docker run --rm -ti raudio:latest
