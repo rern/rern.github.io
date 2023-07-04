@@ -104,10 +104,9 @@ docker ps -a  # get NAME
 # if not yet run
 docker image ls # get IMAGE_NAME
 docker run -it --name NAME IMAGE_NAME bash
-# armv6
-docker run -it --name NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
-
 docker start NAME
+
+docker exec -it NAME bash
 ```
 - `rename` - Rename CONTAINER
 ```sh
