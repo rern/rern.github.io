@@ -47,8 +47,8 @@ Cross-Compiling
 xz -kd rAudio-RPi0-1-xxxxxxxx.img.xz
 # file explorer: mount the rAudio-RPi0-1-xxxxxxxx.img
 bsdtar cvf rAudio-armv6h.tar /run/media/$USER/ROOT/
-docker run --privileged linuxkit/binfmt:v0.8
 docker import rAudio-armv6h.tar raudio
+docker run --privileged linuxkit/binfmt:v0.8
 docker run --rm -ti raudio:latest
 ```
 
@@ -76,11 +76,11 @@ rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-stati
 # install docker
 pacman -Sy docker
 systemctl start docker
-docker pull mydatakeeper/archlinuxarm:armv6h
 ```
-- Initialize and start new CONTAINER: `run`
+- Initialize new CONTAINER: `run`
 ```sh
-docker run -it --name armv6h mydatakeeper/archlinuxarm:armv6h bash
+docker pull IMAGE_NAME # mydatakeeper/archlinuxarm:armv6h
+docker run -it --name NAME IMAGE_NAME bash
 # reboot if any errors
 
 ########## docker container ##########
