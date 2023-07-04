@@ -85,7 +85,7 @@ docker import rAudio-ARCH.tar ARCH
 docker run -it --name IMAGE_NAME ARCH bash
 
 # armv6h only
-docker run --privileged linuxkit/binfmt:v0.8 # fix: armv7l > armv6l
+docker run --privileged linuxkit/binfmt:v0.8  # fix: armv7l > armv6l
 docker run -it --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
 
@@ -99,10 +99,10 @@ docker run -it --name NAME IMAGE_NAME bash
 
 - `run` - Create CONTAINER
 ```sh
-docker ps -a  # get NAME
+docker container ls  # get NAME (or docker ps -a)
 
 # if not yet run
-docker image ls # get IMAGE_NAME
+docker image ls  # get IMAGE_NAME
 docker run -it --name NAME IMAGE_NAME bash
 docker start NAME
 
@@ -110,7 +110,7 @@ docker exec -it NAME bash
 ```
 - `rename` - Rename CONTAINER
 ```sh
-docker ps -a  # get NAME
+docker container ls  # get NAME
 docker rename NAME NEW_NAME
 ```
 - `stop` - CONTAINER
@@ -121,7 +121,7 @@ docker stop $( docker ps -aq )
 ```
 - `rm` - Remove CONTAINER
 ```sh
-docker ps -a  # get CONTAINER
+docker container ls  # get CONTAINER
 docker rm CONTAINER
 ```
 - `rm` - Remove IMAGE
@@ -131,7 +131,7 @@ docker image rm IMAGE_NAME  # or REPOSITORY:TAG if more than 1
 ```
 - `commit` > `save` - Backup CONTAINER
 ```sh
-docker ps -a  # get CONTAINER_ID
+docker container ls  # get CONTAINER_ID
 docker commit CONTAINER_ID IMAGE_NAME
 docker save -o IMAGE_NAME.tar IMAGE_NAME
 ```
@@ -156,6 +156,6 @@ scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
 ```
 - On host - Copy file
 ```sh
-docker ps -a  # get NAME
+docker container ls  # get NAME
 docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
 ```
