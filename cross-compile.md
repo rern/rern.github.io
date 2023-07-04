@@ -42,6 +42,16 @@ Cross-Compiling
 	- GitHub Desktop > Push
 
 ### Docker
+- `rAudio-armv6h` container
+```sh
+xz -kd rAudio-RPi0-1-xxxxxxxx.img.xz
+# file explorer: mount the rAudio-RPi0-1-xxxxxxxx.img
+bsdtar cvf rAudio-armv6h.tar /run/media/$USER/ROOT/
+docker run --privileged linuxkit/binfmt:v0.8
+docker import rAudio-armv6h.tar raudio
+docker run --rm -ti raudio:latest
+```
+
 - Setup
 ```sh
 # skip if arm host >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -86,8 +96,14 @@ pacman -Syu base-devel nano openssh wget
 - Start CONTAINER: `start` > `run`
 ```sh
 docker ps -a  # get NAME
+
+# if not yet run
+docker image ls # get IMAGE_NAME
+docker run -it --name NAME IMAGE_NAME bash
+# armv6
+docker run -it --name NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
+
 docker start NAME
-docker exec -it NAME bash
 ```
 - `rename` - Rename CONTAINER
 ```sh
