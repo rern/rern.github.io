@@ -83,20 +83,24 @@ if [[ $pkgname == wirelessregdom-codes ]]; then
 	exit
 fi
 
+packagelist=${packages[$pkgname]}
+
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
+
 if [[ $arch == armv6h && $pkgname == upmpdcli ]] && ! pacman -Q python-bottle &> /dev/null; then
-	for p in python-bottle python-mutagen python-waitress; do
+	for p in python-bottle python-mutagen python-waitress; do # not in repo
 		url=$( curl https://archlinuxarm.org/packages/any/$p | grep Download | cut -d'"' -f2 )
   		wget $url
 	done
-	pacman -U --noconfirm python.*xz
+	pacman -U --noconfirm python-bottle* python-mutagen* python-waitress*
 	rm python-bottle* python-mutagen* python-waitress*
+ 	packagelist=${packagelist/python-bottle python-mutagen python-waitress }
 fi
 
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 
-pacman -Sy --noconfirm --needed base-devel git ${packages[$pkgname]}
+pacman -Sy --noconfirm --needed base-devel git $packagelist
 
 currentdir=$PWD
 
