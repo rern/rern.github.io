@@ -42,103 +42,45 @@ Cross-Compiling
 	- GitHub Desktop > Push
 
 ### Docker
-- Prcedure
-	- `import` tar of  `/` or `get` IMAGE
- 	- `run` - create CONTAINER
-	- `start` - existing CONTAINER
- 	- `exec` - 
 ```sh
-# pacman -Sy docker
+pacman -Sy docker
 systemctl start docker
 ```
+- New CONTAINER
+	- Source
+   		- Custom - `docker import IMAGE_FILE.tar`
+	 	- Docker's
+     		- List - `docker search SEARCH_STRING`
+     		- Get  - `docker pull IMAGE`
+  		- Existing IMAGE - `docker image ls`
+      	- Docker's copy - `docker image load -i IMAGE_FILE.tar`
+ 	- Initialize - `docker run -it --name CONTAINER_NAME IMAGE_NAME bash`
+- Existing CONTAINER
+  	- List  - `docker ps -a`
+	- Start - `docker start CONTAINER_NAME`
+ 	- Run   - `docker exec -it CONTAINER_NAME bash`
+    - Stop  - `docker stop CONTAINER_NAME` (Stop all - `docker stop $( docker ps -aq )`)
+    - Rename - `docker rename CONTAINER_NAME NEW_NAME`
+  	- Remove - `docker rm CONTAINER_NAME`
+- Existing IMAGE
+  	- List - `docker image ls`
+  	- Copy
+  		- New IMAGE - `docker commit CONTAINER_ID IMAGE_NAME`
+  	  	- New file  - `docker save -o IMAGE_FILE.tar IMAGE_NAME`
+  	  	- 
+  	- Remove - `docker image rm IMAGE_NAME` (`REPOSITORY:TAG` if more than 1)
 
-- `import` - rAudio CONTAINER from image file
+- rAudio Source
 ```sh
-# extract / from rAudio image
 xz -kd rAudio-ARCH-VERSION.img.xz
-# file explorer: mount the rAudio-ARCH-VERSION.img
-# create tar of /
-cd /run/media/$USER/ROOT/
-bsdtar cvf /home/$USER/rAudio-ARCH.tar .
-# import - tar to docker IMAGE
-cd /home/$USER
-docker import rAudio-ARCH.tar ARCH
-# run - create CONTAINER
-docker run -it --name IMAGE_NAME ARCH bash
+# dolphin: mount the rAudio-ARCH-VERSION.img
+cd /run/media/USER/ROOT/
+bsdtar cvf /home/USER/IMAGE_FILE.tar .
+docker import IMAGE_FILE.tar
 
-# armv6h only
-docker run --privileged linuxkit/binfmt:v0.8  # fix: armv7l > armv6l
+# armv6h - fix: armv7l > armv6l
+docker run --privileged linuxkit/binfmt:v0.8
 docker run -it --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
 
-- `pull` - Docker's CONTAINER
-```sh
-docker search SEARCH
-# pull - get IMAGE_NAME
-docker pull IMAGE_NAME
-# run - create CONTAINER
-docker run -it --name NAME IMAGE_NAME bash
-```
-
-- `run` - Create CONTAINER
-```sh
-docker ps -a  # get NAME
-
-# if not yet run
-docker image ls  # get IMAGE_NAME
-docker run -it --name NAME IMAGE_NAME bash
-docker start NAME
-
-docker exec -it NAME bash
-```
-- `rename` - Rename CONTAINER
-```sh
-docker ps -a  # get NAME
-docker rename NAME NEW_NAME
-```
-- `stop` - CONTAINER
-```sh
-docker stop NAME
-# all running
-docker stop $( docker ps -aq )
-```
-- `rm` - Remove CONTAINER
-```sh
-docker ps -a  # get CONTAINER
-docker rm CONTAINER
-```
-- `rm` - Remove IMAGE
-```sh
-docker image ls  # get IMAGE_NAME
-docker image rm IMAGE_NAME  # or REPOSITORY:TAG if more than 1
-```
-- `commit` > `save` - Backup CONTAINER
-```sh
-docker ps -a  # get CONTAINER_ID
-docker commit CONTAINER_ID IMAGE_NAME
-docker save -o IMAGE_NAME.tar IMAGE_NAME
-```
-- Run a backup CONTAINER
-```sh
-docker image load -i /path/to/IMAGE_NAME.tar
-docker run -it --name NAME IMAGE_NAME bash
-```
-
-- On docker - Copy files
-```sh
-# on host (sed -i 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config)
-# systemctl start sshd
-
-# to docker
-scp SOURCE_FILE USER@IP_ADDRESS:/path/to
-scp -r SOURCE_DIR USER@IP_ADDRESS:/path/to
-
-# from docker
-scp USER@IP_ADDRESS:/path/to/SOURCE_FILE .
-scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
-```
-- On host - Copy file
-```sh
-docker ps -a  # get NAME
-docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
-```
+- Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
