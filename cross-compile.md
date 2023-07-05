@@ -44,29 +44,11 @@ Cross-Compiling
 ### Docker
 - Prcedure
 	- `import` tar of  `/` or `get` IMAGE
- 	- `run` - create CONATAINER
-	- `start` CONTAINER
-- Setup
+ 	- `run` - create CONTAINER
+	- `start` - existing CONTAINER
+ 	- `exec` - 
 ```sh
-# skip if arm host >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-su
-pacman -Sy --needed base-devel cmake make meson pkg-config
-
-currentdir=$PWD
-cd /home/$USER
-for name in binfmt-qemu-static glib2-static pcre2-static qemu-user-static; do # keep order
-	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | sudo -u $USER bsdtar xf -
-	cd $name
-	sudo -u $USER makepkg -A --skipinteg
-	pacman -U *.zst
-	cd ..
-done
-cd $currentdir
-rm -rf /home/$USER/{binfmt-qemu-static,glib2-static,pcre2-static,qemu-user-static}
-# skip if arm host <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-# install docker
-pacman -Sy docker
+# pacman -Sy docker
 systemctl start docker
 ```
 
@@ -89,17 +71,18 @@ docker run --privileged linuxkit/binfmt:v0.8  # fix: armv7l > armv6l
 docker run -it --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
 
-- `get' - Docker's CONTAINER
+- `pull` - Docker's CONTAINER
 ```sh
-# pull - get IMAGE
-docker pull IMAGE_NAME # mydatakeeper/archlinuxarm:armv6h
+docker search SEARCH
+# pull - get IMAGE_NAME
+docker pull IMAGE_NAME
 # run - create CONTAINER
 docker run -it --name NAME IMAGE_NAME bash
 ```
 
 - `run` - Create CONTAINER
 ```sh
-docker container ls  # get NAME (or docker ps -a)
+docker ps -a  # get NAME
 
 # if not yet run
 docker image ls  # get IMAGE_NAME
@@ -110,7 +93,7 @@ docker exec -it NAME bash
 ```
 - `rename` - Rename CONTAINER
 ```sh
-docker container ls  # get NAME
+docker ps -a  # get NAME
 docker rename NAME NEW_NAME
 ```
 - `stop` - CONTAINER
@@ -121,7 +104,7 @@ docker stop $( docker ps -aq )
 ```
 - `rm` - Remove CONTAINER
 ```sh
-docker container ls  # get CONTAINER
+docker ps -a  # get CONTAINER
 docker rm CONTAINER
 ```
 - `rm` - Remove IMAGE
@@ -131,7 +114,7 @@ docker image rm IMAGE_NAME  # or REPOSITORY:TAG if more than 1
 ```
 - `commit` > `save` - Backup CONTAINER
 ```sh
-docker container ls  # get CONTAINER_ID
+docker ps -a  # get CONTAINER_ID
 docker commit CONTAINER_ID IMAGE_NAME
 docker save -o IMAGE_NAME.tar IMAGE_NAME
 ```
@@ -156,6 +139,6 @@ scp -r USER@IP_ADDRESS:/path/to/SOURCE_DIR .
 ```
 - On host - Copy file
 ```sh
-docker container ls  # get NAME
+docker ps -a  # get NAME
 docker cp NAME:/path/to/SOURCE_FILE . # no wildcards
 ```
