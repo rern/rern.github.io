@@ -69,7 +69,10 @@ systemctl start docker
   	  	- New file  - `docker save -o IMAGE_FILE.tar IMAGE_NAME`
   	  	- 
   	- Remove - `docker image rm IMAGE_NAME` (`REPOSITORY:TAG` if more than 1)
-
+- Shared directory
+	- Mount - `-v /home/USER/SHARE:/DOCKER_SHARE`
+	- Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
+-
 - rAudio Source
 ```sh
 xz -kd rAudio-ARCH-VERSION.img.xz
@@ -77,12 +80,12 @@ xz -kd rAudio-ARCH-VERSION.img.xz
 cd /run/media/USER/ROOT/
 bsdtar cvf /home/USER/IMAGE_FILE.tar .
 docker import IMAGE_FILE.tar
-
-# armv6h - fix
-#	armv7l > armv6l : -e QEMU_CPU=arm1176
-#	fakeroot        : --ulimit nofile=1024:524288
-docker run --privileged linuxkit/binfmt:v0.8
-docker run -it --ulimit nofile=1024:524288 --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
+- armv6h - fix: options
+```sh
+#	fakeroot        : --ulimit nofile=1024:524288 (soft:hard)
+#	armv7l > armv6l : -e QEMU_CPU=arm1176
+	docker run --privileged linuxkit/binfmt:v0.8
 
-- Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
+docker run -it --ulimit nofile=1024:524288 --name CONTAINER_NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
+```
