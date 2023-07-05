@@ -37,14 +37,14 @@ else
 fi
 
 declare -A packages=(
-	[alsaequal]=caps
+	[alsaequal]='caps ladspa'
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluealsa]='bluez bluez-libs bluez-utils libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib pkg-config rust'
 	[camillagui-backend]=
 	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
-	[distcc]='git gtk3'
+	[distcc]='gtk3'
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
 	[linux-rpi-legacy]='bc kmod inetutils'
