@@ -78,9 +78,11 @@ cd /run/media/USER/ROOT/
 bsdtar cvf /home/USER/IMAGE_FILE.tar .
 docker import IMAGE_FILE.tar
 
-# armv6h - fix: armv7l > armv6l
+# armv6h - fix
+#	armv7l > armv6l : -e QEMU_CPU=arm1176
+#	fakeroot        : --ulimit nofile=1024:524288
 docker run --privileged linuxkit/binfmt:v0.8
-docker run -it --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
+docker run -it --ulimit nofile=1024:524288 --name IMAGE_NAME -e QEMU_CPU=arm1176 ARCH bash
 ```
 
 - Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
