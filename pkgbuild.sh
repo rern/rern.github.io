@@ -89,7 +89,7 @@ fi
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 
-pacman -Sy --noconfirm --needed base-devel ${packages[$pkgname]}
+pacman -Sy --noconfirm --needed base-devel git ${packages[$pkgname]}
 
 currentdir=$PWD
 
