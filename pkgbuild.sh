@@ -65,8 +65,7 @@ declare -A packages=(
 	[raspberrypi-firmware]=
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
-				python python-requests python-setuptools python-bottle python-mutagen python-waitress
-				recoll sqlite'
+				python python-requests python-setuptools python-bottle python-mutagen python-waitress sqlite'
 	[wirelessregdom-codes]=
 )
 
