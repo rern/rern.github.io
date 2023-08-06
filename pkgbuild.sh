@@ -41,7 +41,6 @@ declare -A packages=(
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluealsa]='bluez bluez-libs bluez-utils libfdk-aac python-docutils sbc'
 	[camilladsp]='alsa-lib pkg-config rust'
-	[camillagui-backend]=
 	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
 	[distcc]='gtk3'
@@ -57,7 +56,6 @@ declare -A packages=(
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[nginx-mainline-pushstream]='geoip mailcap'
-	[python-pycamilladsp]='python-setuptools'
 	[python-pycamilladsp-plot]='python-setuptools'
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]='python-setuptools'
