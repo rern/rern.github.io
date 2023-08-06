@@ -39,7 +39,7 @@
 
 **Custom packages**
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)
-- [camilladsp](https://github.com/HEnquist/camilladsp), [camillagui](https://github.com/HEnquist/camillagui), [camillagui-backend](https://github.com/HEnquist/camillagui-backend), [pycamilladsp](https://github.com/HEnquist/pycamilladsp), [pycamilladsp-plot](https://github.com/HEnquist/pycamilladsp-plot)
+- [camilladsp](https://github.com/HEnquist/camilladsp), [pycamilladsp-plot](https://github.com/HEnquist/pycamilladsp-plot)
 - [cava](https://github.com/karlstav/cava)
 - [mediamtx](https://github.com/aler9/mediamtx)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
