@@ -49,6 +49,13 @@ systemctl start docker
 - New CONTAINER
 	- Source
    		- Custom - `docker import IMAGE_FILE.tar`
+   			- `armv6h` fix:
+        	```sh
+         	docker run --privileged linuxkit/binfmt:v0.8
+			#	fakeroot        : --ulimit nofile=1024:524288 (soft:hard)
+			#	armv7l > armv6l : -e QEMU_CPU=arm1176
+			docker run -it --ulimit nofile=1024:524288 --name CONTAINER_NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
+         	```
 	 	- Docker's
      		- List - `docker search SEARCH_STRING`
      		- Get  - `docker pull IMAGE`
@@ -80,12 +87,4 @@ xz -kd rAudio-ARCH-VERSION.img.xz
 cd /run/media/USER/ROOT/
 bsdtar cvf /home/USER/IMAGE_FILE.tar .
 docker import IMAGE_FILE.tar
-```
-- armv6h - fix: options
-```sh
-#	fakeroot        : --ulimit nofile=1024:524288 (soft:hard)
-#	armv7l > armv6l : -e QEMU_CPU=arm1176
-	docker run --privileged linuxkit/binfmt:v0.8
-
-docker run -it --ulimit nofile=1024:524288 --name CONTAINER_NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
 ```
