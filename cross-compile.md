@@ -49,9 +49,19 @@ systemctl start docker
 - New CONTAINER
 	- Source
    		- Custom - `docker import IMAGE_FILE.tar`
-   			- `armv6h` fix:
+       		- rAudio Source
+			```sh
+			xz -kd rAudio-ARCH-VERSION.img.xz
+			# dolphin: mount the rAudio-ARCH-VERSION.img
+			cd /run/media/USER/ROOT/
+			bsdtar cvf /home/USER/IMAGE_FILE.tar .
+			docker import IMAGE_FILE.tar
+			```
+   			- `armv6h`:
         	```sh
          	docker run --privileged linuxkit/binfmt:v0.8
+
+         	#   optional:
 			#	fakeroot        : --ulimit nofile=1024:524288 (soft:hard)
 			#	armv7l > armv6l : -e QEMU_CPU=arm1176
 			docker run -it --ulimit nofile=1024:524288 --name CONTAINER_NAME -e QEMU_CPU=arm1176 IMAGE_NAME bash
@@ -80,11 +90,3 @@ systemctl start docker
 	- Mount - `-v /home/USER/SHARE:/DOCKER_SHARE`
 	- Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
 -
-- rAudio Source
-```sh
-xz -kd rAudio-ARCH-VERSION.img.xz
-# dolphin: mount the rAudio-ARCH-VERSION.img
-cd /run/media/USER/ROOT/
-bsdtar cvf /home/USER/IMAGE_FILE.tar .
-docker import IMAGE_FILE.tar
-```
