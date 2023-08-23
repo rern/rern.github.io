@@ -98,7 +98,7 @@ fi
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 
-pacman -Sy --noconfirm --needed base-devel git $packagelist
+pacman -Sy --noconfirm --needed base-devel fakeroot git $packagelist
 
 currentdir=$PWD
 
