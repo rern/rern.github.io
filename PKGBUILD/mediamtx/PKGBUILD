@@ -1,8 +1,8 @@
 # Maintainer: Filip Matzner <filip.matzner@iterait.com>
 
 pkgname=mediamtx
-pkgver=0.23.5
-pkgrel=2
+pkgver=1.0.1
+pkgrel=1
 pkgdesc="Ready-to-use and zero-dependency RTSP / RTMP / HLS server and proxy."
 arch=('armv7h' 'aarch64')
 url="https://github.com/bluenviron/mediamtx"
