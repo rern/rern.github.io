@@ -43,7 +43,6 @@
 - [cava](https://github.com/karlstav/cava)
 - [mediamtx](https://github.com/aler9/mediamtx)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
-- [nginx](https://nginx.org)
 - [snapcast](https://github.com/badaix/snapcast)
 - [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/downloads/?C=N;O=D)
 

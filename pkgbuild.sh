@@ -55,7 +55,6 @@ declare -A packages=(
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
-	[nginx-mainline-pushstream]='geoip mailcap'
 	[python-pycamilladsp-plot]='python-setuptools'
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]='python-setuptools'
