@@ -51,7 +51,6 @@
 - [jquery](https://jquery.com/)
 - [lazysizes](https://github.com/aFarkas/lazysizes)
 - [pica](https://github.com/nodeca/pica/tags)
-- [pushstream](https://github.com/wandenberg/nginx-push-stream-module/blob/master/misc/js/pushstream.js)
 - [qrcode](https://github.com/datalog/qrcode-svg)
 - [roundslider](https://github.com/soundar24/roundSlider)
 - [Select2](https://github.com/select2/select2)
