@@ -1,6 +1,11 @@
+### `python-upnpp`
+- `Makefile`: `make` > `make install` to `/usr/lib/python3.11/site-packages/upnpp`
+- `PKGBUILD`: `makepkg -R` create `python-upnpp` package (`-R` run function `package` only)
 ```sh
-su alarm
 pacman -Sy --needed automake libnpupnp python-devtools swig
+
+su alarm
+cd
 git clone https://framagit.org/medoc92/libupnpp-bindings.git libupnpp-bindings
 cd libupnpp-bindings
 ./autogen.sh
@@ -9,9 +14,16 @@ make
 
 su
 make install
+
 su alarm
+cd
 mkdir -p /home/alarm/python-upnpp/src/upnpp
-cp /usr/lib/python3.11/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
+pythonver=$( ls /usr/lib | grep ^python | tail -1 )
+if [[ -e /boot/kernel.img && $pythonver != python3.10 ]]; then
+	mv -f /usr/lib/{$pythonver,python3.10}/site-packages
+	pythonver=python3.10
+fi
+cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
 cd /home/alarm/python-upnpp
 wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD
 makepkg -R
