@@ -1,0 +1,28 @@
+# Maintainer: Fabio 'Lolix' Loli <fabio.loli@disroot.org> -> https://github.com/FabioLolix
+# Contributor: Tristelune <tristelune@archlinux.info>
+
+pkgname=python-upnpp
+pkgver=0.21.0
+pkgrel=1
+pkgdesc="Python UPnP control interface based on libupnpp."
+url="https://www.lesbonscomptes.com/upmpdcli/libupnpp-python/upnpp-python.html"
+arch=('armv6h' 'armv7h' 'aarch64')
+license=(LGPL2.1)
+depends=(automake libnpupnp python-devtools swig)
+source=("https://framagit.org/medoc92/libupnpp-bindings/-/archive/libupnpp-bindings-v0.21.0/libupnpp-bindings-libupnpp-bindings-v${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build(){
+  cd "libupnpp-bindings-libupnpp-bindings-v${pkgver}"
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package(){
+  cd upnpp
+  install -Dm 755 __init__.py -t $pkgdir/usr/lib/python3.11/site-packages/upnpp
+  install -Dm 755 _upnpp.la -t $pkgdir/usr/lib/python3.11/site-packages/upnpp
+  install -Dm 755 _upnpp.so -t $pkgdir/usr/lib/python3.11/site-packages/upnpp
+  install -Dm 755 upnpp.py -t $pkgdir/usr/lib/python3.11/site-packages/upnpp
+}
