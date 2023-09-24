@@ -1,6 +1,3 @@
-# Maintainer: Fabio 'Lolix' Loli <fabio.loli@disroot.org> -> https://github.com/FabioLolix
-# Contributor: Tristelune <tristelune@archlinux.info>
-
 pkgname=python-upnpp
 pkgver=0.22.1
 pkgrel=1
