@@ -5,8 +5,8 @@
 - RPi Zero: Might need swap partition (eg.: `gcc` `upmpdcli`)
 	- Gparted > Resize > Create 4GB `linux-swap` partition
 	```sh
-	partuuid=$( blkid /dev/mmcblk0p3 -o value | tail -1 )
-	echo PARTUUID=$partuuid  swap   swap  defaults          0  0 > /etc/fstab
+ 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' /etc/fstab
+	echo $swap >> /etc/fstab
 	mount -a
 	```
 
