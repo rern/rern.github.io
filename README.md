@@ -3,7 +3,8 @@
 **Build packages**
 - Build / Repo pdate (on rAudio): `package`
 - RPi Zero: Might need swap partition (eg.: `gcc` `upmpdcli`)
-	- Gparted > Resize > Create 4GB `linux-swap` partition
+	- Desktop: Gparted > Resize > Create 4GB `linux-swap` partition
+   	- RPi:
 	```sh
  	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' /etc/fstab
 	echo $swap >> /etc/fstab
