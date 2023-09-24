@@ -59,6 +59,7 @@ declare -A packages=(
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]='python-setuptools'
 	[python-smbus2]='python-setuptools'
+	[python-upnpp]='automake libnpupnp python-devtools swig'
 	[raspberrypi-firmware]=
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
@@ -127,6 +128,22 @@ buildPackage() {
 			cd $name
 			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
+		python-upnpp )
+			git clone https://framagit.org/medoc92/libupnpp-bindings.git libupnpp-bindings
+			cd libupnpp-bindings
+			./autogen.sh
+			./configure --prefix=/usr
+			make
+			make install
+			mkdir -p /home/alarm/python-upnpp/src/upnpp
+			pythonver=$( ls /usr/lib | grep ^python | tail -1 )
+			if [[ -e /boot/kernel.img && $pythonver != python3.10 ]]; then
+				mv -f /usr/lib/{$pythonver,python3.10}/site-packages
+				pythonver=python3.10
+			fi
+			cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
+			wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD -P /home/alarm/python-upnpp
+			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			cd $name
@@ -160,7 +177,7 @@ buildPackage() {
 	fi
 	
 	echo -e "\n\n\e[46m  \e[0m Start build $name ...\n"
-	sudo -u alarm makepkg -fA $skipinteg
+	[[ $name == python-upnpp ]] && sudo -u alarm makepkg -fR || sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
