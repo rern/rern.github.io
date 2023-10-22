@@ -1,14 +1,16 @@
 ### `python-upnpp`
+
+- **RPi Zero only** - setup swap partition (on PC)
+	- Gparted > Resize > Create 4GB linux-swap partition
+	```sh
+	fstab=/run/media/x/ROOT/etc/fstab
+	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
+	echo "$swap" >> $fstab
+	```
+
 - `Makefile`: `make` > `make install` to `/usr/lib/python3.11/site-packages/upnpp`
 ```sh
-if [[ -e /boot/kernel.img ]]; then
-	# setup swap partition
-	wget http://mirror.archlinuxarm.org/aarch64/extra/python-devtools-0.12.2-1-any.pkg.tar.xz
-	pacman -U python-devtools
-	pacman -Sy --needed automake libnpupnp python-setuptools swig
-else
-	pacman -Sy --needed automake libnpupnp python-devtools python-setuptools swig
-fi
+pacman -Sy --needed automake libnpupnp python-setuptools swig
 
 su alarm
 cd

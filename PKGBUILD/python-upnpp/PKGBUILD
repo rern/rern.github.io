@@ -13,7 +13,7 @@ sha256sums=('SKIP')
 
 package(){
 	cd $srcdir/upnpp
-	pythonver=$( ls /usr/lib | grep ^python | tail -1 )
+	[[ -e /boot/kernel.img ]] && pythonver=python3.10 || pythonver=$( ls /usr/lib | grep ^python | tail -1 )
 	dirupnpp=$pkgdir/usr/lib/$pythonver/site-packages/upnpp
 	for f in __init__.py _upnpp.la _upnpp.so upnpp.py; do
 		install -Dm 755 $f -t $dirupnpp
