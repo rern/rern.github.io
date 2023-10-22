@@ -2,13 +2,12 @@
 
 **Build packages**
 - Build / Repo pdate (on rAudio): `package`
-- RPi Zero: Might need swap partition (eg.: `gcc` `upmpdcli`)
-	- Desktop: Gparted > Resize > Create 4GB `linux-swap` partition
-   	- RPi:
-	```sh
- 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' /etc/fstab
-	echo $swap >> /etc/fstab
-	mount -a
+- RPi Zero: Might need swap partition (eg.: `gcc`, `python-upnpp`, `upmpdcli`) - on PC
+	- Gparted > Resize > Create 4GB `linux-swap` partition
+   	```sh
+    fstab=/run/media/x/ROOT/etc/fstab
+ 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
+	echo "$swap" >> $fstab
 	```
 
 **Arch Linux Arm Repo**:
