@@ -17,14 +17,20 @@ make install
 
 su alarm
 cd
-mkdir -p /home/alarm/python-upnpp/src/upnpp
+mkdir -p python-upnpp/src/upnpp
 pythonver=$( ls /usr/lib | grep ^python | tail -1 )
-if [[ -e /boot/kernel.img && $pythonver != python3.10 ]]; then
-	mv -f /usr/lib/{$pythonver,python3.10}/site-packages
-	pythonver=python3.10
-fi
 cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
 cd /home/alarm/python-upnpp
 wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD
+makepkg -R
+```
+
+### armv6h
+```sh
+su alarm
+cd
+mkdir -p python-upnpp
+cd python-upnpp
+wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/armv6h/PKGBUILD
 makepkg -R
 ```

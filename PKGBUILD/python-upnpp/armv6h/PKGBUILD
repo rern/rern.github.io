@@ -7,15 +7,13 @@ pkgdesc="Python UPnP control interface based on libupnpp."
 url="https://www.lesbonscomptes.com/upmpdcli/libupnpp-python/upnpp-python.html"
 arch=('armv6h' 'armv7h' 'aarch64')
 license=(LGPL2.1)
-depends=(libnpupnp)
-builddepends=(automake libnpupnp python-devtools swig)
 source=("https://framagit.org/medoc92/libupnpp-bindings/-/archive/libupnpp-bindings-v0.21.0/libupnpp-bindings-libupnpp-bindings-v${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
 package(){
-	pythonver=$( ls /usr/lib | grep ^python | tail -1 )
-	dirupnpp=/usr/lib/$pythonver/site-packages/upnpp
+	cd $srcdir
+	curl -L https://github.com/rern/rern.github.io/raw/main/armv6h/python-upnpp-0.22.1-1-armv6h.pkg.tar.xz | bsdtar xf -
 	for f in __init__.py _upnpp.la _upnpp.so upnpp.py; do
-		install -Dm 755 $dirupnpp/$f -t $pkgdir$dirupnpp
+		install -Dm 755 $f -t $pkgdir/usr/lib/python3.10/site-packages/upnpp
 	done
 }
