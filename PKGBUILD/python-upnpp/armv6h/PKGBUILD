@@ -13,6 +13,8 @@ sha256sums=('SKIP')
 package(){
 	cd $srcdir
 	curl -L https://github.com/rern/rern.github.io/raw/main/armv6h/python-upnpp-0.22.1-1-armv6h.pkg.tar.xz | bsdtar xf -
+	cd $srcdir/usr/lib/python3.10/site-packages/upnpp
+	wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/armv6h/_upnpp.la
 	for f in __init__.py _upnpp.la _upnpp.so upnpp.py; do
 		install -Dm 755 $f -t $pkgdir/usr/lib/python3.10/site-packages/upnpp
 	done

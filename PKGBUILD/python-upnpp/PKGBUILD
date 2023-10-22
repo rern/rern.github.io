@@ -8,7 +8,6 @@ url="https://www.lesbonscomptes.com/upmpdcli/libupnpp-python/upnpp-python.html"
 arch=('armv6h' 'armv7h' 'aarch64')
 license=(LGPL2.1)
 depends=(libnpupnp)
-builddepends=(automake libnpupnp python-devtools swig)
 source=("https://framagit.org/medoc92/libupnpp-bindings/-/archive/libupnpp-bindings-v0.21.0/libupnpp-bindings-libupnpp-bindings-v${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
