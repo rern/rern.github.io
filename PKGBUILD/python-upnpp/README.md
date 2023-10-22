@@ -2,7 +2,7 @@
 - `Makefile`: `make` > `make install` to `/usr/lib/python3.11/site-packages/upnpp`
 - `PKGBUILD`: `makepkg -R` create `python-upnpp` package (`-R` run function `package` only)
 ```sh
-pacman -Sy --needed automake libnpupnp python-devtools swig
+pacman -Sy --needed automake libnpupnp python-devtools python-setuptools swig
 
 su alarm
 cd
