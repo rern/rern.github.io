@@ -12,15 +12,16 @@ cd libupnpp-bindings
 ./configure --prefix=/usr
 make
 
-su
-make install
-
-su alarm
 cd
-mkdir -p python-upnpp/src/upnpp
-pythonver=$( ls /usr/lib | grep ^python | tail -1 )
-cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
-cd /home/alarm/python-upnpp
+mkdir=libupnpp-bindings/python
+srcdir=python-upnpp/src/upnpp
+mkdir -p $srcdir
+cp $mkdir/_upnpp.la $srcdir
+cp $mkdir/.libs/_upnpp.so $srcdir
+cp $mkdir/upnpp/__init__.py $srcdir
+cp $mkdir/upnpp/upnpp.py $srcdir
+
+cd python-upnpp
 wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD
 makepkg -R
 ```
