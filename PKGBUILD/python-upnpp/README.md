@@ -1,8 +1,14 @@
 ### `python-upnpp`
 - `Makefile`: `make` > `make install` to `/usr/lib/python3.11/site-packages/upnpp`
-- `PKGBUILD`: `makepkg -R` create `python-upnpp` package (`-R` run function `package` only)
 ```sh
-pacman -Sy --needed automake libnpupnp python-devtools python-setuptools swig
+if [[ -e /boot/kernel.img ]]; then
+	# setup swap partition
+	wget http://mirror.archlinuxarm.org/aarch64/extra/python-devtools-0.12.2-1-any.pkg.tar.xz
+	pacman -U python-devtools
+	pacman -Sy --needed automake libnpupnp python-setuptools swig
+else
+	pacman -Sy --needed automake libnpupnp python-devtools python-setuptools swig
+fi
 
 su alarm
 cd
@@ -11,7 +17,10 @@ cd libupnpp-bindings
 ./autogen.sh
 ./configure --prefix=/usr
 make
+```
 
+- `PKGBUILD`: `makepkg -R` create `python-upnpp` package (`-R` run function `package` only)
+```sh
 cd
 mkdir=libupnpp-bindings/python
 srcdir=python-upnpp/src/upnpp
@@ -23,15 +32,5 @@ cp $mkdir/upnpp/upnpp.py $srcdir
 
 cd python-upnpp
 wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD
-makepkg -R
-```
-
-### armv6h
-```sh
-su alarm
-cd
-mkdir -p python-upnpp
-cd python-upnpp
-wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/armv6h/PKGBUILD
 makepkg -R
 ```
