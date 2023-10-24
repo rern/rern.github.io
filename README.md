@@ -31,7 +31,6 @@
 		- `linux-firmware-whence` - `any`
 		- [`linux-rpi-legacy`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/core/linux-rpi-legacy) - `armv6h`
 		- `raspberrypi-bootloader` - `any`
-		- [`raspberrypi-firmware`](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810/alarm/raspberrypi-firmware) - `armv6h`
 
 **Cross compile**:
 - [Distcc](https://github.com/rern/rern.github.io/blob/main/cross-compile.md#distcc)
