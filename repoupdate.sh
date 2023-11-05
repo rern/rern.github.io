@@ -5,9 +5,8 @@ dircurrent=$PWD
 updateRepo() {
 	echo -e "\n\n\e[44m  \e[0m Update repository $1 ...\n"
 	cd $dirrepo/$1
-	rm -f +R*
-	repo-add -R +R.db.tar.xz *.pkg.tar.xz
-	
+	repo-add -n -R +R.db.tar.xz *.pkg.tar.xz
+	rm -f *.xz.old
 	# index.html
 	html='<!DOCTYPE html>
 <html>
