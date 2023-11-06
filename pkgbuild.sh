@@ -60,7 +60,7 @@ declare -A packages=(
 	[python-rplcd]='python-setuptools'
 	[python-smbus2]='python-setuptools'
 	[python-upnpp]='automake libnpupnp python-devtools swig'
-	[raspberrypi-firmware]=
+	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress sqlite'
@@ -106,21 +106,20 @@ buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
-		distcc | linux-rpi-legacy | mediamtx | raspberrypi-firmware )
+		distcc | linux-rpi-legacy | mediamtx | raspberrypi-utils )
 			case $name in
 				distcc )
 					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/extra/$name
 					;;
-				raspberrypi-firmware )
-					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/alarm/$name
-					;;
 				linux-rpi-legacy | mediamtx )
 					url=https://github.com/rern/rern.github.io/tree/main/PKGBUILD/$name
+					;;
+				raspberrypi-utils )
+					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/alarm/$name
 					;;
 			esac
 			curl -L https://github.com/rern/rern.github.io/raw/main/github-download.sh | bash -s "$url"
 			cd $name
-			[[ $name == raspberrypi-firmware ]] && sed -i 's/armv7h/armv6h/' PKGBUILD
 			;;
 		mpd )
 			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | bsdtar xf -
