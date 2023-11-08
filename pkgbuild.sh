@@ -147,6 +147,8 @@ buildPackage() {
 			wget $urlrern/PKGBUILD/python-upnpp/PKGBUILD -P /home/alarm/python-upnpp
 			;;
 		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
+			mkdir -p wiringpi
+			cd wiringpi
 			curl -LO $urlalarm/alarm/wiringpi/PKGBUILD
 			sed -i "/wiringPi.c/ a\  sed -i '/Start by/,/Or the next/ d' wiringPi/wiringPi.c" PKGBUILD
 			;;
