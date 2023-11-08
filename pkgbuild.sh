@@ -68,7 +68,7 @@ declare -A packages=(
 	[wirelessregdom-codes]=
 )
 
-[[ $arch == armv6h ]] && omit='camilla|^dab|^mediamtx' || omit='^mpd|^rasp|^linux'
+[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
