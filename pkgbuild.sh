@@ -64,6 +64,7 @@ declare -A packages=(
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress sqlite'
+	[wiringpi]=
 	[wirelessregdom-codes]=
 )
 
@@ -76,14 +77,15 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
+urlrern=https://github.com/rern/rern.github.io/raw/main
 if [[ $pkgname == wirelessregdom-codes ]]; then
-	bash <( curl -skL https://github.com/rern/rern.github.io/raw/main/wirelessregdom.sh )
+	bash <( curl -skL $urlrern/wirelessregdom.sh )
 	exit
 fi
 
 packagelist=${packages[$pkgname]}
 
-[[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh | bash -s $clientip
+[[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L $urlrern/distcc-install-master.sh | bash -s $clientip
 
 if [[ $arch == armv6h && $pkgname == upmpdcli ]] && ! pacman -Q python-bottle &> /dev/null; then
 	for p in python-bottle python-mutagen python-waitress; do # not in repo
@@ -105,20 +107,21 @@ currentdir=$PWD
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
+	urlalarm=https://github.com/archlinuxarm/PKGBUILDs/raw/master
 	case $name in
 		distcc | linux-rpi-legacy | mediamtx | raspberrypi-utils )
 			case $name in
 				distcc )
-					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/extra/$name
+					url=$urlalarm/extra/$name
 					;;
 				linux-rpi-legacy | mediamtx )
-					url=https://github.com/rern/rern.github.io/tree/main/PKGBUILD/$name
+					url=$urlrern/PKGBUILD/$name
 					;;
 				raspberrypi-utils )
-					url=https://github.com/archlinuxarm/PKGBUILDs/tree/master/alarm/$name
+					url=$urlalarm/alarm/$name
 					;;
 			esac
-			curl -L https://github.com/rern/rern.github.io/raw/main/github-download.sh | bash -s "$url"
+			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
 			;;
 		mpd )
@@ -141,7 +144,11 @@ buildPackage() {
 				pythonver=python3.10
 			fi
 			cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
-			wget https://github.com/rern/rern.github.io/raw/main/PKGBUILD/python-upnpp/PKGBUILD -P /home/alarm/python-upnpp
+			wget $urlrern/PKGBUILD/python-upnpp/PKGBUILD -P /home/alarm/python-upnpp
+			;;
+		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
+			curl -LO $urlalarm/alarm/wiringpi/PKGBUILD
+			sed -i "/wiringPi.c/ a\  sed -i '/Start by/,/Or the next/ d' wiringPi/wiringPi.c" PKGBUILD
 			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
