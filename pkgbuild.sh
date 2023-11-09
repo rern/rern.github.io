@@ -69,6 +69,7 @@ declare -A packages=(
 )
 
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd|^rasp|^linux'
+[[ $arch != aarch64 ]] && omit+='|^wiringpi'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
