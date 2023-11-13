@@ -50,7 +50,7 @@ declare -A packages=(
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mediamtx]=
+	[mediamtx]='go '
 	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
@@ -110,7 +110,7 @@ buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	urlalarm=https://github.com/archlinuxarm/PKGBUILDs/raw/master
 	case $name in
-		distcc | linux-rpi-legacy | mediamtx | raspberrypi-utils )
+		distcc | linux-rpi-legacy | raspberrypi-utils )
 			case $name in
 				distcc )
 					url=$urlalarm/extra/$name
