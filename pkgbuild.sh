@@ -110,16 +110,16 @@ buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	urlalarm=https://github.com/archlinuxarm/PKGBUILDs/raw/master
 	case $name in
-		distcc | linux-rpi-legacy | raspberrypi-utils )
+		distcc | linux-rpi-legacy | raspberrypi-utils | xf86-video-fbturbo )
 			case $name in
 				distcc )
 					url=$urlalarm/extra/$name
 					;;
-				linux-rpi-legacy | mediamtx )
-					url=$urlrern/PKGBUILD/$name
-					;;
 				raspberrypi-utils )
 					url=$urlalarm/alarm/$name
+					;;
+				* )
+					url=$urlrern/PKGBUILD/$name
 					;;
 			esac
 			curl -L $urlrern/github-download.sh | bash -s "$url"
