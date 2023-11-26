@@ -1,7 +1,7 @@
 # DO NOT BUILD - makepkg -R
 
 pkgname=python-upnpp
-pkgver=0.22.1
+pkgver=0.24.0
 pkgrel=1
 pkgdesc="Python UPnP control interface based on libupnpp."
 url="https://www.lesbonscomptes.com/upmpdcli/libupnpp-python/upnpp-python.html"
