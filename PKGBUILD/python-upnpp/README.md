@@ -2,6 +2,7 @@
 
 - **RPi Zero only** - setup swap partition (on PC)
 	- Gparted > Resize > Create 4GB linux-swap partition
+ 	- Dolphin > Click to mount `ROOT`
 	```sh
 	fstab=/run/media/x/ROOT/etc/fstab
 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
