@@ -11,6 +11,4 @@ list=$( echo '{ "00": "00"'$iso3166' }' \
 			| jq \
 			| grep -E "$codes" \
 			| sed -E 's/\s*"(.*)": "(.*)",*/"\2": "\1",/' )
-jq -S <<< "{ ${list:0:-1} }" > /srv/http/assets/data/regdomcodes.json
-
-echo Updated: /srv/http/assets/data/regdomcodes.json
+jq -S <<< "{ ${list:0:-1} }" > regdomcodes.json
