@@ -39,8 +39,8 @@ updateRepo() {
 
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
-if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then
-	[[ ! -d repo ]] && ln -s /home/x/BIG/RPi/Git/rern.github.io repo
+if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
+	ln -s /home/x/BIG/RPi/Git/rern.github.io repo
 else
 	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
@@ -75,7 +75,11 @@ for i in $arch; do
 	esac
 done
 cd "$dircurrent"
-umount -l repo &> /dev/null
-rmdir $dirrepo &> /dev/null
+if [[ -L repo ]]; then
+	rm -r repo
+else
+	umount -l repo &> /dev/null
+	rmdir $dirrepo &> /dev/null
+fi
 
 echo -e "\n\e[44m  \e[0m Done."
