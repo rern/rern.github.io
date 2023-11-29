@@ -50,6 +50,7 @@ for i in $arch; do
 	
 	echo -e "\n\n\e[44m  \e[0m $action repository $arch ...\n"
 	cd $dirrepo/$arch
+	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
 	rm -f *.xz.old
 	# index.html
