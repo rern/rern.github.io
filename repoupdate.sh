@@ -40,7 +40,7 @@ updateRepo() {
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then
-	ln -s /home/x/BIG/RPi/Git/rern.github.io $dirrepo
+	[[ ! -d repo ]] && ln -s /home/x/BIG/RPi/Git/rern.github.io repo
 else
 	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
