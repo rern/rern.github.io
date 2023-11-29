@@ -29,7 +29,7 @@ else
 fi
 
 arch=$( dialog --colors --output-fd 1 --checklist '
-\n\Z1Arch:\Z0' 9 30 0 \
+\n\Z1Repository:\Z0' 9 30 0 \
 	1 aarch64 on \
 	2 armv7h on \
 	3 armv6h on \
