@@ -20,6 +20,10 @@ cd REPONAME
 - Skip: `sha256sums=(SKIP [SKIP ...])`
 - Create
 ```sh
+pacman -S pacman-contrib
+updpkgsums
+
+# or
 makepkg -g
 # paste stdout in PKGBUILD
 ```
