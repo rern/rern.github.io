@@ -22,8 +22,8 @@
 - Obsolete ARMv6
 	- `/etc/pacman.d/mirrorlist`:
 		```sh
+  		Server = http://mirror.archlinuxarm.org/armv7h/$repo
 		Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo
-		Server = http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo
 		```
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 		- Download GitHub specific directory: https://download-directory.github.io/
