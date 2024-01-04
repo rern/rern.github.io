@@ -78,6 +78,11 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
+if [[ $pkgname == python-upnpp || $python-upnpp == upmpdcli ]]; then
+	! grep -q swap /etc/fstab && echo 'Require swap partition.'
+ 	exit
+fi
+
 urlrern=https://github.com/rern/rern.github.io/raw/main
 if [[ $pkgname == wirelessregdom-codes ]]; then
 	bash <( curl -skL $urlrern/wirelessregdom.sh )
