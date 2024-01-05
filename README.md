@@ -9,7 +9,7 @@
 - RPi Zero, 1 - update firmware:
 	- `firmware-raspberrypi` `linux-firmware` `raspberrypi-bootloader`
 ```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )`
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 ```
 - RPi Zero: Might need swap partition (eg.: `gcc`, `python-upnpp`, `upmpdcli`) - on PC
 	- Gparted > Resize > Create 4GB `linux-swap` partition
