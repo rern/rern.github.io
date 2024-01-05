@@ -34,7 +34,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
   		# updated packages for arch 'any' (armv6h will not be available)
   		Server = http://mirror.archlinuxarm.org/armv7h/$repo
   
-  		# archive - armv7h must be commented out
+  		# archive - mirror.archlinuxarm.org must be commented/removed
 		Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo
 		```
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
