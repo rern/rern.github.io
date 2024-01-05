@@ -28,6 +28,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 **Arch Linux Arm Sources**:
 - `PKGBUILD` - [https://github.com/archlinuxarm/PKGBUILDs](https://github.com/archlinuxarm/PKGBUILDs)
 	- Not found: Go to: [https://archlinux.org](https://archlinux.org) > Package search > Source Files
+   	- Archives for `linux-rpi-legacy`: [PKGBUILDs](https://github.com/archlinuxarm/PKGBUILDs/tree/4a2735c88645cf21e6817b6a32902f0528a60887)
 - Obsolete ARMv6
 	- `/etc/pacman.d/mirrorlist`:
 		```sh
