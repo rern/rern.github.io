@@ -59,7 +59,7 @@ declare -A packages=(
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]='python-setuptools'
 	[python-smbus2]='python-setuptools'
-	[python-upnpp]='automake libnpupnp python-devtools swig'
+	[python-upnpp]='libnpupnp python-devtools swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
 	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
@@ -94,19 +94,20 @@ packagelist=${packages[$pkgname]}
 
 [[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L $urlrern/distcc-install-master.sh | bash -s $clientip
 
-if [[ $arch == armv6h && $pkgname == upmpdcli ]] && ! pacman -Q python-bottle &> /dev/null; then
-	for p in python-bottle python-mutagen python-waitress; do # not in repo
-		url=$( curl https://archlinuxarm.org/packages/any/$p | grep Download | cut -d'"' -f2 )
-  		wget $url
-	done
-	pacman -U --noconfirm python-bottle* python-mutagen* python-waitress*
-	rm python-bottle* python-mutagen* python-waitress*
- 	packagelist=${packagelist/python-bottle python-mutagen python-waitress }
+if [[ $arch == armv6h ]]; then
+	if [[ $pkgname == upmpdcli ]] && ! pacman -Q python-bottle &> /dev/null; then
+		for p in python-bottle python-mutagen python-waitress; do # not in repo
+			url=$( curl https://archlinuxarm.org/packages/any/$p | grep Download | cut -d'"' -f2 )
+			wget $url
+		done
+		pacman -U --noconfirm python-bottle* python-mutagen* python-waitress*
+		rm python-bottle* python-mutagen* python-waitress*
+		packagelist=${packagelist/python-bottle python-mutagen python-waitress }
+	fi
 fi
 
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
-
 pacman -Sy --noconfirm --needed base-devel fakeroot git $packagelist
 
 currentdir=$PWD
