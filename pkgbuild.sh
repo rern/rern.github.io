@@ -80,8 +80,7 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 if [[ -e /boot/kernel.img ]]; then
 	if [[ $pkgname == python-upnpp || $python-upnpp == upmpdcli ]]; then
-		! grep -q swap /etc/fstab && echo 'Require swap partition.'
-	 	exit
+		! grep -q swap /etc/fstab && echo 'Require swap partition.' && exit
 	fi
 fi
 
