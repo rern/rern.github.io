@@ -1,6 +1,9 @@
 **+R repo**: [rern.github.io](https://rern.github.io)
 
 **Build packages** (on rAudio):
+```sh
+bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
+```
 - Build
 - Update repo
 - AUR setup
@@ -8,9 +11,6 @@
 - Create `guide.tar.xz`
 - RPi Zero, 1 - update firmware:
 	- `firmware-raspberrypi` `linux-firmware` `raspberrypi-bootloader`
-```sh
-bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
-```
 - RPi Zero: Might need swap partition (eg.: `gcc`, `python-upnpp`, `upmpdcli`) - on PC
 	- Gparted > Resize > Create 4GB `linux-swap` partition
    	```sh
@@ -69,4 +69,4 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - [roundslider](https://github.com/soundar24/roundSlider)
 - [Select2](https://github.com/select2/select2)
 - [simple-keyboard](https://github.com/hodgef/simple-keyboard/blob/master/build/index.modern.js) (Remove sourcemap - last line: //# sourceMappingURL=index.modern.js.map)
-- [Sortable](https://github.com/SortableJS/Sortable)
+- [Sortable](https://github.com/SortableJS/Sortable) (minified: https://www.jsdelivr.com/package/npm/sortablejs)
