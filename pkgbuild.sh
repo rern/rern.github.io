@@ -136,22 +136,6 @@ buildPackage() {
 			cd $name
 			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
-		python-upnpp )
-			git clone https://framagit.org/medoc92/libupnpp-bindings.git libupnpp-bindings
-			cd libupnpp-bindings
-			./autogen.sh
-			./configure --prefix=/usr
-			make
-			make install
-			mkdir -p /home/alarm/python-upnpp/src/upnpp
-			pythonver=$( ls /usr/lib | grep ^python | tail -1 )
-			if [[ -e /boot/kernel.img && $pythonver != python3.10 ]]; then
-				mv -f /usr/lib/{$pythonver,python3.10}/site-packages
-				pythonver=python3.10
-			fi
-			cp /usr/lib/$pythonver/site-packages/upnpp/* /home/alarm/python-upnpp/src/upnpp
-			wget $urlrern/PKGBUILD/python-upnpp/PKGBUILD -P /home/alarm/python-upnpp
-			;;
 		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
 			mkdir -p wiringpi
 			cd wiringpi
@@ -191,7 +175,7 @@ buildPackage() {
 	fi
 	
 	echo -e "\n\n\e[46m  \e[0m Start build $name ...\n"
-	[[ $name == python-upnpp ]] && sudo -u alarm makepkg -fR || sudo -u alarm makepkg -fA $skipinteg
+	sudo -u alarm makepkg -fA $skipinteg
 	
 	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
 		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
