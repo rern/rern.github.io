@@ -19,8 +19,9 @@ Package:
 " 8 0 0 "${list[@]}" )
 if [[ $rpi01 && $file == 2 ]]; then
 	sed -i '1 i\Server = http://mirror.archlinuxarm.org/armv7h/$repo' /etc/pacman.d/mirrorlist
-	pacman -Sy --noconfirm --needed firmware-raspberrypi linux-firmware linux-firmware-whence raspberrypi-bootloader
+	pacman -Syy --noconfirm --needed firmware-raspberrypi linux-firmware linux-firmware-whence raspberrypi-bootloader
 	sed -i '/armv7h/ d' /etc/pacman.d/mirrorlist
+	pacman -Syy
 	exit
 fi
 
