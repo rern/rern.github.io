@@ -58,7 +58,6 @@ function infoWiFi() {
 		, values       : default_v.dhcp
 		, checkblank : [ 0 ]
 		, ok         : () => profile( infoVal() )
-		, oknoreset  : true
 	} );
 }
 function infoWiFiStatic() {
@@ -73,7 +72,6 @@ function infoWiFiStatic() {
 		, checkblank : [ 0 ]
 		, checkip    : [ 2, 3 ]
 		, ok         : () => profile( infoVal() )
-		, oknoreset  : true
 	} );
 }
 function infoWiFiTab( values ) {
@@ -97,6 +95,14 @@ function profile( val ) {
 	a.setAttribute( 'download', 'wifi' );
 	a.setAttribute( 'href', window.URL.createObjectURL( blob ) );
 	a.click();
+	info( {
+		  icon    : icon
+		, title   : title
+		, message : 'File <c>wifi</c> has been downloaded.'
+					+'<br><br>Copy it to folder <c>/boot</c> on SD card.'
+		, okno    : true
+	} );
+
 }
 function refreshData() {
 	return
