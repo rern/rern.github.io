@@ -1,92 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Wi-Fi Profile</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="msapplication-tap-highlight" content="no">
-	<link rel="stylesheet" href="assets/colors.css">
-	<link rel="stylesheet" href="assets/info.css">
-	<link rel="stylesheet" href="assets/main.css">
-	<link rel="icon" type="image/png" href="assets/icon.png" sizes="192x192">
+
+<title>Wi-Fi Profile</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="rAudio">
+<meta name="application-name" content="rAudio">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icon.png">
+<link rel="icon" href="/assets/img/icon.png">
+<link rel="stylesheet" href="assets/css/colors.css">
+<link rel="stylesheet" href="assets/css/common.css">
+<link rel="stylesheet" href="assets/css/settings.css">
+<style>
+#infoX { display: none }
+</style>
+
 </head>
 <body>
+<div id="infoOverlay" class="hide" tabindex="-1"></div>
 
-	<div class="head"><i class="page-icon fa fa-system"></i><span class="title">Wi-Fi Profile Generator</span></div>
-	<img src="assets/icon.png">
-	<script src="assets/jquery-3.6.0.min.js"></script>
-	<script src="assets/info.js"></script>
-	<script>
-setTimeout( function() {
-	info( {
-		  icon          : 'wifi'
-		, title         : 'Wi-Fi Data'
-		, textlabel     : [ 'SSID', 'IP', 'Gateway' ]
-		, textrequired  : [ 0 ]
-		, checkbox      : { 'Static IP': 1, 'Hidden SSID': 1, 'WEP': 1 }
-		, passwordlabel : 'Password'
-		, preshow       : function() {
-			$( '#infotextlabel a:eq( 1 ), #infoTextBox1, #infotextlabel a:eq( 2 ), #infoTextBox2' ).hide();
-			$( '#infoCheckBox' ).on( 'click', 'input:eq( 0 )', function() {
-				$( '#infotextlabel a:eq( 1 ), #infoTextBox1, #infotextlabel a:eq( 2 ), #infoTextBox2' ).toggle( $( this ).prop( 'checked' ) );
-			} );
-			setTimeout( function() {
-				$( '#infoTextBox' ).focus();
-			}, 0 );
-		}
-		, ok            : function() {
-			var ssid = $( '#infoTextBox' ).val();
-			var ip = $( '#infoTextBox1' ).val();
-			var gw = $( '#infoTextBox2' ).val();
-			var password = $( '#infoPasswordBox' ).val();
-			var static = $( '#infoCheckBox input:eq( 0 )' ).prop( 'checked' );
-			var hidden = $( '#infoCheckBox input:eq( 1 )' ).prop( 'checked' );
-			var security = $( '#infoCheckBox input:eq( 2 )' ).prop( 'checked' );
-			var data =   'Interface=wlan0'
-						+'\nConnection=wireless'
-						+'\nESSID="'+ escapeString( ssid ) +'"'
-						+'\nIP='+ ( static ? 'static' : 'dhcp' );
-			if ( password ) {
-				data +=  '\nSecurity='+ ( security ?  'wep' : 'wpa' )
-						+'\nKey="'+ escapeString( password ) +'"';
-			} else {
-				data +=  '\nSecurity=none'
-			}
-			if ( hidden ) {
-				data +=  '\nHidden=yes';
-			}
-			if ( static ) {
-				data +=  '\nAddress='+ ip +'/24'
-						+'\nGateway='+ gw;
-			}
-			info ( {
-				  icon          : 'wifi-3'
-				, title         : 'Wi-Fi Data'
-				, message       : 'Insert <wh>RuneAudio+R</wh> <i class="fa fa-addons"></i> SD card'
-								 +'<br><br>Save as <code>wifi</code> to <code>BOOT</code>'
-								 +'<br><br>(Or copy from <wh>Download</wh> folder'
-								 +'<br>if no download prompt.)'
-				, ok    : function() {
-					var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
-					var a = document.createElement( 'a' );
-					a.setAttribute( 'download', 'wifi' );
-					a.setAttribute( 'href', window.URL.createObjectURL( blob ) );
-					a.click();
-				}
-			} );
-		}
-	} );
-}, 500 );
-function escapeString( str ) {
-	return str
-			.replace( /([&()\\])/g, '\$1' )
-			.replace( /"/g, '\\\"' )
-			.replace( /'/g, '\'"\'"\'' );
+<div class="head" style="z-index: 120">
+	<i class="page-icon i-raudio"></i><span class='title'>Wi-Fi Profile Generator</span>
+</div>
+
+<script src="/assets/js/plugin/jquery-3.7.1.min.js"></script>
+<script src="/assets/js/common.js?v=1705949971"></script>
+<script>
+var V         = {}
+var default_v = {
+	  dhcp   : { SSID: '', PASSPHRASE: '', HIDDEN: false }
+	, static : { SSID: '', PASSPHRASE: '', ADDRESS: '', GATEWAY: '', HIDDEN: false }
 }
-	</script>
-	
+var list      = [
+	  [ 'SSID',        'text' ]
+	, [ 'Password',    'password' ]
+	, [ 'IP',          'text' ]
+	, [ 'Gateway',     'text' ]
+	, [ 'Hidden SSID', 'checkbox' ]
+];
+var icon      = 'wifi';
+var title     = 'Wi-Fi Profile';
+function infoWiFi() {
+	var listdhcp  = list.slice( 0 );
+	listdhcp.splice( 2, 2 );
+	info( {
+		  icon       : icon
+		, title      : title
+		, tablabel   : [ 'DHCP', 'Static IP' ]
+		, tab        : [ '', () => infoWiFiTab( infoVal() ) ]
+		, boxwidth   : 180
+		, list       : listdhcp
+		, values       : default_v.dhcp
+		, checkblank : [ 0 ]
+		, ok         : () => profile( infoVal() )
+		, oknoreset  : true
+	} );
+}
+function infoWiFiStatic() {
+	info( {
+		  icon       : icon
+		, title      : title
+		, tablabel   : [ 'DHCP', 'Static IP' ]
+		, tab        : [ () => infoWiFiTab( infoVal() ), '' ]
+		, boxwidth   : 180
+		, list       : list
+		, values     : default_v.static
+		, checkblank : [ 0 ]
+		, checkip    : [ 2, 3 ]
+		, ok         : () => profile( infoVal() )
+		, oknoreset  : true
+	} );
+}
+function infoWiFiTab( values ) {
+	var target = 'ADDRESS' in values ? 'dhcp' : 'static';
+	var keys   = Object.keys( default_v[ target ] );
+	var v      = {}
+	keys.forEach( k => v[ k ] = values[ k ] );
+	target === 'dhcp' ? infoWiFi( v ) : infoWiFiStatic( v );
+}
+function profile( val ) {
+	var data = 'SSID="'+ val.SSID +'"\n';
+	if ( val.PASSPHRASE ) data += '\n[Security]'
+								 +'\nPassphrase="'+ val.PASSPHRASE +'"\n';
+	if ( val.HIDDEN )     data += '\n[Settings]'
+								 +'\nHidden=true\n';
+	if ( val.GATEWAY )    data += '\n[IPv4]'
+								 +'\nAddress='+ val.ADDRESS
+								 +'\nGateway='+ val.GATEWAY;
+	var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
+	var a    = document.createElement( 'a' );
+	a.setAttribute( 'download', 'wifi' );
+	a.setAttribute( 'href', window.URL.createObjectURL( blob ) );
+	a.click();
+}
+function refreshData() {
+	return
+}
+
+infoWiFi();
+</script>
+
 </body>
 </html>
