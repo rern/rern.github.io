@@ -18,6 +18,10 @@
 <link rel="stylesheet" href="assets/css/settings.css?v=1705954403">
 <style>
 #infoX { display: none }
+pre {
+	padding: 5px 15px !important;
+	background: var( --cgd ) !important;
+}
 </style>
 
 </head>
@@ -29,7 +33,7 @@
 </div>
 
 <script src="assets/js/plugin/jquery-3.7.1.min.js"></script>
-<script src="assets/js/common.js?v=1705954403"></script>
+<script src="assets/js/common.js?v=1705954404"></script>
 <script>
 var V         = {}
 var default_v = {
@@ -45,70 +49,56 @@ var list      = [
 ];
 var icon      = 'wifi';
 var title     = 'Wi-Fi Profile';
-function infoWiFi() {
+function infoWiFi( dhcp ) {
 	var listdhcp  = list.slice( 0 );
 	listdhcp.splice( 2, 2 );
 	info( {
 		  icon       : icon
 		, title      : title
 		, tablabel   : [ 'DHCP', 'Static IP' ]
-		, tab        : [ '', () => infoWiFiTab( infoVal() ) ]
+		, tab        : dhcp ? [ '', infoWiFi ] : [ () => infoWiFi( 'dhcp' ), '' ]
 		, boxwidth   : 180
-		, list       : listdhcp
-		, values       : default_v.dhcp
+		, list       : dhcp ? listdhcp : list
+		, values     : dhcp ? default_v.dhcp : default_v.static
 		, checkblank : [ 0 ]
-		, ok         : () => profile( infoVal() )
+		, checkip    : dhcp ? '' : [ 2, 3 ]
+		, ok         : () => {
+			var val  = infoVal();
+			var name = val.SSID +'.psk';
+			var data = '';
+			if ( val.PASSPHRASE ) {
+				data +=  '\n[Security]'
+						+'\nPassphrase="'+ val.PASSPHRASE +'"\n';
+			} else {
+				name  = name.replace( /.psk$/, '.open' );
+			}
+			if ( val.HIDDEN ) {
+				data +=  '\n[Settings]'
+						+'\nHidden=true\n';
+			}
+			if ( val.GATEWAY ) {
+				data +=  '\n[IPv4]'
+						+'\nAddress='+ val.ADDRESS
+						+'\nGateway='+ val.GATEWAY;
+			}
+/*			var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
+			var a    = document.createElement( 'a' );
+			a.setAttribute( 'download', name );
+			a.setAttribute( 'href',     window.URL.createObjectURL( blob ) );
+			a.click();*/
+			info( {
+				  icon    : icon
+				, title   : title
+				, message : '<pre>'+ data +'</pre>'
+							+'<br><p><i class="i-file"></i>Profile <c>'+ name +'</c> downloaded.'
+							+'<br><br><i class="i-copy"></i>Copy to SD<i class="i-backup"></i><c>/boot</c></p>'
+				, okno    : true
+			} );
+		}
 	} );
-}
-function infoWiFiStatic() {
-	info( {
-		  icon       : icon
-		, title      : title
-		, tablabel   : [ 'DHCP', 'Static IP' ]
-		, tab        : [ () => infoWiFiTab( infoVal() ), '' ]
-		, boxwidth   : 180
-		, list       : list
-		, values     : default_v.static
-		, checkblank : [ 0 ]
-		, checkip    : [ 2, 3 ]
-		, ok         : () => profile( infoVal() )
-	} );
-}
-function infoWiFiTab( values ) {
-	var target = 'ADDRESS' in values ? 'dhcp' : 'static';
-	var keys   = Object.keys( default_v[ target ] );
-	var v      = {}
-	keys.forEach( k => v[ k ] = values[ k ] );
-	target === 'dhcp' ? infoWiFi( v ) : infoWiFiStatic( v );
-}
-function profile( val ) {
-	var data = 'SSID="'+ val.SSID +'"\n';
-	if ( val.PASSPHRASE ) data += '\n[Security]'
-								 +'\nPassphrase="'+ val.PASSPHRASE +'"\n';
-	if ( val.HIDDEN )     data += '\n[Settings]'
-								 +'\nHidden=true\n';
-	if ( val.GATEWAY )    data += '\n[IPv4]'
-								 +'\nAddress='+ val.ADDRESS
-								 +'\nGateway='+ val.GATEWAY;
-	var blob = new Blob( [ data ], { type: 'application/text;charset=utf-8' } );
-	var a    = document.createElement( 'a' );
-	a.setAttribute( 'download', 'wifi' );
-	a.setAttribute( 'href', window.URL.createObjectURL( blob ) );
-	a.click();
-	info( {
-		  icon    : icon
-		, title   : title
-		, message : 'File <c>wifi</c> has been downloaded.'
-					+'<br><br>Copy it to folder <c>/boot</c> on SD card.'
-		, okno    : true
-	} );
-
-}
-function refreshData() {
-	return
 }
 
-infoWiFi();
+infoWiFi( 'dhcp' );
 </script>
 
 </body>
