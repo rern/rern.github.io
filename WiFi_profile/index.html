@@ -65,6 +65,19 @@ function infoWiFi( dhcp ) {
 		, checkip    : dhcp ? '' : [ 2, 3 ]
 		, ok         : () => {
 			var val   = infoVal();
+			if ( /[^0-9a-zA_Z _-]/.test( val.ESSID ) ) {
+				info( {
+					  icon    : icon
+					, title   : title
+					, message : '<p><wh>SSID</wh> must contain only:'
+								+'<br>- Alphanumeric charaters'
+								+'<br>- Spaces'
+								+'<br>- Underscores'
+								+'<br>- Minus signs</p>'
+				} );
+				return
+			}
+			
 			var data  =  'Interface=wlan0'
 						+'\nConnection=wireless'
 						+'\nESSID="'+ val.ESSID  +'"';
