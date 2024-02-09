@@ -43,22 +43,23 @@ declare -A packages=(
 	[camilladsp]=
 	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
-	[distcc]='gtk3'
+	[distcc]=gtk3
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
 	[linux-rpi-legacy]='bc kmod inetutils'
 	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
-	[mediamtx]='go '
+	[mediamtx]=go
+	[mmc-utils]=git
 	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
-	[python-pycamilladsp-plot]='python-setuptools'
+	[python-pycamilladsp-plot]=python-setuptools
 	[python-rpi-gpio]='python-distribute python-setuptools'
-	[python-rplcd]='python-setuptools'
-	[python-smbus2]='python-setuptools'
+	[python-rplcd]=python-setuptools
+	[python-smbus2]=python-setuptools
 	[python-upnpp]='libnpupnp python-devtools swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
@@ -136,6 +137,7 @@ buildPackage() {
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			cd $name
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+			[[ $name == mmc-utils ]] && sed -i 's/-git//' PKGBUILD
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
