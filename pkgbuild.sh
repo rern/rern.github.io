@@ -51,7 +51,6 @@ declare -A packages=(
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[mediamtx]=go
-	[mmc-utils-git]=git
 	[mpd]='audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
@@ -137,7 +136,6 @@ buildPackage() {
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			cd $name
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-			[[ $name == mmc-utils-git ]] && sed -i 's/-git//' PKGBUILD
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
