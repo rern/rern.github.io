@@ -61,10 +61,12 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/downloads/?C=N;O=D)
 
 **JS plugins**
+- [d3](https://github.com/d3/d3)
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
 - [jquery](https://jquery.com/)
 - [lazysizes](https://github.com/aFarkas/lazysizes)
 - [pica](https://github.com/nodeca/pica/tags)
+- [Plotly](https://github.com/plotly/plotly.js)
 - [qrcode](https://github.com/datalog/qrcode-svg)
 - [roundslider](https://github.com/soundar24/roundSlider)
 - [Select2](https://github.com/select2/select2)
