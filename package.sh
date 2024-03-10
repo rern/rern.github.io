@@ -18,7 +18,7 @@ case $file in
 	3 ) file=aursetup;;
 	4 ) file=wirelessregdom;;
 	5 )	bsdtar cjvf guide.tar.xz -C /srv/http/assets/img/guide .; exit;;
- 	6 ) sed -i '1 i\Server = http://mirror.archlinuxarm.org/armv7h/$repo' /etc/pacman.d/mirrorlist
+ 	6 ) sed -i '1 i\Server = http://sg.mirror.archlinuxarm.org/armv7h/$repo' /etc/pacman.d/mirrorlist
 		pacman -Syy --noconfirm --needed firmware-raspberrypi linux-firmware linux-firmware-whence raspberrypi-bootloader
 		sed -i '/armv7h/ d' /etc/pacman.d/mirrorlist
 		pacman -Syy
