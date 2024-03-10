@@ -12,3 +12,4 @@ Server = https://sg.mirror.archlinuxarm.org/armv7h/$repo
 fi
 pacman -Syy --needed --noconfirm --config $fileconf firmware-raspberrypi linux-firmware linux-firmware-whence raspberrypi-bootloader
 rm $fileconf
+pacman -Syy
