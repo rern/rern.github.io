@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fileconf=/etc/pacman-armv6h.conf
+fileconf=/etc/pacman-tmp.conf
 if [[ ! -e $fileconf ]]; then
 	repo='
 [alarm]
