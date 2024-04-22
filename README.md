@@ -11,7 +11,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Create `guide.tar.xz`
 - RPi Zero, 1 - update firmware:
 	- `firmware-raspberrypi` `linux-firmware` `raspberrypi-bootloader`
-- RPi Zero: Might need swap partition (eg.: `gcc`, `python-upnpp`, `upmpdcli`) - on PC
+- Might need swap partition (RPi Zero: `gcc`, `python-upnpp`, `snapcast`, `upmpdcli`; RPI <4: `snapcast`) - on PC
 	- Gparted > Resize > Create 4GB `linux-swap` partition
    	```sh
     fstab=/run/media/x/ROOT/etc/fstab
