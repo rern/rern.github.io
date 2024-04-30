@@ -62,7 +62,7 @@ declare -A packages=(
 	[python-upnpp]='libnpupnp python-devtools swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
-	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient
+	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient meson
 				python python-requests python-setuptools python-bottle python-mutagen python-waitress sqlite'
 	[wiringpi]=
 	[wirelessregdom-codes]=
@@ -78,10 +78,8 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ -e /boot/kernel.img ]]; then
-	if [[ $pkgname == python-upnpp || $python-upnpp == upmpdcli ]]; then
-		! grep -q swap /etc/fstab && echo 'Require swap partition.' && exit
-	fi
+if [[ ! -e /boot/kernel8.img ]] && ! grep -q swap /etc/fstab; then
+	echo 'Require swap partition.' && exit
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
