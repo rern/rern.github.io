@@ -25,16 +25,15 @@ sha256sums=('55e3d27bea5bef4560f319137f1a5c7d08abbba5a9aae90ee3240903fdb8c3e4'
             '53da5e4e40a1987e3c137270b315f8c0ba9521539c563e75e254f48449ce0ae9')
 backup=('etc/upmpdcli.conf')
 
-builddir=$pkgname-$pkgver/build
-
 build(){
-  mkdir -p $builddir
-  arch-meson $pkgname-$pkgver $builddir
-  meson compile -C $builddir
+  cd $pkgname-$pkgver
+  mkdir -p build
+  arch-meson build
+  meson compile -C build
 }
 
 package(){
-  meson install -C $builddir --destdir "$pkgdir"
-  install -Dm644 "${srcdir}"/upmpdcli.service "${pkgdir}"/usr/lib/systemd/user/upmpdcli.service
-  chmod 644 "${pkgdir}"/etc/upmpdcli.conf
+  meson install -C build --destdir $pkgdir
+  install -Dm644 $srcdir/upmpdcli.service $pkgdir/usr/lib/systemd/user/upmpdcli.service
+  chmod 644 $pkgdir/etc/upmpdcli.conf
 }
