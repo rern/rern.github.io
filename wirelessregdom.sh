@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Get wireless-regdb ..."
 url=https://kernel.org/pub/software/network/wireless-regdb
 file=$( curl -skL $url \
 			| tail -3 \
