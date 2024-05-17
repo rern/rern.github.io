@@ -17,3 +17,10 @@ list=$( echo '{ "00": "00"'$iso3166' }' \
 			| grep -E "$codes" \
 			| sed -E 's/\s*"(.*)": "(.*)",*/"\2": "\1",/' )
 jq -S <<< "{ ${list:0:-1} }" > regdomcodes.json
+file=/srv/http/assets/data/regdomcodes.json
+changes="
+$file:
+"
+d=$( diff regdomcodes.json $file )
+[[ $d ]] && changes+=$d || changes+='(No changes)'
+echo "$changes"
