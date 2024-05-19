@@ -14,11 +14,13 @@ sha256sums=('d40fa148020b99b7a51a91a963b998ca41cac8c95290629cd04a1d7062f68606')
 builddir=$pkgname-$pkgver/build
 
 build(){
-  mkdir -p $builddir
-  arch-meson $pkgname-$pkgver $builddir
-  meson compile -C $builddir
+	cd $pkgname-$pkgver
+	mkdir -p build
+	arch-meson build
+	meson compile -C build
 }
 
 package(){
-  meson install -C $builddir --destdir "$pkgdir"
+	cd $pkgname-$pkgver
+	meson install -C build --destdir $pkgdir
 }

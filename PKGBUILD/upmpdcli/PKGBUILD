@@ -4,7 +4,7 @@
 # Contributor: Tilman Vatteroth <tilman.vatteroth@udo.edu>
 
 pkgname=upmpdcli
-pkgver=1.8.10
+pkgver=1.8.11
 pkgrel=1
 pkgdesc="A UPnP Media Renderer front-end for the Music Player Daemon (MPD)"
 arch=(i686 x86_64 arm armv7h armv6h aarch64)
@@ -26,14 +26,15 @@ sha256sums=('55e3d27bea5bef4560f319137f1a5c7d08abbba5a9aae90ee3240903fdb8c3e4'
 backup=('etc/upmpdcli.conf')
 
 build(){
-  cd $pkgname-$pkgver
-  mkdir -p build
-  arch-meson build
-  meson compile -C build
+	cd $pkgname-$pkgver
+	mkdir -p build
+	arch-meson build
+	meson compile -C build
 }
 
 package(){
-  meson install -C build --destdir $pkgdir
-  install -Dm644 $srcdir/upmpdcli.service $pkgdir/usr/lib/systemd/user/upmpdcli.service
-  chmod 644 $pkgdir/etc/upmpdcli.conf
+	cd $pkgname-$pkgver
+	meson install -C build --destdir $pkgdir
+	install -Dm644 $srcdir/upmpdcli.service $pkgdir/usr/lib/systemd/user/upmpdcli.service
+	chmod 644 $pkgdir/etc/upmpdcli.conf
 }
