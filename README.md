@@ -38,7 +38,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
   		# archive - mirror.archlinuxarm.org must be commented/removed
 		Server = http://alaa.ad24.cz/repos/2022/02/06/$arch/$repo
 		```
-	- Alternative archive: [http://tardis.tiny-vps.com/aarm/repos/2022/01/08/armv6h](http://tardis.tiny-vps.com)
+	- Alternative archive: [http://tardis.tiny-vps.com/aarm/repos/2022/01/08/armv6h]([http://tardis.tiny-vps.co](http://tardis.tiny-vps.com/aarm/repos/2022/01/08/armv6h)m)
 	- To compile with `PKGBUILD` from last available in [GitHub history](https://github.com/archlinuxarm/PKGBUILDs/tree/5fb6d2b2e8292fb1df5c1d7a347493c9e2164810).
 		- Download GitHub specific directory: https://download-directory.github.io/
 	- Kernel and firmware
