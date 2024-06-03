@@ -78,8 +78,8 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ ! -e /boot/kernel8.img ]] && ! grep -q swap /etc/fstab; then
-	echo 'Require swap partition.' && exit
+if [[ $arch != aarch64 ]]; then
+	[[ $pkgname == snapcast ]] && ! grep -q swap /etc/fstab && echo "$pkgname requires swap partition." && exit
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
@@ -95,6 +95,7 @@ packagelist=${packages[$pkgname]}
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel fakeroot git $packagelist
+[[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 
 currentdir=$PWD
 
@@ -118,11 +119,11 @@ buildPackage() {
 			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
 			;;
-		mpd )
-			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | bsdtar xf -
-			mv mpd{-main,}
+		libnpupnp | libupnpp | mpd | upmpdcli )
+	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
+			mv $name{-main,}
 			cd $name
-			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
+			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
 		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
 			mkdir -p wiringpi
