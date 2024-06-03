@@ -120,7 +120,7 @@ buildPackage() {
 			;;
 		libnpupnp | libupnpp | mpd | upmpdcli )
 	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
-			mv mpd{-main,}
+			mv $name{-main,}
 			cd $name
 			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
