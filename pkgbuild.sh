@@ -78,8 +78,8 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ ! -e /boot/kernel8.img ]] && ! grep -q swap /etc/fstab; then
-	echo 'Require swap partition.' && exit
+if [[ $pkgname == snapcast && ! -e /boot/kernel8.img ]] && ! grep -q swap /etc/fstab; then
+	echo "$pkgname requires swap partition." && exit
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
