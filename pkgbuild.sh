@@ -118,11 +118,11 @@ buildPackage() {
 			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
 			;;
-		mpd )
-			curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/mpd/-/archive/main/mpd-main.tar.gz | bsdtar xf -
+		libnpupnp | libupnpp | mpd | upmpdcli )
+	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
 			mv mpd{-main,}
 			cd $name
-			sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
+			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			;;
 		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
 			mkdir -p wiringpi
