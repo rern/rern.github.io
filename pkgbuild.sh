@@ -78,9 +78,8 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ ! -e /boot/kernel8.img ]]; then
-	sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
- 	[[ $pkgname == snapcast ]] && ! grep -q swap /etc/fstab && echo "$pkgname requires swap partition." && exit
+if [[ $arch != aarch64 ]]; then
+	[[ $pkgname == snapcast ]] && ! grep -q swap /etc/fstab && echo "$pkgname requires swap partition." && exit
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
@@ -96,6 +95,7 @@ packagelist=${packages[$pkgname]}
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel fakeroot git $packagelist
+[[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 
 currentdir=$PWD
 
