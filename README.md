@@ -22,7 +22,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
 - Archives
-	- http://alaa.ad24.cz/packages
 	- http://tardis.tiny-vps.com/aarm/repos
 
 **Arch Linux Arm Sources**:
