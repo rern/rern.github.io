@@ -94,18 +94,6 @@ packagelist=${packages[$pkgname]}
 
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
-if [[ $pkgname == upmpdcl && $arch == armv6h ]]; then
-	dirmeson=/lib/python3.10/site-packages/mesonbuild
-	if [[ ! -e $dirmeson ]]; then
-		pkgmeson=$( curl -sL http://nj.us.mirror.archlinuxarm.org/aarch64/extra/ \
-					| grep 'meson-[0-9].*xz<' \
-					| sed 's/.*href="\|">.*//g' )
-		wget http://mirror.archlinuxarm.org/aarch64/extra/$pkgmeson
-		pacman -U --noconfirm $pkgmeson
-		dirmeson1=$( ls -d /lib/python*/site-packages/mesonbuild )
-		ln -s $dirmeson1 $dirmeson
-	fi
-fi
 pacman -Sy --noconfirm --needed base-devel fakeroot git $packagelist
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 
