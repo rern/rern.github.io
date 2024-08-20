@@ -124,7 +124,7 @@ buildPackage() {
 			mv $name{-main,}
 			cd $name
 			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
-			if [[ $arch == armv6h &&  ]]; then
+			if [[ $arch == armv6h ]]; then
 				dirmeson=/lib/python3.10/site-packages/mesonbuild
 				[[ ! -e $dirmeson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dirmeson
 			fi
