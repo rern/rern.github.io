@@ -39,7 +39,7 @@ fi
 declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
-	[bluealsa]='bluez bluez-libs bluez-utils libfdk-aac python-docutils sbc'
+	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
 	[camilladsp]=
 	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
