@@ -78,9 +78,7 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ $arch != aarch64 && $pkgname == snapcast ]]; then
-	! swapon -s | grep -q swap /dev/mmcblk0 && echo "$pkgname requires swap partition." && exit
-fi
+[[ $pkgname == snapcast ]] &&  && echo 'snapcast requires swap partition.' && exit
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
 if [[ $pkgname == wirelessregdom-codes ]]; then
