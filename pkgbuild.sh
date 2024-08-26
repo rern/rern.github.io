@@ -78,8 +78,8 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-if [[ $arch != aarch64 ]]; then
-	[[ $pkgname == snapcast ]] && ! grep -q swap /etc/fstab && echo "$pkgname requires swap partition." && exit
+if [[ $arch != aarch64 && $pkgname == snapcast ]]; then
+	! swapon -s | grep -q swap /dev/mmcblk0 && echo "$pkgname requires swap partition." && exit
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
