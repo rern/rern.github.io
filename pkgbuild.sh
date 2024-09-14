@@ -14,28 +14,6 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 1
 
-clientip=$( dialog "${optbox[@]}" --output-fd 1 --cancel-label Skip --inputbox "
- \Z1Distcc\Z0 client IP:
-" 0 0 '192.168.1.' )
-if [[ $? == 0 ]]; then
-	clientpwd=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
- Distcc client Password:
-" 0 0 )
-	echo -e "\e[46m  \e[0m Start Distcc client ...\n"
-	sshpass -p $clientpwd ssh -qo StrictHostKeyChecking=no root@$clientip \
-				"systemctl stop distccd-arm*; systemctl start distccd-$arch"
-	if [[ $? == 0 ]]; then
-		sed -i -e 's/\(BUILDENV=(\)!distcc/\1distcc/
-' -e 's/^\(DISTCC_HOSTS="\).*/D\1'$ip':3634/8"/
-' /etc/makepkg.conf
-	else
-		sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
-	fi
-else
-	nodistcc=1
-	sed -i 's/\(BUILDENV=(\)distcc/\1!distcc/' /etc/makepkg.conf
-fi
-
 declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
@@ -87,8 +65,6 @@ if [[ $pkgname == wirelessregdom-codes ]]; then
 fi
 
 packagelist=${packages[$pkgname]}
-
-[[ ! $nodistcc && ! -e /usr/bin/distccd ]] && curl -L $urlrern/distcc-install-master.sh | bash -s $clientip
 
 clear
 echo -e "\e[46m  \e[0m Install depends ...\n"
