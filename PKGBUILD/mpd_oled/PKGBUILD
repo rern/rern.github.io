@@ -1,15 +1,15 @@
-# Maintainer: Adrian Rossiter <adrian@antiprism.com>
+# Maintainer: rern <rernrern@gmail.com>
 
 pkgname=mpd_oled
-pkgver=0.01
+pkgver=0.03
 pkgrel=1
-pkgdesc='OLED Spectrum Display for Raspberry Pi'
-url=https://github.com/antiprism/mpd_oled
+pkgdesc='Audio spectrum OLED for Raspberry Pi'
+url=https://github.com/rern/mpd_oled
 arch=(armv6h armv7h aarch64)
 license=(MIT)
 depends=(alsa-lib fftw i2c-tools)
 makedepends=(glibc)
-source=(https://github.com/antiprism/mpd_oled/archive/refs/tags/v$pkgver.tar.gz)
+source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz)
 sha256sums=(SKIP)
 
 build() {
