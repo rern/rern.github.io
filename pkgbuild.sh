@@ -16,7 +16,6 @@ sleep 1
 
 declare -A packages=(
 	[alsaequal]='caps ladspa'
-	[audio_spectrum_oled]='alsa-lib fftw i2c-tools'
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
 	[camilladsp]=
 	[cava]='fftw sndio'
@@ -33,6 +32,7 @@ declare -A packages=(
 			lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
+	[mpd_oled]='alsa-lib fftw i2c-tools'
 	[python-pycamilladsp-plot]=python-setuptools
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]=python-setuptools
