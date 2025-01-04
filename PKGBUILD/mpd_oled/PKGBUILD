@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=mpd_oled
-pkgver=0.03
+pkgver=0.02
 pkgrel=1
 pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
@@ -9,8 +9,12 @@ arch=(armv6h armv7h aarch64)
 license=(MIT)
 depends=(alsa-lib fftw i2c-tools)
 makedepends=(glibc)
-source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz)
-sha256sums=(SKIP)
+source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz
+        mpd_oled.default
+        mpd_oled.service)
+sha256sums=('7e12c1b5edde72a2cfe79214b9eda839d8f6f6a3414c812880060e50e49fe265'
+            '9e647973917ddaa2eccfc1de24940281091743c4edf425d2d6dfd012709b4412'
+            '4f092a654ac2b4b048f455b0f2c33698f2ea03a1b16b6697f4a6eb6cdb9ba1d4')
 
 build() {
 	export CPPFLAGS="-W -Wall -Wno-psabi"
@@ -28,4 +32,6 @@ build() {
 package() {
 	cd $srcdir/$pkgname-$pkgver
 	make DESTDIR="$pkgdir" install-strip
+	install -Dm 644 mpd_oled.default $pkgdir/etc/default/mpd_oled
+	install -Dm 644 mpd_oled.service -t $pkgdir/usr/lib/systemd/system
 }

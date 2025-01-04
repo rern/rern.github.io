@@ -1,0 +1,9 @@
+[Unit]
+Description=MPD OLED Display
+
+[Service]
+EnvironmentFile=/etc/default/mpd_oled
+ExecStart=/usr/bin/mpd_oled $OPTS
+
+[Install]
+WantedBy=multi-user.target
