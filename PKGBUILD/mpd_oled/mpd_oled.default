@@ -1,1 +1,1 @@
-OPTS="-o 6 -f 25 -c fifo,/tmp/mpd.fifo"
+OPTS="-o 6 -f 25 -c fifo,/tmp/mpd.fifo -X"
