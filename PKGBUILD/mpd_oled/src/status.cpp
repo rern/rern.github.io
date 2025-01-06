@@ -341,7 +341,6 @@ int mpd_info::init()
 
       char file_name[line_sz] = {0};
       char artist_name[line_sz] = {0};
-      char album_name[line_sz] = {0};
       char title_name[line_sz] = {0};
       char buff[line_sz];
 
@@ -350,11 +349,8 @@ int mpd_info::init()
           strcpy(file_name, buff);
         else if (sscanf(line, "Artist=\"%[^\"\n]", buff) == 1)
           strcpy(artist_name, buff);
-        else if (sscanf(line, "Album=\"%[^\"\n]", buff) == 1)
-          strcpy(album_name, buff);
-        else if (sscanf(line, "Title=\"%[^\"\n]", buff) == 1) {
+        else if (sscanf(line, "Title=\"%[^\"\n]", buff) == 1)
           strcpy(title_name, buff);
-        }
         else if (sscanf(line, "state=\"%[^\"\n]", buff) == 1) {
           if (strcmp(buff, "stop") == 0)
             state = MPD_STATE_STOP;
