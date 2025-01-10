@@ -92,6 +92,7 @@ buildPackage() {
 			esac
 			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
+			[[ $name == cava ]] && sed -i 's/^arch=.*/arch=(armv6h armv7h aarch64)/' PKGBUILD
 			;;
 		libnpupnp | libupnpp | mpd | upmpdcli )
 	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
