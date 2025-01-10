@@ -92,7 +92,6 @@ buildPackage() {
 			esac
 			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
-			[[ $name == cava ]] && sed -i 's/^arch=.*/arch=(armv6h armv7h aarch64)/' PKGBUILD
 			;;
 		libnpupnp | libupnpp | mpd | upmpdcli )
 	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
@@ -113,7 +112,10 @@ buildPackage() {
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			cd $name
-			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
+			case $name in
+				cava )        sed -i 's/^arch=.*/arch=(armv6h armv7h aarch64)/' PKGBUILD;;
+				libmatchbox ) sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
+			esac
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
