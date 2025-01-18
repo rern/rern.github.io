@@ -57,7 +57,10 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 [[ $? != 0 ]] && exit
 
 if [[ $pkgname == snapcast ]]; then
-	(( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && echo 'Snapcast requires swap partition.' && exit
+	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
+ 		echo 'Snapcast requires swap partition.'
+   		exit
+	fi
 fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
