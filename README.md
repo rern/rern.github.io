@@ -11,13 +11,17 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Create `guide.tar.xz`
 - RPi Zero, 1 - update firmware:
 	- `firmware-raspberrypi` `linux-firmware` `raspberrypi-bootloader`
-- Might need swap partition (RPi Zero: `gcc`, `python-upnpp`, `snapcast`, `upmpdcli`; RPI <4: `snapcast`) - on PC
-	- Gparted > Resize > Create 4GB `linux-swap` partition
-   	```sh
-    fstab=/run/media/x/ROOT/etc/fstab
- 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
-	echo "$swap" >> $fstab
-	```
+- Might need swap partition
+	- RPi Zero, 1: `gcc`, `python-upnpp`, `snapcast`, `upmpdcli`
+	- RPI 2, 3: `snapcast`
+	- on PC
+		- Gparted > Resize > Create 4GB `linux-swap` partition
+    	- `fstab`:
+		   	```sh
+		    fstab=/run/media/x/ROOT/etc/fstab
+		 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
+			echo "$swap" >> $fstab
+			```
 
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
