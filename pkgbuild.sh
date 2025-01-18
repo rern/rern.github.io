@@ -56,7 +56,9 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 [[ $? != 0 ]] && exit
 
-[[ $pkgname == snapcast ]] && echo 'snapcast requires swap partition.' && exit
+if [[ $pkgname == snapcast ]]; then
+	(( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && echo 'Snapcast requires swap partition.' && exit
+fi
 
 urlrern=https://github.com/rern/rern.github.io/raw/main
 if [[ $pkgname == wirelessregdom-codes ]]; then
