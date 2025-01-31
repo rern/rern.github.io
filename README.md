@@ -65,7 +65,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/downloads/?C=N;O=D)
 
 **JS plugins**
-- [d3](https://github.com/d3/d3) (CDN: https://cdnjs.com/libraries/d3)
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
 - [jquery](https://jquery.com/) (CDN: https://cdnjs.com/libraries/jquery)
 - [lazysizes](https://github.com/aFarkas/lazysizes) (CDN: https://cdnjs.com/libraries/lazysizes )
