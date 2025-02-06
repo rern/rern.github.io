@@ -33,7 +33,6 @@ declare -A packages=(
 			libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis
 			meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib'
 	[mpd_oled]='alsa-lib fftw i2c-tools'
-	[python-pycamilladsp-plot]=python-setuptools
 	[python-rpi-gpio]='python-distribute python-setuptools'
 	[python-rplcd]=python-setuptools
 	[python-smbus2]=python-setuptools
