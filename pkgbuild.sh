@@ -45,7 +45,7 @@ declare -A packages=(
 	[wirelessregdom-codes]=
 )
 
-[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^cava|^mpd$|^rasp|^linux'
+[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
 [[ $arch != aarch64 ]] && omit+='|^wiringpi'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
