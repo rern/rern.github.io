@@ -35,6 +35,6 @@ build(){
 package(){
 	cd $pkgname-$pkgver
 	meson install -C build --destdir $pkgdir
-	install -Dm644 $srcdir/upmpdcli.service $pkgdir/usr/lib/systemd/user/upmpdcli.service
+	install -Dm644 -t $pkgdir/usr/lib/systemd/user/ $srcdir/upmpdcli.service 
 	chmod 644 $pkgdir/etc/upmpdcli.conf
 }
