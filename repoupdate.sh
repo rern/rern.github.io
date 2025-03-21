@@ -47,6 +47,7 @@ for i in $arch; do
 	echo -e "\n\n\e[44m  \e[0m $action repository $arch ...\n"
 	cd $dirrepo/$arch
 	repo-add -R +R.db.tar.xz *.pkg.tar.xz
+ 	rm -f *.old
 	# index.html
 	html='<!DOCTYPE html>
 <html>
