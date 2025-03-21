@@ -34,12 +34,7 @@ arch=$( dialog --colors --output-fd 1 --checklist '
 	2 armv7h on \
 	3 armv6h on \
 	4 \\Z1Rebuild\\Z0 off )
-if [[ $arch == *4 ]]; then
-	action=Rebuild
-else
-	action=Update
-	new=-n # newer only (deleted packages still exist in db)
-fi
+[[ $arch == *4 ]] && action=Rebuild || action=Update
 
 for i in $arch; do
 	case $i in
@@ -51,9 +46,7 @@ for i in $arch; do
 	
 	echo -e "\n\n\e[44m  \e[0m $action repository $arch ...\n"
 	cd $dirrepo/$arch
-	[[ ! $new ]] && rm -f +R*
-	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
-	rm -f *.xz.old
+	repo-add -R +R.db.tar.xz *.pkg.tar.xz
 	# index.html
 	html='<!DOCTYPE html>
 <html>
