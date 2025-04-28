@@ -39,8 +39,6 @@ declare -A packages=(
 	[python-upnpp]='libnpupnp meson-python swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
-	[upmpdcli]='aspell-en expat id3lib jsoncpp libmicrohttpd libmpdclient meson
-				python python-requests python-setuptools python-bottle python-mutagen python-waitress sqlite'
 	[wiringpi]=
 	[wirelessregdom-codes]=
 )
@@ -97,7 +95,7 @@ buildPackage() {
 			curl -L $urlrern/github-download.sh | bash -s "$url"
 			cd $name
 			;;
-		libnpupnp | libupnpp | mpd | upmpdcli )
+		mpd )
 	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
 			mv $name{-main,}
 			cd $name
@@ -164,9 +162,6 @@ buildPackage() {
 if [[ $pkgname == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
-elif [[ $pkgname == upmpdcli ]]; then
-	buildPackage -i libnpupnp
-	buildPackage -i libupnpp
 fi
 
 buildPackage $pkgname
