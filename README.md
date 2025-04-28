@@ -58,11 +58,9 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 **Custom packages**
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)
 - [camilladsp](https://github.com/HEnquist/camilladsp), [pycamilladsp-plot](https://github.com/HEnquist/pycamilladsp-plot)
-- [cava](https://github.com/karlstav/cava)
 - [mediamtx](https://github.com/aler9/mediamtx)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
 - [snapcast](https://github.com/badaix/snapcast)
-- [upmpdcli](https://www.lesbonscomptes.com/upmpdcli/downloads/?C=N;O=D)
 
 **JS plugins**
 - [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)

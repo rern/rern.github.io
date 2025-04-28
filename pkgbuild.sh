@@ -18,7 +18,6 @@ declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
 	[camilladsp]=
-	[cava]='fftw sndio'
 	[dab-scanner]='cmake rtl-sdr'
 	[distcc]=gtk3
 	[fakepkg]=gzip
@@ -39,12 +38,10 @@ declare -A packages=(
 	[python-upnpp]='libnpupnp meson-python swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
-	[wiringpi]=
 	[wirelessregdom-codes]=
 )
 
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
-[[ $arch != aarch64 ]] && omit+='|^wiringpi'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
 
 pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
@@ -105,19 +102,10 @@ buildPackage() {
 				[[ ! -e $dirmeson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dirmeson
 			fi
 			;;
-		wiringpi ) # fix: No 'Hardware' line in /proc/cpuinfo anymore
-			mkdir -p wiringpi
-			cd wiringpi
-			curl -LO $urlalarm/alarm/wiringpi/PKGBUILD
-			sed -i "/wiringPi.c/ a\  sed -i '/Start by/,/Or the next/ d' wiringPi/wiringPi.c" PKGBUILD
-			;;
 		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
+			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			cd $name
-			case $name in
-				cava )        sed -i 's/^arch=.*/arch=(armv6h armv7h aarch64)/' PKGBUILD;;
-				libmatchbox ) sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD;;
-			esac
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
