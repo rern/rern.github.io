@@ -63,7 +63,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - [snapcast](https://github.com/badaix/snapcast)
 
 **JS plugins**
-- [html5kellycolorpicker](https://github.com/NC22/HTML5-Color-Picker)
 - [jquery](https://jquery.com/) (CDN: https://cdnjs.com/libraries/jquery)
 - [lazysizes](https://github.com/aFarkas/lazysizes) (CDN: https://cdnjs.com/libraries/lazysizes )
 - [pica](https://github.com/nodeca/pica/tags) (CDN: https://cdnjs.com/libraries/pica)
