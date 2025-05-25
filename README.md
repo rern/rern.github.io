@@ -58,6 +58,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 **Custom packages**
 - [bluez-alsa](https://github.com/Arkq/bluez-alsa/tags)
 - [camilladsp](https://github.com/HEnquist/camilladsp), [pycamilladsp-plot](https://github.com/HEnquist/pycamilladsp-plot)
+- [python-upnpp](https://www.lesbonscomptes.com/upmpdcli/downloads/)
 - [mediamtx](https://github.com/aler9/mediamtx)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
 - [snapcast](https://github.com/badaix/snapcast)
