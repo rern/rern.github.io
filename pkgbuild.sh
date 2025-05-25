@@ -77,7 +77,7 @@ buildPackage() {
 	[[ $1 != -i ]] && name=$1 || name=$2
 	urlalarm=https://github.com/archlinuxarm/PKGBUILDs/raw/master
 	case $name in
-		distcc | linux-rpi-legacy | raspberrypi-utils | xf86-video-fbturbo )
+		distcc | linux-rpi-legacy | python-upnpp | raspberrypi-utils | xf86-video-fbturbo )
 			case $name in
 				distcc )
 					url=$urlalarm/extra/$name
@@ -102,7 +102,7 @@ buildPackage() {
 				[[ ! -e $dirmeson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dirmeson
 			fi
 			;;
-		* )
+   		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			cd $name
