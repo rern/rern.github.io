@@ -65,7 +65,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 
 **JS plugins**
 - [jquery](https://jquery.com/) (CDN: https://cdnjs.com/libraries/jquery)
-- [lazysizes](https://github.com/aFarkas/lazysizes) (CDN: https://cdnjs.com/libraries/lazysizes )
 - [pica](https://github.com/nodeca/pica/tags) (CDN: https://cdnjs.com/libraries/pica)
 - [Plotly](https://github.com/plotly/plotly.js) (CDN: https://cdnjs.com/libraries/plotly.js)
 - [qrcode](https://github.com/datalog/qrcode-svg)
