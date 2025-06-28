@@ -16,7 +16,8 @@ iso3166=$( sed -E -n '/alpha_2_code=|\s+name=/ {s/^.*name=/:/; s/^.*code=/, /; s
 list=$( echo '{ "00": "00"'$iso3166' }' \
 			| jq \
 			| grep -E "$codes" \
-			| sed -E 's/\s*"(.*)": "(.*)",*/"\2": "\1",/' )
+			| sed -E 's/\s*"(.*)": "(.*)",*/"\2": "\1",/' \
+			| sed '/, / {s/, / (/; s/":/)":/}' )
 jq -S <<< "{ ${list:0:-1} }" > regdomcodes.json
 file=/srv/http/assets/data/regdomcodes.json
 changes="
