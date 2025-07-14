@@ -2,7 +2,7 @@
 
 pkgname=mpd_oled
 pkgver=0.02
-pkgrel=1
+pkgrel=2
 pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
 arch=(armv6h armv7h aarch64)
