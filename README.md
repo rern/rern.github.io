@@ -10,16 +10,16 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Create `regdomcodes.json`
 - Create `guide.tar.xz`
 
-Note: Might need swap partition
-	- RPI 2, 3: `snapcast`
-	- on PC
-		- Gparted > Resize > Create 4GB `linux-swap` partition
-    	- `fstab`:
-		   	```sh
-		    fstab=/run/media/x/ROOT/etc/fstab
-		 	swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
-			echo "$swap" >> $fstab
-			```
+Note: Might need swap partition to build
+- RPI 2, 3: `snapcast`
+- on PC
+	- Gparted > Resize > Create 4GB `linux-swap` partition
+	- `fstab`:
+		```sh
+		fstab=/run/media/x/ROOT/etc/fstab
+		swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
+		echo "$swap" >> $fstab
+		```
 
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
