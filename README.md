@@ -9,10 +9,8 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - AUR setup
 - Create `regdomcodes.json`
 - Create `guide.tar.xz`
-- RPi Zero, 1 - update firmware:
-	- `firmware-raspberrypi` `linux-firmware` `raspberrypi-bootloader`
-- Might need swap partition
-	- RPi Zero, 1: `gcc`, `python-upnpp`, `snapcast`, `upmpdcli`
+
+Note: Might need swap partition
 	- RPI 2, 3: `snapcast`
 	- on PC
 		- Gparted > Resize > Create 4GB `linux-swap` partition
