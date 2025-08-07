@@ -52,7 +52,7 @@ pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
 
 if [[ $pkgname == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
- 		echo 'Snapcast requires swap partition.'
+ 		echo 'Snapcast requires swap partition for RAM < 3GB.'
    		exit
 	fi
 fi
