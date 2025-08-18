@@ -5,28 +5,23 @@ AUR Package Repo
 ```sh
 # as root
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
+su alarm
+cd
+git config --global core.excludesfile ~/.config/git/ignore
+mkdir -p .config/git
+touch .config/git/ignore
 ```
 
 ### Git repo
 - New / Existing
 ```sh
-su alarm
-cd
 git clone ssh://aur@aur.archlinux.org/REPONAME
 cd REPONAME
 ```
 
 ### Set checksum
 - Skip: `sha256sums=(SKIP [SKIP ...])`
-- Create
-```sh
-pacman -S pacman-contrib
-updpkgsums
-
-# or
-makepkg -g
-# paste stdout in PKGBUILD
-```
+- Set: Place/Replace stdout `makepkg -g` in `PKGBUILD`
 
 ### Push
 ```sh
