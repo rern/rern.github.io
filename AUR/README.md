@@ -9,6 +9,7 @@ su alarm
 cd
 mkdir -p ~/.config/git
 touch ~/.config/git/{ignore,attributes}
+git config --global core.excludesfile ~/.config/git
 ```
 
 ### Git repo
@@ -16,8 +17,6 @@ touch ~/.config/git/{ignore,attributes}
 ```sh
 git clone ssh://aur@aur.archlinux.org/REPONAME
 cd REPONAME
-git config --global core.excludesfile ~/.config/git/ignore
-git config --global core.excludesfile ~/.config/git/attributes
 ```
 
 ### Set checksum
