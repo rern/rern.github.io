@@ -7,9 +7,8 @@ AUR Package Repo
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 su alarm
 cd
-git config --global core.excludesfile ~/.config/git/ignore ~/.config/git/attributes
-mkdir -p .config/git
-touch .config/git/{ignore,attributes}
+mkdir -p ~/.config/git
+touch ~/.config/git/{ignore,attributes}
 ```
 
 ### Git repo
@@ -17,6 +16,8 @@ touch .config/git/{ignore,attributes}
 ```sh
 git clone ssh://aur@aur.archlinux.org/REPONAME
 cd REPONAME
+git config --global core.excludesfile ~/.config/git/ignore
+git config --global core.excludesfile ~/.config/git/attributes
 ```
 
 ### Set checksum
