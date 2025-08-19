@@ -23,6 +23,7 @@ cd REPONAME
 ### Push
 ```sh
 makepkg --printsrcinfo > .SRCINFO
+# ignore permission warnings
 git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...]
 git commit -m "MESSAGE"
 git push
