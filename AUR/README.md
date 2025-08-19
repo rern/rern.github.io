@@ -5,16 +5,13 @@ AUR Package Repo
 ```sh
 # as root
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
-su alarm
-cd
-mkdir -p ~/.config/git
-touch ~/.config/git/{ignore,attributes}
-git config --global core.excludesfile ~/.config/git
 ```
 
 ### Git repo
 - New / Existing
 ```sh
+su alarm
+cd
 git clone ssh://aur@aur.archlinux.org/REPONAME
 cd REPONAME
 ```
