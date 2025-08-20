@@ -6,17 +6,20 @@ AUR Package Repo
 # as root
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 ```
-Note: `export XDG_CONFIG_HOME=$HOME/.config` in `/etc/bash.bashrc`
 
 ### Git commands
 ```sh
 su alarm
 cd
-# init PACKAGE (existing / new)
+
+# clone existing / init new
 git clone ssh://aur@aur.archlinux.org/pkg_name
+
 cd pkg_name
+
 # checksum (skip: sha256sums=(SKIP [SKIP ...])
 makepkg -g
+
 # ready
 makepkg --printsrcinfo > .SRCINFO
 git add PKGBUILD .SRCINFO [other_file ...]

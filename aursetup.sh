@@ -1,5 +1,9 @@
 #!/bin/bash
 
+dirhome=/home/alarm
+dirgit=$dirhome/.config/git
+dirssh=$dirhome/.ssh
+
 optbox=( --colors --no-shadow --no-collapse )
 dialog "${optbox[@]}" --infobox "
 
@@ -9,7 +13,7 @@ dialog "${optbox[@]}" --infobox "
 " 9 58
 sleep 2
 
-if [[ -e /home/alarm/.ssh/aur ]]; then
+if [[ -e $dirssh/aur ]]; then
 	dialog "${optbox[@]}" --yesno "
 AUR Git has already setup.
 
@@ -35,12 +39,9 @@ keys=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --menu "
 1 'Use existing keys' \
 2 'Generate new keys' )
 
-dirhome=/home/alarm
-dirgit=$dirhome/.config/git
-dirssh=$dirhome/.ssh
 if [[ $keys == 1 ]]; then
 	dialog "${optbox[@]}" --msgbox "
- Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
+ Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > $dirhome
  Then press OK to continue.
 " 7 58
 else
