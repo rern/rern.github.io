@@ -4,9 +4,9 @@ list=(
 1  Build
 2 'Update repo'
 3 'AUR setup'
-4 'Create guide.tar.xz' )
-5 'Create radioparadise.tar.xz' )
-6 'Create regdomcodes.json'
+4 'Create guide.tar.xz'
+5 'Create radioparadise.tar.xz'
+6 'Create regdomcodes.json' )
 
 file=$( dialog --colors --no-shadow --no-collapse --output-fd 1 --nocancel --menu "
 Package:
