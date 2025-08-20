@@ -19,7 +19,7 @@ cd pkg_name
 
 # checksum (skip: sha256sums=(SKIP [SKIP ...])
 makepkg -g
-# Copy sha256sums=... to PKGBUILD
+# Copy/replace sha256sums=... to PKGBUILD
 
 # ready
 makepkg --printsrcinfo > .SRCINFO
