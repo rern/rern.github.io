@@ -1,30 +1,25 @@
 AUR Package Repo
 ---
 
-### Git setup
+### AUR setup
 ```sh
 # as root
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 ```
 
-### Git repo
-- New / Existing
+### Git commands
+(ignore permission warnings: `attributes` `ignore` )
 ```sh
 su alarm
 cd
-git clone ssh://aur@aur.archlinux.org/REPONAME # ignore permission warnings
-cd REPONAME
-```
-
-### Set checksum
-- Skip: `sha256sums=(SKIP [SKIP ...])`
-- Set: Place/Replace stdout `makepkg -g` in `PKGBUILD`
-
-### Push
-```sh
-# ignore permission warnings
+# init PACKAGE (existing / new)
+git clone ssh://aur@aur.archlinux.org/pkg_name
+cd pkg_name
+# checksum (skip: sha256sums=(SKIP [SKIP ...])
+makepkg -g
+# ready
 makepkg --printsrcinfo > .SRCINFO
-git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...] # ignore permission warnings
-git commit -m "MESSAGE"
+git add PKGBUILD .SRCINFO [other_file ...]
+git commit -m 'commit description'
 git push
 ```
