@@ -35,17 +35,18 @@ keys=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --menu "
 1 'Use existing keys' \
 2 'Generate new keys' )
 
-dirssh=/home/alarm/.ssh
+dirhome=/home/alarm
+dirgit=$dirhome/.config/git
+dirssh=$dirhome/.ssh
 if [[ $keys == 1 ]]; then
 	dialog "${optbox[@]}" --msgbox "
  Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > /home/alarm
  Then press OK to continue.
 " 7 58
 else
-	ssh-keygen -t rsa -f ~/.ssh/aur -q -N ""
-	sed -i 's/= .*$/=/' ~/.ssh/aur.pub # remove trailing USER@HOSTNAME
 	mkdir -p $dirssh
-	cp -r ~/.ssh/aur* $dirssh
+	ssh-keygen -t rsa -f $dirssh/aur -q -N ""
+	sed -i 's/= .*$/=/' $dirssh/aur.pub # remove trailing USER@HOSTNAME
 	dialog "${optbox[@]}" --msgbox "
 AUR > My Account
 
@@ -56,9 +57,6 @@ $( cat $dirssh/aur.pub )
 \Z1Your current password:\Z0 (password)
 " 24 58
 fi
-chown -R alarm:alarm $dirssh
-chmod 700 $dirssh
-chmod 600 $dirssh/*
 
 email=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
  \Z1Email:\Z0
@@ -71,8 +69,12 @@ echo "\
 [user]
 	email = rernrern@gmail.com
 	name = rern
-" > /home/alarm/.gitconfig
+" > $dirhome/.gitconfig
 
-chown -R alarm:alarm /home/alarm/.gitconfig $dirssh
+mkdir -p $dirgit
+touch $dirgit/{attributes,ignore}
+chown -R alarm:alarm $dirhome
+chmod 700 $dirssh
+chmod 600 $dirssh/*
 
-sudo -u alarm git init /home/alarm
+sudo -u alarm git init $dirhome
