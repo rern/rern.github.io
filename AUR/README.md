@@ -6,6 +6,7 @@ AUR Package Repo
 # as root
 bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 ```
+Note: `export XDG_CONFIG_HOME=$HOME/.config` in `/etc/bash.bashrc`
 
 ### Git commands
 ```sh
