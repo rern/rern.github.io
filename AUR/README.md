@@ -8,7 +8,6 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 ```
 
 ### Git commands
-(ignore permission warnings: `attributes` `ignore` )
 ```sh
 su alarm
 cd
