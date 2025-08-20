@@ -12,7 +12,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/aursetup.sh )
 ```sh
 su alarm
 cd
-git clone ssh://aur@aur.archlinux.org/REPONAME
+git clone ssh://aur@aur.archlinux.org/REPONAME # ignore permission warnings
 cd REPONAME
 ```
 
@@ -22,9 +22,9 @@ cd REPONAME
 
 ### Push
 ```sh
-makepkg --printsrcinfo > .SRCINFO
 # ignore permission warnings
-git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...]
+makepkg --printsrcinfo > .SRCINFO
+git add PKGBUILD .SRCINFO [OTHER_BUILD_FILES ...] # ignore permission warnings
 git commit -m "MESSAGE"
 git push
 ```
