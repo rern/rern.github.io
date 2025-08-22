@@ -8,6 +8,7 @@ bash <( curl -L https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Update repo
 - AUR setup
 - Create `regdomcodes.json`
+- Create `radioparadise.tar.xz`
 - Create `guide.tar.xz`
 
 Note: Might need swap partition to build
