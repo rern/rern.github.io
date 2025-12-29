@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=camilladsp
-pkgver=3.0.0
+pkgver=3.0.1
 pkgrel=1
 pkgdesc='IIR and FIR engine for crossovers, room correction etc.'
 url=https://github.com/HEnquist/camilladsp
