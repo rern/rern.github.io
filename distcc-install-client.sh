@@ -14,7 +14,7 @@ pacman -Sy --noconfirm distcc
 # for ssh start distccd from master
 sed -i -e 's/#\(PermitRootLogin \).*/\1yes/' /etc/ssh/sshd_config
 systemctl enable sshd
-[[ -e /usr/bin/distccd-armv8 ]] && [[ -e /usr/bin/distccd-armv7h ]] && exit
+[[ -e /usr/bin/distccd-armv8 && -e /usr/bin/distccd-armv7h ]] && exit
 
 dialog "${optbox[@]}" --infobox "
 
