@@ -34,12 +34,6 @@ Cross-Compiling
  	su USER
 	distccmon-text 1  # 1: @ 1 second
 	```
-- Copy to repository from Client:
-	```sh
-	scp root@MASTER_IP:/home/alarm/PKG_DIR/PKG.tar.xz /home/USER/GitHub/rern.github.io/ARCH
-	bash <( curl -L https://github.com/rern/rAudio-addons/raw/main/0Packages/repoupdate.sh )	
-	```
-	- GitHub Desktop > Push
 
 ### Docker
 ```sh
@@ -89,4 +83,3 @@ systemctl start docker
 - Shared directory
 	- Mount - `-v /home/USER/SHARE:/DOCKER_SHARE`
 	- Copy file - `docker cp NAME:/path/to/SOURCE_FILE .`
--
