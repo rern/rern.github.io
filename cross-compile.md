@@ -29,9 +29,9 @@ Cross-Compiling
 	- Master - No need
 	- Client `systemctl start distccd-ARCH` (`ARCH` - armv6h, armv7h, armv8)
 - Setup and build as usual.
-- Monitor with another SSH: 
+- Monitor with another RPi terminal: 
 	```sh
-	su USER
+ 	su USER
 	distccmon-text 1  # 1: @ 1 second
 	```
 - Copy to repository from Client:
