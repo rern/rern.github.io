@@ -22,7 +22,7 @@ Cross-Compiling
 - Install distcc + setup: `bash <( curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh )`
 
 **Client/Volunteer - x86-64 Arch Linux**
-- Build toolchains + install: [`distccd-alarm`](https://aur.archlinux.org/packages?K=distccd)
+- Build toolchains + install: [`distccd-alarm`](https://aur.archlinux.org/packages?K=distccd-alarm)
 - Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-client.sh )`
 
 **Build package**
