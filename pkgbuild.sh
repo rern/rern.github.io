@@ -23,7 +23,7 @@ declare -A packages=(
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
 	[linux-rpi-legacy]='bc kmod inetutils'
-	[matchbox-window-manager]='dbus-glib gnome-common gobject-introspection gtk-doc intltool
+	[matchbox-window-manager]='dbus-glib glib2-devel gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
 	[mediamtx]=go
