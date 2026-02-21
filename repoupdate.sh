@@ -1,7 +1,5 @@
 #!/bin/bash
 
-dircurrent=$PWD
-
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
@@ -83,13 +81,12 @@ for i in $arch; do
 
 	echo -e "$html" > ../$arch.html
 done
-
-cd "$dircurrent"
+cd $PDW
 if [[ -L repo ]]; then
-	rm -r repo
+	unlink repo
 else
-	umount -l repo &> /dev/null
-	rmdir $dirrepo &> /dev/null
+	umount -l repo
+	rmdir $dirrepo
 fi
 
 echo -e "\n\e[44m  \e[0m Done."
