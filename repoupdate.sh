@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
+
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
@@ -8,46 +10,39 @@ else
 	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
  Local \Z1rern.github.io\Z0 IP:
 " 0 0 '192.168.1.9' )
-	mount -t cifs //$localip/rern.github.io $dirrepo -o username=guest,password=
+	mnt=$( mount -t cifs //$localip/rern.github.io $dirrepo -o username=guest,password= )
 	if [[ $? != 0 ]]; then
-		error="
-\e[41m  \e[0m Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=
-"
+		error="Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=\n"
 	elif [[ ! -e $dirrepo/aarch64 ]]; then
-		error="
-\e[41m  \e[0m Not found: //$localip/rern.github.io/aarch64
-"
+		error="Not found: //$localip/rern.github.io/aarch64\n"
 	fi
 	if [[ $error ]]; then
 		umount -l repo &> /dev/null
 		rmdir $dirrepo &> /dev/null
-		echo -e "$error"
-		exit
+		errorExit $error
+#----------------------------------------------------------------------------
 	fi
 fi
 
-arch=$( dialog --colors --output-fd 1 --checklist '
+#........................
+select=$( dialog $opt_check '
 \n\Z1Repository:\Z0' 9 30 0 \
-	1 aarch64 on \
-	2 armv7h on \
-	3 armv6h off \
-	4 \\Z1Rebuild\\Z0 off )
-if [[ $arch == *4 ]]; then
+	aarch64 on \
+	armv7h on \
+	armv6h off \
+	Rebuild off )
+if selected Rebuild; then
 	action=Rebuild
 else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
-
-for i in $arch; do
-	case $i in
-		1 ) arch=aarch64;;
-		2 ) arch=armv7h;;
-		3 ) arch=armv6h;;
-		4 ) break;;
-	esac
+#........................
+banner $action repository ...
+for arch in $select; do
+	[[ $arch == Rebuild ]] && break
 	
-	echo -e "\n\n\e[44m  \e[0m $action repository $arch ...\n"
+	echo -e "\n$bar $arch\n"
 	cd $dirrepo/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
@@ -81,7 +76,6 @@ for i in $arch; do
 
 	echo -e "$html" > ../$arch.html
 done
-cd $PDW
 if [[ -L repo ]]; then
 	unlink repo
 else
@@ -89,4 +83,4 @@ else
 	rmdir $dirrepo
 fi
 
-echo -e "\n\e[44m  \e[0m Done."
+echo -e "\n$bar Done."

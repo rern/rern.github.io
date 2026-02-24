@@ -1,35 +1,27 @@
 #!/bin/bash
 
-optbox=( --colors --no-shadow --no-collapse )
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 
-dialog "${optbox[@]}" --infobox "
+#........................
+dialog $opt_info '
 
 
                         \Z1Docker\Z0
-" 9 58
+' 9 58
 sleep 1
-
-arch=$( dialog "${optbox[@]}" --output-fd 1 --default-item 3 --menu "
+#........................
+arch=$( dialog $opt_menu "
  \Z1Docker\Z0:
 " 8 0 0 \
-1 armv8/aarch64 \
-2 armv7h \
-3 armv6h \
-4 'Stop all' )
-
-case $arch in
-	1 ) arch=aarch64;;
-	2 ) arch=armv7h;;
-	3 ) arch=armv6h;;
-	4 ) arch=stop;;
-esac
-
-if [[ $arch == stop ]]; then
-	docker stop $( docker ps -aq )
-	exit
-fi
-
+	1 aarch64 \
+	2 armv7h \
+	3 armv6h \
+	4 'Stop all' )
+[[ $arch == 4 ]] && docker stop $( docker ps -aq ) && exit
+#----------------------------------------------------------------------------
 systemctl start docker
+ar=( '' arch64 armv7h armv6h )
+arch=${ar[$arch]}
 docker start $arch
 clear -x
 docker exec -it $arch bash
