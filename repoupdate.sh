@@ -7,9 +7,10 @@ mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
 	ln -s /home/x/BIG/RPi/Git/rern.github.io repo
 else
-	localip=$( dialog --colors --output-fd 1 --cancel-label Skip --inputbox "
+#........................
+	localip=$( dialog $opt_outfd --cancel-label Skip --inputbox '
  Local \Z1rern.github.io\Z0 IP:
-" 0 0 '192.168.1.9' )
+' 0 0 192.168.1.9 )
 	mnt=$( mount -t cifs //$localip/rern.github.io $dirrepo -o username=guest,password= )
 	if [[ $? != 0 ]]; then
 		error="Mount failed: mount -t cifs //$localip/rern.github.io repo -o username=guest,password=\n"

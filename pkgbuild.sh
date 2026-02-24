@@ -1,19 +1,17 @@
 #!/bin/bash
 
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
+
 arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
-[[ ! $arch =~ .*(aarch|armv).* ]] && echo This is not a Raspberry Pi. && exit
-
-optbox=( --colors --no-shadow --no-collapse )
-
-dialog "${optbox[@]}" --infobox "
+[[ ! $arch =~ .*(aarch|armv).* ]] && errorExit This is not a Raspberry Pi
+#----------------------------------------------------------------------------
+#........................
+dialog $opt_info '
 
 
                     Build Packages
-
-
-" 9 58
+' 9 58
 sleep 1
-
 declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
@@ -40,38 +38,32 @@ declare -A packages=(
 	[snapcast]='boost cmake'
 	[wirelessregdom-codes]=
 )
-
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
-
-pkgname=$( dialog "${optbox[@]}" --output-fd 1 --no-items --menu "
+#........................
+pkgname=$( dialog $opt_menu '
  \Z1Package\Z0:
-" 0 0 0 $menu )
-
+' 0 0 0 $menu )
 [[ $? != 0 ]] && exit
-
+#----------------------------------------------------------------------------
 if [[ $pkgname == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
- 		echo 'Snapcast requires swap partition for RAM < 3GB.'
-   		exit
+ 		errorExit Snapcast requires swap partition for RAM < 3GB.
+#----------------------------------------------------------------------------
 	fi
 fi
-
 urlrern=https://github.com/rern/rern.github.io/raw/main
 if [[ $pkgname == wirelessregdom-codes ]]; then
 	bash <( curl -skL $urlrern/wirelessregdom.sh )
 	exit
+#----------------------------------------------------------------------------
 fi
-
 packagelist=${packages[$pkgname]}
-
-clear
-echo -e "\e[46m  \e[0m Install depends ...\n"
+clear -x
+echo -e "$bar Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel git $packagelist
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
-
 currentdir=$PWD
-
 buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
@@ -111,13 +103,14 @@ buildPackage() {
 	chown -R alarm:alarm /home/alarm/$name
 	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
-	pkgver=$( dialog "${optbox[@]}" --output-fd 1 --inputbox "
+#........................
+	pkgver=$( dialog $opt_input "
  \Z1$name\Z0
  pkgver:
-" 0 0 $ver )
-	[[ $? != 0 ]] && return
+" 0 0 $ver ) || return
 	
-	[[ $rel ]] && pkgrel=$( dialog "${optbox[@]}" --output-fd 1 --nocancel --inputbox "
+#........................
+	[[ $rel ]] && pkgrel=$( dialog $opt_input "
  \Z1$name\Z0
  pkgrel:
 " 0 0 $rel )
@@ -126,32 +119,24 @@ buildPackage() {
 		[[ $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
 		skipinteg=--skipinteg
 	else
-		dialog --defaultno "${optbox[@]}" --yesno "
+#........................
+		dialog $opt_yesno "
 		
  Skip integrity check?
  
-" 0 0
-		[[ $? == 0 ]] && skipinteg=--skipinteg
+" 0 0 && skipinteg=--skipinteg
 	fi
-	
-	echo -e "\n\n\e[46m  \e[0m Start build $name ...\n"
+	echo -e "\n$bar Start build $name ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
-	
-	if [[ -z $( ls $name*.xz 2> /dev/null ) ]]; then
-		echo -e "\n\e[46m  \e[0m Build $pkgname failed."
-		exit
-	fi
-	
+	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && errorExit Build $pkgname failed.
+#----------------------------------------------------------------------------
 	mv -f $name*.xz "$currentdir"
 	cd "$currentdir"
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*
 }
-
 if [[ $pkgname == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
 fi
-
 buildPackage $pkgname
-
-echo -e "\n\e[46m  \e[0m Package: $( ls -1 $pkgname*.xz | tail -1 )\n"
+echo -e "\n$bar Package: $( ls -1 $pkgname*.xz | tail -1 )\n"

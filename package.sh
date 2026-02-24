@@ -1,16 +1,17 @@
 #!/bin/bash
 
-list=(
-1  Build
-2 'Update repo'
-3 'AUR setup'
-4 'Create guide.tar.xz'
-5 'Create radioparadise.tar.xz'
-6 'Create regdomcodes.json' )
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 
-file=$( dialog --colors --no-shadow --no-collapse --output-fd 1 --nocancel --menu "
+#........................
+file=$( dialog $opt_menu "
 Package:
-" 8 0 0 "${list[@]}" )
+" 8 0 0 \
+	1  Build \
+	2 'Update repo' \
+	3 'AUR setup' \
+	4 'Create guide.tar.xz' \
+	5 'Create radioparadise.tar.xz' \
+	6 'Create regdomcodes.json' )
 
 case $file in
 	1 ) file=pkgbuild;;
