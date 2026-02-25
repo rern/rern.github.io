@@ -8,7 +8,7 @@ if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
 	ln -s /home/x/BIG/RPi/Git/rern.github.io repo
 else
 #........................
-	localip=$( dialog $opt_outfd --cancel-label Skip --inputbox '
+	localip=$( dialog $opt_input '
  Local \Z1rern.github.io\Z0 IP:
 ' 0 0 192.168.1.9 )
 	mnt=$( mount -t cifs //$localip/rern.github.io $dirrepo -o username=guest,password= )
