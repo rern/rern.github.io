@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 #........................
 splash 'Package Utilities'
 #........................
@@ -28,4 +28,4 @@ case $file in
 	6 ) file=wirelessregdom;;
 esac
 clear -x
-bash <( curl -L https://github.com/rern/rern.github.io/raw/main/$file.sh )
+. <( curl -L https://github.com/rern/rern.github.io/raw/main/$file.sh )
