@@ -1,6 +1,5 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 #........................
 banner Build Packages
 declare -A packages=(
