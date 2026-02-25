@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #........................
-banner Update Ropositories
+banner Update Repositories
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
@@ -80,7 +80,7 @@ if [[ -L repo ]]; then
 	unlink repo
 else
 	umount -l repo
-	rmdir $dirrepo
+	rmdir repo
 fi
 echo -e "
 $bar Done
