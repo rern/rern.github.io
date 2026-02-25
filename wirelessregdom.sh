@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 #........................
 banner Wireless Regulatory Domain Codes
 echo -e "$bar Get wireless-regdb ..."

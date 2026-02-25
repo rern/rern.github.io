@@ -1,7 +1,6 @@
 #!/bin/bash
 
 . <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
 #........................
 splash 'Package Utilities'
 #........................
