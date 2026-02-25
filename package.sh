@@ -28,4 +28,4 @@ case $file in
 	6 ) file=wirelessregdom;;
 esac
 clear -x
-. <( curl -L https://github.com/rern/rern.github.io/raw/main/$file.sh )
+. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$file.sh )
