@@ -130,4 +130,7 @@ if [[ $pkgname == matchbox-window-manager ]]; then
 	buildPackage -i libmatchbox
 fi
 buildPackage $pkgname
-echo -e "\n$bar Package: $( ls -1 $pkgname*.xz | tail -1 )\n"
+echo -e "
+$bar Done
+Package: $( ls -1 $pkgname*.xz | tail -1 )
+"

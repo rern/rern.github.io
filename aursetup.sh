@@ -68,4 +68,6 @@ chown -R alarm:alarm $dirhome
 chmod 700 $dirssh
 chmod 600 $dirssh/*
 sudo -u alarm git init $dirhome
-echo -e "\n$bar Done\n"
+echo -e "
+$bar Done
+"

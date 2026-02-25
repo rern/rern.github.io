@@ -26,11 +26,16 @@ list=$( echo '{ "00 (worldwide)": "00"'$iso3166' }' \
 			| sed -E 's/\s*"(.*)": "(.*)",*/"\2": "\1",/' \
 			| sed '/, / {s/, / (/; s/":/)":/}' )
 jq -S <<< "{ ${list:0:-1} }" > regdomcodes.json
-file=/srv/http/assets/data/regdomcodes.json
-changes="
-$file:
+changes=$( diff regdomcodes.json $file )
+if [[ $changes ]]; then
+	mv -f regdomcodes.json /srv/http/assets/data
+	changes+='
+regdomcodes.json replaced'
+else
+	changes='(No changes)'
+fi
+echo -e "
+$bar Done
+Changes:
+$changes
 "
-d=$( diff regdomcodes.json $file )
-[[ $d ]] && changes+=$d || changes+='(No changes)'
-echo -e "$bar Changes:
-$changes"

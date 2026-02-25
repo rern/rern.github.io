@@ -82,4 +82,6 @@ else
 	umount -l repo
 	rmdir $dirrepo
 fi
-echo -e "\n$bar Done\n"
+echo -e "
+$bar Done
+"
