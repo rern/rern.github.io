@@ -3,6 +3,8 @@
 . <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
 
 #........................
+splash 'Package Utilities'
+#........................
 file=$( dialog $opt_menu "
 Package:
 " 8 0 0 \
@@ -14,7 +16,12 @@ Package:
 	6 'Create regdomcodes.json' )
 
 case $file in
-	1 ) file=pkgbuild;;
+	1 ) 
+		arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
+		[[ ! $arch =~ .*(aarch|armv).* ]] && errorExit This is not a Raspberry Pi
+		#----------------------------------------------------------------------------
+		file=pkgbuild
+		;;
 	2 ) file=repoupdate;;
 	3 ) file=aursetup;;
 	4 )	bsdtar cjvf guide.tar.xz -C /srv/http/assets/img/guide .; exit;;

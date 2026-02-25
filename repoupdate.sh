@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
+#........................
+banner Update Ropositories
 dirrepo=$PWD/repo
 mkdir -p $dirrepo
 if [[ ! $( ls /boot/kernel* 2> /dev/null ) ]]; then # not RPi
@@ -74,7 +74,6 @@ for arch in $select; do
 <table>
 </body>
 </html>'
-
 	echo -e "$html" > ../$arch.html
 done
 if [[ -L repo ]]; then
@@ -83,5 +82,4 @@ else
 	umount -l repo
 	rmdir $dirrepo
 fi
-
-echo -e "\n$bar Done."
+echo -e "\n$bar Done\n"

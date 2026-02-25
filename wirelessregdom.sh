@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "Get wireless-regdb ..."
+#........................
+banner Wireless Regulatory Domain Codes
+echo -e "$bar Get wireless-regdb ..."
 url=https://kernel.org/pub/software/network/wireless-regdb
 file=$( curl -skL $url \
 			| tail -3 \
@@ -12,7 +14,12 @@ codes=$( grep ^country wireless-regdb*/db.txt \
 			| tr -d : \
 			| xargs \
 			| tr ' ' '|' )
-iso3166=$( sed -E -n '/alpha_2_code=|\s+name=/ {s/^.*name=/:/; s/^.*code=/, /; s/ .>$//; p}' /usr/share/xml/iso-codes/iso_3166.xml )
+iso3166=$( sed -E -n '/alpha_2_code=|\s+name=/ {
+				s/^.*name=/:/
+				s/^.*code=/, /
+				s/ .>$//
+				p
+			}' /usr/share/xml/iso-codes/iso_3166.xml )
 list=$( echo '{ "00 (worldwide)": "00"'$iso3166' }' \
 			| jq \
 			| grep -E "$codes" \
@@ -25,4 +32,5 @@ $file:
 "
 d=$( diff regdomcodes.json $file )
 [[ $d ]] && changes+=$d || changes+='(No changes)'
-echo "$changes"
+echo -e "$bar Changes:
+$changes"

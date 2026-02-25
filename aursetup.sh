@@ -1,18 +1,10 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
+#........................
+banner AUR Setup
 dirhome=/home/alarm
 dirgit=$dirhome/.config/git
 dirssh=$dirhome/.ssh
-#........................
-dialog $opt_info '
-
-                          \Z1AUR\Z0
-
-                       Git Setup
-' 9 58
-sleep 2
 if [[ -e $dirssh/aur ]]; then
 #........................
 	dialog $opt_yesno '
@@ -76,3 +68,4 @@ chown -R alarm:alarm $dirhome
 chmod 700 $dirssh
 chmod 600 $dirssh/*
 sudo -u alarm git init $dirhome
+echo -e "\n$bar Done\n"

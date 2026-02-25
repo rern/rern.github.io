@@ -1,17 +1,7 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
-arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
-[[ ! $arch =~ .*(aarch|armv).* ]] && errorExit This is not a Raspberry Pi
-#----------------------------------------------------------------------------
 #........................
-dialog $opt_info '
-
-
-                    Build Packages
-' 9 58
-sleep 1
+banner Build Packages
 declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
@@ -134,6 +124,7 @@ buildPackage() {
 	cd "$currentdir"
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*
 }
+
 if [[ $pkgname == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
