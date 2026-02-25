@@ -28,16 +28,17 @@ list=$( echo '{ "00 (worldwide)": "00"'$iso3166' }' \
 regdom=regdomcodes.json
 file_regdom=/srv/http/assets/data/$regdom
 jq -S <<< "{ ${list:0:-1} }" > $regdom
-changes=$( diff $regdom $file_regdom )
-if [[ $changes ]]; then
+diff=$( diff $regdom $file_regdom )
+if [[ $diff ]]; then
 	mv -f $regdom $file_regdom
-	changes+="
-$regdom replaced"
+	changes="Changes:
+$diff
+
+\e[33m$regdom\e[0m replaced"
 else
 	changes='(No changes)'
 fi
 echo -e "
 $bar Done
-Changes:
 $changes
 "
