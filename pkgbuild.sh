@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#........................
-banner Build Packages
 declare -A packages=(
 	[alsaequal]='caps ladspa'
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
