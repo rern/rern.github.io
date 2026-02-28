@@ -4,7 +4,7 @@ unMount() {
 	if [[ -L repo ]]; then
 		unlink repo
 	else
-		umount -l repo
+		umount -l $dirrepo
 		rmdir repo
 	fi
 }
@@ -19,7 +19,7 @@ else
 	[[ $? != 0 ]] && error="Mount failed: $mnt\n"
 fi
 [[ ! $( ls $dirrepo ) ]] && error+="Repo empty: //$localip/rern.github.io\n"
-[[ $error ]] && errorExit $error
+[[ $error ]] && unMount && errorExit $error
 #----------------------------------------------------------------------------
 #........................
 repo=$( dialog $opt_check '
