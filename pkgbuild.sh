@@ -28,11 +28,9 @@ declare -A packages=(
 	[snapcast]='boost cmake'
 )
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
-menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
+menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit )
 #........................
-pkgname=$( dialog $opt_menu '
- \Z1Package\Z0:
-' 0 0 0 $menu )
+pkgname=$( dialogMenu Package "$menu" )
 [[ $? != 0 ]] && exit
 #----------------------------------------------------------------------------
 if [[ $pkgname == snapcast ]]; then

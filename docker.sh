@@ -1,13 +1,11 @@
 #!/bin/bash
 
 #........................
-arch=$( dialog $opt_menu "
- \Z1Docker\Z0:
-" 8 0 0 \
-	1 aarch64 \
-	2 armv7h \
-	3 armv6h \
-	4 'Stop all' )
+arch=$( dialogMenu Docker "\
+aarch64
+armv7h
+armv6h
+Stop all" )
 [[ $arch == 4 ]] && docker stop $( docker ps -aq ) && exit
 #----------------------------------------------------------------------------
 systemctl start docker

@@ -1,13 +1,13 @@
 #!/bin/bash
 
+list_arch="\
+aarch64
+armv7h
+armv6h"
 #........................
-arch=$( dialog $opt_menu "
- \Z1Distcc\Z0:
-" 8 0 0 \
-	1 armv8 \
-	2 armv7h \
-	3 armv6h )
-arch=${arch/aarch64/armv8}
+arch=$( dialogMenu Distcc "$list_arch" )
+ar=( '' arcarmv8h64 armv7h armv6h )
+arch=${ar[$arch]}
 systemctl stop distccd-arm*
 systemctl start distccd-$arch
 status=$( systemctl status distccd-$arch | sed 's/active (running)/\\e[32m&\\e[0m/' )

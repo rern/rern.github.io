@@ -7,18 +7,12 @@ list_package="\
 Build Package
 Update Repo
 AUR Setup
-Create \Z1guide.tar.xz\Zn
-Create \Z1radioparadise.tar.xz\Zn
-Create \Z1regdomcodes.json\Zn"
+Create guide.tar.xz
+Create radioparadise.tar.xz
+Create regdomcodes.json"
 i=0
-while read l; do
-	(( i++ ))
-	list_menu+=( $i "$l" )
-done <<< $list_package
 #........................
-menu=$( dialog $opt_menu "
-Package:
-" $(( i + 2 )) 0 0 "${list_menu[@]}" )
+menu=$( dialogMenu Package "$list_package" )
 #........................
 dialogSplash "$( sed -n "$menu p" <<< $list_package )"
 case $menu in

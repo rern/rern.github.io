@@ -23,12 +23,10 @@ Host aur.archlinux.org
 systemctl restart sshd
 [[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 #........................
-keys=$( dialog $opt_menu '
-\Z1Raspberry Pi:\Z0
-' 8 0 0 \
-	1 'Use existing keys' \
-	2 'Generate new keys' )
-if [[ $keys == 1 ]]; then
+key=$( dialogMenu 'Raspberry Pi' "\
+Use existing keys
+Generate new keys" )
+if [[ $key == 1 ]]; then
 #........................
 	dialog $opt_msg '
  Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > $dirhome
@@ -59,8 +57,8 @@ username=$( dialog $opt_input '
 ' 0 0 rern )
 echo "\
 [user]
-	email = rernrern@gmail.com
-	name = rern
+	email = $email
+	name = $username
 " > $dirhome/.gitconfig
 mkdir -p $dirgit
 touch $dirgit/{attributes,ignore}
