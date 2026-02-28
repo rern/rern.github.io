@@ -28,9 +28,9 @@ declare -A packages=(
 	[snapcast]='boost cmake'
 )
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
-menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit )
+list_menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit )
 #........................
-pkgname=$( dialogMenu Package "$menu" )
+pkgname=$( dialogMenu Package "$list_menu" )
 [[ $? != 0 ]] && exit
 #----------------------------------------------------------------------------
 if [[ $pkgname == snapcast ]]; then
@@ -40,10 +40,9 @@ if [[ $pkgname == snapcast ]]; then
 	fi
 fi
 urlrern=https://github.com/rern/rern.github.io/raw/main
-packagelist=${packages[$pkgname]}
 clear -x
 echo -e "$bar Install depends ...\n"
-pacman -Sy --noconfirm --needed base-devel git $packagelist
+pacman -Sy --noconfirm --needed base-devel git ${packages[$pkgname]}
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 currentdir=$PWD
 buildPackage() {

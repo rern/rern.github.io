@@ -3,7 +3,7 @@
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 #........................
 dialogSplash 'Package Utilities'
-list_package="\
+list_menu="\
 Build Package
 Update Repo
 AUR Setup
@@ -12,9 +12,9 @@ Create radioparadise.tar.xz
 Create regdomcodes.json"
 i=0
 #........................
-menu=$( dialogMenu Package "$list_package" )
+menu=$( dialogMenu Package "$list_menu" )
 #........................
-dialogSplash "$( sed -n "$menu p" <<< $list_package )"
+dialogSplash "$( sed -n "$menu p" <<< $list_menu )"
 case $menu in
 	1 ) 
 		arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )

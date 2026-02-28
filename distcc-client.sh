@@ -1,11 +1,10 @@
 #!/bin/bash
 
-list_arch="\
+#........................
+arch=$( dialogMenu Distcc "$\
 aarch64
 armv7h
-armv6h"
-#........................
-arch=$( dialogMenu Distcc "$list_arch" )
+armv6h" )
 ar=( '' arcarmv8h64 armv7h armv6h )
 arch=${ar[$arch]}
 systemctl stop distccd-arm*
