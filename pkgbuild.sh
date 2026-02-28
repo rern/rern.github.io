@@ -41,7 +41,7 @@ echo -e "$bar Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel git ${packages[$name_pkg]}
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 buildPackage() {
-	local dirmeson name rel url url_rern ver
+	local dir_meson name pkg_rel pkg_ver rel url url_rern ver
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
@@ -57,8 +57,8 @@ buildPackage() {
 			cd $name
 			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
 			if [[ $arch == armv6h ]]; then
-				dirmeson=/lib/python3.10/site-packages/mesonbuild
-				[[ ! -e $dirmeson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dirmeson
+				dir_meson=/lib/python3.10/site-packages/mesonbuild
+				[[ ! -e $dir_meson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dir_meson
 			fi
 			;;
    		* )
@@ -68,22 +68,22 @@ buildPackage() {
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
-	ver=$( grep ^pkgver= PKGBUILD | cut -d= -f2 )
-	rel=$( grep ^pkgrel= PKGBUILD | cut -d= -f2 )
+	ver=$( grep ^pkg_ver= PKGBUILD | cut -d= -f2 )
+	rel=$( grep ^pkg_rel= PKGBUILD | cut -d= -f2 )
 #........................
-	pkgver=$( dialog $opt_input "
+	pkg_ver=$( dialog $opt_input "
  \Z1$name\Z0
- pkgver:
+ pkg_ver:
 " 0 0 $ver ) || return
 	
 #........................
-	[[ $rel ]] && pkgrel=$( dialog $opt_input "
+	[[ $rel ]] && pkg_rel=$( dialog $opt_input "
  \Z1$name\Z0
- pkgrel:
+ pkg_rel:
 " 0 0 $rel )
-	if [[ $ver != $pkgver || $rel != $pkgre ]]; then
-		sed -i "s/^pkgver.*/pkgver=$pkgver/" PKGBUILD
-		[[ $pkgrel ]] && sed -i "s/^pkgrel.*/pkgrel=$pkgrel/" PKGBUILD
+	if [[ $ver != $pkg_ver || $rel != $pkgre ]]; then
+		sed -i "s/^pkg_ver.*/pkg_ver=$pkg_ver/" PKGBUILD
+		[[ $pkg_rel ]] && sed -i "s/^pkg_rel.*/pkg_rel=$pkg_rel/" PKGBUILD
 		skipinteg=--skipinteg
 	else
 #........................
