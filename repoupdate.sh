@@ -29,6 +29,7 @@ repo=$( dialog $opt_check '
 	armv7h on \
 	armv6h off \
 	Rebuild off )
+clear -x
 if selected Rebuild; then
 	action=Rebuild
 else
