@@ -7,10 +7,8 @@ declare -A packages=(
 	[bluealsa]='bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc'
 	[camilladsp]=
 	[dab-scanner]='cmake rtl-sdr'
-	[distcc]=gtk3
 	[fakepkg]=gzip
 	[hfsprogs]=libbsd
-	[linux-rpi-legacy]='bc kmod inetutils'
 	[matchbox-window-manager]='dbus-glib glib2-devel gnome-common gobject-introspection gtk-doc intltool
 								libjpeg libmatchbox libpng libsm libxcursor libxext
 								pango polkit startup-notification xsettings-client'
@@ -24,45 +22,33 @@ declare -A packages=(
 	[python-rplcd]=python-setuptools
 	[python-smbus2]=python-setuptools
 	[python-upnpp]='libnpupnp meson-python swig'
-	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
 )
-[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
+[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$'
 list_menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit )
 #........................
-pkgname=$( dialogMenu Package "$list_menu" )
+name_pkg=$( dialogMenu Package "$list_menu" )
 [[ $? != 0 ]] && exit
 #----------------------------------------------------------------------------
-if [[ $pkgname == snapcast ]]; then
+if [[ $name_pkg == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
  		errorExit Snapcast requires swap partition for RAM < 3GB.
 #----------------------------------------------------------------------------
 	fi
 fi
-urlrern=https://github.com/rern/rern.github.io/raw/main
 clear -x
 echo -e "$bar Install depends ...\n"
-pacman -Sy --noconfirm --needed base-devel git ${packages[$pkgname]}
+pacman -Sy --noconfirm --needed base-devel git ${packages[$name_pkg]}
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
-currentdir=$PWD
 buildPackage() {
+	local dirmeson name rel url url_rern ver
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
-	urlalarm=https://github.com/archlinuxarm/PKGBUILDs/raw/master
 	case $name in
-		distcc | linux-rpi-legacy | python-upnpp | raspberrypi-utils | xf86-video-fbturbo )
-			case $name in
-				distcc )
-					url=$urlalarm/extra/$name
-					;;
-				raspberrypi-utils )
-					url=$urlalarm/alarm/$name
-					;;
-				* )
-					url=$urlrern/PKGBUILD/$name
-					;;
-			esac
-			curl -L $urlrern/github-download.sh | bash -s "$url"
+		python-upnpp | xf86-video-fbturbo )
+			url_rern=https://github.com/rern/rern.github.io/raw/main
+			url=$url_rern/PKGBUILD/$name
+			curl -L $url_rern/github-download.sh | bash -s "$url"
 			cd $name
 			;;
 		mpd )
@@ -109,19 +95,19 @@ buildPackage() {
 	fi
 	echo -e "\n$bar Start build $name ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
-	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && errorExit Build $pkgname failed.
+	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && errorExit Build $name_pkg failed.
 #----------------------------------------------------------------------------
-	mv -f $name*.xz "$currentdir"
-	cd "$currentdir"
+	mv -f $name*.xz "$PWD"
+	cd "$PWD"
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*
 }
 
-if [[ $pkgname == matchbox-window-manager ]]; then
+if [[ $name_pkg == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
 fi
-buildPackage $pkgname
+buildPackage $name_pkg
 echo -e "
 $bar Done
-Package: $( ls -1 $pkgname*.xz | tail -1 )
+Package: $( ls -1 $name_pkg*.xz | tail -1 )
 "
