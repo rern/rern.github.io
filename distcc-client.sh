@@ -1,14 +1,5 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
-#........................
-dialog $opt_info '
-
-
-                     \Z1Distcc Client\Z0
-' 9 58
-sleep 1
 #........................
 arch=$( dialog $opt_menu "
  \Z1Distcc\Z0:

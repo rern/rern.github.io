@@ -1,19 +1,7 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/refs/heads/main/common.sh )
-
 #........................
-dialog $opt_info '
-
-
-                 Install \Z1Distcc\Z0 Master
-' 9 58
-sleep 1
-#........................
-[[ $1 ]] && clientip=$1 || clientip=$( cat clientip ) || clientip=$( dialog $opt_input '
-Client IP:
-
-' 0 0 192.168.1.9 )
+[[ $1 ]] && clientip=$1 || clientip=$( cat clientip ) || clientip=$( dialogIP 'Client IP' )
 pacman -Sy --noconfirm distcc
 # MAKEFLAGS="-j12"                                --- 2x max threads per client
 # BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc

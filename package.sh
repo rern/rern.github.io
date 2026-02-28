@@ -2,19 +2,26 @@
 
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 #........................
-splash 'Package Utilities'
+dialogSplash 'Package Utilities'
+list_package="\
+Build Package
+Update Repo
+AUR Setup
+Create \Z1guide.tar.xz\Zn
+Create \Z1radioparadise.tar.xz\Zn
+Create \Z1regdomcodes.json\Zn"
+i=0
+while read l; do
+	(( i++ ))
+	list_menu+=( $i "$l" )
+done <<< $list_package
 #........................
-file=$( dialog $opt_menu "
+menu=$( dialog $opt_menu "
 Package:
-" 8 0 0 \
-	1  Build \
-	2 'Update repo' \
-	3 'AUR setup' \
-	4 'Create guide.tar.xz' \
-	5 'Create radioparadise.tar.xz' \
-	6 'Create regdomcodes.json' )
-
-case $file in
+" $(( i + 2 )) 0 0 "${list_menu[@]}" )
+#........................
+dialogSplash "$( sed -n "$menu p" <<< $list_package )"
+case $menu in
 	1 ) 
 		arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
 		[[ ! $arch =~ .*(aarch|armv).* ]] && errorExit This is not a Raspberry Pi

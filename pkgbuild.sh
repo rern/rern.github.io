@@ -26,7 +26,6 @@ declare -A packages=(
 	[python-upnpp]='libnpupnp meson-python swig'
 	[raspberrypi-utils]='cmake dtc'
 	[snapcast]='boost cmake'
-	[wirelessregdom-codes]=
 )
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$|^rasp|^linux'
 menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit | sort )
@@ -43,11 +42,6 @@ if [[ $pkgname == snapcast ]]; then
 	fi
 fi
 urlrern=https://github.com/rern/rern.github.io/raw/main
-if [[ $pkgname == wirelessregdom-codes ]]; then
-	bash <( curl -skL $urlrern/wirelessregdom.sh )
-	exit
-#----------------------------------------------------------------------------
-fi
 packagelist=${packages[$pkgname]}
 clear -x
 echo -e "$bar Install depends ...\n"
