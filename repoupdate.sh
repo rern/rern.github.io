@@ -30,14 +30,14 @@ repo=$( dialog $opt_check '
 	armv6h off \
 	Rebuild off )
 clear -x
+#........................
+banner $action repository ...
 if selected Rebuild; then
 	action=Rebuild
 else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
-#........................
-banner $action repository ...
 for arch in $repo; do
 	[[ $arch == Rebuild ]] && break
 	
