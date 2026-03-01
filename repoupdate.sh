@@ -29,7 +29,6 @@ repo=$( dialog $opt_check '
 	armv7h on \
 	armv6h off \
 	Rebuild off )
-clear -x
 #........................
 banner $action repository ...
 if selected Rebuild; then

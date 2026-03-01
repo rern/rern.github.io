@@ -34,7 +34,6 @@ if [[ $name_pkg == snapcast ]]; then
 #----------------------------------------------------------------------------
 	fi
 fi
-clear -x
 echo -e "$bar Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel git ${packages[$name_pkg]}
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf

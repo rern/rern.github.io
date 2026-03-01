@@ -28,5 +28,4 @@ case $menu in
 	5 )	bsdtar cjvf radioparadise.tar.xz -C /srv/http/data/webradio .; exit;;
 	6 ) file=wirelessregdom;;
 esac
-clear -x
 . <( curl -sL https://github.com/rern/rern.github.io/raw/main/$file.sh )

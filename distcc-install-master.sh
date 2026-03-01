@@ -25,6 +25,5 @@ sed -i -e 's/^#*\(MAKEFLAGS="-j\).*/\1'$jobs'"/
 " /etc/makepkg.conf
 systemctl start distccd
 status=$( systemctl status distccd | sed 's/active (running)/\\e[32m&\\e[0m/' )
-clear -x
 echo -e "$bar distccd-master $arch
 $status"

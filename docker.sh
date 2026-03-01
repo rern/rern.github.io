@@ -12,5 +12,4 @@ systemctl start docker
 ar=( '' arch64 armv7h armv6h )
 arch=${ar[$arch]}
 docker start $arch
-clear -x
 docker exec -it $arch bash
