@@ -28,7 +28,7 @@ if [[ $key == 1 ]]; then
 #........................
 	dialog $opt_msg '
  Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > $dir_home
- Then press OK to continue.
+ Then \Zr OK \ZR to continue.
 ' 7 58
 else
 	mkdir -p $dir_ssh
