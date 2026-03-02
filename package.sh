@@ -10,7 +10,6 @@ AUR Setup
 Create guide.tar.xz
 Create radioparadise.tar.xz
 Create regdomcodes.json"
-i=0
 #........................
 menu=$( dialogMenu Package "$list_menu" )
 #........................
