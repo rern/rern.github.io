@@ -2,7 +2,7 @@
 
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 #........................
-dialogSplash 'Package Utilities'
+dialogSplash Package Utilities
 list_menu="\
 Build Package
 Update Repo
@@ -14,7 +14,7 @@ i=0
 #........................
 menu=$( dialogMenu Package "$list_menu" )
 #........................
-dialogSplash "$( sed -n "$menu p" <<< $list_menu )"
+dialogSplash $( sed -n "$menu p" <<< $list_menu )
 case $menu in
 	1 ) 
 		arch=$( pacman -Qi bash | awk '/^Arch/ {print $NF}' )
