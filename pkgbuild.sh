@@ -68,16 +68,10 @@ buildPackage() {
 	ver=$( grep ^pkg_ver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^pkg_rel= PKGBUILD | cut -d= -f2 )
 #........................
-	pkg_ver=$( dialog $opt_input "
- \Z1$name\Z0
- pkg_ver:
-" 0 0 $ver ) || return
+	pkg_ver=$( dialog.input "\Z1$name\Z0 pkg_ver:" $ver ) || return
 	
 #........................
-	[[ $rel ]] && pkg_rel=$( dialog $opt_input "
- \Z1$name\Z0
- pkg_rel:
-" 0 0 $rel )
+	[[ $rel ]] && pkg_rel=$( dialog.input "\Z1$name\Z0 pkg_rel:" $rel )
 	if [[ $ver != $pkg_ver || $rel != $pkgre ]]; then
 		sed -i "s/^pkg_ver.*/pkg_ver=$pkg_ver/" PKGBUILD
 		[[ $pkg_rel ]] && sed -i "s/^pkg_rel.*/pkg_rel=$pkg_rel/" PKGBUILD

@@ -46,13 +46,9 @@ $( cat $dir_ssh/aur.pub )
 " 24 58
 fi
 #........................
-email=$( dialog $opt_input '
- \Z1Email:\Z0
-' 0 0 rernrern@gmail.com )
+email=$( dialog.input '\Z1Email:\Z0' rernrern@gmail.com )
 #........................
-username=$( dialog $opt_input '
- \Z1Username:\Z0
-' 0 0 rern )
+username=$( dialog.input '\Z1Username:\Z0' rern )
 echo "\
 [user]
 	email = $email
