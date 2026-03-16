@@ -7,21 +7,21 @@
 #........................
 dialog.splash Package Utilities
 list="\
-Build Package^pkgbuild
-Update Repo^repoupdate
-AUR Setup^aursetup
-Create guide.tar.xz
-Create radioparadise.tar.xz
-Create regdomcodes.json^wirelessregdom"
+Build Package                          : pkgbuild
+Update Repo                            : repoupdate
+AUR Setup                              : aursetup
+Create guide.tar.xz                    :
+Create radioparadise.tar.xz            :
+Create regdomcodes.json^wirelessregdom :"
 #........................
-task=$( dialog.menu Package "$( sed 's/\^.*//' <<< $list )" )
-name=$( sed -n "$task {s/.*^//; p}" <<< $list )
+task=$( dialog.menu Package "$( sed 's/ *:.*//' <<< $list )" )
+file_name=$( sed -n "$task {s/.*: *//; p}" <<< $list )
 #........................
-dialog.splash $name
-if [[ $name ]]; then
-	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$name.sh )
-elif grep -q guide <<< $name
+dialog.splash $task
+if [[ $$file_name ]]; then
+	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$file_name.sh )
+elif grep -q guide <<< $name; then
 	bsdtar cjvf guide.tar.xz -C /srv/http/assets/img/guide .
-elif grep -q radio <<< $name
+elif grep -q radio <<< $name; then
 	bsdtar cjvf radioparadise.tar.xz -C /srv/http/data/webradio .
 fi
