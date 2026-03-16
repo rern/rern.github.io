@@ -35,7 +35,7 @@ depends=$( sed -n "$pkg {s/.*: //; p}" <<< $packages )
 #----------------------------------------------------------------------------
 if [[ $name_pkg == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
- 		errorExit Snapcast requires swap partition for RAM < 3GB.
+ 		dialog.error_exit Snapcast requires swap partition for RAM < 3GB.
 #----------------------------------------------------------------------------
 	fi
 fi
@@ -91,7 +91,7 @@ buildPackage() {
 	fi
 	echo -e "\n$bar Start build $name ...\n"
 	sudo -u alarm makepkg -fA $skipinteg
-	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && errorExit Build $name_pkg failed.
+	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $name_pkg failed.
 #----------------------------------------------------------------------------
 	mv -f $name*.xz "$PWD"
 	cd "$PWD"

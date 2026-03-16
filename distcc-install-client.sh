@@ -1,4 +1,4 @@
-#!/bin/bash
+dialog.error_exit#!/bin/bash
 
 pacman -Sy --noconfirm distcc
 # for ssh start distccd from master

@@ -2,7 +2,7 @@
 
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 
-! grep -q ^Model.*Rasp /proc/cpuinfo && errorExit This is not a Raspberry Pi
+! grep -q ^Model.*Rasp /proc/cpuinfo && dialog.error_exit This is not a Raspberry Pi
 #----------------------------------------------------------------------------
 #........................
 dialog.splash Package Utilities
