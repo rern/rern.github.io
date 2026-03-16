@@ -13,7 +13,7 @@ if [[ $BIG ]]; then # on manjaro
 	dir_repo=$BIG/RPi/Git/rern.github.io
 else
 #........................
-	localip=$( dialogIP 'Local \Z1rern.github.io\Z0 IP' )
+	localip=$( dialog.ip 'Local \Z1rern.github.io\Z0 IP' )
 	dir_repo=$PWD/repo
 	mkdir -p repo
 	mount -t cifs //$localip/rern.github.io $dir_repo -o username=guest,password=

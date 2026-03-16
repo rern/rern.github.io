@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #........................
-arch=$( dialogMenu Distcc "$\
+arch=$( dialog.menu Distcc "\
 aarch64
 armv7h
 armv6h" )

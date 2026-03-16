@@ -25,7 +25,7 @@ declare -A packages=(
 [[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$'
 list_menu=$( xargs -n1 <<< ${!packages[@]} | grep -Ev $omit )
 #........................
-name_pkg=$( dialogMenu Package "$list_menu" )
+name_pkg=$( dialog.menu Package "$list_menu" )
 [[ $? != 0 ]] && exit
 #----------------------------------------------------------------------------
 if [[ $name_pkg == snapcast ]]; then

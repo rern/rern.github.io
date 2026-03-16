@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #........................
-arch=$( dialogMenu Docker "\
+arch=$( dialog.menu Docker "\
 aarch64
 armv7h
 armv6h

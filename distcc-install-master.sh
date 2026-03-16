@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #........................
-[[ $1 ]] && clientip=$1 || clientip=$( cat clientip ) || clientip=$( dialogIP 'Client IP' )
+[[ $1 ]] && clientip=$1 || clientip=$( cat clientip ) || clientip=$( dialog.ip 'Client IP' )
 pacman -Sy --noconfirm distcc
 # MAKEFLAGS="-j12"                                --- 2x max threads per client
 # BUILDENV=(distcc color !ccache check !sign)     --- unnegate !distcc

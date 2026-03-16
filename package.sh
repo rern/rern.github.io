@@ -5,7 +5,7 @@
 ! grep -q ^Model.*Rasp /proc/cpuinfo && errorExit This is not a Raspberry Pi
 #----------------------------------------------------------------------------
 #........................
-dialogSplash Package Utilities
+dialog.splash Package Utilities
 list="\
 Build Package^pkgbuild
 Update Repo^repoupdate
@@ -14,10 +14,10 @@ Create guide.tar.xz
 Create radioparadise.tar.xz
 Create regdomcodes.json^wirelessregdom"
 #........................
-task=$( dialogMenu Package "$( sed 's/\^.*//' <<< $list )" )
+task=$( dialog.menu Package "$( sed 's/\^.*//' <<< $list )" )
 name=$( sed -n "$task {s/.*^//; p}" <<< $list )
 #........................
-dialogSplash $name
+dialog.splash $name
 if [[ $name ]]; then
 	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$name.sh )
 elif grep -q guide <<< $name
