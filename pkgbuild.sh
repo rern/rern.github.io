@@ -26,8 +26,10 @@ python-rplcd            : python-setuptools
 python-smbus2           : python-setuptools
 python-upnpp            : libnpupnp meson-python swig
 snapcast                : boost cmake"
-[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd$'
-list_menu=$( awk '{print $1}' <<< $packages | grep -Ev $omit )
+arch=$( uname -m )
+[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd\s'
+packages=$( grep -Ev $omit <<< $packages )
+list_menu=$( awk '{print $1}' <<< $packages )
 #........................
 pkg=$( dialog.menu Package "$list_menu" )
 name_pkg=$( sed -n "$pkg p" <<< $list_menu )
