@@ -15,9 +15,10 @@ Create radioparadise.tar.xz            :
 Create regdomcodes.json^wirelessregdom :"
 #........................
 task=$( dialog.menu Package "$( sed 's/ *:.*//' <<< $list )" )
+name=$( sed -n "$task {s/ *:.*//; p}" <<< $list )
 file_name=$( sed -n "$task {s/.*: *//; p}" <<< $list )
 #........................
-dialog.splash $task
+dialog.splash $name
 if [[ $$file_name ]]; then
 	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$file_name.sh )
 elif grep -q guide <<< $name; then
