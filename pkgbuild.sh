@@ -41,6 +41,7 @@ if [[ $name_pkg == snapcast ]]; then
 #----------------------------------------------------------------------------
 	fi
 fi
+clear -x
 echo -e "$bar Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel git $depends
 [[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
@@ -67,21 +68,23 @@ buildPackage() {
 			;;
    		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
+			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/snapcast.tar.gz
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			cd $name
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
-	ver=$( grep ^pkg_ver= PKGBUILD | cut -d= -f2 )
-	rel=$( grep ^pkg_rel= PKGBUILD | cut -d= -f2 )
+	grep -q grep ^pkg_ver= PKGBUILD && var_ver=pkg_ver || var_ver=pkgver
+	grep -q grep ^pkg_rel= PKGBUILD && var_rel=pkg_rel || var_ver=pkgrel
+	ver=$( grep ^$var_ver= PKGBUILD | cut -d= -f2 )
+	rel=$( grep ^$var_rel= PKGBUILD | cut -d= -f2 )
 #........................
-	pkg_ver=$( dialog.input "\Z1$name\Z0 pkg_ver:" $ver ) || return
-	
+	pkg_ver=$( dialog.input "\Z1$name\Z0 $var_ver:" $ver )
 #........................
-	[[ $rel ]] && pkg_rel=$( dialog.input "\Z1$name\Z0 pkg_rel:" $rel )
+	[[ $rel ]] && pkg_rel=$( dialog.input "\Z1$name\Z0 $var_rel:" $rel )
+	[[ $ver != $pkg_ver ]] && sed -i -E "s/^($var_ver=).*/\1$pkg_ver/" PKGBUILD
+	[[ $rel && $rel != $pkg_rel ]] && sed -i -E "s/^($var_rel=).*/\1$pkg_rel/" PKGBUILD
 	if [[ $ver != $pkg_ver || $rel != $pkgre ]]; then
-		sed -i "s/^pkg_ver.*/pkg_ver=$pkg_ver/" PKGBUILD
-		[[ $pkg_rel ]] && sed -i "s/^pkg_rel.*/pkg_rel=$pkg_rel/" PKGBUILD
 		skipinteg=--skipinteg
 	else
 #........................
