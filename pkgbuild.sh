@@ -4,11 +4,6 @@ matchbox="\
 dbus-glib glib2-devel gnome-common gobject-introspection gtk-doc intltool \
 libjpeg libmatchbox libpng libsm libxcursor libxext \
 pango polkit startup-notification xsettings-client"
-mpd="\
-audiofile avahi boost chromaprint faad2 ffmpeg flac fluidsynth fmt jack \
-lame libao libcdio libcdio-paranoia libgme libid3tag libmad libmikmod libmms libmodplug libmpcdec libnfs \
-libogg libopenmpt libpulse libsamplerate libshout libsidplayfp libsndfile libsoxr libupnp liburing libvorbis \
-meson mpg123 openal opus pipewire python-sphinx smbclient twolame wavpack wildmidi yajl zziplib"
 
 packages="\
 alsaequal               : caps ladspa
@@ -25,7 +20,6 @@ python-rplcd            : python-setuptools
 python-smbus2           : python-setuptools
 python-upnpp            : libnpupnp meson-python swig
 snapcast                : boost cmake"
-packages=$( grep -Ev $omit <<< $packages )
 list_menu=$( awk '{print $1}' <<< $packages )
 #........................
 pkg=$( dialog.menu Package "$list_menu" )
@@ -51,7 +45,7 @@ fi
 clear -x
 echo -e "$bar Install depends ...\n"
 pacman -Sy --noconfirm --needed base-devel git $depends
-[[ $arch != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
+#[[ $( uname -m ) != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 buildPackage() {
 	local dir_meson name pkg_rel pkg_ver rel url url_rern ver
 	cd /home/alarm
