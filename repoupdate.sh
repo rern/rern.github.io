@@ -1,13 +1,5 @@
 #!/bin/bash
 
-unMount() {
-	if [[ -L repo ]]; then
-		unlink repo
-	else
-		umount -l repo
-		rmdir repo
-	fi
-}
 #........................
 ip_repo=$( dialog.ip 'Local \Z1rern.github.io\Z0 IP' )
 mkdir -p repo
@@ -64,5 +56,6 @@ for arch in $repo; do
 </html>'
 	echo -e "$html" > ../$arch.html
 done
-unMount
+umount -l repo
+rmdir repo
 bar Done
