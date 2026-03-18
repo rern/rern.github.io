@@ -84,8 +84,8 @@ buildPackage() {
 			;;
 	esac
 	chown -R alarm:alarm /home/alarm/$name
-	grep -q grep ^pkg_ver= PKGBUILD && var_ver=pkg_ver || var_ver=pkgver
-	grep -q grep ^pkg_rel= PKGBUILD && var_rel=pkg_rel || var_ver=pkgrel
+	grep -q ^pkg_ver= PKGBUILD && var_ver=pkg_ver || var_ver=pkgver
+	grep -q ^pkg_rel= PKGBUILD && var_rel=pkg_rel || var_ver=pkgrel
 	ver=$( grep ^$var_ver= PKGBUILD | cut -d= -f2 )
 	rel=$( grep ^$var_rel= PKGBUILD | cut -d= -f2 )
 #........................
