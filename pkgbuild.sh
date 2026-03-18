@@ -37,16 +37,16 @@ depends=$( sed -n "$pkg {s/.*: //; p}" <<< $packages )
 #----------------------------------------------------------------------------
 if [[ $name_pkg == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
-		swap=$( sed -n '1 {s/-01 .* vfat/-03  swap   swap/; p}' /etc/fstab )
-		echo "$swap" >> /etc/fstab
+		fstab_swap=$( sed -n -E '1 {s/(.*-0).*/\13    none   swap  sw  0  0/; p}' /etc/fstab )
+		echo $fstab_swap >> /etc/fstab
  		dialog.error_exit "\
 Snapcast requires \Z1swap partition\Zn for RAM < 3GB.
 
 Added to /etc/fstab:
-$swap
+$fstab_swap
 
 » Power off
-» GParted - Create swap partition
+» GParted - Create 4GB linux-swap partition
 "
 #----------------------------------------------------------------------------
 	fi
@@ -108,9 +108,8 @@ buildPackage() {
 	sudo -u alarm makepkg -fA $skipinteg
 	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $name_pkg failed.
 #----------------------------------------------------------------------------
-	mv -f $name*.xz "$PWD"
-	cd "$PWD"
-	[[ $1 == -i ]] && pacman -U --noconfirm $name*
+	[[ $1 == -i ]] && pacman -U --noconfirm $name*.xz
+	mv -f $name*.xz /root
 }
 
 if [[ $name_pkg == matchbox-window-manager ]]; then
