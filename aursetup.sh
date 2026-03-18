@@ -60,6 +60,4 @@ chown -R alarm:alarm $dir_home
 chmod 700 $dir_ssh
 chmod 600 $dir_ssh/*
 sudo -u alarm git init $dir_home
-echo -e "
-$bar Done
-"
+bar Done

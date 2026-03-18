@@ -2,7 +2,7 @@
 
 #........................
 banner Wireless Regulatory Domain Codes
-echo -e "$bar Get wireless-regdb ..."
+bar Get wireless-regdb ...
 url=https://kernel.org/pub/software/network/wireless-regdb
 file=$( curl -skL $url \
 			| tail -3 \
@@ -38,7 +38,5 @@ $diff
 else
 	changes='(No changes)'
 fi
-echo -e "
-$bar Done
-$changes
-"
+bar "Done
+$changes"

@@ -43,7 +43,7 @@ $fstab_swap
 	fi
 fi
 clear -x
-echo -e "$bar Install depends ...\n"
+bar Install depends ...
 pacman -Sy --noconfirm --needed base-devel git $depends
 #[[ $( uname -m ) != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 buildPackage() {
@@ -80,7 +80,8 @@ buildPackage() {
  
 " 0 0 && skipinteg=--skipinteg
 	fi
-	echo -e "\n$bar Start build $name ...\n"
+	clear -x
+	bar Start build $name ...
 	sudo -u alarm makepkg -fA $skipinteg
 	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $name_pkg failed.
 #----------------------------------------------------------------------------
@@ -94,6 +95,6 @@ if [[ $name_pkg == matchbox-window-manager ]]; then
 fi
 buildPackage $name_pkg
 echo -e "
-$bar Done
+bar Done
 Package: $( ls -1 $name_pkg*.xz | tail -1 )
 "

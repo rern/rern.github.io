@@ -41,7 +41,7 @@ fi
 for arch in $repo; do
 	[[ $arch == Rebuild ]] && break
 	
-	echo -e "\n$bar $arch\n"
+	bar $arch
 	cd $dir_repo/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
@@ -71,6 +71,4 @@ for arch in $repo; do
 	echo -e "$html" > ../$arch.html
 done
 unMount
-echo -e "
-$bar Done
-"
+bar Done
