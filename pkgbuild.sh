@@ -61,6 +61,7 @@ buildPackage() {
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			;;
 	esac
+	chown -R alarm:alarm $name
 	cd $name
 	read ver rel < <( awk -F= '/^pkg_*ver=|^pkg_*rel/ {print $2}' PKGBUILD | tr '\n' ' ' )
 #........................
