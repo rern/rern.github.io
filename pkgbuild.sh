@@ -46,7 +46,7 @@ Added to /etc/fstab:
 $swap
 
 » Power off
-» rAudio SD card - Create swap partition
+» GParted - Create swap partition
 "
 #----------------------------------------------------------------------------
 	fi
