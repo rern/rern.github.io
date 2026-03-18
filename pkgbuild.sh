@@ -19,15 +19,12 @@ fakepkg                 : gzip
 hfsprogs                : libbsd
 matchbox-window-manager : $matchbox
 mediamtx                : go
-mpd                     : $mpd
 mpd_oled                : alsa-lib fftw i2c-tools
 python-rpi-gpio         : python-distribute python-setuptools
 python-rplcd            : python-setuptools
 python-smbus2           : python-setuptools
 python-upnpp            : libnpupnp meson-python swig
 snapcast                : boost cmake"
-arch=$( uname -m )
-[[ $arch == armv6h ]] && omit='^camilla|^dab|^mediamtx' || omit='^mpd\s'
 packages=$( grep -Ev $omit <<< $packages )
 list_menu=$( awk '{print $1}' <<< $packages )
 #........................
@@ -64,26 +61,15 @@ buildPackage() {
 			url_rern=https://github.com/rern/rern.github.io/raw/main
 			url=$url_rern/PKGBUILD/$name
 			curl -L $url_rern/github-download.sh | bash -s "$url"
-			cd $name
-			;;
-		mpd )
-	 		curl -L https://gitlab.archlinux.org/archlinux/packaging/packages/$name/-/archive/main/$name-main.tar.gz | bsdtar xf -
-			mv $name{-main,}
-			cd $name
-			[[ $name == mpd ]] && sed -E -i 's/lib(pipewire\s*)/\1/' PKGBUILD
-			if [[ $arch == armv6h ]]; then
-				dir_meson=/lib/python3.10/site-packages/mesonbuild
-				[[ ! -e $dir_meson ]] && ln -s $( ls -d /lib/python*/site-packages/mesonbuild ) $dir_meson
-			fi
 			;;
    		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/snapcast.tar.gz
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
-			cd $name
 			;;
 	esac
-	chown -R alarm:alarm /home/alarm/$name
+	chown -R $name
+	cd $name
 	grep -q ^pkg_ver= PKGBUILD && var_ver=pkg_ver || var_ver=pkgver
 	grep -q ^pkg_rel= PKGBUILD && var_rel=pkg_rel || var_ver=pkgrel
 	ver=$( grep ^$var_ver= PKGBUILD | cut -d= -f2 )
