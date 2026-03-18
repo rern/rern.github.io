@@ -58,7 +58,6 @@ buildPackage() {
 			;;
    		* )
 			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
-			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/snapcast.tar.gz
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			;;
 	esac
