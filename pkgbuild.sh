@@ -37,7 +37,17 @@ depends=$( sed -n "$pkg {s/.*: //; p}" <<< $packages )
 #----------------------------------------------------------------------------
 if [[ $name_pkg == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
- 		dialog.error_exit Snapcast requires swap partition for RAM < 3GB.
+		swap=$( sed -n '1 {s/-01 .* vfat/-03  swap   swap/; p}' /etc/fstab )
+		echo "$swap" >> /etc/fstab
+ 		dialog.error_exit "\
+Snapcast requires \Z1swap partition\Zn for RAM < 3GB.
+
+Added to /etc/fstab:
+$swap
+
+» Power off
+» rAudio SD card - Create swap partition
+"
 #----------------------------------------------------------------------------
 	fi
 fi
