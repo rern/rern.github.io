@@ -38,5 +38,7 @@ $diff
 else
 	changes='(No changes)'
 fi
-bar "Done
-$changes"
+bar "\
+Done
+$changes
+"

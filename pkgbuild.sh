@@ -5,7 +5,7 @@ dbus-glib glib2-devel gnome-common gobject-introspection gtk-doc intltool \
 libjpeg libmatchbox libpng libsm libxcursor libxext \
 pango polkit startup-notification xsettings-client"
 
-packages="\
+list="\
 alsaequal               : caps ladspa
 bluealsa                : bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc
 camilladsp              : 
@@ -20,13 +20,13 @@ python-rplcd            : python-setuptools
 python-smbus2           : python-setuptools
 python-upnpp            : libnpupnp meson-python swig
 snapcast                : boost cmake"
-list_menu=$( awk '{print $1}' <<< $packages )
+list_menu=$( awk '{print $1}' <<< $list )
 #........................
-pkg=$( dialog.menu Package "$list_menu" )
-name_pkg=$( sed -n "$pkg p" <<< $list_menu )
-depends=$( sed -n "$pkg {s/.*: //; p}" <<< $packages )
+package=$( dialog.menu Package "$list_menu" )
+pkg_name=$( sed -n "$package p" <<< $list_menu )
+depends=$( sed -n "$package {s/.*: //; p}" <<< $list )
 #----------------------------------------------------------------------------
-if [[ $name_pkg == snapcast ]]; then
+if [[ $pkg_name == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
 		fstab_swap=$( sed -n -E '1 {s/(.*-0).*/\13    none   swap  sw  0  0/; p}' /etc/fstab )
 		echo $fstab_swap >> /etc/fstab
@@ -43,8 +43,13 @@ $fstab_swap
 	fi
 fi
 clear -x
-bar Install depends ...
-pacman -Sy --noconfirm --needed base-devel git $depends
+for pkg in base-devel git $depends; do
+	! pacman -Qi $pkg &> /dev/null && pkg_install+="$pkg "
+done
+if [[ $pkg_install ]]; then
+	banner Install depends ...
+	pacman -Sy --noconfirm $pkg_install
+fi
 #[[ $( uname -m ) != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 buildPackage() {
 	local dir_meson name pkg_rel pkg_ver rel url url_rern ver
@@ -81,20 +86,20 @@ buildPackage() {
 " 0 0 && skipinteg=--skipinteg
 	fi
 	clear -x
-	bar Start build $name ...
+	banner Build $name ...
 	sudo -u alarm makepkg -fA $skipinteg
-	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $name_pkg failed.
+	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $pkg_name failed.
 #----------------------------------------------------------------------------
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*.xz
 	mv -f $name*.xz /root
 }
 
-if [[ $name_pkg == matchbox-window-manager ]]; then
+if [[ $pkg_name == matchbox-window-manager ]]; then
 	buildPackage -i gconf
 	buildPackage -i libmatchbox
 fi
-buildPackage $name_pkg
-echo -e "
-bar Done
-Package: $( ls -1 $name_pkg*.xz | tail -1 )
+buildPackage $pkg_name
+bar "\
+Done
+Package: $( ls -1 $pkg_name*.xz | tail -1 )
 "
