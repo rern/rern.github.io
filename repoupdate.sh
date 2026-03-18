@@ -4,23 +4,17 @@ unMount() {
 	if [[ -L repo ]]; then
 		unlink repo
 	else
-		umount -l $dir_repo
+		umount -l repo
 		rmdir repo
 	fi
 }
-BIG=$( awk '/BIG/ {print $2}' /etc/fstab )
-if [[ $BIG ]]; then # on manjaro
-	dir_repo=$BIG/RPi/Git/rern.github.io
-else
 #........................
-	localip=$( dialog.ip 'Local \Z1rern.github.io\Z0 IP' )
-	dir_repo=$PWD/repo
-	mkdir -p repo
-	mount -t cifs //$localip/rern.github.io $dir_repo -o username=guest,password=
-	[[ $? != 0 ]] && exit
+ip_repo=$( dialog.ip 'Local \Z1rern.github.io\Z0 IP' )
+mkdir -p repo
+mount -t cifs //$ip_repo/rern.github.io repo -o username=guest,password=
+[[ $? != 0 ]] &&  && dialog.error_exit Mount //$ip_repo/rern.github.io failed.
 #----------------------------------------------------------------------------
-fi
-[[ ! $( ls $dir_repo ) ]] && dialog.error_exit Repo empty: $dir_repo
+[[ ! $( ls repo ) ]] && dialog.error_exit Repo empty: repo
 #----------------------------------------------------------------------------
 #........................
 repo=$( dialog $opt_check '
@@ -42,7 +36,7 @@ for arch in $repo; do
 	[[ $arch == Rebuild ]] && break
 	
 	bar $arch
-	cd $dir_repo/$arch
+	cd repo/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
 	rm -f *.xz.old
