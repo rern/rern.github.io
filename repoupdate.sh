@@ -23,12 +23,13 @@ selected=$( dialog $opt_check '
 	Rebuild off )
 #........................
 banner $action repository ...
-if selected Rebuild; then
+if [[ $selected == Rebuild ]]; then
 	action=Rebuild
 else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
+dir_base=$PWD
 for arch in $selected; do
 	[[ $arch == Rebuild ]] && continue
 	
@@ -61,6 +62,7 @@ for arch in $selected; do
 </html>'
 	echo -e "$html" > ../$arch.html
 done
+cd $dir_base
 rm REPO
 umount -l BIG
 rmdir BIG
