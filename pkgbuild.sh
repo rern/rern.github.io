@@ -27,19 +27,12 @@ pkg_name=$( sed -n "$package p" <<< $list_menu )
 depends=$( sed -n "$package {s/.*: //; p}" <<< $list )
 #----------------------------------------------------------------------------
 if [[ $pkg_name == snapcast ]]; then
-	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )) && ! grep swap /etc/fstab ; then
-		fstab_swap=$( sed -n -E '1 {s/(.*-0).*/\13    none   swap  sw  0  0/; p}' /etc/fstab )
-		echo $fstab_swap >> /etc/fstab
- 		dialog.error_exit "\
-Snapcast requires \Z1swap partition\Zn for RAM < 3GB.
-
-Added to /etc/fstab:
-$fstab_swap
-
-» Power off
-» GParted - Create 4GB linux-swap partition
-"
-#----------------------------------------------------------------------------
+	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )); then
+		file_swap=/swap
+		fallocate -l 4G $file_swap
+		chmod 600 $file_swap
+		mkswap $file_swap
+		swapon $file_swap
 	fi
 fi
 clear -x
@@ -99,6 +92,7 @@ if [[ $pkg_name == matchbox-window-manager ]]; then
 	buildPackage -i libmatchbox
 fi
 buildPackage $pkg_name
+[[ -e $file_swap ]] && swapoff $file_swap && rm $file_swap
 bar "\
 Done
 Package: $( ls -1 $pkg_name*.xz | tail -1 )

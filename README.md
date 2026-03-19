@@ -11,15 +11,6 @@ bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Create `radioparadise.tar.xz`
 - Create `guide.tar.xz`
 
-Note: `snapcast` needs 3GB or more RAM or swap partition to build
-- Gparted » Resize » Create 4GB `linux-swap` partition
-- `/etc/fstab`:
-```sh
-fstab=/run/media/x/ROOT/etc/fstab
-swap=$( sed -n '1 {s/01 .* vfat/03  swap   swap/; p}' $fstab )
-echo "$swap" >> $fstab
-	```
-
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
 - Archives
