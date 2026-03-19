@@ -1,5 +1,6 @@
 #!/bin/bash
 
+bar Mount REPO ...
 mkdir -p BIG
 if [[ $( uname -m ) == x86_64 ]]; then
 	dev_repo=$( lsblk -pro name,label | awk '/BIG/ {print $1}' )
@@ -22,13 +23,13 @@ selected=$( dialog $opt_check '
 	armv6h off \
 	Rebuild off )
 #........................
-banner $action repository ...
 if [[ $selected == Rebuild ]]; then
 	action=Rebuild
 else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
+banner $action Repository
 dir_base=$PWD
 for arch in $selected; do
 	[[ $arch == Rebuild ]] && continue
