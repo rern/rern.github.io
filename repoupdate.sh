@@ -1,15 +1,19 @@
 #!/bin/bash
 
+mkdir -p REPO
+if [[ $( uname -m ) == x86_64 ]]; then
+	dev_repo=$( lsblk -pro name,label | awk '/BIG/ {print $1}' )
+	mount $dev_repo REPO
+else
 #........................
-ip_repo=$( dialog.ip 'Local \Z1rern.github.io\Z0 IP' )
-mkdir -p repo
-mount -t cifs //$ip_repo/rern.github.io repo -o username=guest,password=
-[[ $? != 0 ]] &&  && dialog.error_exit Mount //$ip_repo/rern.github.io failed.
+	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
+fi
+[[ $? != 0 ]] &&  && dialog.error_exit Mount \Z1REPO\Zn failed.
 #----------------------------------------------------------------------------
-[[ ! $( ls repo ) ]] && dialog.error_exit Repo empty: repo
+[[ ! $( ls REPO ) ]] && dialog.error_exit Repo empty: REPO
 #----------------------------------------------------------------------------
 #........................
-repo=$( dialog $opt_check '
+selected=$( dialog $opt_check '
 \Z1Repository:\Z0
 ' 8 30 0 \
 	aarch64 on \
@@ -24,11 +28,11 @@ else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
-for arch in $repo; do
-	[[ $arch == Rebuild ]] && break
+for arch in $selected; do
+	[[ $arch == Rebuild ]] && continue
 	
 	bar $arch
-	cd repo/$arch
+	cd REPO/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
 	rm -f *.xz.old
@@ -56,6 +60,6 @@ for arch in $repo; do
 </html>'
 	echo -e "$html" > ../$arch.html
 done
-umount -l repo
-rmdir repo
+umount -l REPO
+rmdir REPO
 bar Done
