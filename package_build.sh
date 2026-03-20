@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SECONDS=0
+dir_base=$PWD
+
 matchbox="\
 dbus-glib glib2-devel gnome-common gobject-introspection gtk-doc intltool \
 libjpeg libmatchbox libpng libsm libxcursor libxext \
@@ -81,10 +84,10 @@ buildPackage() {
 	clear -x
 	banner Build $name ...
 	sudo -u alarm makepkg -fA $skipinteg
-	[[ -z $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $pkg_name failed.
+	[[ ! $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $pkg_name failed.
 #----------------------------------------------------------------------------
 	[[ $1 == -i ]] && pacman -U --noconfirm $name*.xz
-	mv -f $name*.xz /root
+	mv -f $name*.xz $dir_base
 }
 
 if [[ $pkg_name == matchbox-window-manager ]]; then
@@ -93,7 +96,9 @@ if [[ $pkg_name == matchbox-window-manager ]]; then
 fi
 buildPackage $pkg_name
 [[ -e $file_swap ]] && swapoff $file_swap && rm $file_swap
+cd $dir_base
 bar "\
 Done
-Package: $( ls -1 $pkg_name*.xz | tail -1 )
+Package: $( ls $pkg_name*.xz | tail -1 )
+$( date -d@$SECONDS -u +%M:%S )
 "
