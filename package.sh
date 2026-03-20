@@ -7,23 +7,22 @@
 #........................
 dialog.splash Package Utilities
 list="\
-Build Package                          : package_build
-Update Repo                            : repo_update
-AUR Setup                              : aur_setup
-Create guide.tar.xz                    :
-Create radioparadise.tar.xz            :
-Create regdomcodes.json                : wireless_regdom"
+Package Build        : package_build
+Repo Update          : repo_update
+AUR Setup            : aur_setup
+guide.tar.xz         :
+radioparadise.tar.xz :
+regdomcodes.json     : wireless_regdom"
 #........................
 task=$( dialog.menu Package "$( sed 's/ *:.*//' <<< $list )" )
 name=$( sed -n "$task {s/ *:.*//; p}" <<< $list )
-file_name=$( sed -n "$task {s/.*: *//; p}" <<< $list )
+script=$( sed -n "$task {s/.*: *//; p}" <<< $list )
 #........................
 dialog.splash $name
 clear -x
-if [[ $$file_name ]]; then
-	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$file_name.sh )
-elif grep -q guide <<< $name; then
-	bsdtar cjvf guide.tar.xz -C /srv/http/assets/img/guide .
-elif grep -q radio <<< $name; then
-	bsdtar cjvf radioparadise.tar.xz -C /srv/http/data/webradio .
+if [[ $script ]]; then
+	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$script.sh )
+else
+	grep -q guide <<< $name && dir=assets/img/guide || dir=data/webradio
+	bsdtar cjvf $name -C /srv/http/$dir .
 fi
