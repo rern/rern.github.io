@@ -1,17 +1,16 @@
 #!/bin/bash
 
 bar Mount REPO ...
-mkdir -p BIG
+mkdir -p BIG REPO
 if [[ $( uname -m ) == x86_64 ]]; then
-	dev_repo=$( lsblk -pro name,label | awk '/BIG/ {print $1}' )
-	mount $dev_repo BIG
+	dev_big=$( lsblk -pro name,label | awk '/BIG/ {print $1}' )
+	mount $dev_big BIG
+	mount --bind BIG/RPi/Git/rern.github.io REPO
 else
-#........................
-	mount -t cifs //192.168.1.9/BIG BIG -o username=guest,password=
+	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
 fi
-[[ $? != 0 ]] && dialog.error_exit Mount \Z1REPO\Zn failed.
+[[ $? != 0 ]] && dialog.error_exit Mount '\Z1REPO\Zn' failed.
 #----------------------------------------------------------------------------
-ln -s BIG/RPi/Git/rern.github.io REPO
 [[ ! $( ls REPO ) ]] && dialog.error_exit Repo empty: REPO
 #----------------------------------------------------------------------------
 #........................
@@ -64,7 +63,6 @@ for arch in $selected; do
 	echo -e "$html" > ../$arch.html
 done
 cd $dir_base
-rm REPO
-umount -l BIG
-rmdir BIG
+umount -ql BIG REPO
+rmdir BIG REPO
 bar Done
