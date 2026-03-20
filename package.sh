@@ -7,12 +7,12 @@
 #........................
 dialog.splash Package Utilities
 list="\
-Build Package                          : pkgbuild
-Update Repo                            : repoupdate
-AUR Setup                              : aursetup
+Build Package                          : package_build
+Update Repo                            : repo_update
+AUR Setup                              : aur_setup
 Create guide.tar.xz                    :
 Create radioparadise.tar.xz            :
-Create regdomcodes.json^wirelessregdom :"
+Create regdomcodes.json                : wireless_regdom"
 #........................
 task=$( dialog.menu Package "$( sed 's/ *:.*//' <<< $list )" )
 name=$( sed -n "$task {s/ *:.*//; p}" <<< $list )
