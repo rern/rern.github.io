@@ -18,12 +18,14 @@ selected=$( dialog $opt_check '
 \Z1Repository:\Z0
 ' 8 30 0 \
 	aarch64 on \
-	armv7h on \
-	armv6h off \
+	armv7h  on \
+	armv6h  off \
+	''      off \
 	Rebuild off )
 #........................
-if [[ $selected == Rebuild ]]; then
+if grep -q Rebuild <<< $selected; then
 	action=Rebuild
+	selected=$( grep -v Rebuild <<< $selected )
 else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
@@ -31,10 +33,8 @@ fi
 banner $action Repository
 dir_base=$PWD
 for arch in $selected; do
-	[[ $arch == Rebuild ]] && continue
-	
 	bar $arch
-	cd REPO/$arch
+	cd $dir_base/REPO/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz
 	rm -f *.xz.old
