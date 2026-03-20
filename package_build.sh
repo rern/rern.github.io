@@ -97,8 +97,7 @@ fi
 buildPackage $pkg_name
 [[ -e $file_swap ]] && swapoff $file_swap && rm $file_swap
 cd $dir_base
-bar "\
-Done
+bar "Done
 Package: $( ls $pkg_name*.xz | tail -1 )
 $( date -d@$SECONDS -u +%M:%S )
 "
