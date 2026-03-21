@@ -19,26 +19,26 @@ Cross-Compiling
 - Build package
 
 **Master - RPi**
-- Install distcc + setup: `bash <( curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-master.sh )`
+- Install distcc + setup: `bash <( curl -sL https_://raw.githubusercontent.com/rern/rern.github._io/main/distcc-install-master.sh )`
 
 **Client/Volunteer - x86-64 Arch Linux**
 - Build toolchains + install:
 	```sh
  	su USER
- 	curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
+ 	curl -sL https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
  	cd distccd-alarm
  	makepkg
  	su
  	pacman -U distccd-alarm-arm*
 	```
-- Install distcc: `bash <( curl -L https://github.com/rern/rern.github.io/raw/main/distcc-install-client.sh )`
+- Install distcc: `bash <( curl -sL https_://raw.githubusercontent.com/rern/rern.github._io/main/distcc-install-client.sh )`
 
 **Build package**
 - Start Distcc
 	- Master - No need
 	- Client `systemctl start distccd-ARCH` (`ARCH` - armv6h, armv7h, armv8)
 - Setup and build as usual.
-- Monitor with another RPi terminal: 
+- Monitor with another RPi terminal:
 	```sh
  	su USER
 	distccmon-text 1  # 1: @ 1 second
@@ -87,7 +87,7 @@ systemctl start docker
   	- Copy
   		- New IMAGE - `docker commit CONTAINER_ID IMAGE_NAME`
   	  	- New file  - `docker save -o IMAGE_FILE.tar IMAGE_NAME`
-  	  	- 
+  	  	-
   	- Remove - `docker image rm IMAGE_NAME` (`REPOSITORY:TAG` if more than 1)
 - Shared directory
 	- Mount - `-v /home/USER/SHARE:/DOCKER_SHARE`

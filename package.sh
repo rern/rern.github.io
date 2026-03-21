@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
+. <( curl -sL https://raw.githubusercontent.com/rern/rOS/main/common.sh )
 
 ! grep -q ^Model.*Rasp /proc/cpuinfo && dialog.error_exit This is not a Raspberry Pi
 #----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ script=$( sed -n "$task {s/.*: *//; p}" <<< $list )
 dialog.splash $name
 clear -x
 if [[ $script ]]; then
-	. <( curl -sL https://github.com/rern/rern.github.io/raw/main/$script.sh )
+	. <( curl -sL $https_io/$script.sh )
 else
 	grep -q guide <<< $name && dir=assets/img/guide || dir=data/webradio
 	bsdtar cjvf $name -C /srv/http/$dir .

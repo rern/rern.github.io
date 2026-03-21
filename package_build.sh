@@ -11,7 +11,7 @@ pango polkit startup-notification xsettings-client"
 list="\
 alsaequal               : caps ladspa
 bluealsa                : bluez bluez-libs bluez-utils glib2-devel libfdk-aac python-docutils sbc
-camilladsp              : 
+camilladsp              :
 dab-scanner             : cmake rtl-sdr
 fakepkg                 : gzip
 hfsprogs                : libbsd
@@ -48,17 +48,15 @@ if [[ $pkg_install ]]; then
 fi
 #[[ $( uname -m ) != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
 buildPackage() {
-	local dir_meson name pkg_rel pkg_ver rel url url_rern ver
+	local dir_meson name pkg_rel pkg_ver rel url ver
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
 		python-upnpp | xf86-video-fbturbo )
-			url_rern=https://github.com/rern/rern.github.io/raw/main
-			url=$url_rern/PKGBUILD/$name
-			curl -L $url_rern/github-download.sh | bash -s "$url"
+			bash <( curl -sL $https_io/github-download_dir.sh ) $https_io/PKGBUILD/$name
 			;;
    		* )
-			curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
+			curl -sL https://aur.archlinux.org/cgit/aur.git/snapshot/$name.tar.gz | bsdtar xf -
 			[[ $name == libmatchbox ]] && sed -i 's/libjpeg>=7/libjpeg/' PKGBUILD
 			;;
 	esac
@@ -76,9 +74,9 @@ buildPackage() {
 	else
 #........................
 		dialog $opt_yesno "
-		
+
  Skip integrity check?
- 
+
 " 0 0 && skipinteg=--skipinteg
 	fi
 	clear -x

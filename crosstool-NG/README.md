@@ -5,7 +5,7 @@ crosstool-NG
 ```sh
 su $USER
 cd
-curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
+curl -sL https://aur.archlinux.org/cgit/aur.git/snapshot/distccd-alarm.tar.gz | bsdtar xf -
 cd distccd-alarm
 makepkg
 ```
@@ -18,9 +18,9 @@ makepkg
 pacman -Sy --needed bison byacc flex help2man patch unzip
 su $USER
 cd
-# build binary: /bin/ct-ng 
+# build binary: /bin/ct-ng
 # VERSION: http://crosstool-ng.org/download/crosstool-ng
-wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
+curl -sL http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-$VERSION.tar.xz | bsdtar xf -
 cd crosstool-ng-$VERSION
 ./configure --prefix=/usr
 make
@@ -30,8 +30,7 @@ sudo make install
 mkdir distcc
 cd distcc
 
-wget https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -O .config
-#wget https://archlinuxarm.org/builder/xtools/10.2.0/xtools-dotconfig-v6 -O .config
+curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/crosstool-NG/xtools-dotconfig-v6 -o .config
 # set:
 #     options  to default
 #     packages to latest versions except glibc 2.34, not 2.35 which will failed

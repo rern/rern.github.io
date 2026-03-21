@@ -2,7 +2,7 @@
 
 **Build packages** (on rAudio):
 ```sh
-bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
+bash <( curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/package.sh )
 ```
 - Build
 - Update repo
@@ -25,7 +25,7 @@ bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 		```sh
   		# updated packages for arch 'any' (armv6h will not be available)
   		Server = http://mirror.archlinuxarm.org/armv7h/$repo
-  
+
   		# archive - mirror.archlinuxarm.org must be commented/removed
 		Server = [http://alaa.ad24.cz/repos/2022/02/06](http://tardis.tiny-vps.com/aarm/repos/2022/01/08/$arch/$repo)
 		```
