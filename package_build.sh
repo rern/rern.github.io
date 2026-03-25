@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SECONDS=0
+sec_start=$( date +%s )
 dir_base=$PWD
 
 matchbox="\
@@ -27,7 +27,7 @@ list_menu=$( awk '{print $1}' <<< $list )
 #........................
 package=$( dialog.menu Package "$list_menu" )
 pkg_name=$( sed -n "$package p" <<< $list_menu )
-depends=$( sed -n "$package {s/.*: //; p}" <<< $list )
+depends=$( sed -n "$package {s/.*: *//; p}" <<< $list )
 #----------------------------------------------------------------------------
 if [[ $pkg_name == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )); then
@@ -43,7 +43,7 @@ for pkg in base-devel git $depends; do
 	! pacman -Qi $pkg &> /dev/null && pkg_install+="$pkg "
 done
 if [[ $pkg_install ]]; then
-	banner Install depends ...
+	banner Install depends
 	pacman -Sy --noconfirm $pkg_install
 fi
 #[[ $( uname -m ) != aarch64 ]] && sed -i 's/ -mno-omit-leaf-frame-pointer//' /etc/makepkg.conf
@@ -80,7 +80,7 @@ buildPackage() {
 " 0 0 && skipinteg=--skipinteg
 	fi
 	clear -x
-	banner Build $name ...
+	banner Build $name
 	sudo -u alarm makepkg -fA $skipinteg
 	[[ ! $( ls $name*.xz 2> /dev/null ) ]] && dialog.error_exit Build $pkg_name failed.
 #----------------------------------------------------------------------------
@@ -97,5 +97,5 @@ buildPackage $pkg_name
 cd $dir_base
 bar "Done
 Package: $( ls $pkg_name*.xz | tail -1 )
-$( date -d@$SECONDS -u +%M:%S )
+$( elapsed $sec_start )
 "
