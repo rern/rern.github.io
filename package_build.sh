@@ -97,5 +97,5 @@ buildPackage $pkg_name
 cd $dir_base
 bar "Done
 Package: $( ls $pkg_name*.xz | tail -1 )
-$(( $( date +%s ) - $sec_start ))
+$( elapsed $sec_start )
 "
