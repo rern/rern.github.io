@@ -9,8 +9,7 @@ dialog.splash Package Utilities
 list="\
 Package Build        : package_build
 Repo Update          : repo_update
-AUR Setup            : aur_setup
-regdomcodes.json     : wireless_regdom"
+AUR Setup            : aur_setup"
 #........................
 task=$( dialog.menu Package "$( sed 's/ *:.*//' <<< $list )" )
 name=$( sed -n "$task {s/ *:.*//; p}" <<< $list )
