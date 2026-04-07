@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sec_start=$( date +%s )
+START=$( date +%s )
 dir_base=$PWD
 
 matchbox="\
@@ -97,5 +97,5 @@ buildPackage $pkg_name
 cd $dir_base
 bar "Done
 Package: $( ls $pkg_name*.xz | tail -1 )
-$( elapsed $sec_start )
+$( date -d@$(( $( date +%s ) - $START )
 "
