@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Download single directory from GitHub
+# Download files one-by-one of a single directory from GitHub
+# Note: If repo is not that large, this will be much slower than the whole repo tarball.
 # Usage: github_download.sh URL_TO_DIRECTORY
 
 url=$1
