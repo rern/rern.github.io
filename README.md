@@ -48,6 +48,7 @@ bash <( curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/pack
 - [python-upnpp](https://www.lesbonscomptes.com/upmpdcli/downloads/)
 - [mediamtx](https://github.com/aler9/mediamtx)
 - [mpd_oled](https://github.com/antiprism/mpd_oled/tags)
+- [RPLCD](https://github.com/dbrgn/RPLCD)
 - [snapcast](https://github.com/badaix/snapcast)
 
 **JS plugins**
