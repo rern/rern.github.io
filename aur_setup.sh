@@ -26,10 +26,10 @@ Use existing keys
 Generate new keys" )
 if [[ $key == 1 ]]; then
 #........................
-	dialog $opt_msg '
+	dialog $opt_msg "
  Copy saved \Z1.ssh/{aur,aur.pub}\Z0 > $dir_home
  Then \Zr OK \ZR to continue.
-' 7 58
+" 7 58
 else
 	mkdir -p $dir_ssh
 	ssh-keygen -t rsa -f $dir_ssh/aur -q -N ""
