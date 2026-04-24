@@ -49,6 +49,7 @@ fi
 email=$( dialog.input '\Z1Email:\Z0' rernrern@gmail.com )
 #........................
 username=$( dialog.input '\Z1Username:\Z0' rern )
+clear -x
 echo "\
 [user]
 	email = $email
