@@ -1,4 +1,4 @@
-dialog.error_exit#!/bin/bash
+#!/bin/bash
 
 pacman -Sy --noconfirm distcc
 # for ssh start distccd from master
@@ -7,5 +7,5 @@ systemctl enable sshd
 if [[ -e /usr/bin/distccd-armv8 && -e /usr/bin/distccd-armv7h ]]; then
     bar Done
 else
-    errorExit Please build + install toolchains: https://aur.archlinux.org/packages/distccd-alarm-armv8
+    dialog.error_exit Please build + install toolchains: https://aur.archlinux.org/packages/distccd-alarm-armv8
 fi
