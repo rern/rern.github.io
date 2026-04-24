@@ -2,7 +2,7 @@
 
 **Build packages** (on rAudio):
 ```sh
-bash <( curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/package.sh )
+bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 ```
 - Build
 - Update repo

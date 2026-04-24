@@ -30,7 +30,7 @@ sudo make install
 mkdir distcc
 cd distcc
 
-curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/crosstool-NG/xtools-dotconfig-v6 -o .config
+curl -sL https://github.com/rern/rern.github.io/raw/main/crosstool-NG/xtools-dotconfig-v6 -o .config
 # set:
 #     options  to default
 #     packages to latest versions except glibc 2.34, not 2.35 which will failed

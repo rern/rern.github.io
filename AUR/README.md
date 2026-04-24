@@ -4,7 +4,7 @@ AUR Package Repo
 ### AUR setup
 ```sh
 # as root
-bash <( curl -sL https://raw.githubusercontent.com/rern/rern.github.io/main/aur_setup.sh )
+bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/aur_setup.sh )
 ```
 
 ### Git commands
