@@ -21,7 +21,7 @@ Host aur.archlinux.org
 systemctl restart sshd
 [[ -e /usr/bin/git ]] || pacman -Sy --noconfirm git
 #........................
-key=$( dialogMenu 'Raspberry Pi' "\
+key=$( dialog.menu 'Raspberry Pi' "\
 Use existing keys
 Generate new keys" )
 if [[ $key == 1 ]]; then
