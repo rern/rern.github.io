@@ -7,9 +7,6 @@ bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Build
 - Update repo
 - AUR setup
-- Create `regdomcodes.json`
-- Create `radioparadise.tar.xz`
-- Create `guide.tar.xz`
 
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
