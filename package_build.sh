@@ -52,7 +52,7 @@ buildPackage() {
 	cd /home/alarm
 	[[ $1 != -i ]] && name=$1 || name=$2
 	case $name in
-		python-upnpp | xf86-video-fbturbo )
+		mpd_oled | python-upnpp | xf86-video-fbturbo )
 			bash <( curl -sL $https_io/github-download_dir.sh ) $https_io/PKGBUILD/$name
 			;;
    		* )
