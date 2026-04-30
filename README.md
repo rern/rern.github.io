@@ -1,9 +1,6 @@
 **+R repo**: [rern.github.io](https://rern.github.io)
 
 **Package Utilities** (on rAudio):
-- Build package
-- Update repo
-- Setup AUR
 ```sh
 bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 ```
