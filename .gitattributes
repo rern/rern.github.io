@@ -12,3 +12,6 @@
 *.png binary
 *.gif binary
 *.data binary
+*.db binary
+*.gz binary
+*.xz binary
