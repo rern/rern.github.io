@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=mpd_oled
-pkgver=0.02.1
+pkgver=0.02.2
 pkgrel=1
 pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
@@ -12,19 +12,21 @@ makedepends=(glibc)
 source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz
         mpd_oled.default
         mpd_oled.service)
-sha256sums=('SKIP' 'SKIP' 'SKIP')
-#options=('!strip') # 1/4 debug
-#options=('debug')  # 2/4 debug
+sha256sums=('1f5e5a295c952f67f59b3f0f2f0fb73adaee1af8b5d0918c628aa796ccc0245b'
+            '9b856e97583eac69d14ec52747769e221bd976da86da0b0dea4cce9444fab656'
+            'db9308eb34f5f359efbb5e3e3ff6f5442176f5afd7754a4b12b8f6f5c8be2864')
+#options=('!strip') # 1/3 debug
 
 build() {
 	export CPPFLAGS="-W -Wall -Wno-psabi"
 	export CFLAGS=""
 	export CXXFLAGS=""
-#	export CXXFLAGS="-g -O0"       # 3/4 debug
+#	export CXXFLAGS="-g -O0" # 2/3 debug
 	export LDFLAGS=""
 	export DEBUG_CFLAGS=""
 	export DEBUG_CXXFLAGS=""
 	cd $srcdir/$pkgname-$pkgver
+	sed -i -E 's/(VERSION = ).*/\1"'$pkgver'";/' src/main.cpp
 	autoreconf -v -i -I m4 -W all
 	./configure --prefix=/usr
 	make
@@ -33,7 +35,7 @@ build() {
 package() {
 	cd $srcdir/$pkgname-$pkgver
 	make DESTDIR="$pkgdir" install-strip
-	make DESTDIR="$pkgdir" install # 4/4 debug
+#	make DESTDIR="$pkgdir" install # 3/3 debug
 	cd $srcdir
 	install -Dm 644 mpd_oled.default $pkgdir/etc/default/mpd_oled
 	install -Dm 644 mpd_oled.service -t $pkgdir/usr/lib/systemd/system
