@@ -12,9 +12,9 @@ makedepends=(glibc)
 source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz
         mpd_oled.default
         mpd_oled.service)
-sha256sums=('skip'
-            'skip'
-            'skip')
+sha256sums=('SKIP'
+            'SKIP'
+            'SKIP')
 #options=('!strip') # 1/3 debug
 
 build() {
