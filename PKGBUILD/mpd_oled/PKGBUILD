@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=mpd_oled
-pkgver=0.02.2
+pkgver=0.02.3
 pkgrel=1
 pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
@@ -12,9 +12,9 @@ makedepends=(glibc)
 source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz
         mpd_oled.default
         mpd_oled.service)
-sha256sums=('1f5e5a295c952f67f59b3f0f2f0fb73adaee1af8b5d0918c628aa796ccc0245b'
-            '9b856e97583eac69d14ec52747769e221bd976da86da0b0dea4cce9444fab656'
-            'db9308eb34f5f359efbb5e3e3ff6f5442176f5afd7754a4b12b8f6f5c8be2864')
+sha256sums=('skip'
+            'skip'
+            'skip')
 #options=('!strip') # 1/3 debug
 
 build() {
