@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=mpd_oled
-pkgver=0.02.3
+pkgver=0.03
 pkgrel=1
 pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
