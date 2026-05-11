@@ -5,8 +5,8 @@ pkgver=0.8
 pkgrel=4
 pkgdesc='A simple command line program based on the DAB library'
 arch=(armv6h armv7h aarch64)
-makedepends=(cmake rtl-sdr)
-depends=(gcc-libs rtl-sdr)
+makedepends=(cmake gcc-libs rtl-sdr)
+depends=(rtl-sdr mediamtx)
 url=https://github.com/JvanKatwijk/dab-cmdline
 license=('GNU')
 source=(https://github.com/vale-max/dab-cmdline/archive/refs/heads/master.zip)
@@ -23,8 +23,6 @@ build() {
 }
 
 package() {
-    gccver=$( pacman -Q gcc | cut -c 5-10 )
-    depends=( 'gcc>='$gccver 'gcc-libs>='$gccver rtl-sdr mediamtx )
     subdir=$srcdir/dab-cmdline-master
     cd $subdir/dab-scanner
     install -Dm 755 dab-scanner-rtlsdr -t $pkgdir/usr/bin
