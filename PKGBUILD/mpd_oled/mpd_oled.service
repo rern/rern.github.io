@@ -5,9 +5,6 @@ Description=MPD OLED Display
 User=root
 EnvironmentFile=/etc/default/mpd_oled
 ExecStart=/usr/bin/mpd_oled $OPTS
-ExecStartPost=/bin/sh -c 'sleep 1; pgrep -n -x cava > /tmp/cava.pid'
-ExecStop=/bin/sh -c 'kill -9 $( cat /tmp/cava.pid )'
-ExecStopPost=/bin/sh -c 'rm -f /tmp/cava*'
  
 [Install]
 WantedBy=multi-user.target
