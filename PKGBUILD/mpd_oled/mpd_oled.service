@@ -5,6 +5,8 @@ Description=MPD OLED Display
 User=root
 EnvironmentFile=/etc/default/mpd_oled
 ExecStart=/usr/bin/mpd_oled $OPTS
+KillMode=control-group
+KillSignal=SIGTERM
 
 [Install]
 WantedBy=multi-user.target
