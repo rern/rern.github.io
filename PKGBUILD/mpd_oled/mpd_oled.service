@@ -7,6 +7,7 @@ EnvironmentFile=/etc/default/mpd_oled
 ExecStart=/usr/bin/mpd_oled $OPTS
 KillMode=control-group
 KillSignal=SIGTERM
-
+ExecStopPost=/bin/sh -c '/usr/bin/rm -f /tmp/cava*'
+ 
 [Install]
 WantedBy=multi-user.target
