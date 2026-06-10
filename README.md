@@ -11,6 +11,7 @@ bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
 - Archives
+	- https://pkgmirror.sametimetomorrow.net/ *(aarch64 only)*
 	- http://tardis.tiny-vps.com/aarm/repos
 
 **Arch Linux Arm Sources**:
