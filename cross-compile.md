@@ -1,5 +1,43 @@
 Cross-Compiling
 ---
+## x86_64 Manjaro
+```sh
+pacman -Sy --needed base-devel cmake git pkgconf yay
+
+# multilib: lib32-*
+! grep -q multilib /etc/pacman.conf && cat << EOF >> /etc/pacman.conf
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+EOF
+pacman -S --needed lib32-alsa-lib lib32-gcc lib32-glibc-libs lib32-libpng lib32-sdl2 lib32-zlib
+
+# openFramworks
+su x
+cd
+wget https://github.com/openframeworks/openFrameworks/releases/download/0.12.1/of_v0.12.1_linuxarmv6l_release.tar.gz
+bsdtar xf of_v0.12.1_linuxarmv6l_release.tar.gz
+rm of_v0.12.1_linuxarmv6l_release.tar.gz
+mv of_v0.12.1_linuxarmv6l_release OF
+cd OF/scripts/linux/archlinux
+yay -S --needed freeimage
+sed -i 's/freeimage //' install_dependencies.sh
+./install_dependencies.sh
+./compileOF.sh -j12
+# done and test
+yay -S
+cd OF/examples/graphics/polygonExample
+make
+make run
+
+# RPi toolchain
+git clone https://github.com/raspberrypi/tools.git rpi-tools
+
+# sysroot
+mkdir -p rpi-root
+cp -r /PATH_TO_RPI_SD/usr rpi-root
+```
+
+
 - [Distcc](#distcc)
     - [crosstool-NG](https://github.com/rern/rern.github.io/tree/main/crosstool-NG) for armv6h Distcc
 - [Docker](#docker)
