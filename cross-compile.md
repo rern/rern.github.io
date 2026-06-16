@@ -2,39 +2,45 @@ Cross-Compiling
 ---
 ## x86_64 Manjaro
 ```sh
-pacman -Sy --needed base-devel cmake git pkgconf yay
+# base setup
+pacman -Sy --needed base-devel git qemu-user-static-binfmt arch-install-scripts
 
-# multilib: lib32-*
-! grep -q multilib /etc/pacman.conf && cat << EOF >> /etc/pacman.conf
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-EOF
-pacman -S --needed lib32-alsa-lib lib32-gcc lib32-glibc-libs lib32-libpng lib32-sdl2 lib32-zlib
+# clone ROOT partition
+mkdir -p /mnt/backup_folder/
+rsync -aAXv --info=progress2 /run/media/x/ROOT/ /mnt/backup_folder/
+rm /mnt/backup_folder/etc/resolv.conf
+cp /etc/resolv.conf /mnt/backup_folder/etc/
+cp /usr/bin/qemu-arm-static /mnt/backup_folder/usr/bin/
 
-# openFramworks
-su x
-cd
-wget https://github.com/openframeworks/openFrameworks/releases/download/0.12.1/of_v0.12.1_linuxarmv6l_release.tar.gz
-bsdtar xf of_v0.12.1_linuxarmv6l_release.tar.gz
-rm of_v0.12.1_linuxarmv6l_release.tar.gz
-mv of_v0.12.1_linuxarmv6l_release OF
-cd OF/scripts/linux/archlinux
-yay -S --needed freeimage
-sed -i 's/freeimage //' install_dependencies.sh
-./install_dependencies.sh
-./compileOF.sh -j12
-# done and test
-yay -S
-cd OF/examples/graphics/polygonExample
-make
-make run
+mount -t proc /proc /mnt/backup_folder/proc
+mount -t sysfs /sys /mnt/backup_folder/sys
+mount --make-rslave /mnt/backup_folder/sys
+mount --bind /dev /mnt/backup_folder/dev
+mount --bind /dev/pts /mnt/backup_folder/dev/pts
+mount --bind /run /mnt/backup_folder/run
 
-# RPi toolchain
-git clone https://github.com/raspberrypi/tools.git rpi-tools
+git clone https://github.com/archlinuxarm/PKGBUILDs.git
+cd PKGBUILDs
+git checkout 083d4e31d03ab0dbbb73fbe6520b2d30283d4e31
+cd core/gcc
+# download without compile
+makepkg -g
+makepkg -o
 
-# sysroot
-mkdir -p rpi-root
-cp -r /PATH_TO_RPI_SD/usr rpi-root
+mkdir -p /mnt/backup_folder/tmp/gcc-build
+cp -r PKGBUILDs/core/gcc /mnt/backup_folder/tmp/gcc-build
+
+wget https://developer.arm.com/-/media/files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+bsdtar xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
+mv gcc-arm-11.2 gcc
+cp -r gcc /mnt/backup_folder/tmp/gcc-build/
+
+chroot rpi-sysroot /bin/bash
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
+
+chown -R alarm:alarm /mnt/backup_folder/tmp/gcc-build
+# modified PKGBUILD
+makepkg -Acsf --nodeps --skipinteg
 ```
 
 
