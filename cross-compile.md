@@ -40,6 +40,7 @@ EOF
 chmod +x chroot-rpi0.sh
 
 # fix openssl ----------------------------------------------------------------------
+### host
 dir_alarm=$dir_root/home/alarm
 dir_build=$dir_alarm/openssl-1.1
 mkdir -p $dir_build/src
@@ -47,15 +48,17 @@ curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/openssl-1.1.tar.gz | bsd
 curl -L https://www.openssl.org/source/openssl-1.1.1w.tar.gz | bsdtar xf - -C $dir_build/src
 
 ./chroot-rpi0.sh
+### chroot
 cd /home/alarm
 chown -R alarm:alarm openssl-1.1.1
 cd alarm/openssl-1.1.1/openssl-1.1.1w/src
 # compile
 su alarm
 ./config # makepkg failed here
-make
+make -j$(nproc)
 # ctrl+d back to root
-cp libcrypto.* libssl.* /lib
+make install
+#cp libcrypto.* libssl.* /lib
 
 # gcc -----------------------------------------------------------------------
 pkgver=11.2.0
