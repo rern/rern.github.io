@@ -39,7 +39,7 @@ arch-chroot $dir_root /bin/bash
 EOF
 chmod +x chroot-rpi0.sh
 
-# openssl ----------------------------------------------------------------------
+# fix openssl ----------------------------------------------------------------------
 dir_alarm=$dir_root/home/alarm
 dir_build=$dir_alarm/openssl-1.1
 mkdir -p $dir_build/src
@@ -50,20 +50,22 @@ curl -L https://www.openssl.org/source/openssl-1.1.1w.tar.gz | bsdtar xf - -C $d
 cd /home/alarm
 chown -R alarm:alarm openssl-1.1.1
 cd alarm/openssl-1.1.1/openssl-1.1.1w/src
-su alarm
 # compile
-./config
+su alarm
+./config # makepkg failed here
 make
-make install
+# ctrl+d back to root
+cp libcrypto.* libssl.* /lib
 
 # gcc -----------------------------------------------------------------------
 pkgver=11.2.0
-dir_build=$dir_alarm/gcc-$pkgver$
+dir_build=$dir_alarm/gcc-$pkgver
 mkdir -p $dir_build/src
 cd $dir_build
 
 # PKGBUILD
-url=https://github.com/archlinuxarm/PKGBUILDs/raw/00071916624e7b3234609c4cab4ce22934649eee/core/gcc
+commit=00071916624e7b3234609c4cab4ce22934649eee
+url=https://github.com/archlinuxarm/PKGBUILDs/raw/$commit/core/gcc
 for f in PKGBUILD c89 c99 gcc-ada-repro.patch gdc_phobos_path.patch; do
 	curl -LO $url/$f
 done
@@ -71,12 +73,11 @@ done
 curl -L https://sourceware.org/pub/gcc/releases/gcc-$pkgver$/gcc-$pkgver.tar.xz | bsdtar xf - -C src
 mv $dir_build/src/{gcc-$pkgver$,gcc-build}
 
-# compile ----------------------------------------------------------------------
 ./chroot-rpi0.sh
-chown -R alarm:alarm $dir_build
-
+cd /home/alarm
+chown -R alarm:alarm gcc-11.2.0
+# compile
 su alarm
-export PATH=/usr/bin:/usr/sbin:/bin:/sbin
 
 MAKEFLAGS="-j4" makepkg -Ae --nodeps --skipinteg # -e no extraxt
 # error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Ae--nodeps --skipinteg (limit to single core)
