@@ -36,23 +36,23 @@ chroot $dir_root /bin/bash
 EOF
 chmod +x chroot-rpi0.sh
 #-------------------------------------------------------------------------------
-# gcc
+# gcc PKGBUILD
 git clone https://github.com/archlinuxarm/PKGBUILDs.git
 cd PKGBUILDs
-git checkout 083d4e31d03ab0dbbb73fbe6520b2d30283d4e31
+git checkout -f 00071916624e7b3234609c4cab4ce22934649eee # 11.2.0-4
 mkdir -p $dir_root/tmp/gcc-build
 cp -r core/gcc $dir_root/tmp/gcc-build
 cd ..
 rm -rf PKGBUILDs
-
+# gcc 11.2 source
 wget https://developer.arm.com/-/media/files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
 bsdtar xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
 mv gcc-arm-11.2 gcc
 cp -r gcc $dir_root/tmp/gcc-build/
-
+# chroot
 ./chroot-rpi0.sh
-
 chown -R alarm:alarm $dir_root/tmp/gcc-build
+
 # modified PKGBUILD
 
 # compile
