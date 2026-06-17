@@ -2,45 +2,64 @@ Cross-Compiling
 ---
 ## x86_64 Manjaro
 ```sh
-# base setup
+# setup ------------------------------------------------------------------------
 pacman -Sy --needed base-devel git qemu-user-static-binfmt arch-install-scripts
-
 # clone ROOT partition
-mkdir -p /mnt/backup_folder/
-rsync -aAXv --info=progress2 /run/media/x/ROOT/ /mnt/backup_folder/
-rm /mnt/backup_folder/etc/resolv.conf
-cp /etc/resolv.conf /mnt/backup_folder/etc/
-cp /usr/bin/qemu-arm-static /mnt/backup_folder/usr/bin/
+dir_root=/mnt/rpi0
+mkdir -p $dir_root
+rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_root/
+rm $dir_root/etc/resolv.conf
+cp /etc/resolv.conf $dir_root/etc/
+cp /usr/bin/qemu-arm-static /mnt/rpi0/usr/bin/
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
+# chroot mount script
+cat << EOF > chroot-rpi0.sh
+#!/bin/bash
 
-mount -t proc /proc /mnt/backup_folder/proc
-mount -t sysfs /sys /mnt/backup_folder/sys
-mount --make-rslave /mnt/backup_folder/sys
-mount --bind /dev /mnt/backup_folder/dev
-mount --bind /dev/pts /mnt/backup_folder/dev/pts
-mount --bind /run /mnt/backup_folder/run
+dir_root=/mnt/rpi0
 
+if [[ $1 ]]; then
+	for mp in dev/pts dev proc sys; do
+		umount -l $dir_root/$mp
+	done
+	exit
+fi
+
+mount -t proc /proc   $dir_root/proc
+mount -t sysfs /sys   $dir_root/sys
+mount --make-rslave   $dir_root/sys
+mount --bind /dev     $dir_root/dev
+mount --bind /dev/pts $dir_root/dev/pts
+mount --bind /run     $dir_root/run
+
+chroot $dir_root /bin/bash
+EOF
+chmod +x chroot-rpi0.sh
+#-------------------------------------------------------------------------------
+# gcc
 git clone https://github.com/archlinuxarm/PKGBUILDs.git
 cd PKGBUILDs
 git checkout 083d4e31d03ab0dbbb73fbe6520b2d30283d4e31
-cd core/gcc
-# download without compile
-makepkg -g
-makepkg -o
-
-mkdir -p /mnt/backup_folder/tmp/gcc-build
-cp -r PKGBUILDs/core/gcc /mnt/backup_folder/tmp/gcc-build
+mkdir -p $dir_root/tmp/gcc-build
+cp -r core/gcc $dir_root/tmp/gcc-build
+cd ..
+rm -rf PKGBUILDs
 
 wget https://developer.arm.com/-/media/files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
 bsdtar xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
 mv gcc-arm-11.2 gcc
-cp -r gcc /mnt/backup_folder/tmp/gcc-build/
+cp -r gcc $dir_root/tmp/gcc-build/
 
-chroot rpi-sysroot /bin/bash
-sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
+./chroot-rpi0.sh
 
-chown -R alarm:alarm /mnt/backup_folder/tmp/gcc-build
+chown -R alarm:alarm $dir_root/tmp/gcc-build
 # modified PKGBUILD
+
+# compile
+su alarm
 makepkg -Acsf --nodeps --skipinteg
+# error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Acsf --nodeps --skipinteg (limit to single core)
+# error: reversed patch - comment out the patch line in prepare()
 ```
 
 
