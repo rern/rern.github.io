@@ -37,7 +37,8 @@ EOF
 chmod +x chroot-rpi0.sh
 
 # source -----------------------------------------------------------------------
-dir_build=/mnt/rpi0/tmp/gcc-build
+pkgver=11.2.0
+dir_build=/mnt/rpi0/tmp/gcc-$pkgver$
 mkdir -p $dir_build/src
 cd $dir_build
 
@@ -47,19 +48,18 @@ for f in PKGBUILD c89 c99 gcc-ada-repro.patch gdc_phobos_path.patch; do
 	curl -LO $url/$f
 done
 # gcc source
-curl -L https://sourceware.org/pub/gcc/releases/gcc-11.2.0/gcc-11.2.0.tar.xz | bsdtar xf - -C src
-mv $dir_build/src/{gcc-11.2.0,gcc-build}
+curl -L https://sourceware.org/pub/gcc/releases/gcc-$pkgver$/gcc-$pkgver.tar.xz | bsdtar xf - -C src
+mv $dir_build/src/{gcc-$pkgver$,gcc-build}
 
 # compile ----------------------------------------------------------------------
 ./chroot-rpi0.sh
-chown -R alarm:alarm $dir_root/tmp/gcc-build
+chown -R alarm:alarm $dir_build
 
 su alarm
-makepkg -Ae --nodeps --skipinteg # -e no extraxt
+MAKEFLAGS="-j4" makepkg -Ae --nodeps --skipinteg # -e no extraxt
 # error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Ae--nodeps --skipinteg (limit to single core)
 # error: reversed patch - comment out the patch line in prepare()
 ```
-
 
 - [Distcc](#distcc)
     - [crosstool-NG](https://github.com/rern/rern.github.io/tree/main/crosstool-NG) for armv6h Distcc
