@@ -35,30 +35,28 @@ mount --bind /run     $dir_root/run
 chroot $dir_root /bin/bash
 EOF
 chmod +x chroot-rpi0.sh
-#-------------------------------------------------------------------------------
+
+# source -----------------------------------------------------------------------
+dir_build=/mnt/rpi0/tmp/gcc-build
+mkdir -p $dir_build/src
+cd $dir_build
+
 # gcc PKGBUILD
-git clone https://github.com/archlinuxarm/PKGBUILDs.git
-cd PKGBUILDs
-git checkout -f 00071916624e7b3234609c4cab4ce22934649eee # 11.2.0-4
-mkdir -p $dir_root/tmp/gcc-build
-cp -r core/gcc $dir_root/tmp/gcc-build
-cd ..
-rm -rf PKGBUILDs
-# gcc 11.2 source
-wget https://developer.arm.com/-/media/files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
-bsdtar xf gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf.tar.xz
-mv gcc-arm-11.2 gcc
-cp -r gcc $dir_root/tmp/gcc-build/
-# chroot
+url=https://github.com/archlinuxarm/PKGBUILDs/raw/00071916624e7b3234609c4cab4ce22934649eee/core/gcc
+for f in PKGBUILD c89 c99 gcc-ada-repro.patch gdc_phobos_path.patch; do
+	curl -LO $url/$f
+done
+# gcc source
+curl -L https://sourceware.org/pub/gcc/releases/gcc-11.2.0/gcc-11.2.0.tar.xz | bsdtar xf - -C src
+mv $dir_build/src/{gcc-11.2.0,gcc-build}
+
+# compile ----------------------------------------------------------------------
 ./chroot-rpi0.sh
 chown -R alarm:alarm $dir_root/tmp/gcc-build
 
-# modified PKGBUILD
-
-# compile
 su alarm
-makepkg -Acsf --nodeps --skipinteg
-# error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Acsf --nodeps --skipinteg (limit to single core)
+makepkg -Ae --nodeps --skipinteg # -e no extraxt
+# error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Ae--nodeps --skipinteg (limit to single core)
 # error: reversed patch - comment out the patch line in prepare()
 ```
 
