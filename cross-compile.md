@@ -22,7 +22,7 @@ EOF
 exit
 
 # login
-systemd-nspawn -bD /var/lib/machines/rpi0
+systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
 ```
 
 ```sh
