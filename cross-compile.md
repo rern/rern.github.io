@@ -3,6 +3,8 @@ Cross-Compiling
 ## x86_64 Manjaro
 
 - `systemd-nspawn`
+- Slightly faster than RPi 4, 5
+- Much faster than RPi 3 and less
 
 ```sh
 pacman -Sy --needed qemu-user-static qemu-user-static-binfmt
@@ -16,8 +18,21 @@ cp -f /etc/resolv.conf $dir_rpi0/etc/resolv.conf
 sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_rpi0/etc/makepkg.conf
 ln -s $dir_rpi0 /var/lib/machines
 
-# start rpi0 prompt                        set rpi0 /tmp to tmpfs(ram)
-systemd-nspawn -D /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+# systemd-nspawn -D /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+# systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+mkdir -p /etc/systemd/system/systemd-nspawn@rpi0.d/
+cat << 'EOF' > /etc/systemd/system/systemd-nspawn@rpi0.d/override.conf # allow rpi0 to user host tmpfs(ram)
+[Service]
+DevicePolicy=closed
+ExecStart=
+ExecStart=systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --network-veth --settings=override --machine=%I --tmpfs=/tmp --tmpfs=/root/.cache
+EOF
+systemctl daemon-reload
+
+# start rpi0 prompt
+machinectl start rpi0
+machinectl shell rpi0
+
 
 # if needed to boot rpi0 normally
 # allow root login
@@ -57,11 +72,6 @@ done
 curl -L https://sourceware.org/pub/gcc/releases/gcc-$pkgver$/gcc-$pkgver.tar.xz | bsdtar xf - -C src
 mv $dir_build/src/{gcc-$pkgver$,gcc-build}
 
-./chroot-rpi0.sh
-cd /home/alarm
-chown -R alarm:alarm gcc-11.2.0
-# compile
-su alarm
 
 MAKEFLAGS="-j4" makepkg -Ae --nodeps --skipinteg # -e no extraxt
 # error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Ae--nodeps --skipinteg (limit to single core)
