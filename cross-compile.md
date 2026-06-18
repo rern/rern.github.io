@@ -2,18 +2,42 @@ Cross-Compiling
 ---
 ## x86_64 Manjaro
 ```sh
+# clone rpi0 ROOT partition in usb reader
+dir_root=/var/lib/machines/rpi0
+mkdir -p $dir_root
+rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_root/
+cp -f /etc/resolv.conf $dir_root/etc/resolv.conf
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
+
+# allow root login
+systemd-nspawn -D /var/lib/machines/rpi0
+cat << EOF >> /etc/securetty
+console
+pts/0
+pts/1
+pts/2
+pts/3
+container
+EOF
+exit
+
+# login
+systemd-nspawn -bD /var/lib/machines/rpi0
+```
+
+```sh
 # setup ------------------------------------------------------------------------
 pacman -Sy --needed base-devel git qemu-user-static-binfmt arch-install-scripts
 # clone ROOT partition
 dir_root=/mnt/rpi0
 mkdir -p $dir_root
 rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_root/
-rm $dir_root/etc/resolv.conf
-cp /etc/resolv.conf $dir_root/etc/
+cp -f /etc/resolv.conf $dir_root/etc/
 cp /usr/bin/qemu-arm-static /mnt/rpi0/usr/bin/
 sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
 
-# chroot mount script
+# chroot
+# mount script
 cat << EOF > chroot-rpi0.sh
 #!/bin/bash
 
