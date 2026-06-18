@@ -18,20 +18,32 @@ cp -f /etc/resolv.conf $dir_rpi0/etc/resolv.conf
 sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_rpi0/etc/makepkg.conf
 ln -s $dir_rpi0 /var/lib/machines
 
-# systemd-nspawn -D /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
-# systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+# allow rpi0 to user host tmpfs(ram)
 mkdir -p /etc/systemd/system/systemd-nspawn@rpi0.d/
-cat << 'EOF' > /etc/systemd/system/systemd-nspawn@rpi0.d/override.conf # allow rpi0 to user host tmpfs(ram)
+cat << 'EOF' > /etc/systemd/system/systemd-nspawn@rpi0.d/override.conf
 [Service]
 DevicePolicy=closed
 ExecStart=
-ExecStart=systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --network-veth --settings=override --machine=%I --tmpfs=/tmp --tmpfs=/root/.cache
+ExecStart=systemd-nspawn --quiet --keep-unit --boot --link-journal=try-guest --settings=override --machine=%I --tmpfs=/tmp --tmpfs=/root/.cache
 EOF
 systemctl daemon-reload
 
-# start rpi0 prompt
+# allow network / internet
+cat << EOF > /etc/systemd/nspawn/rpi0.nspawn
+[Network]
+VirtualEthernet=no
+EOF
+
+# start rpi0
 machinectl start rpi0
-machinectl shell rpi0
+# rpi0 prompt
+machinectl shell root@rpi0
+
+machinectl kill rpi0 --signal=SIGKILL # machinectl stop rpi0 # not working
+
+# list
+machinectl list
+machinectl show rpi0
 
 
 # if needed to boot rpi0 normally
@@ -47,14 +59,6 @@ EOF
 exit
 # boot         -b
 systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
-
-# openssl ----------------------------------------------------------------------
-cd /home/alarm
-curl -L https://www.openssl.org/source/openssl-1.1.1w.tar.gz | bsdtar xf -
-cd openssl-1.1.1w/src
-./config
-make -j$(nproc)
-make install
 
 # gcc -----------------------------------------------------------------------
 pkgver=11.2.0
