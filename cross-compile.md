@@ -1,16 +1,26 @@
 Cross-Compiling
 ---
 ## x86_64 Manjaro
-```sh
-# clone rpi0 ROOT partition in usb reader
-dir_root=/var/lib/machines/rpi0
-mkdir -p $dir_root
-rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_root/
-cp -f /etc/resolv.conf $dir_root/etc/resolv.conf
-sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
 
+- `systemd-nspawn`
+
+```sh
+pacman -Sy --needed qemu-user-static qemu-user-static-binfmt
+systemctl restart systemd-binfmt # run once
+
+# clone rpi0 ROOT partition in usb reader
+dir_rpi0=/root/rpi0
+mkdir -p $dir_root $dir_rpi0
+rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_rpi0/
+cp -f /etc/resolv.conf $dir_rpi0/etc/resolv.conf
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_rpi0/etc/makepkg.conf
+ln -s $dir_rpi0 /var/lib/machines
+
+# start rpi0 prompt                        set rpi0 /tmp to tmpfs(ram)
+systemd-nspawn -D /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+
+# if needed to boot rpi0 normally
 # allow root login
-systemd-nspawn -D /var/lib/machines/rpi0
 cat << EOF >> /etc/securetty
 console
 pts/0
@@ -20,69 +30,16 @@ pts/3
 container
 EOF
 exit
-
-# login
+# boot         -b
 systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
-```
 
-```sh
-# setup ------------------------------------------------------------------------
-pacman -Sy --needed base-devel git qemu-user-static-binfmt arch-install-scripts
-# clone ROOT partition
-dir_root=/mnt/rpi0
-mkdir -p $dir_root
-rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_root/
-cp -f /etc/resolv.conf $dir_root/etc/
-cp /usr/bin/qemu-arm-static /mnt/rpi0/usr/bin/
-sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' /etc/makepkg.conf
-
-# chroot
-# mount script
-cat << EOF > chroot-rpi0.sh
-#!/bin/bash
-
-dir_root=/mnt/rpi0
-
-if [[ $1 ]]; then
-        for mp in '' run dev/pts dev sys proc; do
-                umount -l $dir_root/$mp
-        done
-        exit
-fi
-
-mount -t proc /proc    $dir_root/proc
-mount -t sysfs /sys    $dir_root/sys
-mount --make-rslave    $dir_root/sys
-mount --bind /dev      $dir_root/dev
-mount --bind /dev/pts  $dir_root/dev/pts
-mount --bind /run      $dir_root/run
-mount --bind $dir_root $dir_root
-mount -o remount,suid,dev,exec $dir_root
-
-arch-chroot $dir_root /bin/bash
-EOF
-chmod +x chroot-rpi0.sh
-
-# fix openssl ----------------------------------------------------------------------
-### host
-dir_alarm=$dir_root/home/alarm
-dir_build=$dir_alarm/openssl-1.1
-mkdir -p $dir_build/src
-curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/openssl-1.1.tar.gz | bsdtar xf - -C $dir_alarm
-curl -L https://www.openssl.org/source/openssl-1.1.1w.tar.gz | bsdtar xf - -C $dir_build/src
-
-./chroot-rpi0.sh
-### chroot
+# openssl ----------------------------------------------------------------------
 cd /home/alarm
-chown -R alarm:alarm openssl-1.1.1
-cd alarm/openssl-1.1.1/openssl-1.1.1w/src
-# compile
-su alarm
-./config # makepkg failed here
+curl -L https://www.openssl.org/source/openssl-1.1.1w.tar.gz | bsdtar xf -
+cd openssl-1.1.1w/src
+./config
 make -j$(nproc)
-# ctrl+d back to root
 make install
-#cp libcrypto.* libssl.* /lib
 
 # gcc -----------------------------------------------------------------------
 pkgver=11.2.0
