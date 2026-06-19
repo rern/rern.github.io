@@ -1,4 +1,4 @@
-## Crosstool-NG
+## crosstool-NG
 
 ```sh
 pacman -Sy --needed base-devel ncurses git gperftools bison flex texinfo help2man gawk libtool patch wget unzip rsync cpio
