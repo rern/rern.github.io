@@ -45,7 +45,6 @@ machinectl kill rpi0 --signal=SIGKILL # machinectl stop rpi0 # not working
 machinectl list
 machinectl show rpi0
 
-
 # if needed to boot rpi0 normally
 # allow root login
 cat << EOF >> /etc/securetty
