@@ -58,40 +58,26 @@ EOF
 exit
 # boot         -b
 systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
-
-# gcc -----------------------------------------------------------------------
-pkgver=11.2.0
-dir_build=$dir_alarm/gcc-$pkgver
-mkdir -p $dir_build/src
-cd $dir_build
-
-# PKGBUILD
-commit=00071916624e7b3234609c4cab4ce22934649eee
-url=https://github.com/archlinuxarm/PKGBUILDs/raw/$commit/core/gcc
-for f in PKGBUILD c89 c99 gcc-ada-repro.patch gdc_phobos_path.patch; do
-	curl -LO $url/$f
-done
-# source
-curl -L https://sourceware.org/pub/gcc/releases/gcc-$pkgver$/gcc-$pkgver.tar.xz | bsdtar xf - -C src
-mv $dir_build/src/{gcc-$pkgver$,gcc-build}
-
-
-MAKEFLAGS="-j4" makepkg -Ae --nodeps --skipinteg # -e no extraxt
-# error: ... > s-options - recompile with: MAKEFLAGS="-j1" makepkg -Ae--nodeps --skipinteg (limit to single core)
-# error: reversed patch - comment out the patch line in prepare()
 ```
 
 - [Distcc](#distcc)
     - [crosstool-NG](https://github.com/rern/rern.github.io/tree/main/crosstool-NG) for armv6h Distcc
+
 - [Docker](#docker)
 
 ### Method Selection
+- aarch64
+	- Crosstools-NG
+	- Native + Distcc
+	- `systemd-nspawn'
 - aarch64 / armv7h
+	- Crosstools-NG
+	- `systemd-nspawn'
 	- Native + Distcc
-	- Native without Distcc is still **faster** than Docker
 - armv6h
-	- Native + Distcc
-	- Native without Distcc is **slower** than Docker
+	- Crosstools-NG
+	- `systemd-nspawn'
+	
 - `rust`/`cargo` - not support Distcc
 
 ### Distcc
