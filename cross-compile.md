@@ -58,6 +58,7 @@ EOF
 exit
 # boot         -b
 systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
+# shutdown: hold Ctrl and ] 3 times
 ```
 
 - [Distcc](#distcc)
