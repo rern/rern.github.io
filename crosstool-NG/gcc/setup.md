@@ -1,13 +1,7 @@
 ```sh
-# build glibc first
-git clone https://gitlab.archlinux.org/archlinux/packaging/packages/gcc.git
-cd gcc
-
-ct-ng menuconfig
-# Paths and misc options
-#   Try features marked as EXPERIMENTAL: [*] Enable
-# Toolchain options
-#   Toolchain type: Canadian
+git clone https://github.com/archlinuxarm/PKGBUILDs.git
+cp -r core/gcc ~/
+cd ~/gcc
 
 # modify PKGBUILD for cross-compile
 

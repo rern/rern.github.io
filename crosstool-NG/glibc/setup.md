@@ -1,9 +1,9 @@
 ```sh
 git clone https://github.com/archlinuxarm/PKGBUILDs.git
-cp glibc
+cp -r core/glibc ~/
+cd ~/glibc
 
 # modify PKGBUILD for cross-compile
 
-makepkg --config makepkg.conf -Ad --skipinteg
-
+CARCH="armv6h" makepkg -Ad --skipinteg
 ```
