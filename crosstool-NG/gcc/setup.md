@@ -1,10 +1,15 @@
 ```sh
 # build glibc first
-cd ~/rpi0-gcc
-curl -LO https://github.com/rern/rern.github.io/raw/refs/heads/main/Crosstool-NG/glibc/PKGBUILD
+git clone https://gitlab.archlinux.org/archlinux/packaging/packages/gcc.git
+cd gcc
 
-ct-ng armv6-unknown-linux-gnueabihf
+ct-ng menuconfig
+# Paths and misc options
+#   Try features marked as EXPERIMENTAL: [*] Enable
+# Toolchain options
+#   Toolchain type: Canadian
 
-makepkg -A -d --nodeps --skipinteg
+# modify PKGBUILD for cross-compile
 
+CARCH="armv6h" makepkg -Ad --skipinteg
 ```
