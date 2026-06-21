@@ -36,7 +36,7 @@ for arch in $selected; do
 	bar $arch
 	cd $dir_base/REPO/$arch
 	[[ ! $new ]] && rm -f +R*
-	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz. *.pkg.tar.zst
+	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
 	rm -f *.xz.old
 	# index.html
 	html='
