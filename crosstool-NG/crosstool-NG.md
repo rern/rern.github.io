@@ -12,7 +12,7 @@ cd crosstool-ng
 make
 make install
 
-# toolchain
+# build
 mkdir -p ~/rpi0-toolchain
 cd ~/rpi0-toolchain
 ct-ng armv6-unknown-linux-gnueabihf # for armv6: ct-ng list-samples | grep armv6
@@ -29,9 +29,9 @@ echo 'export PATH=$PATH:/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin' >> ~/.bas
 
 # test run
 armv6-rpi-linux-gnueabihf-gcc -v
-#Using built-in specs.
-#...
-#gcc version 15.2.0 (crosstool-NG 1.28.0)
+# Using built-in specs.
+# ...
+# gcc version 15.2.0 (crosstool-NG 1.28.0)
 
 cat << EOF > test.c # test c code
 #include <stdio.h>
