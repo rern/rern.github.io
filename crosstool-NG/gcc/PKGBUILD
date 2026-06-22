@@ -12,7 +12,7 @@ makedepends=(binutils git libmpc mpfr gmp zstd python)
 options=(!emptydirs !lto strip)
 
 _target="armv6-rpi-linux-gnueabihf"
-_sysroot="/mnt/rpi0"
+_sysroot="/home/x/rpi0_sysroot"
 _toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
 _libdir="usr/lib/gcc/${_target}/${pkgver%%.*}"
 
