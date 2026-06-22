@@ -3,7 +3,7 @@
 - Install
 
 ```sh
-pacman -Sy --needed base-devel ncurses git gperftools bison flex texinfo help2man gawk libtool patch wget unzip rsync cpio
+pacman -Sy --needed base-devel bison cpio flex git gperftools help2man libtool ncurses patch rsync texinfo unzip
 
 git clone https://github.com/crosstool-ng/crosstool-ng.git
 cd crosstool-ng
@@ -48,13 +48,4 @@ file test # verify
 
 scp test root@192.168.1.90:/root
 # run test on rpi0
-```
-
-- New build
-
-```sh
-git clone https://gitlab.archlinux.org/archlinux/packaging/packages/fmt.git
-cd fmt
-# modified PKGBUILD for crosstool-NG
-CARCH="armv6h" makepkg -Ad --skipinteg
 ```
