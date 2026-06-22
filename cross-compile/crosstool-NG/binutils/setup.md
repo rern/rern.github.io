@@ -2,8 +2,8 @@
 # toolchain build order: linux-api-headers->glibc->binutils->gcc
 cd
 git clone https://github.com/archlinuxarm/PKGBUILDs.git
-cp -r PKGBUILDs/core/glibc .
-cd glibc
+cp -r PKGBUILDs/core/binutils .
+cd binutils
 
 # modify PKGBUILD for cross-compile
 

@@ -5,6 +5,7 @@
 ```sh
 pacman -Sy --needed base-devel bison cpio flex git gperftools help2man libtool ncurses patch rsync texinfo unzip
 
+cd
 git clone https://github.com/crosstool-ng/crosstool-ng.git
 cd crosstool-ng
 ./bootstrap
@@ -13,8 +14,9 @@ make
 make install
 
 # build
-mkdir -p ~/rpi0-toolchain
-cd ~/rpi0-toolchain
+cd
+mkdir -p toolchain
+cd toolchain
 ct-ng armv6-unknown-linux-gnueabihf # for armv6: ct-ng list-samples | grep armv6
 ct-ng menuconfig
 # Paths and misc options
@@ -48,4 +50,7 @@ file test # verify
 
 scp test root@192.168.1.90:/root
 # run test on rpi0
+
+cd
+rm -rf crosstool-ng toolchain 
 ```
