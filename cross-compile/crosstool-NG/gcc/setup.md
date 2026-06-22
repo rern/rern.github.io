@@ -1,9 +1,7 @@
 ```sh
 # toolchain build order: linux-api-headers->glibc->binutils->gcc
-# /etc/makepkg.conf
-#   MAKEFLAG="-J4"
-#   BUILDDIR=/home/x/tmp
 sed -i -E 's/^#*(MAKEFLAGS=).*/\1"-j4"/; s|^#*(BUILDDIR=).*|\1home/x/tmp|' /etc/makepkg.conf
+
 cd
 git clone https://github.com/archlinuxarm/PKGBUILDs.git
 cp -r PKGBUILDs/core/gcc .
