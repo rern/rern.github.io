@@ -15,4 +15,6 @@ CARCH="armv6h" makepkg -Ad --skipinteg
 
 # reset makepkg.conf
 sed -i -E 's/^(MAKEFLAGS=).*/\1"-j12"/; s/^(BUILDDIR)/#\1/' /etc/makepkg.conf
+cd
+rsudo rm -rf tmp
 ```
