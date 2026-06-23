@@ -54,7 +54,7 @@ for arch in $selected; do
 <table>
 	<tr><td><a href="/">../</a></td><td></td></tr>
 '
-	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.xz \
+	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
 				| awk '{print "<tr><td><a href=\"'$arch'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
 	html+='
 <table>

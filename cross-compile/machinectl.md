@@ -8,16 +8,16 @@ pacman -Sy --needed qemu-user-static qemu-user-static-binfmt
 systemctl restart systemd-binfmt # run once
 
 # clone rpi0 ROOT partition in usb reader
-dir_rpi0=/home/x/rpi0_sysroot
-mkdir -p $dir_root $dir_rpi0
-rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_rpi0/
-cp -f /etc/resolv.conf $dir_rpi0/etc/resolv.conf
+dir_sysroot=/home/x/x-sysroot
+mkdir -p $dir_sysroot
+rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_sysroot/
+cp -f /etc/resolv.conf $dir_sysroot/etc/resolv.conf
 
 # new machine
-dir_rpi0=/var/lib/machines/rpi0
-ln -s $dir_rpi0 $dir_rpi0
-systemd-nspawn -M rpi0 -D $dir_rpi0
-sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_rpi0/etc/makepkg.conf
+dir_machine=/var/lib/machines/rpi0
+ln -s $dir_sysroot $dir_machine
+systemd-nspawn -M rpi0 -D $dir_machine
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_sysroot/etc/makepkg.conf
 # shutdown: hold Ctrl and ] 3 times
 
 # allow rpi0 to user host tmpfs(ram)
@@ -40,6 +40,8 @@ EOF
 machinectl start rpi0
 # rpi0 prompt
 machinectl shell root@rpi0
+# exit
+# ctrl+D
 
 machinectl kill rpi0 --signal=SIGKILL # machinectl stop rpi0 # not working
 
