@@ -1,12 +1,10 @@
 #!/bin/bash
 
-bar Mount REPO ...
-mkdir -p BIG REPO
 if [[ $( uname -m ) == x86_64 ]]; then
-	dev_big=$( lsblk -pro name,label | awk '/BIG/ {print $1}' )
-	mount $dev_big BIG
-	mount --bind BIG/RPi/Git/rern.github.io REPO
+	manjaro=1
 else
+	bar Mount REPO ...
+	mkdir -p BIG REPO
 	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
 fi
 [[ $? != 0 ]] && dialog.error_exit Mount '\Z1REPO\Zn' failed.
@@ -31,10 +29,14 @@ else
 	new=-n # newer only (deleted packages still exist in db)
 fi
 banner $action Repository
-dir_base=$PWD
+if [[ $manjaro ]]; then
+	cd /home/x/GitHub/rern.github.io/$arch
+else
+	dir_base=$PWD
+	cd $dir_base/REPO/$arch
+fi
 for arch in $selected; do
 	bar $arch
-	cd $dir_base/REPO/$arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
 	rm -f *.xz.old
@@ -62,7 +64,11 @@ for arch in $selected; do
 </html>'
 	echo -e "$html" > ../$arch.html
 done
-cd $dir_base
-umount -ql BIG REPO
-rmdir BIG REPO
+
+if [[ ! $manjaro ]]; then
+	cd $dir_base
+	umount -ql BIG REPO
+	rmdir BIG REPO
+fi
+
 bar Done
