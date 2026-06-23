@@ -6,11 +6,11 @@ else
 	bar Mount REPO ...
 	mkdir -p BIG REPO
 	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
+	[[ $? != 0 ]] && dialog.error_exit Mount '\Z1REPO\Zn' failed.
+#----------------------------------------------------------------------------
+	[[ ! $( ls REPO ) ]] && dialog.error_exit Repo empty: REPO
+#----------------------------------------------------------------------------
 fi
-[[ $? != 0 ]] && dialog.error_exit Mount '\Z1REPO\Zn' failed.
-#----------------------------------------------------------------------------
-[[ ! $( ls REPO ) ]] && dialog.error_exit Repo empty: REPO
-#----------------------------------------------------------------------------
 #........................
 selected=$( dialog $opt_check '
 \Z1Repository:\Z0
