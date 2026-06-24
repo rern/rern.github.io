@@ -1,0 +1,168 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Maintainer: Morten Linderud <foxboron@archlinux.org>
+# Modified for cross-compilation to armv6h (Raspberry Pi Zero)
+
+pkgname=pacman
+pkgver=7.1.0.r9.g54d9411
+pkgrel=2
+_git_tag=7.1.0
+_git_patch_level_commit=54d94116164b0b2202c6061c4a59c6f3e70820d8
+pkgdesc="A library-based package manager with dependency support (Cross-compiled for armv6h)"
+arch=('armv6h')
+url="https://www.archlinux.org/pacman/"
+license=('GPL-2.0-or-later')
+depends=(
+  bash
+  coreutils
+  curl libcurl.so
+  gawk
+  gettext
+  glibc
+  gnupg
+  gpgme libgpgme.so
+  grep
+  libarchive libarchive.so
+  openssl libcrypto.so
+  pacman-mirrorlist
+  systemd
+  libmakepkg-dropins
+)
+makedepends=(
+  git
+  meson
+)
+optdepends=(
+  'base-devel: required to use makepkg'
+  'perl-locale-gettext: translation support in makepkg-template'
+)
+provides=('libalpm.so')
+backup=(etc/pacman.conf
+        etc/makepkg.conf
+        etc/makepkg.conf.d/fortran.conf
+        etc/makepkg.conf.d/rust.conf)
+
+validpgpkeys=('6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD'
+              'B8151B117037781095514CA7BBDFFC92306B1121')
+source=("git+https://gitlab.archlinux.org/pacman/pacman.git#tag=v${_git_tag}?signed"
+        "revertme-makepkg-remove-libdepends-and-libprovides.patch::https://gitlab.archlinux.org/pacman/pacman/-/commit/354a300cd26bb1c7e6551473596be5ecced921de.patch"
+        "patch-reproducible-builds.patch::https://gitlab.archlinux.org/pacman/pacman/-/commit/f4bdb77470528019aaba4d8b8f947e918c6db17d.patch"
+        '0001-libalpm-invalidate-curl-data-in-child.patch'
+        0001-Sychronize-filesystem.patch
+        0002-Revert-close-stdin-before-running-install-scripts.patch
+        0003-Revert-alpm_run_chroot-always-connect-parent2child-p.patch
+        pacman.conf
+        makepkg.conf
+        alpm.sysusers
+        fortran.conf
+        rust.conf)
+sha256sums=('SKIP'
+            'b3bce9d662e189e8e49013b818f255d08494a57e13fc264625f852f087d3def2'
+            'de428b496a825772ef49ec5555a386a4b23ffa10b9dfd9907f0671d5c1dc2178'
+            '9a734e5d75be603d58aa92e8d29a15466b3ac2af6b7d6f6728dd5c3e5ed8758d'
+            '6c379199a6f5bdd64cfa7bd6b3c4acc6f34590fd1ff41e145627b113b59f9b56'
+            'c23f425e063a500fd7242bfff5a8d08ce22021e07e5383533d9f52f275160fd6'
+            'd356afdfab33b1a250c53758c20ef202d292896c7b1830899fb2040ff2127a76'
+            '531d3b472b12f1686d98ea9dcaebe7bd57cc213e46329ed1558f788aa2f1b6d9'
+            '0c95fc798d6d695d5efeb6724371cd3bb76f14bbb2515bfa39402e51f8acfeb3'
+            '9c14afbc7dabee5a563202c833a043bd3b80c4522f8943c33d550641d7d1bbf1'
+            '5e23fb1a0735f6c5101139f380c4f36cc0c9eebfcdf8bf83e9eaa609f776cdcc'
+            '3d7579f4fa52ef512dc82187c010f273aa45e6e8349f8fda9839f808c7dae042')
+
+pkgver() {
+  cd "$pkgname"
+  git describe --abbrev=7 --match 'v*' | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd "$pkgname"
+
+  if [[ -n ${_git_patch_level_commit} ]]; then
+    if [[ v${_git_tag} != $(git describe --tags --abbrev=0 "${_git_patch_level_commit}") ]]; then
+      error "patch level commit ${_git_patch_level_commit} is not a descendant of v${_git_tag}"
+      exit 1
+    fi
+    git rebase "${_git_patch_level_commit}"
+  fi
+
+  local -a patches
+  patches=($(printf '%s\n' "${source[@]}" | grep '.patch'))
+  patches=("${patches[@]%%::*}")
+  patches=("${patches[@]##*/}")
+
+  if (( ${#patches[@]} != 0 )); then
+    for patch in "${patches[@]}"; do
+      if [[ $patch =~ revertme-* ]]; then
+        msg2 "Reverting patch $patch..."
+        patch -RNp1 < "../$patch"
+      else
+        msg2 "Applying patch $patch..."
+        patch -Np1 < "../$patch"
+      fi
+    done
+  fi
+}
+
+build() {
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  # Enforce path visibility rules to verify that OpenSSL 3.x is target linked
+  export CFLAGS="--sysroot=/home/x/x-sysroot -I/home/x/x-sysroot/usr/include"
+  export LDFLAGS="--sysroot=/home/x/x-sysroot -L/home/x/x-sysroot/usr/lib"
+
+  cd "$pkgname"
+
+  # Clean build artifacts to safely re-evaluate configuration targets
+  rm -rf build
+
+  # REVISED: Removed invalid -Dsign flag. Signature validation is auto-enabled via gpgme detection.
+  meson setup \
+        --prefix=/usr \
+        --buildtype=plain \
+        --cross-file "/home/x/x-tools/cross-file.txt" \
+        -Ddoc=disabled \
+        -Ddoxygen=disabled \
+        -Dcrypto=openssl \
+        -Dscriptlet-shell=/usr/bin/bash \
+        -Dldconfig=/usr/bin/ldconfig \
+        build
+
+  meson compile -C build
+}
+
+package() {
+  cd "$pkgname"
+
+  DESTDIR="$pkgdir" meson install -C build
+
+  install -dm755 "$pkgdir/etc"
+  install -m644 "$srcdir/pacman.conf" "$pkgdir/etc"
+  install -D -m644 "$srcdir/alpm.sysusers" "${pkgdir}"/usr/lib/sysusers.d/alpm.conf
+  install -m644 "$srcdir/fortran.conf" "$pkgdir/etc/makepkg.conf.d"
+  install -m644 "$srcdir/rust.conf" "$pkgdir/etc/makepkg.conf.d"
+
+  mycarch="armv6h"
+  mychost="armv6-rpi-linux-gnueabihf"
+  myflags="-march=armv6 -mfloat-abi=hard -mfpu=vfp"
+
+  install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc"
+  sed -i "$pkgdir/etc/makepkg.conf" \
+    -e "s|@CARCH[@]|$mycarch|g" \
+    -e "s|@CHOST[@]|$mychost|g" \
+    -e "s|@CARCHFLAGS[@]|$myflags|g"
+  sed -i "$pkgdir/etc/makepkg.conf.d/fortran.conf" \
+    -e "s|@CARCHFLAGS[@]|$myflags|g"
+  sed -i $pkgdir/etc/pacman.conf -e "s|@CARCH[@]|$mycarch|g"
+
+  local wantsdir="$pkgdir/usr/lib/systemd/system/sockets.target.wants"
+  install -dm755 "$wantsdir"
+
+  local unit
+  for unit in dirmngr gpg-agent gpg-agent-{browser,extra,ssh} keyboxd; do
+    ln -s "../${unit}@.socket" "$wantsdir/${unit}@etc-pacman.d-gnupg.socket"
+  done
+
+  # Clean out upstream manuals / docs to minimize footprint
+  rm -rf "${pkgdir}/usr/share/man"
+}

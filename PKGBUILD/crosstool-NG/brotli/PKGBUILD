@@ -1,0 +1,40 @@
+# Maintainer: Adapted for crosstool-NG armv6h
+
+pkgname=brotli-armv6h
+pkgver=1.1.0
+pkgrel=1
+pkgdesc="Generic-purpose lossless compression algorithm (ARMv6h cross build)"
+arch=(armv6h)
+url="https://github.com/google/brotli"
+license=(MIT)
+source=("https://github.com/google/brotli/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/brotli-$pkgver"
+
+  export CC=armv6-rpi-linux-gnueabihf-gcc
+  export AR=armv6-rpi-linux-gnueabihf-ar
+  export RANLIB=armv6-rpi-linux-gnueabihf-ranlib
+  export LD=armv6-rpi-linux-gnueabihf-ld
+
+  export CFLAGS="-O2 -pipe -march=armv6 -mfpu=vfp -mfloat-abi=hard"
+  export CXXFLAGS="$CFLAGS"
+  export LDFLAGS=""
+
+  mkdir -p build && cd build
+  cmake .. \
+    -DCMAKE_SYSTEM_NAME=Linux \
+    -DCMAKE_C_COMPILER=$CC \
+    -DCMAKE_CXX_COMPILER=${CC/armv6-rpi-linux-gnueabihf-gcc/armv6-rpi-linux-gnueabihf-g++} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd "$srcdir/brotli-$pkgver/build"
+  make DESTDIR="$pkgdir" install
+  install -Dm644 ../LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+

@@ -1,0 +1,197 @@
+# Maintainer: graysky <therealgraysky AT proton DOT me>
+# Maintainer: Kevin Mihelich <kevin@archlinuxarm.org>
+# Maintainer: Oleg Rakhmanov <oleg@archlinuxarm.org>
+# Maintainer: Dave Higham <pepedog@archlinuxarm.org>
+# Contributer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Contributer: Ben Schneider <ben@bens.haus>
+# Modified for Cross-Compilation targeting armv6h (Raspberry Pi Zero)
+
+pkgbase=linux-rpi
+_commit=954341c412dd48b7c7f8125d81212ec4c0e42ed3
+_srcname=linux-${_commit}
+_kernelname=${pkgbase#linux}
+pkgver=6.18.36
+pkgrel=2
+pkgdesc='Linux kernel for Raspberry Pi Zero (Cross-Compiled)'
+url="https://github.com/raspberrypi/linux"
+arch=(armv6h)
+license=(GPL-2.0-only)
+makedepends=(
+  bc
+  kmod
+  inetutils
+)
+options=('!strip')
+source=("linux-$pkgver-${_commit:0:10}.tar.gz::https://github.com/raspberrypi/linux/archive/${_commit}.tar.gz"
+        cmdline.txt
+        config.txt
+        0001-Make-proc-cpuinfo-consistent-on-arm64-and-arm.patch
+        linux.preset
+        archarm.diffconfig
+)
+sha256sums=('711261f4ce160787e88cd6f8eedf01c85c43a8f6b4c548a5ed5eb612f86fd104'
+            '7a84795f7c7a39e8384356ef51f47d5ddac0e44921d1bd2cbf8db7de88810ef5'
+            'ff6d10ac64512b0da204a9ce43892ef28bc63c0597888df606af3db279d547de'
+            '29956d87ef394fef3dbd9e363391ba260b08369e10019be25019e311781c6476'
+            '184ee4f680eb32c99f159773b711cff200426cec7a565bd04711558ca74c381e'
+            '3f3df16f49bd5cffd92afa2963cdd9672036b81bffec11237c3a662554915bb3')
+
+# Cross-compilation setup environment variables
+export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+_cross="armv6-rpi-linux-gnueabihf-"
+
+# Environment vars mapped to target armv6h
+_kernel=kernel.img
+KARCH=arm
+_image=zImage
+_config=config
+_boot=config.txt
+
+prepare() {
+  cd "${srcdir}/${_srcname}"
+
+  # consistent behavior of lscpu on arm/arm64
+  patch -p1 -i ../0001-Make-proc-cpuinfo-consistent-on-arm64-and-arm.patch
+
+  echo "-$pkgrel" > localversion.10-pkgrel
+  echo "${pkgbase#linux}" > localversion.20-pkgname
+
+  # Remove vendor local version strings
+  sed -i '/^CONFIG_LOCALVERSION=/d' ./arch/arm/configs/bcm2835_defconfig
+
+  echo "Applying custom options to rpi defconfig (ARMv6 Pi Zero)..."
+  make ARCH=$KARCH CROSS_COMPILE=$_cross bcm2835_defconfig
+  
+  cat ../archarm.diffconfig >> .config
+  scripts/config --enable CONFIG_BCM2835_THERMAL
+  scripts/config --enable CONFIG_LRU_GEN_ENABLED
+  
+  make ARCH=$KARCH CROSS_COMPILE=$_cross olddefconfig
+  make ARCH=$KARCH CROSS_COMPILE=$_cross -s kernelrelease > version
+}
+
+build() {
+  cd "${srcdir}/${_srcname}"
+
+  # Compile using your cross-compiler
+  make ARCH=$KARCH CROSS_COMPILE=$_cross "$_image" modules dtbs
+}
+
+_package() {
+  pkgdesc="Linux kernel and modules (RPi Foundation fork) - Cross-Compiled"
+  depends=(
+    coreutils
+    firmware-raspberrypi
+    kmod
+    'mkinitcpio>=0.7'
+    raspberrypi-bootloader
+  )
+  optdepends=(
+    'linux-firmware: firmware images needed for some devices'
+    'wireless-regdb: to set the correct wireless channels of your country'
+  )
+  provides=(
+    linux="${pkgver}"
+    KSMBD-MODULE
+    WIREGUARD-MODULE
+    raspberrypi-overlays
+  )
+  conflicts=(
+    linux
+    linux-rpi-16k
+    uboot-raspberrypi
+  )
+  install=${pkgname}.install
+  backup=(
+    boot/config.txt
+    boot/cmdline.txt
+  )
+
+  cd "${srcdir}/${_srcname}"
+  local modulesdir="$pkgdir/usr/lib/modules/$(<version)"
+
+  echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
+
+  echo "Installing modules..."
+  make ARCH=$KARCH CROSS_COMPILE=$_cross INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
+    DEPMOD=/doesnt/exist modules_install 
+
+  rm -f "$modulesdir"/build
+
+  mkdir -p "${pkgdir}"/boot
+  make ARCH=$KARCH CROSS_COMPILE=$_cross INSTALL_DTBS_PATH="${pkgdir}/boot" dtbs_install
+
+  cp arch/$KARCH/boot/$_image "${pkgdir}/boot/$_kernel"
+  cp arch/$KARCH/boot/dts/overlays/README "${pkgdir}/boot/overlays"
+  install -m644 ../"$_boot" "${pkgdir}/boot/config.txt"
+  install -m644 ../cmdline.txt "${pkgdir}/boot"
+
+  local _subst="
+    s|%PKGBASE%|${pkgbase}|g
+    s|%KERNVER%|$(<version)|g
+  "
+
+  sed "${_subst}" ../linux.preset |
+    install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+
+  touch "${pkgdir}/usr/lib/modules/$(<version)/vmlinuz"
+}
+
+_package-headers() {
+  pkgdesc="Headers and scripts for building modules for Linux kernel (Cross-Compiled Target)"
+  provides=("linux-headers=${pkgver}")
+  conflicts=('linux-headers' 'linux-rpi-16k-headers')
+
+  cd ${_srcname}
+  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
+
+  install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
+    localversion.* version
+  install -Dt "$builddir/kernel" -m644 kernel/Makefile
+  install -Dt "$builddir/arch/$KARCH" -m644 "arch/$KARCH/Makefile"
+  cp -t "$builddir" -a scripts
+
+  mkdir -p "$builddir"/{fs/xfs,mm}
+
+  cp -t "$builddir" -a include
+  cp -t "$builddir/arch/$KARCH" -a "arch/$KARCH/include"
+  install -Dt "$builddir/arch/$KARCH/kernel" -m644 "arch/$KARCH/kernel/asm-offsets.s"
+
+  install -Dt "$builddir/drivers/md" -m644 drivers/md/*.h
+  install -Dt "$builddir/net/mac80211" -m644 net/mac80211/*.h
+  install -Dt "$builddir/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
+  install -Dt "$builddir/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
+  install -Dt "$builddir/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
+  install -Dt "$builddir/drivers/media/tuners" -m644 drivers/media/tuners/*.h
+  install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
+
+  find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
+
+  # Remove unused arch directories, preserving target arm architecture
+  local _arch
+  for _arch in "$builddir"/arch/*/; do
+    [[ $_arch = */"$KARCH"/ ]] && continue
+    rm -r "$_arch"
+  done
+
+  ln -sr arm "$builddir/arch/armv6h"
+
+  # Omit documentation explicitly requested
+  rm -rf "$builddir/Documentation"
+
+  find -L "$builddir" -type l -delete
+  find "$builddir" -type f -name '*.o' -delete
+
+  # Omitted the host-stripping loop entirely to avoid executing host 'strip' 
+  # tools on cross-compiled architecture components within the target headers build.
+
+  mkdir -p "$pkgdir/usr/src"
+  ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
+}
+
+pkgname=("${pkgbase}" "${pkgbase}-headers")
+for _p in ${pkgname[@]}; do
+  eval "package_${_p}() {
+    _package${_p#${pkgbase}}
+  }"
+done
