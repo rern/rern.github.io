@@ -1,7 +1,0 @@
-prelude: |
-  # frozen_string_literal: true
-benchmark:
-  uplus: |
-    +"A"
-  dup: |
-    "A".dup

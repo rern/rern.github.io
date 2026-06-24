@@ -1,3 +1,0 @@
-'a' or 1 in 1.upcase
-             ^ unexpected '.', expecting end-of-input
-

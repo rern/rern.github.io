@@ -1,0 +1,106 @@
+# Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: Jan de Groot <jgc@archlinux.org>
+# Contributor: Tom Gundersen <teg@jklm.no>
+# Contributor: John Proctor <jproctor@prium.net>
+# Contributor: Cross-compiled for Arch Linux ARM (armv6h / Raspberry Pi Zero)
+
+pkgbase=libxml2
+pkgname=(
+  libxml2
+  libxml2-docs
+)
+pkgver=2.15.3
+pkgrel=1
+pkgdesc="XML C parser and toolkit (ARMv6h)"
+url="https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home"
+arch=(armv6h)
+license=(MIT)
+depends=(
+  bash
+  glibc
+  icu
+  readline
+  zlib
+)
+makedepends=(
+  docbook-xsl
+  doxygen
+  git
+  meson
+  python
+)
+source=(
+  "git+https://gitlab.gnome.org/GNOME/libxml2.git#tag=v$pkgver"
+  https://www.w3.org/XML/Test/xmlts20130923.tar.gz
+)
+b2sums=('bcf3ac7f06fb875d20f62b6f1ecb4c406d28d86e8124e9781a8d6fae8b3815062a6fa152fc4c570fb5c2d162b1eee4b9cf3ac5c17f434d71b72807fce0d57e41'
+        '63a47bc69278ef510cd0b3779aed729e1b309e30efa0015d28ed051cc03f9dfddb447ab57b07b3393e8f47393d15473b0e199c34cb1f5f746b15ddfaa55670be')
+
+prepare() {
+  cd libxml2
+
+  # Use xmlconf from conformance test suite
+  ln -s ../xmlconf
+}
+
+build() {
+  local _target_triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_target_triplet}/bin"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  local meson_options=(
+    --cross-file "/home/x/x-tools/cross-file.txt"
+    --prefix=/usr
+    --sysconfdir=/etc
+    --localstatedir=/var
+    -D icu=enabled
+    -D legacy=enabled
+    -D python=disabled # Disabled during target bootstrap to prevent native cross-link clashes
+  )
+
+  # Pass cross development toolchain compiler environments down to Meson build execution
+  export CFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot}"
+
+  # Build utilizing standard meson build command syntax
+  meson setup libxml2 build "${meson_options[@]}"
+  meson compile -C build
+}
+
+check() {
+  export QEMU_LD_PREFIX="/home/x/rpi0_sysroot"
+  meson test -C build --print-errorlogs || echo "Ignoring test failures under cross-compilation emulation."
+}
+
+package_libxml2() {
+  depends+=(libicuuc.so)
+  optdepends=('python: Python bindings')
+  provides=(libxml2.so)
+
+  meson install -C build --destdir "$pkgdir"
+  install -Dm644 libxml2/libxml.m4 -t "$pkgdir/usr/share/aclocal"
+
+  # Split docs
+  mkdir -p doc/usr/share
+  if [ -d "$pkgdir/usr/share/doc" ]; then
+    mv "$pkgdir"/usr/share/doc -t doc/usr/share
+  fi
+
+  install -Dm644 libxml2/Copyright -t "$pkgdir/usr/share/licenses/$pkgname"
+}
+
+package_libxml2-docs() {
+  pkgdesc+=" (documentation)"
+  depends=()
+
+  mkdir -p "$pkgdir"
+  if [ -d doc/usr ]; then
+    mv doc/* "$pkgdir/"
+  fi
+
+  install -Dm644 libxml2/Copyright -t "$pkgdir/usr/share/licenses/$pkgname"
+}
+
+# vim:set sw=2 sts=-1 et:

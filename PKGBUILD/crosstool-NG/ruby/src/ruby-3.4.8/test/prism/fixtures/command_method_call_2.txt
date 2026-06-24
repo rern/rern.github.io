@@ -1,3 +1,0 @@
-foo(bar baz do end)
-
-foo(bar baz, bat)

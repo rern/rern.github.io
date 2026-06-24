@@ -1,0 +1,78 @@
+# Maintainer:
+# Contributor: eric <eric@archlinux.org>
+# Contributor: Markus Meissner <markus@meissna.de>
+# Contributor: Cross-compiled for Arch Linux ARM (armv6h / Raspberry Pi Zero)
+
+pkgname=tidy
+pkgver=5.8.0
+_commit=9f8d957e4d9c164b0aea10a36c7933d67517abb1
+pkgrel=3
+pkgdesc="A tool to tidy down your HTML code to a clean style (ARMv6h)"
+arch=(armv6h)
+url="https://www.html-tidy.org/"
+license=(custom)
+depends=(glibc)
+makedepends=(cmake libxslt)
+conflicts=(tidyhtml)
+provides=(tidyhtml)
+replaces=(tidyhtml)
+source=("$pkgname-$_commit.tar.gz::https://github.com/htacg/tidy-html5/archive/$_commit.tar.gz")
+sha512sums=('085da1bc97ab20a65d1104bd13e39ba7eb7a51407553e9237e8efda0a2c3b6efcb2e957a670731482ac17b639f12fe59a1f52740e82d4367410fe41e62afc8a2')
+
+prepare() {
+  mv tidy-html5-{$_commit,$pkgver}
+  mkdir -p build
+}
+
+build() {
+  # Explicitly force PHP to accept the Tidy files in your sysroot
+  export TIDY_CFLAGS="-I${_sysroot}/usr/include"
+  export TIDY_LIBS="-L${_sysroot}/usr/lib -ltidy"
+  
+  local _target_triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_target_triplet}/bin"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  # 1. Create a CMake toolchain definition file targeting the ARM setup
+  cat <<EOF > "${srcdir}/toolchain.cmake"
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(CMAKE_SYSROOT ${_sysroot})
+set(CMAKE_C_COMPILER ${_toolchain_bin}/${_target_triplet}-gcc)
+set(CMAKE_CXX_COMPILER ${_toolchain_bin}/${_target_triplet}-g++)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+EOF
+
+  # 2. Establish basic compiler operational flags
+  export CFLAGS="-O2 -pipe --sysroot=${_sysroot} -ffat-lto-objects"
+  export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot} -ffat-lto-objects"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot}"
+
+  cd build
+  cmake ../tidy-html5-$pkgver \
+    -DCMAKE_TOOLCHAIN_FILE="${srcdir}/toolchain.cmake" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    
+  # Point QEMU to your sysroot so the binary execution check succeeds
+  export QEMU_LD_PREFIX="/home/x/rpi0_sysroot"
+  
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$pkgdir" install
+
+  # Compatibility symlinks until everything is ported
+  ln -s tidybuffio.h "$pkgdir"/usr/include/buffio.h
+  ln -s tidyplatform.h "$pkgdir"/usr/include/platform.h
+
+  install -Dm644 "$srcdir"/$pkgname-html5-$pkgver/README/LICENSE.md "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}

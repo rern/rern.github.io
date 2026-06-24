@@ -1,5 +1,0 @@
-prelude: |
-  obj = Object.new
-  hash = { obj => true }
-benchmark: hash.key?(obj)
-loop_count: 30000000

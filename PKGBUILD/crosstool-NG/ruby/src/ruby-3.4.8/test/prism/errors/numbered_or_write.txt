@@ -1,3 +1,0 @@
-tap { _1 ||= 1 }
-      ^~ _1 is reserved for numbered parameters
-

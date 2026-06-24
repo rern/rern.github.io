@@ -1,0 +1,79 @@
+# Maintainer: Christian Hesse <mail@eworm.de>
+# Modified for Cross-Compilation targeting armv6h (Raspberry Pi Zero)
+# Omitted man pages, documentation, and host checks
+
+pkgbase=libxcrypt
+pkgname=(libxcrypt libxcrypt-compat)
+pkgver=4.5.2
+pkgrel=1
+pkgdesc='Modern library for one-way hashing of passwords (Cross-Compiled for armv6h)'
+arch=('armv6h')
+url='https://github.com/besser82/libxcrypt/'
+license=('LGPL')
+depends=('glibc')
+provides=('libcrypt.so')
+install=libxcrypt.install
+source=("${url}/releases/download/v${pkgver}/${pkgbase}-${pkgver}.tar.xz")
+sha256sums=('71513a31c01a428bccd5367a32fd95f115d6dac50fb5b60c779d5c7942aec071')
+
+build() {
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  
+  # Clear out default host architectures to stop compiler pollution
+  export CFLAGS=""
+  export CXXFLAGS=""
+  export LDFLAGS=""
+
+  # Define the cross-compilation environment mapping variables for Autotools
+  export CC="armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="armv6-rpi-linux-gnueabihf-g++"
+  export AR="armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="armv6-rpi-linux-gnueabihf-ranlib"
+  export STRIP="armv6-rpi-linux-gnueabihf-strip"
+
+  mkdir -p build-libxcrypt build-libxcrypt-compat
+
+  # Build main variant
+  cd "${srcdir}/build-libxcrypt/"
+  "${srcdir}/${pkgbase}-${pkgver}"/configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --disable-static \
+    --disable-werror \
+    --enable-hashes=strong,glibc \
+    --enable-obsolete-api=no \
+    --disable-failure-tokens
+  make
+  
+  # Build legacy compat variant
+  cd "${srcdir}/build-libxcrypt-compat/"
+  "${srcdir}/${pkgbase}-${pkgver}"/configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --disable-static \
+    --disable-werror \
+    --enable-hashes=strong,glibc \
+    --enable-obsolete-api=glibc \
+    --disable-failure-tokens
+  make
+}
+
+package_libxcrypt() {
+  cd build-libxcrypt/
+  make DESTDIR="${pkgdir}" install
+
+  # Explicit clean sweep: drop man files and document resources requested
+  rm -rf "${pkgdir}/usr/share/man"
+  rm -rf "${pkgdir}/usr/share/doc"
+}
+
+package_libxcrypt-compat() {
+  pkgdesc='Modern library for one-way hashing of passwords - legacy API functions (Cross-Compiled)'
+  depends=('libxcrypt')
+  
+  cd build-libxcrypt-compat/
+  make DESTDIR="${pkgdir}" install
+
+  # Clean staging objects and prune out document/man paths completely
+  rm -rf "${pkgdir}"/usr/{include,lib/{lib*.so,pkgconfig},share}
+}

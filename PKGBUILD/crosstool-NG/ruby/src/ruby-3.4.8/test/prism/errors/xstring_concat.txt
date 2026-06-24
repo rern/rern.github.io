@@ -1,5 +1,0 @@
-<<`EOC` "bar"
-^~~~~~~ expected a string for concatenation
-echo foo
-EOC
-

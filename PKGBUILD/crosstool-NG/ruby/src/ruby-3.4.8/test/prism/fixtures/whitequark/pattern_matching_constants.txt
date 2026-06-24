@@ -1,5 +1,0 @@
-case foo; in ::A then true; end
-
-case foo; in A then true; end
-
-case foo; in A::B then true; end

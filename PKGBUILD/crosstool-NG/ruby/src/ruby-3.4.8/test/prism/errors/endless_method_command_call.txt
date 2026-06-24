@@ -1,3 +1,0 @@
-private :m, def hello = puts "Hello"
-                             ^ unexpected string literal, expecting end-of-input
-

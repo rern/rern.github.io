@@ -1,5 +1,0 @@
-"\u{
-    ^ invalid Unicode escape sequence
-    ^ unterminated Unicode escape
-61}"
-

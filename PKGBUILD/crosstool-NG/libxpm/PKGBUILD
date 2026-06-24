@@ -1,0 +1,79 @@
+# Maintainer: Andreas Radke <andyrtr@archlinux.org>
+# Contributor: Jan de Groot <jgc@archlinux.org>
+# Cross-compiled for armv6h via crosstool-ng (rAudio Capsule Mirrorless Setup)
+
+pkgname=libxpm
+pkgver=3.5.19
+pkgrel=1
+pkgdesc="X11 pixmap library (Cross-compiled)"
+arch=('armv6h')
+license=('MIT' 'X11-distribute-modifications-variant')
+url="https://xorg.freedesktop.org/"
+depends=('libxt' 'libxext' 'libx11' 'glibc')
+makedepends=('git' 'xorg-util-macros')
+source=(git+https://gitlab.freedesktop.org/xorg/lib/libxpm.git?signed#tag=libXpm-${pkgver})
+sha512sums=('de3a50b56f69d011ab297ee1d8c97c1b6c9fcd180c3602ce23a0957f77395dd64c0c21568034030886a1103b09bc868776af4de7342c4721b8d08d846234cd7e')
+validpgpkeys=('67DC86F2623FC5FD4BB5225D14706DBE1E4B4540') # Olivier Fourdan <ofourdan@redhat.com>
+
+# --- Toolchain Cross Configurations ---
+_cross_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_target_triple="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+
+prepare() {
+  cd "${pkgname}"
+  # Force aclocal to find the macros inside your sysroot share directory
+  aclocal -I "${_sysroot}/usr/share/aclocal"
+  autoreconf -fiv
+}
+
+build() {
+  cd "${pkgname}"
+
+  export PATH="${_cross_bin}:${PATH}"
+  export QEMU_LD_PREFIX="${_sysroot}"
+
+  # Core target cross-compiler tools
+  export CC="${_cross_bin}/${_target_triple}-gcc"
+  export CPP="${_cross_bin}/${_target_triple}-cpp"
+  export RANLIB="${_cross_bin}/${_target_triple}-ranlib"
+  export STRIP="${_cross_bin}/${_target_triple}-strip"
+
+  # System evaluation context values
+  export ARCH_FLAGS="-march=armv6zk -mcpu=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard --sysroot=${_sysroot}"
+  export CFLAGS="-O2 -pipe ${ARCH_FLAGS}"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib -Wl,-rpath-link,${_sysroot}/usr/lib"
+
+  # Global environment include maps for deep tracking
+  export CPATH="${_sysroot}/usr/include"
+  export LIBRARY_PATH="${_sysroot}/usr/lib:${_sysroot}/lib"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+
+  # Standard GNU Autotools cross-build configuration invocation
+  ./configure \
+    --host="${_target_triple}" \
+    --build="x86_64-pc-linux-gnu" \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --disable-static \
+    --disable-open-zfile \
+    --with-sysroot="${_sysroot}"
+
+  make
+}
+
+check() {
+  echo "Skipping validation test suite: cross-architectural platform mismatch."
+}
+
+package() {
+  cd "${pkgname}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}"/usr/share/licenses/${pkgname}
+  install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/
+
+  # Strip target shared object binaries cleanly using toolchain strip engine
+  find "${pkgdir}/usr/bin" "${pkgdir}/usr/lib" -type f \( -name "*.so*" -o -executable \) \
+    -exec "${_cross_bin}/${_target_triple}-strip" --strip-unneeded {} + 2>/dev/null || true
+}

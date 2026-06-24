@@ -1,6 +1,0 @@
-def foo(*bar = nil); end
-             ^ unexpected '='; expected a `)` to close the parameters
-                  ^ unexpected ')', expecting end-of-input
-                  ^ unexpected ')', ignoring it
-                     ^~~ unexpected 'end', ignoring it
-

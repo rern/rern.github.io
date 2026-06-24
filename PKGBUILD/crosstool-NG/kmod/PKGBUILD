@@ -1,0 +1,74 @@
+# Maintainer: Dave Reisner <dreisner@archlinux.org>
+# Modified for Cross-Compilation targeting armv6h (Raspberry Pi Zero)
+# Omitted man pages, documentation, and host test suites
+
+pkgname=kmod
+pkgver=34.2
+pkgrel=1
+pkgdesc="Linux kernel module management tools and library (Cross-Compiled for armv6h)"
+arch=('armv6h')
+url='https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git'
+license=('LGPL-2.1-or-later' 'GPL-2.0-or-later')
+depends=('glibc' 'zlib' 'openssl' 'xz' 'zstd')
+# Removed 'scdoc' as manpages are disabled
+makedepends=('git' 'meson')
+options=('strip')
+provides=('libkmod.so')
+source=("git+https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git#tag=v${pkgver}"
+        'depmod-search.conf'
+        'depmod.hook'
+        'depmod.script')
+sha256sums=('SKIP'
+            '1a92bfeae870f61ce814577e69d2a147a9c0caf6aed1131243e4179241fcc4a8'
+            'c11c2a0f66ea405493e8617689ca10818dc81dd1dddc19bdb220c8b2917119c1'
+            '18661aa40c25580f04d2ac3f32e54c2997c0994d1c829905537b413a9d291ac6')
+
+prepare() {
+  # Inject toolchain configurations directly into the path context
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+}
+
+build() {
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  # CRITICAL FIX: Clear Manjaro's host x86_64 flags to prevent compiler pollution
+  export CFLAGS=""
+  export CXXFLAGS=""
+  export LDFLAGS=""
+
+  # Initialize meson cross-configuration
+  meson setup 'kmod' 'build' \
+    --cross-file "/home/x/x-tools/cross-file.txt" \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --buildtype=release \
+    -Dbuild-tests=false \
+    -Dmanpages=false \
+    -Dopenssl=enabled \
+    -Dxz=enabled \
+    -Dzlib=enabled \
+    -Dzstd=enabled
+
+  meson compile -C build
+}
+
+package() {
+  meson install -C 'build' --destdir "$pkgdir"
+
+  # extra directories
+  install -dm0755 "${pkgdir}"/{etc,usr/lib}/{depmod,modprobe}.d
+
+  # install depmod.d file for search/ dir
+  install -Dm0644 "${srcdir}/depmod-search.conf" "${pkgdir}/usr/lib/depmod.d/search.conf"
+
+  # hook
+  install -Dm0644 "${srcdir}/depmod.hook" "${pkgdir}/usr/share/libalpm/hooks/60-depmod.hook"
+  install -Dm0755 "${srcdir}/depmod.script" "${pkgdir}/usr/share/libalpm/scripts/depmod"
+
+  # Final fail-safe sweep for unexpected man page or doc leakage
+  rm -rf "${pkgdir}/usr/share/man"
+  rm -rf "${pkgdir}/usr/share/doc"
+}

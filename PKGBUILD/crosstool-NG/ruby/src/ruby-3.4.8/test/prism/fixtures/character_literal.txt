@@ -1,2 +1,0 @@
-# encoding: Windows-31J
-p ?\u3042""

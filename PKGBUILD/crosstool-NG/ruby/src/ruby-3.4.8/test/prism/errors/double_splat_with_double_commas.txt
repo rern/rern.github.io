@@ -1,3 +1,0 @@
-[**a,,]
-     ^ unexpected ','; expected a `]` to close the array
-

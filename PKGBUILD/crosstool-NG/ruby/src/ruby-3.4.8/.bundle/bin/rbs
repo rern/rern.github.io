@@ -1,2 +1,0 @@
-#!ruby
-load File.realpath("../gems/rbs-3.8.0/exe/rbs", __dir__)

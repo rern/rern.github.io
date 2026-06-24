@@ -1,3 +1,0 @@
-foo(
-    ^ unexpected end-of-input; expected a `)` to close the arguments
-

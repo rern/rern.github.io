@@ -1,0 +1,81 @@
+# Maintainer: Adapted for crosstool-NG armv6h
+
+pkgbase=zlib
+pkgname=(
+  zlib
+  zlib-static
+  minizip
+)
+epoch=1
+pkgver=1.3.2
+pkgrel=1
+pkgdesc='Compression library implementing the deflate compression method (ARMv6h cross build)'
+arch=(armv6h)
+license=(Zlib)
+url="https://www.zlib.net/"
+source=(https://github.com/madler/zlib/releases/download/v$pkgver/zlib-$pkgver.tar.xz)
+sha256sums=('SKIP')  # replace with actual checksum
+
+prepare() {
+  cd "$srcdir/zlib-$pkgver/contrib/minizip"
+  autoreconf -fiv
+}
+
+build() {
+  cd "$srcdir/zlib-$pkgver"
+
+  export CC=armv6-rpi-linux-gnueabihf-gcc
+  export AR=armv6-rpi-linux-gnueabihf-ar
+  export RANLIB=armv6-rpi-linux-gnueabihf-ranlib
+  export LD=armv6-rpi-linux-gnueabihf-ld
+
+  export CFLAGS="-O2 -pipe -march=armv6 -mfpu=vfp -mfloat-abi=hard"
+  export CXXFLAGS="$CFLAGS"
+  export LDFLAGS=""
+
+  ./configure --prefix=/usr
+  make
+
+  cd contrib/minizip
+  ./configure --prefix=/usr --enable-static=no \
+    --host=armv6-rpi-linux-gnueabihf CC=$CC
+  make
+}
+
+
+package_zlib() {
+  depends=(glibc)
+  provides=(libz.so)
+
+  cd "$srcdir/zlib-$pkgver"
+  make install DESTDIR="$pkgdir"
+
+  install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  # move static lib out for zlib-static
+  mkdir -p "$srcdir/zlib-static"
+  mv "$pkgdir/usr/lib/libz.a" "$srcdir/zlib-static/"
+}
+
+package_zlib-static() {
+  pkgdesc="$pkgdesc - static library"
+  depends=(glibc zlib)
+  options=(staticlibs)
+
+  mkdir -p "$pkgdir/usr/lib"
+  mv "$srcdir/zlib-static/libz.a" "$pkgdir/usr/lib/"
+  install -D -m644 "$srcdir/zlib-$pkgver/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+package_minizip() {
+  pkgdesc='Mini zip and unzip based on zlib (ARMv6h)'
+  depends=(glibc zlib)
+
+  cd "$srcdir/zlib-$pkgver/contrib/minizip"
+  make install DESTDIR="$pkgdir"
+
+  install -D -m644 "$srcdir/zlib-$pkgver/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  # remove problematic header
+  rm "$pkgdir/usr/include/minizip/crypt.h"
+}

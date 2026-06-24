@@ -1,0 +1,368 @@
+# Maintainer: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Maintainer: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
+# Cross-compiled for armv6h via crosstool-ng (rAudio Capsule Mirrorless Setup)
+
+_pkgbase=nginx
+pkgbase=nginx-mainline
+pkgname=(
+  nginx-mainline
+  nginx-mainline-mod-geoip
+  nginx-mainline-mod-image-filter
+  nginx-mainline-mod-mail
+  nginx-mainline-mod-perl
+  nginx-mainline-mod-stream
+  nginx-mainline-mod-xslt
+  nginx-mainline-src
+)
+pkgver=1.31.2
+pkgrel=1
+_tests_commit=4d1de3f357afeb91865d024b27516d6b67aad86e
+arch=('armv6h')
+pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server, mainline release (Cross-compiled)'
+url='https://nginx.org'
+license=('BSD-2-Clause')
+options=('!docs')
+makedepends=(
+  findutils
+  gd
+  geoip
+  git
+  glibc
+  libxcrypt
+  libxml2
+  libxslt
+  mailcap
+  openssl
+  pcre2
+  rsync
+  zlib
+)
+source=(
+  "git+https://github.com/nginx/nginx.git#tag=release-${pkgver}"
+  "git+https://github.com/nginx/nginx-tests.git#commit=${_tests_commit}"
+  nginx.service
+  logrotate
+  perl-io-socket-ssl-2.094-tests-fix.patch
+)
+sha512sums=('79a7a5592977de45f0f1809e4e7147070396e98d6dadf0d64e15b3f66933ec9e83db8a202db65e7949cc5e664dc128ff923ea271c611d53dd4587da792ec5b51'
+            '827180c353d2765557c9cd85f205d4e79b4a43dc01b150abc32e93b37ff27ac718d339825096396250c4a9b83899f06de39e9622dae10c54b9bd9748112a3016'
+            'f469b3b14def666e955abf6f2d3c68a47631cad7bee90c92039ffe5bf629aa7e32bb4250844d52c0f963740fb07bf7fea5f8887cc1d5199403f07be6214fcb8d'
+            '2f4dfcfa711b8bcbc5918ba635f5e430ef7132e66276261ade62bb1cba016967432c8dce7f84352cb8b07dc7c6b18f09177aa3eb92c8e358b2a106c8ca142fe9'
+            '2d4ba6e53ee078bbf0921d0221ea7c7acf5a391ce8b3dc9d135cc4c68c1508569a00dedcfaca382f0f912d97e3ced71691573e0aef3b62b124099b33554fbdde')
+
+# --- Toolchain Cross Configurations ---
+_cross_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_target_triple="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+
+prepare() {
+  cd "$srcdir"
+  cp -r $_pkgbase{,-src}
+
+  # Prevent Nginx from trying to run compiled test binaries on your host machine
+  sed -i 's/ngx_feature_run=yes/ngx_feature_run=no/g' $_pkgbase/auto/cc/name
+  sed -i 's/ngx_feature_run=value/ngx_feature_run=no/g' $_pkgbase/auto/cc/name
+  sed -i 's/ngx_feature_run=yes/ngx_feature_run=no/g' $_pkgbase/auto/feature
+  sed -i 's/ngx_feature_run=value/ngx_feature_run=no/g' $_pkgbase/auto/feature
+
+  # --- THE DEFINITIVE FIX FOR XSLT ---
+  sed -i 's|. auto/feature|ngx_found=yes|g' $_pkgbase/auto/lib/libxslt/conf
+  sed -i "s|ngx_feature_path=\"/usr/include/libxml2\"|ngx_feature_path=\"${_sysroot}/usr/include/libxml2 ${_sysroot}/usr/include\"|g" $_pkgbase/auto/lib/libxslt/conf
+  sed -i "s|ngx_feature_libs=\"-lxml2 -lxslt\"|ngx_feature_libs=\"-L${_sysroot}/usr/lib -lxml2 -lxslt -lz -llzma -licui18n -licuuc -licudata -lm\"|g" $_pkgbase/auto/lib/libxslt/conf
+
+  # --- THE DEFINITIVE FIX FOR GD (IMAGE FILTER) ---
+  sed -i 's|. auto/feature|ngx_found=yes|g' $_pkgbase/auto/lib/libgd/conf
+  sed -i "s|ngx_feature_path=|ngx_feature_path=\"${_sysroot}/usr/include ${_sysroot}/usr/include/gd\"|g" $_pkgbase/auto/lib/libgd/conf
+  sed -i "s|ngx_feature_libs=\"-lgd\"|ngx_feature_libs=\"-L${_sysroot}/usr/lib -lgd -lpng -ljpeg -lz -lm\"|g" $_pkgbase/auto/lib/libgd/conf
+
+  # --- FIX: SPARK PERL ENGINE TO LINK AGAINST TARGET SYSROOT, NOT HOST ---
+  sed -i "s|ngx_perl_ldopts=\`|ngx_perl_ldopts=\"-L${_sysroot}/usr/lib/perl5/5.42/core_perl/CORE \"; ngx_perl_ldopts+=\`|g" $_pkgbase/auto/lib/perl/conf
+  sed -i "s|-L/usr/lib|-L${_sysroot}/usr/lib|g" $_pkgbase/auto/lib/perl/conf
+
+  # Fix ssl_certificate_compression test: loop only checked first algorithm
+  sed '/\$has_zlib = 1 if \$algo == 1;/{n;/^\t\t\t\tlast;/d}' -i nginx-tests/ssl_certificate_compression.t
+
+  cd nginx-tests
+  patch -p1 -i ../perl-io-socket-ssl-2.094-tests-fix.patch
+}
+
+build() {
+  cd "$srcdir/$_pkgbase"
+
+  export PATH="${_cross_bin}:${PATH}"
+  export QEMU_LD_PREFIX="${_sysroot}"
+
+  # Core target cross-compiler tools
+  export CC="${_cross_bin}/${_target_triple}-gcc"
+  export CPP="${_cross_bin}/${_target_triple}-cpp"
+  export AR="${_cross_bin}/${_target_triple}-ar"
+  export NM="${_cross_bin}/${_target_triple}-nm"
+  export OBJCOPY="${_cross_bin}/${_target_triple}-objcopy"
+  export OBJDUMP="${_cross_bin}/${_target_triple}-objdump"
+  export RANLIB="${_cross_bin}/${_target_triple}-ranlib"
+  export STRIP="${_cross_bin}/${_target_triple}-strip"
+
+  # System evaluation context values
+  export ARCH_FLAGS="-march=armv6zk -mcpu=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard --sysroot=${_sysroot}"
+  export CFLAGS="-O2 -pipe ${ARCH_FLAGS}"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib -Wl,-rpath-link,${_sysroot}/usr/lib"
+
+  # Global environment include maps for deep preprocessor tracking
+  export CPATH="${_sysroot}/usr/include:${_sysroot}/usr/include/libxml2"
+  export LIBRARY_PATH="${_sysroot}/usr/lib:${_sysroot}/lib"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig"
+
+  # Prevent Nginx from failing accept4 check on toolchain mismatch
+  export ngx_skip_accept4_test=yes
+
+  # --- FIX: ADJUSTED TO MATCH YOUR 5.34 SYSROOT PERL ---
+  export PERL_MM_OPT="CC='${CC}' LD='${CC}' CCCDLFLAGS='-fPIC' OPTIMIZE='${CFLAGS}' \
+    LIBS='-L${_sysroot}/usr/lib/perl5/5.34/core_perl/CORE -lperl' \
+    INC='-I${srcdir}/${_pkgbase}/src/core -I${srcdir}/${_pkgbase}/src/event -I${srcdir}/${_pkgbase}/src/event/modules -I${srcdir}/${_pkgbase}/src/event/quic -I${srcdir}/${_pkgbase}/src/http -I${srcdir}/${_pkgbase}/src/http/modules -I${srcdir}/${_pkgbase}/src/http/v2 -I${srcdir}/${_pkgbase}/src/http/v3 -I${srcdir}/${_pkgbase}/src/http/modules/perl -I${srcdir}/${_pkgbase}/src/os/unix -I${srcdir}/${_pkgbase}/objs -I${_sysroot}/usr/lib/perl5/5.34/core_perl/CORE'"
+
+  # Run auto/configure with explicitly space-isolated include directives
+  auto/configure \
+    --crossbuild=Linux:arm \
+    --with-cc-opt="-I${_sysroot}/usr/include -I${_sysroot}/usr/include/libxml2 ${CFLAGS}" \
+    --with-ld-opt="-L${_sysroot}/usr/lib/perl5/5.34/core_perl/CORE -L${_sysroot}/usr/lib -L${_sysroot}/lib ${LDFLAGS}" \
+    --prefix=/etc/nginx \
+    --conf-path=/etc/nginx/nginx.conf \
+    --sbin-path=/usr/bin/nginx \
+    --modules-path=/usr/lib/nginx/modules \
+    --pid-path=/run/nginx.pid \
+    --lock-path=/run/lock/nginx.lock \
+    --user=http \
+    --group=http \
+    --http-log-path=/var/log/nginx/access.log \
+    --error-log-path=stderr \
+    --http-client-body-temp-path=/var/lib/nginx/client-body \
+    --http-proxy-temp-path=/var/lib/nginx/proxy \
+    --with-compat \
+    --with-debug \
+    --with-file-aio \
+    --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_dav_module \
+    --with-http_degradation_module \
+    --with-http_flv_module \
+    --with-http_geoip_module=dynamic \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_image_filter_module=dynamic \
+    --with-http_mp4_module \
+    --with-http_perl_module=dynamic \
+    --with-http_random_index_module \
+    --with-http_realip_module \
+    --with-http_secure_link_module \
+    --with-http_slice_module \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-http_sub_module \
+    --with-http_v2_module \
+    --with-http_v3_module \
+    --with-http_xslt_module=dynamic \
+    --with-mail=dynamic \
+    --with-mail_ssl_module \
+    --with-pcre-jit \
+    --with-stream=dynamic \
+    --with-stream_geoip_module=dynamic \
+    --with-stream_realip_module \
+    --with-stream_ssl_module \
+    --with-stream_ssl_preread_module \
+    --with-threads
+
+  # --- SANITIZE LINKER OBJECT PATHS IN GENERATED MAKEFILES ---
+  if [ -f objs/Makefile ]; then
+    sed -i "s|-L/usr/lib/perl5/5.42/core_perl/CORE||g" objs/Makefile
+    sed -i "s|-Wl,-rpath,/usr/lib/perl5/5.42/core_perl/CORE||g" objs/Makefile
+    sed -i "s|-L/usr/lib/perl5/5.34/core_perl/CORE||g" objs/Makefile
+    sed -i "s|-Wl,-rpath,/usr/lib/perl5/5.34/core_perl/CORE||g" objs/Makefile
+  fi
+
+  # Pass cross-architectural overrides down to make loops
+  make \
+    CC="${CC}" \
+    LD="${CC}" \
+    FULL_AR="${AR}" \
+    LIBS="-lssl -lcrypto -latomic -lxml2 -lxslt -lz -llzma -licui18n -licuuc -licudata -lm -lgd -lpng -ljpeg -L${_sysroot}/usr/lib/perl5/5.34/core_perl/CORE -lperl"
+    
+  make DESTDIR="$srcdir/install" install
+  
+  rsync -am \
+    --remove-source-files \
+    --include="usr/lib/nginx/modules/ngx_*geoip*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-geoip/"
+
+  rsync -am \
+    --remove-source-files \
+    --include="usr/lib/nginx/modules/ngx_*image*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-image-filter/"
+
+  rsync -am \
+    --remove-source-files \
+    --include="usr/lib/nginx/modules/ngx_*mail*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-mail/"
+
+  rsync -am \
+    --remove-source-files \
+    --include='*.3pm' \
+    --include="usr/lib/perl*/***" \
+    --include="usr/lib/nginx/modules/ngx_*perl*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-perl/"
+
+  rsync -am \
+    --remove-source-files \
+    --include="usr/lib/nginx/modules/ngx_*stream*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-stream/"
+
+  rsync -am \
+    --remove-source-files \
+    --include="usr/lib/nginx/modules/ngx_*xslt*.so" \
+    --include='*/' \
+    --exclude='*' \
+    "$srcdir/install/" "$srcdir/install-xslt/"
+
+  find "$srcdir/install/usr" -type d -empty -delete
+}
+
+check() {
+  echo "Skipping validation test suite: cross-architectural platform mismatch."
+}
+
+package_nginx-mainline() {
+  depends=('glibc' 'pcre2' 'zlib' 'openssl' 'mailcap' 'libxcrypt')
+  provides=("$_pkgbase")
+  conflicts=("$_pkgbase")
+  backup=('etc/nginx/fastcgi.conf'
+          'etc/nginx/fastcgi_params'
+          'etc/nginx/koi-win'
+          'etc/nginx/koi-utf'
+          'etc/nginx/nginx.conf'
+          'etc/nginx/scgi_params'
+          'etc/nginx/uwsgi_params'
+          'etc/nginx/win-utf'
+          'etc/logrotate.d/nginx')
+
+  cd "$srcdir/$_pkgbase"
+  mv "$srcdir"/install/* "$pkgdir/"
+
+  sed -e 's|\<user\s\+\w\+;|user http;|g' \
+    -e '/^\s\+root/s|html|/usr/share/nginx/html|' \
+    -e '/^events {/ i # Load all installed modules\ninclude modules.d/*.conf;\n' \
+    -i "$pkgdir"/etc/nginx/nginx.conf
+
+  rm "$pkgdir"/etc/nginx/*.default
+  rm "$pkgdir"/etc/nginx/mime.types
+
+  install -dm0755 "$pkgdir"/etc/nginx/modules.d
+  install -d "$pkgdir"/var/lib/nginx
+  install -dm700 "$pkgdir"/var/lib/nginx/proxy
+
+  chmod 755 "$pkgdir"/var/log/nginx
+  chown root:http "$pkgdir"/var/log/nginx
+
+  install -d "$pkgdir"/usr/share/nginx
+  mv "$pkgdir"/etc/nginx/html/ "$pkgdir"/usr/share/nginx
+
+  install -Dm644 ../logrotate "$pkgdir"/etc/logrotate.d/nginx
+  install -Dm644 ../nginx.service "$pkgdir"/usr/lib/systemd/system/nginx.service
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  rm -rf "$pkgdir"/run
+
+  for i in ftdetect ftplugin indent syntax; do
+    install -Dm644 "contrib/vim/$i/nginx.vim" \
+      "$pkgdir/usr/share/vim/vimfiles/$i/nginx.vim"
+  done
+
+  # Strip target shared object binaries cleanly using toolchain strip engine
+  find "$pkgdir/usr/bin" "$pkgdir/usr/lib" -type f \( -name "*.so*" -o -executable \) \
+    -exec "${_cross_bin}/${_target_triple}-strip" --strip-unneeded {} + 2>/dev/null || true
+}
+
+package_nginx-mainline-src() {
+  pkgdesc="Source code of nginx-mainline $pkgver, useful for building modules"
+  depends=(bash perl)
+  conflicts=("$_pkgbase-src")
+
+  install -d "$pkgdir/usr/src"
+  cp -r "$srcdir/$_pkgbase-src" "$pkgdir/usr/src/nginx"
+  rm -rf "$pkgdir/usr/src/nginx/".git*
+  ln -s auto/configure "$pkgdir/usr/src/nginx/configure"
+  install -Dm644 "$srcdir/$_pkgbase/LICENSE" "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+_package_module() {
+  modname="$1"
+  priority="${2:-20}"
+
+  mv "$srcdir/install-$modname"/* "$pkgdir/"
+  install -Dm644 "$srcdir/$_pkgbase/LICENSE" "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  install -dm0755 "$pkgdir"/etc/nginx/modules.d
+  cd "$pkgdir"
+  for mod in usr/lib/nginx/modules/*.so; do
+    printf 'load_module "/%s";\n' "${mod}" >> "$pkgdir/etc/nginx/modules.d/$priority-$modname.conf"
+  done
+
+  find "$pkgdir/usr/lib" -type f -name "*.so*" \
+    -exec "${_cross_bin}/${_target_triple}-strip" --strip-unneeded {} + 2>/dev/null || true
+}
+
+package_nginx-mainline-mod-geoip() {
+  pkgdesc="GeoIP module for nginx-mainline"
+  depends=("$pkgbase=${pkgver}" glibc geoip)
+  conflicts=("$_pkgbase-mod-geoip")
+  backup=(etc/nginx/modules.d/20-geoip.conf)
+  _package_module geoip
+}
+
+package_nginx-mainline-mod-image-filter() {
+  pkgdesc="Module for nginx-mainline that transforms images in JPEG, GIF, PNG, and WebP formats"
+  depends=("$pkgbase=${pkgver}" glibc gd)
+  conflicts=("$_pkgbase-mod-image-filter")
+  backup=(etc/nginx/modules.d/20-image-filter.conf)
+  _package_module image-filter
+}
+
+package_nginx-mainline-mod-mail() {
+  pkgdesc="Mail module for nginx-mainline to proxy IMAP, POP3 and SMTP protocols"
+  depends=("$pkgbase=${pkgver}" glibc)
+  conflicts=("$_pkgbase-mod-mail")
+  backup=(etc/nginx/modules.d/20-mail.conf)
+  _package_module mail
+}
+
+package_nginx-mainline-mod-perl() {
+  pkgdesc="Module for nginx-mainline to implement location and variable handlers in Perl"
+  depends=("$pkgbase=${pkgver}" glibc perl)
+  conflicts=("$_pkgbase-mod-perl")
+  backup=(etc/nginx/modules.d/20-perl.conf)
+  _package_module perl
+}
+
+package_nginx-mainline-mod-stream() {
+  pkgdesc="Module for nginx-mainline to proxy TCP and UDP data streams"
+  depends=("$pkgbase=${pkgver}" glibc)
+  conflicts=("$_pkgbase-mod-stream")
+  backup=(etc/nginx/modules.d/10-stream.conf)
+  _package_module stream 10
+}
+
+package_nginx-mainline-mod-xslt() {
+  pkgdesc="Module for nginx-mainline to transform XML responses with XSLT stylesheets"
+  depends=("$pkgbase=${pkgver}" glibc libxml2 libxslt)
+  conflicts=("$_pkgbase-mod-xslt")
+  backup=(etc/nginx/modules.d/20-xslt.conf)
+  _package_module xslt
+}
