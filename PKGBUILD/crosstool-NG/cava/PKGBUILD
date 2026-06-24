@@ -1,0 +1,84 @@
+# Maintainer: Carl Smedstad <carsme@archlinux.org>
+# Modified for Cross-Compilation targeting armv6h (Raspberry Pi Zero)
+# Stripped down backends for a lightweight terminal-only configuration on ALSA
+
+pkgname=cava
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='Console-based Audio Visualizer with support for multiple backends (Cross-Compiled)'
+arch=('armv6h')
+url='https://github.com/karlstav/cava'
+license=('MIT')
+# Optimized dependencies for terminal audio visualization via ALSA
+depends=(
+  'fftw'
+  'glibc'
+  'iniparser'
+  'alsa-lib'
+  'ncurses'
+)
+options=('strip')
+source=("$url/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+b2sums=('6de652e3029d0ec8e2b682f3c4f9377cbc6712c92be5e0d69178e562edae70c288f98784665f40c03dce9b9cd1ffeb3c866931405e56138a58c69fbe303fb667')
+
+prepare() {
+  cd $pkgname-$pkgver
+  echo "$pkgver" > version
+  autoreconf -vif
+}
+
+build() {
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+
+  # Create a clean pkg-config sandbox directory
+  local _pc_sandbox="${srcdir}/pc-sandbox"
+  rm -rf "${_pc_sandbox}"
+  mkdir -p "${_pc_sandbox}"
+
+  # ONLY allow CAVA to see the backends we actually want to build
+  local _allowed_deps=('alsa' 'fftw3' 'iniparser' 'ncursesw' 'ncurses')
+  for dep in "${_allowed_deps[@]}"; do
+    if [ -f "/home/x/x-sysroot/usr/lib/pkgconfig/${dep}.pc" ]; then
+      ln -s "/home/x/x-sysroot/usr/lib/pkgconfig/${dep}.pc" "${_pc_sandbox}/${dep}.pc"
+    fi
+  done
+
+  # Force pkg-config to ONLY search our sandbox, dropping PipeWire/SDL out of sight
+  export PKG_CONFIG_PATH="${_pc_sandbox}"
+  export PKG_CONFIG_LIBDIR="${_pc_sandbox}"
+
+  # Enforce target sysroot tracking
+  export CFLAGS="--sysroot=/home/x/x-sysroot"
+  export CXXFLAGS="--sysroot=/home/x/x-sysroot"
+  export LDFLAGS="--sysroot=/home/x/x-sysroot"
+
+  # Autotools binary mappings
+  export CC="armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="armv6-rpi-linux-gnueabihf-g++"
+  export AR="armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="armv6-rpi-linux-gnueabihf-ranlib"
+  export STRIP="armv6-rpi-linux-gnueabihf-strip"
+
+  cd "$pkgname-$pkgver"
+  
+  # Clean out previous broken configuration attempts
+  make distclean || true
+  autoreconf -vif
+
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr
+    
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  
+  install -vDm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE
+  
+  # Clean sweep: Drop upstream document layouts completely
+  rm -rf "${pkgdir}/usr/share/doc"
+}
