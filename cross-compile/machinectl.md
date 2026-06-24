@@ -11,8 +11,11 @@ systemctl restart systemd-binfmt # run once
 dir_sysroot=/home/x/x-sysroot
 mkdir -p $dir_sysroot
 rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_sysroot/
+<<<<<<< HEAD
+=======
 chown -R $USER:$USER /home/x/x-sysroot
 chmod -R u+w /home/x/x-sysroot
+>>>>>>> e59c068a790d8568d6e7bbf9d9b103b21342a24f
 
 # new machine
 dir_machine=/var/lib/machines/rpi0
@@ -43,6 +46,7 @@ machinectl start rpi0
 # rpi0 prompt
 machinectl shell root@rpi0
 # exit: ctrl + D
+
 machinectl kill rpi0 --signal=SIGKILL # machinectl stop rpi0 # not working
 
 # list
@@ -60,7 +64,7 @@ pts/3
 container
 EOF
 exit
-# boot
+# boot - exit running: machinectl kill rpi0 --signal=SIGKILL
 systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache
 # exit: hold Ctrl and ] 3 times
 ```
