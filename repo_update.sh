@@ -1,32 +1,11 @@
 #!/bin/bash
 
+. <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
+
 updateRepo() {
 	[[ ! $newer_only ]] && rm -f +R*
 	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
 	rm -f *.xz.old
-	# index.html
-	html='
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>+R rAudio Packages</title>
-	<style>
-		table { font-family: monospace; white-space: pre; border: none }
-		td:last-child { padding-left: 10px; text-align: right }
-	</style>
-</head>
-<body>
-<table>
-	<tr><td><a href="/">../</a></td><td></td></tr>
-'
-	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
-				| awk '{print "<tr><td><a href=\"'$1'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
-	html+='
-<table>
-</body>
-</html>'
-	echo -e "$html" > ../$1.html
 }
 
 if [[ $( uname -m ) == x86_64 ]]; then
@@ -59,6 +38,8 @@ else
 fi
 #........................
 banner $action Repository
+
+shopt -s nullglob # suppress error if no *.zst
 for arch in $selected; do
 	if [[ $manjaro ]]; then
 		cd /home/x/GitHub/rern.github.io/$arch
@@ -69,12 +50,13 @@ for arch in $selected; do
 	bar $arch
 	if [[ $arch == armv6h ]]; then
 		for dir in alarm core extra; do
+			bar $dir
 			cd $dir
-			updateRepo $arch/$dir
+			updateRepo
 			cd ..
 		done
 	else
-		updateRepo $arch
+		updateRepo
 	fi
 done
 
