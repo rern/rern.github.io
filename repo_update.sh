@@ -1,6 +1,6 @@
 #!/bin/bash
 
-updateRepo() {}
+updateRepo() {
 	[[ ! $newer_only ]] && rm -f +R*
 	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
 	rm -f *.xz.old
@@ -21,12 +21,12 @@ updateRepo() {}
 	<tr><td><a href="/">../</a></td><td></td></tr>
 '
 	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
-				| awk '{print "<tr><td><a href=\"'$arch'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
+				| awk '{print "<tr><td><a href=\"'$s'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
 	html+='
 <table>
 </body>
 </html>'
-	echo -e "$html" > ../$arch.html
+	echo -e "$html" > ../$1.html
 }
 
 if [[ $( uname -m ) == x86_64 ]]; then
@@ -70,11 +70,11 @@ for arch in $selected; do
 	if [[ $arch == armv6h ]]; then
 		for dir in alarm core extra; do
 			cd $dir
-			updateRepo
+			updateRepo $arch/$dir
 			cd ..
 		done
 	else
-		updateRepo
+		updateRepo $arch
 	fi
 done
 
