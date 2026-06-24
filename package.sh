@@ -2,8 +2,12 @@
 
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 
-! grep -q ^Model.*Rasp /proc/cpuinfo && dialog.error_exit This is not a Raspberry Pi
+if [[ $( uname -m ) == x86_64 ]]; then
+    . <( curl -sL $https_io/repo_update.sh )
+    exit
 #----------------------------------------------------------------------------
+fi
+
 #........................
 dialog.splash Package Utilities
 list="\

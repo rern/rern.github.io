@@ -6,7 +6,7 @@ else
 	bar Mount REPO ...
 	mkdir -p BIG REPO
 	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
-	[[ $? != 0 ]] && dialog.error_exit Mount '\Z1REPO\Zn' failed.
+	[[ $? != 0 ]] && dialog.error_exit "Mount '\Z1REPO\Zn' failed."
 #----------------------------------------------------------------------------
 	[[ ! $( ls REPO ) ]] && dialog.error_exit Repo empty: REPO
 #----------------------------------------------------------------------------
@@ -28,14 +28,15 @@ else
 	action=Update
 	new=-n # newer only (deleted packages still exist in db)
 fi
+#........................
 banner $action Repository
-if [[ $manjaro ]]; then
-	cd /home/x/GitHub/rern.github.io/$arch
-else
-	dir_base=$PWD
-	cd $dir_base/REPO/$arch
-fi
 for arch in $selected; do
+	if [[ $manjaro ]]; then
+		cd /home/x/GitHub/rern.github.io/$arch
+	else
+		dir_base=$PWD
+		cd $dir_base/REPO/$arch
+	fi
 	bar $arch
 	[[ ! $new ]] && rm -f +R*
 	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
