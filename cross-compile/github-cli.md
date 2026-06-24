@@ -23,5 +23,6 @@ done
 
 git add .gitattributes
 git commit -m LFS
+git pull
 git push
 ```
