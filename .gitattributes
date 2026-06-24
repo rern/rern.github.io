@@ -60,6 +60,7 @@
 *.wav   binary
 *.woff  binary
 *.woff2 binary
-*.xz filter=lfs diff=lfs merge=lfs -text
 *.zip   binary
-*.zst filter=lfs diff=lfs merge=lfs -text
+linux-firmware-qcom-* filter=lfs diff=lfs merge=lfs -text
+linux-firmware-mellanox-* filter=lfs diff=lfs merge=lfs -text
+linux-firmware-nvidia-* filter=lfs diff=lfs merge=lfs -text
