@@ -1,5 +1,34 @@
 #!/bin/bash
 
+updateRepo() {}
+	[[ ! $newer_only ]] && rm -f +R*
+	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
+	rm -f *.xz.old
+	# index.html
+	html='
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>+R rAudio Packages</title>
+	<style>
+		table { font-family: monospace; white-space: pre; border: none }
+		td:last-child { padding-left: 10px; text-align: right }
+	</style>
+</head>
+<body>
+<table>
+	<tr><td><a href="/">../</a></td><td></td></tr>
+'
+	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
+				| awk '{print "<tr><td><a href=\"'$arch'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
+	html+='
+<table>
+</body>
+</html>'
+	echo -e "$html" > ../$arch.html
+}
+
 if [[ $( uname -m ) == x86_64 ]]; then
 	manjaro=1
 else
@@ -26,7 +55,7 @@ if grep -q Rebuild <<< $selected; then
 	selected=$( grep -v Rebuild <<< $selected )
 else
 	action=Update
-	new=-n # newer only (deleted packages still exist in db)
+	newer_only=-n # newer only (deleted packages still exist in db)
 fi
 #........................
 banner $action Repository
@@ -38,32 +67,15 @@ for arch in $selected; do
 		cd $dir_base/REPO/$arch
 	fi
 	bar $arch
-	[[ ! $new ]] && rm -f +R*
-	repo-add $new -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
-	rm -f *.xz.old
-	# index.html
-	html='
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>+R rAudio Packages</title>
-	<style>
-		table { font-family: monospace; white-space: pre; border: none }
-		td:last-child { padding-left: 10px; text-align: right }
-	</style>
-</head>
-<body>
-<table>
-	<tr><td><a href="/">../</a></td><td></td></tr>
-'
-	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
-				| awk '{print "<tr><td><a href=\"'$arch'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
-	html+='
-<table>
-</body>
-</html>'
-	echo -e "$html" > ../$arch.html
+	if [[ $arch == armv6h ]]; then
+		for dir in alarm core extra; do
+			cd $dir
+			updateRepo
+			cd ..
+		done
+	else
+		updateRepo
+	fi
 done
 
 if [[ ! $manjaro ]]; then
