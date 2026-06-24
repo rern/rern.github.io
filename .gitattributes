@@ -1,8 +1,6 @@
 ### normalize line endings
-
 # auto detect text / binary
 * text=auto eol=lf
-
 # force as text
 *.adoc    text eol=lf
 *.c       text eol=lf
@@ -36,10 +34,8 @@
 *.types   text eol=lf
 *.yaml    text eol=lf
 *.yml     text eol=lf
-
 *.bat     text eol=crlf
 *.cmd     text eol=crlf
-
 # force as binary
 *.ai    binary
 *.bin   binary
@@ -64,6 +60,6 @@
 *.wav   binary
 *.woff  binary
 *.woff2 binary
-*.xz    binary
+*.xz filter=lfs diff=lfs merge=lfs -text
 *.zip   binary
-*.zst   binary
+*.zst filter=lfs diff=lfs merge=lfs -text
