@@ -4,7 +4,7 @@
 
 updateRepo() {
 	[[ ! $newer_only ]] && rm -f +R*
-	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
+	repo-add $newer_only -R $1.db.tar.xz *.pkg.tar.xz *.pkg.tar.zst
 	rm -f *.xz.old
 }
 
@@ -49,14 +49,14 @@ for arch in $selected; do
 	fi
 	bar $arch
 	if [[ $arch == armv6h ]]; then
-		for dir in alarm core extra; do
+		for dir in +R alarm core extra; do
 			bar $dir
 			cd $dir
-			updateRepo
+			updateRepo $dir
 			cd ..
 		done
 	else
-		updateRepo
+		updateRepo +R
 	fi
 done
 
