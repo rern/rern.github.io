@@ -21,7 +21,7 @@ updateRepo() {
 	<tr><td><a href="/">../</a></td><td></td></tr>
 '
 	html+=$( ls -lh --time-style='+%y/%m/%d %H:%M:%S' *.pkg.tar.{xz,zst} \
-				| awk '{print "<tr><td><a href=\"'$s'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
+				| awk '{print "<tr><td><a href=\"'$1'/"$8"\">"$8"</a></td><td>"$5" "$6" "$7"</td></tr>"}' )
 	html+='
 <table>
 </body>
