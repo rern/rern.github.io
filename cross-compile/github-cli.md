@@ -17,10 +17,12 @@ git config --global user.name USER
 cd PATH/REPO
 git lfs install
 # .gitattributes
-git lfs track '*.xz'
-git lfs track '*.zst'
+for f in qcom mellanox nvidia; do
+    git lfs track linux-firmware-$f-*
+done
 
 git add .gitattributes
-git commit -m 'Track large files with Git LFS'
+git commit -m LFS
+git pull
 git push
 ```
