@@ -18,7 +18,8 @@ SigLevel = Optional TrustAll
 Server = https://rern.github.io/armv6h/extra
 EOF
 
-pacman -Syu \
+pacman -Syy
+pacman -Su \
     --ignore linux-firmware-mellanox \
     --ignore linux-firmware-nvidia \
     --ignore linux-firmware-qcom \
