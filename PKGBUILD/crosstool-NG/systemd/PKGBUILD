@@ -98,7 +98,7 @@ prepare() {
 build() {
   local _target_triplet="armv6-rpi-linux-gnueabihf"
   local _toolchain_bin="/home/x/x-tools/${_target_triplet}/bin"
-  local _sysroot="/home/x/rpi0_sysroot"
+  local _sysroot="/home/x/x-sysroot"
 
   # Dynamically generate the Meson Cross Toolchain specification definitions
   cat <<EOF > "${srcdir}/meson-cross.txt"
@@ -184,7 +184,7 @@ EOF
 }
 
 check() {
-  export QEMU_LD_PREFIX="/home/x/rpi0_sysroot"
+  export QEMU_LD_PREFIX="/home/x/rpi0-sysroot"
   meson test -C build --print-errorlogs || echo " -> Bypassed minor host framework test runtime variation logs."
 }
 

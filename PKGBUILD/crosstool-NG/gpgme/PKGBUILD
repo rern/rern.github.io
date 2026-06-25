@@ -1,0 +1,93 @@
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Roman Kyrylych <roman@archlinux.org>
+# Contributor: Sarah Hay <sarah@archlinux.org>
+
+# ALARM: Kevin Mihelich <kevin@archlinuxarm.org>
+#  - add -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 to v6/v7 flags
+#  - switch to github mirror
+
+pkgname=gpgme
+pkgver=2.1.0
+pkgrel=1
+pkgdesc='C wrapper library for GnuPG (Cross-compiled for armv6h)'
+arch=('armv6h')
+url='https://www.gnupg.org/related_software/gpgme/'
+license=(
+  GPL-2.0-or-later
+  LGPL-2.0-or-later
+  LGPL-2.1-or-later
+  MIT)
+depends=(
+  'glibc'
+  'libassuan'
+  'libgpg-error'
+  'gnupg>=2')
+makedepends=('git')
+provides=('libgpgme.so')
+options=('!emptydirs')
+validpgpkeys=('6DAA6E64A76D2840571B4902528897B826403ADA'  # Werner Koch (dist signing 2020)
+              'AC8E115BF73E2D8D47FA9908E98E9B2D19C6C8BD') # Niibe Yutaka (GnuPG Release Key)
+source=("git+https://github.com/gpg/gpgme.git#tag=${pkgname}-${pkgver}?signed")
+sha256sums=('f4dfc119a607476eb77cb1152182783f94378c9fc8a86de3f05f6f99eb8c145a')
+
+# Cross-compilation settings
+_target_host="armv6-rpi-linux-gnueabihf"
+_toolchain_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_sysroot="/home/x/x-sysroot"
+
+prepare() {
+  cd ${pkgname}
+
+  sed -i 's/-unknown//' autogen.sh
+  autoreconf -fi
+}
+
+build() {
+  cd "$pkgname"
+
+  # Force a clean configuration phase by wiping the old cache folder
+  rm -rf build
+
+  # 1. Direct multi-line escape hatch patch
+  # This finds the exact start of line 112 and forces it to a clean declare_dependency
+  # The trailing '#' comments out the leftover 'static : get_option...' configuration lines
+  sed -i "s/libcrypto = dependency('libcrypto'.*/libcrypto = declare_dependency(link_args: ['-lcrypto']) #/g" meson.build
+
+  # 2. Expose the toolchain binary directory
+  export PATH="${_toolchain_bin}:${PATH}"
+
+  # 3. Inject explicit Include pointers to satisfy any remaining 'openssl/ssl.h' checks
+  # and bind the physical libraries inside your sysroot directory
+  export CFLAGS="-O2 -pipe --sysroot=${_sysroot} -I${_sysroot}/usr/include"
+  export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot} -I${_sysroot}/usr/include"
+  export LDFLAGS="--sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib -lcrypto"
+
+  # Run configuration
+  meson setup build \
+    --prefix=/usr \
+    --buildtype=plain \
+    --cross-file "${_cross_file}" \
+    -Ddoc=disabled \
+    -Ddoxygen=disabled \
+    -Dscriptlet-shell=/usr/bin/bash \
+    -Dldconfig=/usr/bin/ldconfig \
+    -Dcrypto=openssl
+
+  meson compile -C build
+}
+
+package() {
+  cd ${pkgname}
+
+  make DESTDIR="${pkgdir}" install
+  
+  # Remove unused configuration
+  rm -f "${pkgdir}"/usr/lib/pkgconfig/gpgme-glib.pc
+
+  # Strip documentation, info registries, and manpages manually 
+  rm -rf "${pkgdir}"/usr/share/doc
+  rm -rf "${pkgdir}"/usr/share/man
+  rm -rf "${pkgdir}"/usr/share/info
+
+  install -vDm 644 LICENSES "$pkgdir/usr/share/licenses/$pkgname/MIT.txt"
+}

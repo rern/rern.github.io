@@ -1,0 +1,69 @@
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Contributor: Dave Reisner <dreisner@archlinux.org>
+# Contributor: Angel Velasquez <angvp@archlinux.org>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Andrea Scarpino <andrea@archlinux.org>
+# Contributor: ice-man <icemanf@gmail.com>
+
+pkgname=libssh2
+pkgver=1.11.1
+pkgrel=3
+pkgdesc="A library implementing the SSH2 protocol as defined by Internet Drafts"
+url="https://www.libssh2.org/"
+arch=('armv6h')
+license=('BSD-3-Clause')
+depends=('openssl' 'zlib')
+makedepends=('git' 'autoconf' 'automake' 'libtool')
+provides=('libssh2.so')
+source=("git+https://github.com/libssh2/libssh2.git#tag=${pkgname}-${pkgver}"
+        "$pkgname-97acf3df.patch")
+b2sums=('SKIP'
+        '743feb7c180288de94649bb1a20b1b2761151c6eaa271d4b6bf145bfceb30684803dfe3c1f6314714381fdce784c5a426c5adc3d58ee49ab1fc0d8f1bc66abfd')
+
+prepare() {
+  cd "$pkgname"
+  patch -Np1 -i "../$pkgname-97acf3df.patch"
+  git cherry-pick -n 17626857d20b3c9a1addfa45979dadcee1cd84a4
+  autoreconf -fiv
+}
+
+build() {
+  cd "$pkgname"
+
+  # Cross toolchain environment
+  export CC=/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc
+  export AR=/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar
+  export RANLIB=/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ranlib
+
+  # Point pkg-config to the ARM sysroot
+  export PKG_CONFIG_LIBDIR=/home/x/x-sysroot/usr/lib/pkgconfig
+  export PKG_CONFIG_SYSROOT_DIR=/home/x/x-sysroot
+
+  # Compiler and linker flags for ARMv6K + VFP
+  export CFLAGS="-O2 -pipe -march=armv6k -mfpu=vfp -mfloat-abi=hard --sysroot=/home/x/x-sysroot"
+  export CPPFLAGS="--sysroot=/home/x/x-sysroot -I/home/x/x-sysroot/usr/include -I/home/x/x-sysroot/usr/include/openssl"
+  export LDFLAGS="--sysroot=/home/x/x-sysroot -L/home/x/x-sysroot/usr/lib"
+
+  # Configure with explicit OpenSSL backend and sysroot paths
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --disable-docker-tests \
+    --with-crypto=openssl \
+    --with-libssl-prefix=/home/x/x-sysroot/usr
+
+  make
+}
+
+package() {
+  cd "$pkgname"
+
+  # Use standard Autotools installation targeted into the fakeroot package directory
+  make DESTDIR="$pkgdir" install
+
+  # Clear documentation folders to optimize profile footprint space on the target card
+  rm -rf "$pkgdir"/usr/share/man
+
+  # Install the license file required by Arch Linux packaging standards
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
