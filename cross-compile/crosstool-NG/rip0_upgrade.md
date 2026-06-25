@@ -1,6 +1,6 @@
 ```sh
 sed -i '/^\[+R/,/^server/ d' /etc/pacman.conf
-cat << EOF > /etc/pacman.conf
+cat << EOF >> /etc/pacman.conf
 [+R]
 SigLevel = Optional TrustAll
 Server = https://rern.github.io/armv6h/+R
@@ -16,7 +16,6 @@ Server = https://rern.github.io/armv6h/core
 [extra]
 SigLevel = Optional TrustAll
 Server = https://rern.github.io/armv6h/extra
-
 EOF
 
 pacman -Syu \

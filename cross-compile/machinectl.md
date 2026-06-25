@@ -11,19 +11,15 @@ systemctl restart systemd-binfmt # run once
 dir_sysroot=/home/x/x-sysroot
 mkdir -p $dir_sysroot
 rsync -aAXv --info=progress2 /run/media/x/ROOT/ $dir_sysroot/
-<<<<<<< HEAD
-=======
-chown -R $USER:$USER /home/x/x-sysroot
-chmod -R u+w /home/x/x-sysroot
->>>>>>> e59c068a790d8568d6e7bbf9d9b103b21342a24f
+chown -R x:x /home/x/x-sysroot
+rm /etc/resolv.conf
+echo nameserver 192.168.1.1 > $dir_sysroot/etc/resolv.conf
+sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_sysroot/etc/makepkg.conf
 
 # new machine
 dir_machine=/var/lib/machines/rpi0
 ln -s $dir_sysroot $dir_machine
 systemd-nspawn -M rpi0 -D $dir_machine
-sed -i -E 's/#*(MAKEFLAGS="-j).*/\112"/' $dir_sysroot/etc/makepkg.conf
-rm /etc/resolv.conf
-echo nameserver 192.168.1.1 > /etc/resolv.conf
 
 # allow rpi0 to user host tmpfs(ram)
 mkdir -p /etc/systemd/system/systemd-nspawn@rpi0.d/
