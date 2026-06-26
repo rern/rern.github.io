@@ -52,5 +52,8 @@ scp test root@192.168.1.90:/root
 # run test on rpi0
 
 cd
-rm -rf crosstool-ng toolchain 
+rm -rf crosstool-ng toolchain
+
+# install compiled package
+sudo pacman --sysroot /home/x/x-sysroot -U PACKAGE-armv6h.pkg.tar.zst
 ```
