@@ -1,4 +1,18 @@
 ```sh
+# on rpi0
+pacman -Syy
+
+pacman -S gcc gcc-libs glibc
+
+pacman -S curl libssh2 openssl pacman systemd --overwrite 'usr/*'
+
+pacman Suu --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom
+    
+ln -s /usr/armv6-rpi-linux-gnueabihf/lib/libstdc++.so.6.0.35 /usr/lib/libstdc++.so.6
+ln -s /usr/armv6-rpi-linux-gnueabihf/lib/libgcc_s.so.1 /usr/lib
+
+
+
 sysroot=/home/x/x-sysroot
 cd $sysroot
 
