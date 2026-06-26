@@ -54,6 +54,10 @@ scp test root@192.168.1.90:/root
 cd
 rm -rf crosstool-ng toolchain
 
+# if frozen while compiling - reduce cpu threads and write to hdd instead of ram
+sed -i -E 's/^#*(MAKEFLAGS=).*/\1"-j4"/; s|^#*(BUILDDIR=).*|\1home/x/tmp|' /etc/makepkg.conf
+mkdir /home/x/tmp
+
 # install compiled package
 sudo pacman --sysroot /home/x/x-sysroot -U PACKAGE-armv6h.pkg.tar.zst
 ```
