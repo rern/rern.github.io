@@ -1,0 +1,84 @@
+# Maintainer: Andreas Radke <andyrtr@archlinux.org>
+
+pkgname=libgcrypt
+pkgver=1.12.2
+pkgrel=1
+pkgdesc="General purpose cryptographic library based on the code from GnuPG (Cross-compiled for armv6h)"
+arch=(armv6h)
+url="https://www.gnupg.org"
+license=(
+    'BSD-3-Clause'
+    'BSD-3-Clause OR GPL-2.0-only'
+    'GPL-2.0-or-later'
+    'LGPL-2.0-or-later'
+    'LGPL-2.1-or-later'
+    'X11'
+    'LicenseRef-scancode-public-domain'
+    'LicenseRef-OCB1'
+)
+depends=('libgpg-error' 'glibc')
+options=('!emptydirs')
+source=(https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2{,.sig})
+sha256sums=('7ce33c2492221a0436f96a8500215e9f3e3dcb5fd26a757cd415e7a843babd5e'
+            'SKIP')
+validpgpkeys=('6DAA6E64A76D2840571B4902528897B826403ADA')  # "Werner Koch (dist signing 2020)"
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+
+  # Completely drop tests and doc folders from the build sequence configuration matrix
+  sed -i 's/SUBDIRS = compat mpi cipher random src tests doc/SUBDIRS = compat mpi cipher random src/g' Makefile.am
+
+  # Clear out beta markings to prevent build tree mismatches during generation
+  sed -i 's/beta=yes/beta=no/; s/tmp="-unknown"/tmp=""/' autogen.sh
+
+  autoreconf -vfi
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -D_GNU_SOURCE"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib -lpthread"
+
+  cd "${pkgname}-${pkgver}"
+
+  ./configure --host=armv6-rpi-linux-gnueabihf \
+              --build=$(gcc -dumpmachine) \
+              --prefix=/usr \
+              --disable-static \
+              --disable-asm \
+              --disable-padlock-support \
+              --disable-aesni-support \
+              --with-gpg-error-prefix="${SYSROOT}/usr" \
+              CC="${TARGET_CC}" \
+              CXX="${TARGET_CXX}" \
+              AR="${TARGET_AR}" \
+              RANLIB="${TARGET_RANLIB}" \
+              LD="${TARGET_LD}" \
+              CFLAGS="${TARGET_CFLAGS}" \
+              CXXFLAGS="${TARGET_CXXFLAGS}" \
+              CPPFLAGS="${TARGET_CPPFLAGS}" \
+              LDFLAGS="${TARGET_LDFLAGS}"
+              
+  make
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 {COPYING.LIB,LICENSES} "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

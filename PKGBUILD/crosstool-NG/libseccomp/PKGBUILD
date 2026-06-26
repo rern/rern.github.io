@@ -1,0 +1,77 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Daniel Micay <danielmicay@gmail.com>
+# Contributor: Patryk Kowalczyk < patryk at kowalczyk dot ws>
+# Contributor: RocketDev <ma2014119@outlook.com>
+
+pkgname=libseccomp
+pkgver=2.6.0
+pkgrel=1
+pkgdesc='Enhanced seccomp library (Cross-compiled for armv6h - Core C Library Only)'
+arch=(armv6h)
+license=(LGPL-2.1-only)
+url="https://github.com/seccomp/libseccomp"
+makedepends=(
+  git
+  glibc
+  gperf
+)
+source=(git+https://github.com/seccomp/libseccomp.git#tag=v${pkgver}?signed)
+sha256sums=('2aa9a02d102753f4c4f23ff201dec3fbc4cf33d46dd64a0f2aaf5a5341227a93')
+b2sums=('76fa0801936a970b0bdff3d3cbc9e8e65f0afbfa1d1e13bd4319a6fee4aa520234a2a5273354ed87671666abb1f961cf9c678d1b38c3afd594f9c8d7694630d2')
+validpgpkeys=(
+  '7100AADFAE6E6E940D2E0AD655E45A5AE8CA7C8A' # Paul Moore <paul@paul-moore.com>
+  '47A68FCE37C7D7024FD65E11356CE62C2B524099' # Tom Hromatka <tom.hromatka@oracle.com>
+)
+
+prepare() {
+  cd "${srcdir}/${pkgname}"
+  
+  # Fix test failures with gcc 15/16 and LTO
+  git cherry-pick -n 614530bc8b3c9f49aa59d7eaef4863b746504c23
+
+  autoreconf -fiv
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf"
+  SYSROOT="/home/x/x-sysroot"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  local TARGET_CC="${TOOLCHAIN}/bin/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_AR="${TOOLCHAIN}/bin/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/bin/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/bin/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -D_GNU_SOURCE"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT} -I${SYSROOT}/usr/include"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib -L${SYSROOT}/lib"
+
+  export PKG_CONFIG_SYSROOT_DIR="${SYSROOT}"
+  export PKG_CONFIG_LIBDIR="${SYSROOT}/usr/lib/pkgconfig:${SYSROOT}/usr/share/pkgconfig"
+
+  cd "${srcdir}/${pkgname}"
+  ./configure --host=armv6-rpi-linux-gnueabihf \
+              --build=$(gcc -dumpmachine) \
+              --prefix=/usr \
+              CC="${TARGET_CC}" \
+              AR="${TARGET_AR}" \
+              RANLIB="${TARGET_RANLIB}" \
+              LD="${TARGET_LD}" \
+              CFLAGS="${TARGET_CFLAGS}" \
+              CPPFLAGS="${TARGET_CPPFLAGS}" \
+              LDFLAGS="${TARGET_LDFLAGS}"
+  make
+}
+
+package() {
+  depends=(glibc)
+  provides=(libseccomp.so)
+  
+  cd "${srcdir}/${pkgname}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm 644 CHANGELOG README.md SECURITY.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
+
+# vim: ts=2 sw=2 et:

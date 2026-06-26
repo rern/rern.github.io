@@ -1,0 +1,129 @@
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: judd <jvinet@zeroflux.org>
+
+pkgname=pam
+pkgver=1.7.2
+pkgrel=2
+pkgdesc="PAM (Pluggable Authentication Modules) library (Cross-compiled for armv6h)"
+arch=('armv6h')
+license=('GPL-2.0-only')
+url="http://linux-pam.org"
+depends=(
+  audit
+  glibc
+  libaudit.so
+  libcrypt.so
+  libnsl
+  libtirpc
+  libxcrypt
+  pambase
+  systemd-libs
+)
+makedepends=(
+  flex
+  git
+  meson
+)
+provides=(
+  libpam.so
+  libpamc.so
+  libpam_misc.so
+)
+backup=(
+  etc/security/{access.conf,faillock.conf,group.conf,limits.conf,namespace.conf,namespace.init,pwhistory.conf,pam_env.conf,time.conf} 
+  etc/environment
+)
+source=("pam::git+https://github.com/linux-pam/linux-pam?signed#tag=v${pkgver}"
+        "${pkgname}.tmpfiles")
+validpgpkeys=(
+        '8C6BFD92EE0F42EDF91A6A736D1A7F052E5924BB' # Thorsten Kukuk
+        '296D6F29A020808E8717A8842DB5BD89A340AEB7' # Dimitry V. Levin <ldv@altlinux.org>
+        '7BECFE3AF7B280BB52FF77F104BA4521C996DDE1' # Dmitry V. Levin <ldv@strace.io>
+)
+b2sums=('7fac16161ee8abab8639f5661badcf29536f0df71fec085075b657f91264fa7e616ae74c60e77fd8503d767517847dda877f583f20ca354e2ba45a381d89c998'
+        '36582c80020008c3810b311a2e126d2fb4ffc94e565ea4c0c0ab567fdb92943e269781ffa548550742feb685847c26c340906c7454dcc31df4e1e47d511d8d6f')
+options=('!emptydirs')
+
+prepare() {
+  cd "${pkgname}"
+  
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    echo "Applying patch ${src}..."
+    patch -Np1 < "../${src}"
+  done
+
+  cat_crossfile
+}
+
+build() {
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_LIBDIR="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  meson setup "${pkgname}" build \
+    --prefix=/usr \
+    --buildtype=plain \
+    --cross-file="${srcdir}/cross-armv6.txt" \
+    -Dlogind=disabled \
+    -Deconf=disabled \
+    -Dselinux=disabled \
+    -Delogind=disabled \
+    -Dpam_userdb=disabled \
+    -Dpwaccess=disabled \
+    -Dvendordir='' \
+    -Ddocs=disabled
+
+  meson compile -C build
+}
+
+package() {
+  meson install -C build --destdir "${pkgdir}"
+  install -Dm 644 $pkgname.tmpfiles "${pkgdir}"/usr/lib/tmpfiles.d/${pkgname}.conf
+
+  rm -f "${pkgdir}"/usr/share/doc/Linux-PAM/*.pdf
+
+  # Dynamically locate and apply permissions to unix_chkpwd wherever Meson placed it
+  local chkpwd_bin=$(find "${pkgdir}" -type f -name unix_chkpwd)
+  if [ -n "${chkpwd_bin}" ]; then
+    echo "Setting SUID on: ${chkpwd_bin}"
+    chmod +s "${chkpwd_bin}"
+  else
+    echo "ERROR: unix_chkpwd not found in staging directory!"
+    exit 1
+  fi
+}
+
+cat_crossfile() {
+  cat << EOF > "${srcdir}/cross-armv6.txt"
+[binaries]
+c = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc'
+cpp = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-g++'
+ar = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar'
+strip = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-strip'
+pkg-config = 'pkg-config'
+
+[built-in options]
+c_args = ['--sysroot=/home/x/x-sysroot', '-O2', '-D_GNU_SOURCE']
+cpp_args = ['--sysroot=/home/x/x-sysroot', '-O2']
+c_link_args = ['--sysroot=/home/x/x-sysroot', '-L/home/x/x-sysroot/usr/lib']
+cpp_link_args = ['--sysroot=/home/x/x-sysroot', '-L/home/x/x-sysroot/usr/lib']
+
+[properties]
+sys_root = '/home/x/x-sysroot'
+pkg_config_libdir = '/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv6k'
+endian = 'little'
+EOF
+}
+
+# vim:set ts=2 sw=2 et:

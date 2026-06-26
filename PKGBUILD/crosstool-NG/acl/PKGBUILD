@@ -1,0 +1,64 @@
+pkgname=acl
+pkgver=2.3.2
+pkgrel=2
+pkgdesc='Access control list utilities, libraries and headers (Cross-compiled for armv6h)'
+arch=('armv6h')
+url='https://savannah.nongnu.org/projects/acl'
+license=('LGPL-2.1-or-later AND GPL-2.0-or-later')
+depends=('glibc' 'attr')
+makedepends=('git')
+provides=('libacl.so')
+validpgpkeys=('600CD204FBCEA418BD2CA74F154343260542DF34'
+              'B902B5271325F892AC251AD441633B9FE837F581'
+              '259B3792B3D6D319212CC4DCD5BF9FEB0313653A')
+source=("git+https://git.savannah.gnu.org/git/${pkgname}.git?signed#tag=v${pkgver}")
+sha256sums=('1b4ad9a0d4a04275f5710184dd7a6fa7ffccadc33a3a4b4af43a8b7f9771a7da')
+
+prepare() {
+  cd "$pkgname"
+  ./autogen.sh
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  cd "$pkgname"
+
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(gcc -dumpmachine) \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --prefix=/usr \
+    CC="${TARGET_CC}" \
+    CXX="${TARGET_CXX}" \
+    AR="${TARGET_AR}" \
+    RANLIB="${TARGET_RANLIB}" \
+    LD="${TARGET_LD}" \
+    CFLAGS="${TARGET_CFLAGS}" \
+    CXXFLAGS="${TARGET_CXXFLAGS}" \
+    CPPFLAGS="${TARGET_CPPFLAGS}" \
+    LDFLAGS="${TARGET_LDFLAGS}"
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd "$pkgname"
+  make DESTDIR="${pkgdir}" install
+}

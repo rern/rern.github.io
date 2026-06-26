@@ -1,0 +1,68 @@
+# Maintainer: Sébastien Luttringer
+
+pkgname=lz4
+epoch=1
+pkgver=1.10.0
+pkgrel=2
+pkgdesc='Extremely fast compression algorithm (Cross-compiled for armv6h)'
+arch=('armv6h')
+url='https://lz4.github.io/lz4/'
+license=('GPL-2.0-or-later')
+makedepends=('git' 'meson' 'ninja')
+depends=('glibc')
+provides=('liblz4.so')
+source=("git+https://github.com/lz4/lz4.git#tag=v$pkgver")
+sha256sums=('487f9bc24fdaf589e2f4bb23dd98b1f21a71b643db09251145616587c9468555')
+
+prepare() {
+  cd "${srcdir}"
+
+  # Dynamically write a Meson cross-file targeting your armv6h toolchain & sysroot
+  cat_crossfile
+}
+
+build() {
+  # Clean out native host flags to prevent leakage into the cross-build
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  # Configure Meson with our custom cross-file definitions
+  meson setup lz4/build/meson build \
+    --prefix=/usr \
+    --buildtype=plain \
+    --cross-file="${srcdir}/cross-armv6.txt" \
+    -Dcontrib=true \
+    -Dexamples=true \
+    -Dprograms=true
+
+  meson compile -C build
+}
+
+package() {
+  meson install -C build --destdir "$pkgdir"
+}
+
+# Helper function to generate a clean, strict Meson configuration definition file
+cat_crossfile() {
+  cat << EOF > "${srcdir}/cross-armv6.txt"
+[binaries]
+c = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc'
+cpp = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-g++'
+ar = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar'
+strip = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-strip'
+pkg-config = 'pkg-config'
+
+[built-in options]
+c_args = ['--sysroot=/home/x/x-sysroot', '-O2', '-D_GNU_SOURCE']
+cpp_args = ['--sysroot=/home/x/x-sysroot', '-O2']
+c_link_args = ['--sysroot=/home/x/x-sysroot', '-L/home/x/x-sysroot/usr/lib']
+cpp_link_args = ['--sysroot=/home/x/x-sysroot', '-L/home/x/x-sysroot/usr/lib']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv6k'
+endian = 'little'
+EOF
+}
+
+# vim:set ts=2 sw=2 et:
