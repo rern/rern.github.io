@@ -1,0 +1,82 @@
+# Maintainer: Sébastien "Seblu" Luttringer <seblu@archlinux.org>
+# Contributor: Allan McRae <allan@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+# Cross-compiled for armv6h Raspberry Pi Zero via crosstool-ng
+
+pkgname=sed
+pkgver=4.10
+pkgrel=1
+pkgdesc='GNU stream editor (Cross-compiled for armv6h)'
+arch=('armv6h')
+url='https://www.gnu.org/software/sed/'
+license=('GPL-3.0-or-later')
+depends=('glibc' 'acl')
+makedepends=('gettext')
+source=("https://ftp.gnu.org/pub/gnu/sed/$pkgname-$pkgver.tar.xz"{,.sig})
+validpgpkeys=('155D3FC500C834486D1EEA677FD9FCCB000BEEEE') #Jim Meyering <jim@meyering.net>
+sha256sums=('b8e72182b2ec96a3574e2998c47b7aaa64cc20ce000d8e9ac313cc07cecf28c7'
+            'SKIP')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  # apply patch from the source array (should be a pacman feature)
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    echo "Applying patch $src..."
+    patch -Np1 < "../$src"
+  done
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  # Clean makepkg native host architecture profiles
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  # Setup cross-compilation binaries
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  # Injected -DO_BINARY=0 and -DO_TEXT=0 fallbacks to keep gnulib from crashing on Linux
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -DO_BINARY=0 -DO_TEXT=0"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  export LTFLAGS="-no-fast-install"
+  export AM_LIBTOOLFLAGS="-no-fast-install"
+
+  cd "$pkgname-$pkgver"
+  
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(gcc -dumpmachine) \
+    --prefix=/usr \
+    CC="${TARGET_CC}" \
+    CXX="${TARGET_CXX}" \
+    AR="${TARGET_AR}" \
+    RANLIB="${TARGET_RANLIB}" \
+    LD="${TARGET_LD}" \
+    CFLAGS="${TARGET_CFLAGS}" \
+    CXXFLAGS="${TARGET_CXXFLAGS}" \
+    CPPFLAGS="${TARGET_CPPFLAGS}" \
+    LDFLAGS="${TARGET_LDFLAGS}"
+
+  make
+}
+
+# Omit check() because target binaries cannot execute on x86_64 host
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
+
+# vim:set ts=2 sw=2 et:

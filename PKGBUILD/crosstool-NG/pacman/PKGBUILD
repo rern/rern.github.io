@@ -20,7 +20,7 @@ depends=(
   gpgme libgpgme.so
   grep
   libarchive libarchive.so
-  openssl libcrypto.so
+  openssl-3 libcrypto.so=3
   pacman-mirrorlist
   systemd
 )

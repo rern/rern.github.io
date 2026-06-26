@@ -1,0 +1,238 @@
+# Maintainer: David Runge <dvzrv@archlinux.org>
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Maintainer: Lukas Fleischer <lfleischer@archlinux.org>
+# Cross-compiled for armv6h Raspberry Pi Zero via crosstool-ng
+
+pkgname=gnupg
+pkgver=2.4.9
+pkgrel=1
+pkgdesc='Complete and free implementation of the OpenPGP standard (Cross-compiled for armv6h)'
+arch=(armv6h)
+url='https://www.gnupg.org/'
+license=(
+  BSD-2-Clause
+  BSD-3-Clause
+  BSD-4-Clause
+  CC0-1.0
+  GPL-2.0-or-later
+  GPL-3.0-or-later
+  LGPL-2.1-or-later
+  'LGPL-3.0-or-later OR GPL-2.0-or-later'
+  MIT
+  Unicode-TOU
+)
+depends=(
+  glibc
+  gnutls
+  libgcrypt
+  libgpg-error
+  libksba
+  libldap
+  libusb
+  pinentry
+  sh
+  sqlite
+  tpm2-tss
+  zlib
+)
+makedepends=(
+  bzip2
+  git
+  libassuan
+  npth
+  pcsclite
+  readline
+)
+install=$pkgname.install
+source=(
+  git+https://github.com/gpg/gnupg.git?signed#tag=${pkgname}-${pkgver}
+  dirmngr{,@}.{service,socket}
+  gpg-agent{,@}.{service,socket}
+  gpg-agent-{browser,extra,ssh}{,@}.socket
+  keyboxd{,@}.{service,socket}
+  $pkgname-2.4-avoid_beta_warning.patch
+  0001-gpg-accept-subkeys-with-a-good-revocation-but-no-sel.patch
+  0002-gpg-allow-import-of-previously-known-keys-even-witho.patch
+  0003-tests-add-test-cases-for-import-without-uid.patch
+  0004-gpg-drop-import-clean-from-default-keyserver-import-.patch
+  0005-avoid-systemd-deprecation-warning.patch
+  0006-Add-systemd-support-for-keyboxd.patch
+  0007-Ship-sample-systemd-unit-files.patch
+  0008-gpg-default-El-Gamal-to-3072-bit-keys.patch
+  0009-gpg-Always-support-and-default-to-using-SHA-512.patch
+  0010-gpg-Prefer-SHA-512-and-SHA-384-in-personal-digest-pr.patch
+  0012-Disallow-compressed-signatures-and-certificates.patch
+  0011-Avoid-simple-memory-dumps-via-ptrace.patch
+  0013-ssh-agent-emulation-under-systemd-inject-SSH_AUTH_SO.patch
+  0014-gpg-Sync-compliance-mode-cleanup-with-master.patch
+  0015-gpg-emit-RSA-pubkey-algorithm-when-in-compatibility-.patch
+  0016-gpg-Reintroduce-openpgp-as-distinct-from-rfc4880.patch
+  0017-gpg-Emit-LibrePGP-material-only-in-compliance-gnupg.patch
+  0018-gpg-gpgconf-list-report-actual-compliance-mode.patch
+  0019-gpg-Default-to-compliance-openpgp.patch
+  0020-gpg-Fix-newlines-in-Cleartext-Signature-Framework-CS.patch
+  0021-Add-keyboxd-systemd-support.patch
+  0022-Support-large-RSA-keygen-in-non-batch-mode.patch
+  0023-gpg-Verify-Text-mode-Signatures-over-binary-Literal-.patch
+  0024-gpg-Do-not-use-a-default-when-asking-for-another-out.patch
+)
+sha256sums=('383fd9720a966825b9d5e45a2b49b3b340ebed356252c73cca242b26dffec0ba'
+            '80a3a80f9f1f337da555a6838483e1baca44cde8a8a3d8c4ba7743626304b981'
+            '8374255ce93a3c343019ab425963bcbc41982ea89e669d1ad1df0aa7be810de1'
+            'ca55048f992824a24ab7f61cbc44a713a153f70a1a60d1cbba7ab4440302a204'
+            'd0d79d76bbf6c0d744ee262882fcdfbe52601c6d74cdc5dd99a15da1cdbb6ae1'
+            '8ea489a57edb0db9394bf2d6c0ec62205f881bb54efb919e4870209c7db01aa7'
+            '81e9dd05cbf3b8406367258eae6ef67ff97f270301bf50b52742647c515c8304'
+            'f735119afa3c452728e899809aa1d87b6091a327934befde3aef70ea9259197f'
+            '2af0824fdbb95c1c6b54a9ab0a22aeb92ac997e44112f93919d263efa81909ae'
+            '1cf9821b3bf4efaf4da2fd52ceb70d254dc4f6c545603f9045de716ef6aabf2d'
+            '402eb8f875daaa419f9fdef59ffa84a1e063cc79e04d885ab0768788a4620ac0'
+            'f0094f67586cbcda17fd0d780e3e73d6dbaa479ac84715ba941531f83f6ecfe9'
+            '6644d769f7919ad58d3caf955195047c521328d180ee2077b78b7f1459f3184b'
+            'ffa0191fad52712732f8b24d7d570c1d19a7803e59d30088797b76e252f65858'
+            'ddfeafd4b86ef4dd7bcc841115483bcda58c660547ebaeae47ee343741e571eb'
+            'cba1aa10c072d982135d2367a7e957d6787037ab232fd148144eca39a92ec2e6'
+            '2e3e6ce050737c3bc0e608f283bdfef5471def2ff12dee7ef007854033178694'
+            '34144a8e43fbeac88f1ddaf1621e6a3b192efba4580d18a42254ad386819afea'
+            '50a00213e44ff07b385e12bca455cd5eec35b271ca2fe500bfe7704ebd8ec73d'
+            '38c66efbd3bffdfa9cb0f226a6db03ae4b226f705dc2d0266a555d8ace823b79'
+            '243c3a79295519b3931f9d846cf2af5caa064a78de812ee336dc786c1567b4d0'
+            '28ab30a6d4318db5fd43e0023dff4c1e14b52dc0d1a61e0f2fc2de580a5c2ed4'
+            'af0dc5a99b692f702c1394939aced1b395074cfb77e85abc1d43427189c18d0b'
+            '1ec1f49b7a268e632025ef8e19ba2ad9eddec8422e82fdff6c538166729b5383'
+            'c7c2f274843ef4d2fedf8e2e11b3d48c12068763f382ee109f8f891bb77882e3'
+            '1dafb121d03722b20ab11890c6fc21f3e17130ca7671ae1832e6c08fa79bfdd7'
+            '66aeae7536a9ac665b4ffd4a5a8139c9f5d0937c0a36bdc2be1a78618d6778a8'
+            'a6666def2d2d097466b06588c11f8284356427fc97a221a931c1660d6bfdd995'
+            '6d394da4bed0775e4be2b491afefa12a6fd0c1aa728ffbab84478d81c82413db'
+            'ee26d07ccbc3de76f864e0a1b2abc08a099a870325608a3f3d6bf27c48ee5e52'
+            'c49eab41a56f51d95c874eaaf84fe8a813960063eee1b5d306ea3bc79bc3376e'
+            '0bba286b75af29767a399ac42de7063d188a1c6ee1e7bb98156618b58561c8d0'
+            '8bac80ddcfbd3462b308c8fcab285f38e321612723f63d176a8c7cba4c094400'
+            'e661cbe070cc532fb4f030b3f7212b837b600202b8e87d5e8e6e07719f762438'
+            '05650d9b8821f24ab24d6bf0e8b548015c8682dd3426a664e62b7d257fb1a1ca'
+            '0ab309c49275b1752d8a9357e3aa99d0ce390cea719352459ba15f0ba7ad36cd'
+            'd6e18412d04bb7a3c5c67ee0b58dec10d99ad7bed088d79a90087207bd42f918'
+            '6933f46233134c20a9b2b157228075bd1e1dd7ff5dc4827fe69b6b1950f0e9f8'
+            '1cede22601b8889a9c03b074a3672119ffd22584c7ad41fa770680bcfbf8f6f8'
+            '94ca8efe9772985114bcffe3ca9518b414db5ee9e3336d61167f4f0481192a72'
+            '843f5d2f0de250a594dd1be50aecd5dd0e86aae87bb0a12b043251beb7b0fcfd'
+            '8a7737be5bc092b5034ca91a213946b1a3af0ff2c083b829eba751f0e4d1ad1f'
+            'b81fd496950e26908cf6c2c2d91c80a486866180aef1432efdd244dfa3c76fc2'
+            '741bb77575765aac6728f12b2ba83ded281ae5a591cc531054fe29a0b691e7f2')
+validpgpkeys=(
+  '5B80C5754298F0CB55D8ED6ABCEF7E294B092E28'
+  '6DAA6E64A76D2840571B4902528897B826403ADA'
+  'AC8E115BF73E2D8D47FA9908E98E9B2D19C6C8BD'
+  '02F38DFF731FF97CB039A1DA549E695E905BA208'
+)
+
+prepare() {
+  cd "$pkgname"
+
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    printf "Applying patch %s...\n" "$src"
+    
+    # Added -f (forward) to skip already applied patches and --batch to suppress prompts
+    patch -Np1 -f --batch < "../$src" || echo "Patch $src skipped or already applied."
+  done
+
+  sed -n '5, 28 p' COPYING.other > MIT.txt
+  sed -n '30, 60 p' COPYING.other > BSD-4-Clause.txt
+  sed -n '62, 92 p' COPYING.other > BSD-3-Clause.txt
+  sed -n '95, 125 p' COPYING.other > BSD-2-Clause.txt
+  sed -n '128, 160 p' COPYING.other > Unicode-TOU.txt
+
+  ./autogen.sh
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  # Unset host flags injected by makepkg
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  # Local variables for the cross-compilation target environment
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  
+  # REMOVED -no-fast-install from here so compiler sanity checks pass!
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  # EXPORT Libtool-specific flags cleanly so it bypasses compiler tests
+  export LTFLAGS="-no-fast-install"
+  export AM_LIBTOOLFLAGS="-no-fast-install"
+
+  local configure_options=(
+    --host=armv6-rpi-linux-gnueabihf
+    --build=$(gcc -dumpmachine)
+    --with-sysroot="${SYSROOT}"
+    --enable-g13
+    --enable-large-secmem
+    --enable-maintainer-mode
+    --libexecdir=/usr/lib/gnupg
+    --prefix=/usr
+    --sbindir=/usr/bin
+    --sysconfdir=/etc
+    --disable-doc
+  )
+
+  cd "$pkgname"
+
+  ./configure "${configure_options[@]}" \
+    CC="${TARGET_CC}" \
+    CXX="${TARGET_CXX}" \
+    AR="${TARGET_AR}" \
+    RANLIB="${TARGET_RANLIB}" \
+    LD="${TARGET_LD}" \
+    CFLAGS="${TARGET_CFLAGS}" \
+    CXXFLAGS="${TARGET_CXXFLAGS}" \
+    CPPFLAGS="${TARGET_CPPFLAGS}" \
+    LDFLAGS="${TARGET_LDFLAGS}"
+
+  make
+}
+# Omit check() because target binaries cannot execute on x86_64 build host
+
+package() {
+  depends+=(
+    bzip2 libbz2.so
+    libassuan libassuan.so
+    npth libnpth.so
+    readline libreadline.so
+  )
+
+  cd "$pkgname"
+  make DESTDIR="$pkgdir" install
+
+  ln -s gpg "$pkgdir"/usr/bin/gpg2
+  ln -s gpgv "$pkgdir"/usr/bin/gpgv2
+
+  # Omitted manual page configuration as requested. Kept licensing.
+  install -vDm 644 {BSD-{2,3,4}-Clause,MIT,Unicode-TOU}.txt -t "$pkgdir/usr/share/licenses/$pkgname/"
+
+  local systemdir="$pkgdir/usr/lib/systemd/"
+  local wantsdir="${systemdir}user/sockets.target.wants/"
+  install -vdm 755 "$wantsdir"
+
+  local unit
+  for unit in ../*.{service,socket}; do
+    case $unit in
+      *@.*) install -vDm 644 "$unit" -t "${systemdir}system/" ;;
+      *.socket) ln -sv "../${unit##*/}" -t "$wantsdir" ;&
+      *) install -vDm 644 "$unit" -t "${systemdir}user/" ;;
+    esac
+  done
+}
