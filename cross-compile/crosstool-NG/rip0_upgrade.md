@@ -2,12 +2,11 @@
 # on rpi0
 pacman -Syy
 
-pacman -S gcc gcc-libs glibc
+pacman -S curl gcc gcc-libs glibc libssh2 openssl pacman --overwrite 'usr/*'
 
-pacman -S curl libssh2 openssl pacman systemd --overwrite 'usr/*'
+pacman -S systemd
 
 pacman Suu --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom
-
 
 
 sysroot=/home/x/x-sysroot
