@@ -2,11 +2,15 @@
 # on rpi0
 pacman -Syy
 
+pacman -S linux-firmware linux-rpi raspberrypi-bootloader \
+    --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom \
+    --overwrite 'usr/*'
+
 pacman -S curl gcc gcc-libs glibc libssh2 openssl pacman --overwrite 'usr/*'
 
 pacman -S systemd
 
-pacman Suu --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom
+pacman -Su
 
 
 sysroot=/home/x/x-sysroot

@@ -43,7 +43,7 @@ cat << EOF > rpi0.sh
 
 case $1 in
     boot )
-        systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache;;
+        sudo systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache;;
     list )
         machinectl list;;
     renew )
