@@ -42,20 +42,27 @@ cat << EOF > rpi0.sh
 #!/bin/bash
 
 case $1 in
-        start )
-                machinectl start rpi0
-                sleep 2
-                machinectl shell rpi0
-                ;;
-        shell ) machinectl shell rpi0;;
-        list )  machinectl list;;
-        show )  machinectl show rpi0;;
-        stop | kill )  machinectl kill rpi0 --signal=SIGKILL;;
-        boot )  systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache;;
-        renew )
-                sudo rm -rf /home/x/x-sysroot
-                sudo cp -r /home/x/{rpi0,x}-sysroot
-                ;;
+    boot )
+        systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache;;
+    list )
+        machinectl list;;
+    renew )
+        sudo rm -rf /home/x/x-sysroot
+        sudo cp -r /home/x/{rpi0,x}-sysroot
+        ;;
+    shell )
+        machinectl shell rpi0;;
+    show )
+        machinectl show rpi0;;
+    start )
+        if [[ ! $( machinectl list --no-legend ) ]]; then
+            machinectl start rpi0
+            sleep 2
+        fi
+        machinectl shell rpi0
+        ;;
+    stop | kill )
+        machinectl kill rpi0 --signal=SIGKILL;;
 esac
 EOF
 chmod +x rpi0.sh
