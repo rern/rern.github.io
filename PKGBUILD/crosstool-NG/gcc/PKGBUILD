@@ -75,7 +75,8 @@ package_libgcc() {
   make -C $_target/libgcc DESTDIR="$pkgdir" install-shared
   rm -f "$pkgdir/$_libdir/libgcc_eh.a"
   install -d -m0755 "$pkgdir/usr/lib"
-  ln -s libgcc_s.so.1 "$pkgdir/usr/lib/libgcc_s.so.1"
+  cd $pkgdir/usr/lib
+  ln -s ../$_target/lib/libgcc_s.so.1 libgcc_s.so.1
 }
 
 package_libstdc++() {
@@ -86,7 +87,8 @@ package_libstdc++() {
   make -C $_target/libstdc++-v3/src DESTDIR="$pkgdir" install-toolexeclibLTLIBRARIES
   make -C $_target/libstdc++-v3/po DESTDIR="$pkgdir" install
   install -d -m0755 "$pkgdir/usr/lib"
-  ln -s libstdc++.so.6.0.35 "$pkgdir/usr/lib/libstdc++.so.6"
+  cd $pkgdir/usr/lib
+  ln -s ../$_target/lib/libstdc++.so.6.0.35 libstdc++.so.6
 }
 
 package_libubsan() {
