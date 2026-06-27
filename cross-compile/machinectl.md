@@ -38,12 +38,13 @@ cat << EOF > /etc/systemd/nspawn/rpi0.nspawn
 VirtualEthernet=no
 EOF
 
-cat << EOF > rpi0.sh
+cat << 'EOF' > rpi0.sh
 #!/bin/bash
 
+opt='/var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache'
 case $1 in
     boot )
-        sudo systemd-nspawn -bD /var/lib/machines/rpi0 --tmpfs=/tmp --tmpfs=/root/.cache;;
+        sudo systemd-nspawn -bD $opt;;
     list )
         machinectl list;;
     renew )
@@ -51,18 +52,18 @@ case $1 in
         sudo cp -r /home/x/{rpi0,x}-sysroot
         ;;
     shell )
-        machinectl shell rpi0;;
+        sudo systemd-nspawn -D $opt$;;
     show )
         machinectl show rpi0;;
-    start )
-        if [[ ! $( machinectl list --no-legend ) ]]; then
-            machinectl start rpi0
-            sleep 2
-        fi
-        machinectl shell rpi0
-        ;;
     stop | kill )
         machinectl kill rpi0 --signal=SIGKILL;;
+    * )
+        [[ ! $( machinectl list --no-legend ) ]] && machinectl start rpi0
+        while [[ ! $( machinectl list --no-legend ) ]]; do
+            sleep 1
+        done
+        machinectl shell rpi0
+        ;;
 esac
 EOF
 chmod +x rpi0.sh

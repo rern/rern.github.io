@@ -2,7 +2,7 @@
 # on rpi0
 pacman -Syy
 
-pacman -S linux-firmware linux-rpi raspberrypi-bootloader \
+pacman -S firmware-raspberrypi linux-firmware linux-rpi raspberrypi-bootloader \
     --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom \
     --overwrite 'usr/*'
 
