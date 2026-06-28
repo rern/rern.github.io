@@ -2,7 +2,7 @@
 pkgbase=systemd
 pkgname=('systemd' 'systemd-libs')
 pkgver=260.2
-pkgrel=1
+pkgrel=2
 pkgdesc="systemd system and service manager (ARMv6h minimal build)"
 arch=('armv6h')
 url="https://www.freedesktop.org/wiki/Software/systemd/"
@@ -76,7 +76,7 @@ build() {
 package_systemd() {
   pkgdesc="systemd system and service manager (ARMv6h minimal build)"
   depends=('glibc' 'util-linux' 'xz' 'zstd' 'bzip2' 'lz4' 'libidn2' 'pcre2' 'acl' 'libgcrypt' 'dbus')
-  provides=('init')
+  provides=('init' 'udev')
   conflicts=('sysvinit')
 
   cd "${srcdir}/systemd-${pkgver}/builddir"
@@ -102,7 +102,7 @@ package_systemd() {
 package_systemd-libs() {
   pkgdesc="systemd client libraries (libsystemd, libudev)"
   depends=('glibc')
-  provides=('libsystemd.so' 'libudev.so')
+  provides=('libsystemd.so=0-32' 'libudev.so=1-32')
 
   cd "${srcdir}/systemd-${pkgver}/builddir"
   DESTDIR="${pkgdir}" meson install
