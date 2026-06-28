@@ -13,17 +13,32 @@ sha256sums=('SKIP')
 
 prepare() {
   cd "${srcdir}/systemd-${pkgver}"
-  mkdir -p builddir
+  # Clean out any partial historical configure configurations 
+  rm -rf builddir
 }
 
 build() {
-  cd "${srcdir}/systemd-${pkgver}/builddir"
+  cd "${srcdir}/systemd-${pkgver}"
+
+  # Completely clear host variables to prevent compilation contamination
+  unset CFLAGS CXXFLAGS LDFLAGS
+  
+  # Tell pkg-config globally to translate package data paths through the sysroot
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_LIBDIR="/home/x/x-sysroot/usr/lib/pkgconfig"
 
   local _meson_options=(
+    --cross-file "/home/x/x-tools/cross-file.txt"
+    
+    --prefix=/usr
+    --sysconfdir=/etc
+    --localstatedir=/var
+    --default-library both
+
     -Dversion-tag="${pkgver}-${pkgrel}-arch"
     -Dmode=release
 
-    # Disable unsupported features
+    # Disable unsupported features & sandbox failure culprits
     -Dseccomp=disabled
     -Dapparmor=disabled
     -Dselinux=disabled
@@ -36,10 +51,15 @@ build() {
     -Dhomed=disabled
     -Dremote=disabled
     -Dinstall-tests=false
+    -Dtests=false
     -Dukify=disabled
     -Dxenctrl=disabled
     -Dmicrohttpd=disabled
     -Dlibfido2=disabled
+    
+    # Explicitly disable gcrypt features to stop "gcrypt.h" build errors
+    -Dgcrypt=disabled
+    -Dqrencode=disabled
 
     # Libraries / features
     -Dlibidn2=enabled
@@ -69,34 +89,35 @@ build() {
     -Dsbat-distro-url="https://archlinuxarm.org/packages/armv6h/${pkgbase}"
   )
 
-  meson setup .. "${_meson_options[@]}"
-  ninja
+  # Clear out old cached directory structures to apply cross-file modifications
+  rm -rf builddir
+
+  # Fire up configuration checks and start the build
+  meson setup builddir "${_meson_options[@]}"
+  meson compile -C builddir
 }
 
 package_systemd() {
   pkgdesc="systemd system and service manager (ARMv6h minimal build)"
-  depends=('glibc' 'util-linux' 'xz' 'zstd' 'bzip2' 'lz4' 'libidn2' 'pcre2' 'acl' 'libgcrypt' 'dbus')
+  depends=('systemd-libs' 'util-linux' 'xz' 'zstd' 'bzip2' 'lz4' 'libidn2' 'pcre2' 'acl' 'libgcrypt' 'dbus')
   provides=('init' 'udev')
   conflicts=('sysvinit')
 
-  cd "${srcdir}/systemd-${pkgver}/builddir"
-  DESTDIR="${pkgdir}" meson install
+  cd "${srcdir}/systemd-${pkgver}"
+  DESTDIR="${pkgdir}" meson install -C builddir
+
+  # Split Package Cleanup: Strip library files handled by systemd-libs package target
+  rm -rf "${pkgdir}/usr/include"
+  rm -f "${pkgdir}"/usr/lib/lib*.so*
 
   # Ensure runtime directories exist
   install -dm755 "${pkgdir}/var/lib/systemd"
   install -dm755 "${pkgdir}/var/log/journal"
-  chown root:root "${pkgdir}/var/log/journal"
-  chmod 755 "${pkgdir}/var/log/journal"
-
-  # Remove remote journal dir (disabled)
-  rm -rf "${pkgdir}/var/log/journal/remote"
 
   # Ensure config dirs exist
   install -dm755 "${pkgdir}/usr/lib/tmpfiles.d"
   install -dm755 "${pkgdir}/usr/lib/sysusers.d"
   install -dm755 "${pkgdir}/usr/lib/systemd/system-preset"
-  install -dm755 "${pkgdir}/usr/lib/systemd/system"
-  install -dm755 "${pkgdir}/usr/lib/systemd/user"
 }
 
 package_systemd-libs() {
@@ -104,16 +125,14 @@ package_systemd-libs() {
   depends=('glibc')
   provides=('libsystemd.so=0-32' 'libudev.so=1-32')
 
-  cd "${srcdir}/systemd-${pkgver}/builddir"
-  DESTDIR="${pkgdir}" meson install
+  cd "${srcdir}/systemd-${pkgver}"
+  
+  # Install into a temp stage directory to safely separate shared files
+  DESTDIR="${srcdir}/lib-stage" meson install -C builddir
 
-  # Keep only libraries and pkgconfig files
-  install -dm755 "${pkgdir}/usr/lib/pkgconfig"
-
-  # Remove everything else not needed in -libs
-  rm -rf "${pkgdir}/usr/bin"
-  rm -rf "${pkgdir}/usr/lib/systemd"
-  rm -rf "${pkgdir}/usr/share"
-  rm -rf "${pkgdir}/etc"
-  rm -rf "${pkgdir}/var"
+  # Deploy only the essential library payload profiles
+  install -dm755 "${pkgdir}/usr/lib"
+  cp -a "${srcdir}/lib-stage/usr/lib"/lib*.so* "${pkgdir}/usr/lib/"
+  cp -a "${srcdir}/lib-stage/usr/lib/pkgconfig" "${pkgdir}/usr/lib/"
+  cp -a "${srcdir}/lib-stage/usr/include" "${pkgdir}/usr/"
 }
