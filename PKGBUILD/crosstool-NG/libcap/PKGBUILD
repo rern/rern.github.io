@@ -1,0 +1,96 @@
+pkgname=libcap
+pkgver=2.78
+pkgrel=1
+pkgdesc="POSIX 1003.1e capabilities"
+arch=(armv6h)
+url="https://sites.google.com/site/fullycapable/"
+_url=https://git.kernel.org/pub/scm/libs/libcap/libcap.git
+license=('BSD-3-Clause OR GPL-2.0-only')
+depends=(
+  glibc
+  pam
+)
+makedepends=(
+  git
+  linux-api-headers
+)
+provides=(
+  libcap.so
+)
+options=(!lto)
+source=(
+  git+$_url#tag=sig-$pkgname-$pkgver
+)
+sha512sums=('SKIP')
+
+_sysroot="/home/x/x-sysroot"
+
+_common_make_options=(
+  CC='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc'
+  LD='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc'
+  AR='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar'
+  STRIP='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-strip'
+  RANLIB='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ranlib'
+  OBJCOPY='/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-objcopy'
+  
+  BUILD_CC='gcc'
+  CFLAGS="--sysroot=${_sysroot} -march=armv6 -mfloat-abi=hard -mfpu=vfp"
+  
+  # Added -shared explicitly to ensure the compiler tells ld.bfd to drop crt1.o tracking
+  LDFLAGS="--sysroot=${_sysroot} -shared -Wl,-fuse-ld=bfd"
+)
+
+prepare() {
+  cd "$pkgname"
+
+  # 1. Clear out internal Makefile auto-include calculations
+  sed -i 's|^IPATH[ \t]*:=|IPATH :=|' Make.Rules
+
+  # 2. Hard-inject the ARM 32-bit syscall macro fallback directly into cap_proc.c
+  sed -i '/#define sys_setgroups_variant  SYS_setgroups32/i \
+#ifndef SYS_setgroups32\n#define SYS_setgroups32 206\n#endif' libcap/cap_proc.c
+
+  # 3. Pre-generate the list headers for the host compilation layer
+  cd libcap
+  grep -E '^#define\s+CAP_([^\s]+)\s+[0-9]+\s*$' include/uapi/linux/capability.h | \
+    sed -e 's/^#define\s\+/{"/' -e 's/\s*$/},/' -e 's/\s\+/",/' \
+    -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' > cap_names.list.h
+
+  # 4. Manually build the host parsing tool using local tree layouts
+  gcc -Wall -O2 -I. -I../libcap/include/uapi _makenames.c -o _makenames
+  touch _makenames
+}
+
+build() {
+  rm -f $pkgname/libcap/cap_names.h
+
+  local make_options=(
+    "${_common_make_options[@]}"
+    DYNAMIC=yes
+    GOLANG=no
+    lib=lib
+    prefix=/usr
+    sbindir=bin
+    -C $pkgname
+  )
+
+  make "${make_options[@]}"
+}
+
+package() {
+  local make_options=(
+    "${_common_make_options[@]}"
+    DESTDIR="$pkgdir"
+    RAISE_SETFCAP=no
+    GOLANG=no
+    lib=lib
+    prefix=/usr
+    sbindir=bin
+    install
+    -C $pkgname
+  )
+
+  make "${make_options[@]}"
+  
+  install -vDm 644 $pkgname/License -t "$pkgdir/usr/share/licenses/$pkgname/"
+}
