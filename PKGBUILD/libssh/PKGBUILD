@@ -1,0 +1,51 @@
+pkgname=libssh
+pkgver=0.12.0
+pkgrel=1
+pkgdesc='Library for accessing ssh client services through C libraries'
+url='https://www.libssh.org/'
+license=('LGPL-2.1-or-later')
+arch=(armv6h)
+depends=(glibc openssl zlib)
+makedepends=(cmake)
+
+source=("https://www.libssh.org/files/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('1a6af424d8327e5eedef4e5fe7f5b924226dd617ac9f3de80f217d82a36a7121')
+
+build() {
+  # CRITICAL: Prevent makepkg host flags from leaking into the cross-compiler
+  unset CFLAGS CXXFLAGS LDFLAGS
+
+  local _sysroot="/home/x/x-sysroot"
+  local _toolchain_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf"
+
+  # Create the toolchain file
+  cat > toolchain.cmake <<-EOF
+	set(CMAKE_SYSTEM_NAME Linux)
+	set(CMAKE_SYSTEM_PROCESSOR arm)
+	set(CMAKE_C_COMPILER ${_toolchain_path}-gcc)
+	set(CMAKE_CXX_COMPILER ${_toolchain_path}-g++)
+	set(CMAKE_SYSROOT ${_sysroot})
+	set(CMAKE_FIND_ROOT_PATH ${_sysroot})
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+	set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+	set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+	EOF
+
+  cmake \
+    -B build \
+    -S $pkgname-$pkgver \
+    -DCMAKE_TOOLCHAIN_FILE="${PWD}/toolchain.cmake" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DWITH_GSSAPI=OFF \
+    -DUNIT_TESTING=OFF \
+    -DWITH_EXAMPLES=OFF \
+    -DOPENSSL_ROOT_DIR="${_sysroot}/usr" \
+    -DZLIB_ROOT="${_sysroot}/usr"
+    
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

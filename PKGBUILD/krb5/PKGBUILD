@@ -1,0 +1,70 @@
+pkgname=krb5
+pkgver=1.22.2
+_pkgvermajor=${pkgver%.*}
+pkgrel=1
+pkgdesc='The Kerberos network authentication system'
+arch=(armv6h)
+url='https://web.mit.edu/kerberos/'
+license=('custom')
+depends=('bash' 'e2fsprogs' 'glibc' 'keyutils' 'libldap' 'libverto-module-base' 'openssl' 'lmdb')
+
+source=("https://web.mit.edu/kerberos/dist/krb5/${_pkgvermajor}/${pkgname}-${pkgver}.tar.gz")
+sha512sums=('SKIP')
+
+build() {
+  cd "${pkgname}-${pkgver}/src"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS LIBS CC CXX
+
+  local _sysroot="/home/x/x-sysroot"
+  local _toolchain_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf"
+  
+  export CC="${_toolchain_path}-gcc"
+  export CXX="${_toolchain_path}-g++"
+  
+  # CRITICAL: Force the linker to check the sysroot for dependencies
+  # -Wl,-rpath-link ensures the linker finds the libraries that OpenSSL 3 depends on
+  export LDFLAGS="--sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib -Wl,-rpath-link,${_sysroot}/usr/lib"
+  
+  export CFLAGS="--sysroot=${_sysroot} -O2 -pipe"
+  export CPPFLAGS="--sysroot=${_sysroot} -I${_sysroot}/usr/include"
+  
+  # Explicitly point to OpenSSL 3
+  export OPENSSL_LIBS="-L${_sysroot}/usr/lib -lssl -lcrypto"
+
+  cat <<EOF > config.cache
+ac_cv_printf_positional=yes
+ac_cv_func_regcomp=yes
+ac_cv_func_getpwnam_r=yes
+ac_cv_func_getpwuid_r=yes
+ac_cv_func_gethostbyname_r=yes
+ac_cv_func_getservbyname_r=yes
+ac_cv_func_gmtime_r=yes
+krb5_cv_attr_constructor_destructor=yes,yes
+ac_cv_lib_ldap_ldap_str2dn=yes
+ac_cv_c_compiler_gnu=yes
+EOF
+
+  ./configure \
+    --cache-file=config.cache \
+    --host=armv6l-unknown-linux-gnueabihf \
+    --prefix=/usr \
+    --enable-shared \
+    --with-ldap \
+    --with-system-et \
+    --with-system-ss \
+    --with-system-verto \
+    --with-lmdb \
+    --with-crypto-impl=openssl \
+    --disable-rpath
+
+  # Patch makefiles to handle strict warnings
+  find . -name "Makefile" -exec sed -i 's/-Werror=/-Wno-error=/g' {} +
+  
+  make
+}
+
+package() {
+  cd "${pkgname}-${pkgver}/src"
+  make DESTDIR="${pkgdir}" install
+}

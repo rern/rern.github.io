@@ -1,0 +1,79 @@
+pkgname=gdbm
+pkgver=1.26
+pkgrel=2
+pkgdesc="GNU database library"
+arch=(armv6h)
+url="https://www.gnu.org/software/gdbm/gdbm.html"
+license=(GPL-3.0-or-later)
+depends=(glibc readline)
+
+source=(https://ftp.gnu.org/gnu/gdbm/gdbm-$pkgver.tar.gz)
+
+build() {
+  # 1. Clean environment
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS
+
+  # 2. Add toolchain
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+
+  # 3. Define ARMv6-specific flags
+  local _arm_flags="-march=armv6 -mfloat-abi=hard -mfpu=vfp -O2 --sysroot=/home/x/x-sysroot"
+  
+  export CC="armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="armv6-rpi-linux-gnueabihf-g++"
+  export AR="armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="armv6-rpi-linux-gnueabihf-ranlib"
+  
+  export CFLAGS="${_arm_flags}"
+  export CXXFLAGS="${_arm_flags}"
+  
+  # Ensure the linker *only* sees the sysroot
+  export LDFLAGS="--sysroot=/home/x/x-sysroot -L/home/x/x-sysroot/usr/lib -Wl,-rpath-link,/home/x/x-sysroot/usr/lib"
+  export CPPFLAGS="--sysroot=/home/x/x-sysroot -I/home/x/x-sysroot/usr/include"
+
+  # CONFIGURATION FIX: 
+  # This tells the configure script to generate a libtool that 
+  # bypasses the 'relink' step entirely.
+  export lt_cv_relink_command='true'
+
+  cd "$pkgname-$pkgver"
+  
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --enable-libgdbm-compat \
+    --disable-rpath \
+    --disable-dependency-tracking
+
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  
+  # 1. Create the directories
+  install -d "$pkgdir/usr/lib"
+  install -d "$pkgdir/usr/include"
+  install -d "$pkgdir/usr/bin"
+
+  # 2. Manually copy the libraries from the .libs folder 
+  # (These are the finalized, compiled ARM binaries)
+  install -m755 src/.libs/libgdbm.so.6.0.0 "$pkgdir/usr/lib/"
+  ln -sf libgdbm.so.6.0.0 "$pkgdir/usr/lib/libgdbm.so.6"
+  ln -sf libgdbm.so.6.0.0 "$pkgdir/usr/lib/libgdbm.so"
+  install -m644 src/.libs/libgdbm.a "$pkgdir/usr/lib/"
+
+  # 3. Manually copy compat library if it exists
+  if [ -f compat/.libs/libgdbm_compat.so.4.0.0 ]; then
+    install -m755 compat/.libs/libgdbm_compat.so.4.0.0 "$pkgdir/usr/lib/"
+    ln -sf libgdbm_compat.so.4.0.0 "$pkgdir/usr/lib/libgdbm_compat.so.4"
+    ln -sf libgdbm_compat.so.4.0.0 "$pkgdir/usr/lib/libgdbm_compat.so"
+    install -m644 compat/.libs/libgdbm_compat.a "$pkgdir/usr/lib/"
+  fi
+
+  # 4. Copy headers and binaries
+  install -m644 src/gdbm.h "$pkgdir/usr/include/"
+  install -m755 tools/.libs/gdbmtool "$pkgdir/usr/bin/"
+  install -m755 tools/.libs/gdbm_load "$pkgdir/usr/bin/"
+  install -m755 tools/.libs/gdbm_dump "$pkgdir/usr/bin/"
+}

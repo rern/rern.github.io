@@ -1,0 +1,74 @@
+pkgname=tpm2-tss
+pkgver=4.1.3
+pkgrel=1
+pkgdesc='Implementation of the TCG Trusted Platform Module 2.0 Software Stack (TSS2)'
+arch=('armv6h')
+url='https://github.com/tpm2-software/tpm2-tss'
+license=('BSD-2-Clause')
+depends=(curl json-c openssl)
+makedepends=(git autoconf-archive)
+provides=(
+  libtss2-esys.so
+  libtss2-fapi.so 
+  libtss2-mu.so
+  libtss2-rc.so
+  libtss2-sys.so 
+  libtss2-tctildr.so
+)
+options=(!emptydirs !lto)
+source=(git+https://github.com/tpm2-software/tpm2-tss?signed#tag=${pkgver})
+
+_cross_host="arm-unknown-linux-gnueabihf"
+_toolchain_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+export PATH="${_toolchain_path}:${PATH}"
+
+prepare() {
+  cd "${pkgname}"
+  ./bootstrap
+  
+  ./configure --prefix=/usr \
+              --host="armv6-rpi-linux-gnueabihf" \
+              --disable-fast-install \
+              --sysconfdir=/etc \
+              --localstatedir=/var \
+              --with-runstatedir=/run \
+              --with-sysusersdir=/usr/lib/sysusers.d \
+              --with-tmpfilesdir=/usr/lib/tmpfiles.d \
+              --with-udevrulesprefix=60- \
+              --disable-tcti-libtpms \
+              --disable-tcti-spi-ltt2go \
+              --disable-tcti-spi-ftdi \
+              --disable-tcti-i2c-ftdi \
+              --disable-defaultflags \
+              --disable-weakcrypto
+
+  # Surgically remove /usr/lib from the link command ONLY
+  # This avoids corrupting the rest of the libtool file
+  sed -i 's/-L\/usr\/lib//g' libtool
+  sed -i 's/relink_command=".*"/relink_command=""/' libtool
+}
+
+build() {
+  cd "${pkgname}"
+  
+  export SYSROOT="/home/x/x-sysroot"
+  export TOOLCHAIN_BIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  export PATH="${TOOLCHAIN_BIN}:${PATH}"
+  export CROSS="armv6-rpi-linux-gnueabihf"
+  
+  export CC="${CROSS}-gcc --sysroot=${SYSROOT}"
+  export CXX="${CROSS}-g++ --sysroot=${SYSROOT}"
+  export CFLAGS="--sysroot=${SYSROOT} -O2"
+  export LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib -Wl,-rpath-link,${SYSROOT}/usr/lib"
+  export PKG_CONFIG_LIBDIR="${SYSROOT}/usr/lib/pkgconfig"
+  export PKG_CONFIG_SYSROOT_DIR="${SYSROOT}"
+
+  make
+}
+
+package() {
+  cd "${pkgname}"
+  # Install directly without triggering relink
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}

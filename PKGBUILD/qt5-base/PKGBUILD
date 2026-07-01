@@ -1,0 +1,148 @@
+pkgbase=qt5-base
+pkgname=(qt5-base qt5-xcb-private-headers)
+_basever=5.15.19
+pkgver=5.15.19+kde+r96
+pkgrel=1
+_commit=fbed962c3195ab3952fa54d40e012ad1a4fdc42b
+arch=('armv6h')
+url='https://www.qt.io'
+license=('GPL3' 'LGPL3' 'FDL' 'custom')
+pkgdesc='A cross-platform application and UI framework'
+depends=('libjpeg-turbo' 'xcb-util-keysyms' 'xcb-util-renderutil' 'libgl' 'fontconfig' 'harfbuzz' 'xdg-utils'
+         'shared-mime-info' 'xcb-util-wm' 'libxrender' 'libxi' 'sqlite' 'xcb-util-image' 'mesa'
+         'tslib' 'libinput' 'libxkbcommon-x11' 'libproxy' 'libcups' 'double-conversion' 'md4c')
+makedepends=('mariadb-libs' 'unixodbc' 'postgresql-libs' 'alsa-lib' 'gst-plugins-base-libs'
+             'gtk3' 'libpulse' 'cups' 'freetds' 'vulkan-headers' 'git')
+optdepends=('qt5-svg: to use SVG icon themes'
+            'qt5-wayland: to run Qt applications in a Wayland session'
+            'postgresql-libs: PostgreSQL driver'
+            'mariadb-libs: MariaDB driver'
+            'unixodbc: ODBC driver'
+            'libfbclient: Firebird/iBase driver'
+            'freetds: MS SQL driver'
+            'gtk3: GTK platform plugin'
+            'perl: for fixqt4headers and syncqt')
+conflicts=('qtchooser')
+groups=('qt5')
+_pkgfqn=${pkgbase/5-/}
+source=(kde-$_pkgfqn::git+https://invent.kde.org/qt/qt/$_pkgfqn#commit=$_commit
+        qmake-cflags.patch
+        qmake-config.patch)
+sha256sums=('fa3b11138b081a1b1f2412fcfa1177962460d05b71240ba01b7ea181eff6acc3'
+            '5411edbe215c24b30448fac69bd0ba7c882f545e8cf05027b2b6e2227abc5e78'
+            '4abc22150fa3e06b2fdcec32146abc9be4e316692aa4d5bd5aa53b4b726783fa')
+
+_sysroot="/home/x/x-sysroot"
+_toolchain_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+
+pkgver() {
+  cd kde-$_pkgfqn
+  echo "$_basever+kde+r"`git rev-list --count v$_basever-lts-lgpl..$_commit` | sed -e 's|+kde+r0||'
+}
+
+prepare() {
+  cd kde-$_pkgfqn
+  patch -p1 < ../qmake-cflags.patch
+  patch -p1 < ../qmake-config.patch
+
+  sed -i 's/ltcg//' mkspecs/common/gcc-base.conf
+
+  # Rewrite the standard ARM mkspec to target your crosstool-NG compiler names
+  local spec="mkspecs/linux-arm-gnueabi-g++/qmake.conf"
+  sed -i "s|arm-linux-gnueabi-gcc|armv6-rpi-linux-gnueabihf-gcc|g" "$spec"
+  sed -i "s|arm-linux-gnueabi-g++|armv6-rpi-linux-gnueabihf-g++|g" "$spec"
+  sed -i "s|arm-linux-gnueabi-ar|armv6-rpi-linux-gnueabihf-ar|g" "$spec"
+  sed -i "s|arm-linux-gnueabi-link|armv6-rpi-linux-gnueabihf-g++|g" "$spec"
+
+  # Append your sysroot compile targets directly inside the target mkspec profile only!
+  cat << EOF >> "$spec"
+
+# Cross-compilation sysroot and optimization overrides
+QMAKE_CFLAGS   += -O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot}
+QMAKE_CXXFLAGS += -O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot}
+QMAKE_LFLAGS   += -Wl,-O1,--as-needed --sysroot=${_sysroot} -L${_sysroot}/usr/lib
+EOF
+}
+
+build() {
+  cd kde-$_pkgfqn
+
+  # Expose the bin directory to path so configuration scripts can resolve dependencies
+  export PATH="${_toolchain_bin}:$PATH"
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+
+  # Keep global environments naked so host tools build without target pollution
+  unset CFLAGS
+  unset CXXFLAGS
+  unset LDFLAGS
+
+  ./configure -confirm-license -opensource -v \
+    -prefix /usr \
+    -headerdir /usr/include/qt \
+    -archdatadir /usr/lib/qt \
+    -datadir /usr/share/qt \
+    -sysconfdir /etc/xdg \
+    -plugin-sql-sqlite \
+    -system-sqlite \
+    -openssl-linked \
+    -nomake examples \
+    -no-rpath \
+    -no-dbus \
+    -system-harfbuzz \
+    -journald \
+    -libproxy \
+    -no-mimetype-database \
+    -no-use-gold-linker \
+    -no-reduce-relocations \
+    -no-strip \
+    -no-sse2 \
+    -no-sse3 \
+    -no-ssse3 \
+    -no-sse4.1 \
+    -no-sse4.2 \
+    -no-avx \
+    -no-avx2 \
+    -no-feature-getentropy \
+    -device-option CROSS_COMPILE=armv6-rpi-linux-gnueabihf- \
+    -xplatform linux-arm-gnueabi-g++ \
+    -sysroot "${_sysroot}"
+
+  bin/qmake -- -redo
+  make
+}
+
+package_qt5-base() {
+  pkgdesc='A cross-platform application and UI framework'
+  depends+=(qt5-translations)
+
+  cd kde-$_pkgfqn
+  make INSTALL_ROOT="${pkgdir}" install
+
+  # Fix the nested sysroot layout so makepkg can find the files
+  if [ -d "${pkgdir}/${_sysroot}" ]; then
+    cp -a "${pkgdir}/${_sysroot}"/* "${pkgdir}/"
+    rm -rf "${pkgdir}/$(echo "${_sysroot}" | cut -d/ -f2)"
+  fi
+
+  install -Dm644 LICENSE* -t "$pkgdir"/usr/share/licenses/$pkgbase
+
+  find "${pkgdir}/usr/lib" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  sed -i "s|${srcdir}/${_pkgfqn}|/usr|" \
+    "${pkgdir}"/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
+
+  for b in "${pkgdir}"/usr/bin/*; do
+    [ -f "$b" ] && ln -s $(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
+  done
+}
+
+package_qt5-xcb-private-headers() {
+  pkgdesc='Private headers for Qt5 Xcb'
+  depends=("qt5-base=$pkgver")
+
+  cd kde-$_pkgfqn
+  install -d -m755 "$pkgdir"/usr/include/qtxcb-private
+  cp -r src/plugins/platforms/xcb/*.h "$pkgdir"/usr/include/qtxcb-private/
+}

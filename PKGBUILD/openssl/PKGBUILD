@@ -1,0 +1,52 @@
+# Maintainer: Arch Linux ARM Cross-Compile
+pkgname=openssl
+pkgver=3.6.3
+pkgrel=1
+pkgdesc='The Open Source toolkit for cryptography and Transport Layer Security'
+arch=('armv6h')
+url='https://www.openssl.org'
+license=('Apache-2.0')
+depends=('brotli' 'glibc' 'zlib' 'zstd')
+makedepends=('perl')
+source=("https://github.com/openssl/openssl/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('243a86649cf6f23eeb6a2ff2456e09e5d77dd9018a54d3d96b0c6bdd6ba6c7f1')
+
+# Define paths explicitly
+_sysroot="/home/x/x-sysroot"
+_toolchain_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_triple="armv6-rpi-linux-gnueabihf"
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+
+    # 1. Clean the environment to stop x86_64 pollution
+    unset CFLAGS CXXFLAGS LDFLAGS
+
+    # 2. Setup Cross-Compiler paths
+    export PATH="${_toolchain_bin}:${PATH}"
+    export CC="${_triple}-gcc"
+    export CXX="${_triple}-g++"
+    export AR="${_triple}-ar"
+    export RANLIB="${_triple}-ranlib"
+
+    # 3. Define target-specific ARMv6 flags
+    local _arm_cflags="-O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot}"
+
+    # 4. Configure explicitly. 
+    # Note: We pass the flags directly to ./Configure, not via environment variables.
+    ./Configure linux-armv4 \
+        --prefix=/usr \
+        --openssldir=/etc/ssl \
+        --libdir=lib \
+        --sysroot="${_sysroot}" \
+        shared \
+        enable-ktls enable-brotli enable-zlib enable-zstd \
+        "${_arm_cflags}"
+
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    make DESTDIR="$pkgdir" MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs
+}

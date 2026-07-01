@@ -1,0 +1,57 @@
+pkgname=ldns
+pkgver=1.9.2
+pkgrel=1
+pkgdesc='Fast DNS library supporting recent RFCs'
+url='https://www.nlnetlabs.nl/projects/ldns/'
+license=('custom:BSD')
+arch=('armv6h')
+depends=('openssl' 'dnssec-anchors')
+provides=('drill' 'libldns.so')
+optdepends=('libpcap: ldns-dpa tool')
+makedepends=('git' 'libpcap')
+source=("git+https://github.com/NLnetLabs/ldns#tag=${pkgver}")
+sha256sums=('SKIP')
+
+prepare() {
+  cd "${pkgname}"
+  autoreconf -fi
+  libtoolize -c --install
+}
+
+build() {
+  cd "${pkgname}"
+
+  local _sysroot="/home/x/x-sysroot"
+  local _toolchain_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf"
+
+  export CC="${_toolchain_path}-gcc"
+  export CXX="${_toolchain_path}-g++"
+  export LD="${_toolchain_path}-ld"
+  export AR="${_toolchain_path}-ar"
+  export RANLIB="${_toolchain_path}-ranlib"
+
+  # Pre-seed standard autotools cross-compile caches
+  export ac_cv_func_malloc_0_nonnull=yes
+  export ac_cv_func_realloc_0_nonnull=yes
+
+  ./configure \
+    --host=armv6l-unknown-linux-gnueabihf \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-rpath \
+    --with-drill \
+    --with-examples \
+    --with-trust-anchor=/etc/trusted-key.key \
+    --with-ssl="${_sysroot}/usr" \
+    CFLAGS="--sysroot=${_sysroot} -O2 -fPIC" \
+    LDFLAGS="--sysroot=${_sysroot} -L${_sysroot}/usr/lib"
+
+  make
+}
+
+package() {
+  cd "${pkgname}"
+  make DESTDIR="${pkgdir}" install
+  install -D -m0644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

@@ -1,0 +1,52 @@
+pkgname=mosquitto
+pkgver=2.1.2
+pkgrel=2
+pkgdesc="An Open Source MQTT Broker"
+arch=(armv6h)
+url="https://mosquitto.org/"
+license=(LicenseRef-EDL-1.0 EPL-2.0)
+
+depends=(cjson libgcc libstdc++ glibc openssl util-linux-libs readline sqlite c-ares systemd-libs)
+makedepends=(argon2 cmake ninja libwebsockets systemd uthash)
+
+source=(
+  https://mosquitto.org/files/source/mosquitto-$pkgver.tar.gz
+  "mosquitto.service"
+  "sysusers_mosquitto.conf"
+  "cross-armv6h.cmake"
+)
+
+# Skip SHA validation since we are editing files locally for cross-compilation
+sha512sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+build() {
+  # 1. Clear host architecture variables
+  unset CFLAGS CXXFLAGS LDFLAGS
+
+  # 2. Configure CMake with the cross-toolchain file
+  cmake -B build -S $pkgname-$pkgver \
+    -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE="${srcdir}/cross-armv6h.cmake" \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SBINDIR=bin \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DWITH_BUNDLED_DEPS=OFF \
+    -DWITH_SRV=ON \
+    -DWITH_SYSTEMD=ON \
+    -DWITH_WEBSOCKETS=ON \
+    -DWITH_TESTS=OFF
+
+  # 3. Build
+  cmake --build build --verbose
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+
+  install -vDm 644 "mosquitto.service" -t "$pkgdir/usr/lib/systemd/system/"
+  install -vDm 644 $pkgname-$pkgver/edl-v10 -t "$pkgdir/usr/share/licenses/$pkgname/"
+  install -vDm 644 sysusers_mosquitto.conf "${pkgdir}"/usr/lib/sysusers.d/mosquitto.conf
+
+  mv "$pkgdir"/etc/mosquitto/mosquitto.conf{.example,}
+}

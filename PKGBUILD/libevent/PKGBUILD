@@ -1,0 +1,75 @@
+pkgname=libevent
+pkgver=2.1.12
+pkgrel=5
+pkgdesc="Event notification library"
+url="https://libevent.org/"
+arch=('armv6h')
+license=('BSD-3-Clause-Modification')
+depends=('glibc' 'openssl')
+makedepends=('cmake' 'ninja' 'python')
+optdepends=('python: event_rpcgen.py')
+provides=(libevent{,_core,_extra,_openssl,_pthreads}-2.1.so)
+source=(
+  "https://github.com/libevent/libevent/releases/download/release-$pkgver-stable/libevent-$pkgver-stable.tar.gz"
+  "EVENT__SIZEOF_TIME_T.patch"
+  "libevent-2.1.12-openssl-compat.patch"
+)
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+prepare() {
+  cd libevent-$pkgver-stable
+
+  # Fix Firefox build
+  patch -Np1 -i ../EVENT__SIZEOF_TIME_T.patch
+
+  # Fix build with OpenSSL 3.0
+  patch -Np1 -i ../libevent-2.1.12-openssl-compat.patch
+}
+
+build() {
+  # 1. Scrub host compiler flags so they don't leak into the cross-compiler
+  unset CFLAGS CXXFLAGS LDFLAGS LTOFLAGS
+
+  local _sysroot="/home/x/x-sysroot"
+  local _toolchain_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf"
+
+  # 2. Create the CMake cross-compilation toolchain file
+  cat > toolchain.cmake <<-EOF
+	set(CMAKE_SYSTEM_NAME Linux)
+	set(CMAKE_SYSTEM_PROCESSOR arm)
+	
+	set(CMAKE_C_COMPILER ${_toolchain_path}-gcc)
+	set(CMAKE_CXX_COMPILER ${_toolchain_path}-g++)
+	
+	set(CMAKE_SYSROOT ${_sysroot})
+	
+	set(CMAKE_FIND_ROOT_PATH ${_sysroot})
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+	set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+	set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+	set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+	EOF
+
+  local cmake_options=(
+    -B build
+    -S libevent-$pkgver-stable
+    -D CMAKE_TOOLCHAIN_FILE="${PWD}/toolchain.cmake"
+    -D CMAKE_BUILD_TYPE=Release
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_POLICY_VERSION_MINIMUM=3.5
+    -D CMAKE_SKIP_INSTALL_RPATH=TRUE
+    -D EVENT__DISABLE_REGRESS=ON
+    -D EVENT__DOXYGEN=OFF
+    -D EVENT__LIBRARY_TYPE=SHARED
+    -D OPENSSL_ROOT_DIR="${_sysroot}/usr"
+    -G Ninja
+  )
+
+  cmake "${cmake_options[@]}"
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 libevent-$pkgver-stable/LICENSE
+}
