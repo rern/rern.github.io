@@ -8,6 +8,7 @@ url='https://www.openssl.org'
 license=('Apache-2.0')
 depends=('brotli' 'glibc' 'zlib' 'zstd')
 makedepends=('perl')
+provides=('libcrypto.so=3-32' 'libssl.so=3-32')
 source=("https://github.com/openssl/openssl/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 sha256sums=('243a86649cf6f23eeb6a2ff2456e09e5d77dd9018a54d3d96b0c6bdd6ba6c7f1')
 
