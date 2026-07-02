@@ -1,61 +1,39 @@
 ```sh
 # on rpi0
-pacman -Syy
+sed -i '/REPOSITORIES/,$ d' /etc/pacman.conf
+cat << EOF >> /etc/pacman.conf
+[+R]
+SigLevel = Optional TrustAll
+Server = https://rern.github.io/armv6h/+R
 
-pacman -S firmware-raspberrypi linux-firmware linux-rpi raspberrypi-bootloader \
-    --ignore linux-firmware-mellanox,linux-firmware-nvidia,linux-firmware-qcom \
-    --overwrite 'usr/*'
-
-pacman -S curl gcc gcc-libs glibc libssh2 openssl pacman --overwrite 'usr/*'
-
-pacman -S systemd
-
-pacman -Su
-
-
-sysroot=/home/x/x-sysroot
-cd $sysroot
-
-ln -s /home/x/GitHub/rern.github.io/armv6h/ $sysroot
-
-cat << EOF > pacman.conf
-[options]
-Architecture = armv6h
-CacheDir     = /var/cache/pacman/pkg/
-DBPath       = /var/lib/pacman/
-LogFile      = /var/log/pacman.log
-GPGDir       = /etc/pacman.d/gnupg/
-HookDir      = /etc/pacman.d/hooks/
-SigLevel     = PackageOptional DatabaseOptional TrustAll
+[alarm]
+SigLevel = Optional TrustAll
+Server = https://rern.github.io/armv6h/alarm
 
 [core]
-Server = file:///armv6h/core
+SigLevel = Optional TrustAll
+Server = https://rern.github.io/armv6h/core
 
 [extra]
-Server = file:///armv6h/extra
+SigLevel = Optional TrustAll
+Server = https://rern.github.io/armv6h/extra
 EOF
 
-pacman --config pacman.conf --sysroot $sysroot -Syy
+pacman -Syy
+pacman -S archlinuxarm-keyring
+pacman -S gcc glibc
+pacman -S filesystem firmware-raspberrypi linux-firmware linux-rpi libatomic mkinitcpio netctl raspberrypi-bootloader util-linux --overwrite '*'
 
-pacman --config pacman.conf --sysroot $sysroot -S \
-    core/glibc \
-    core/openssl \
-    core/gcc-libs \
-    core/gcc \
-    core/pacman \
-        --overwrite 'usr/*'
+pacman -S coreutils cryptsetup curl hfsprogs hostapd kmod krb5 ldns \
+    libarchive libevent libsasl libshout libssh libssh2 libubsan libwebsockets libzip \
+    mosquitto nginx-mainline openssh openssl pacman python shairport-sync srt sudo websocat wpa_supplicant \
+    systemd systemd-debug systemd-resolvconf systemd-sysvcompat \
+    --overwrite '*'
 
-sudo pacman --config pacman.conf --sysroot $sysroot -Suu \
-    --ignore linux-firmware-mellanox \
-    --ignore linux-firmware-nvidia \
-    --ignore linux-firmware-qcom \
-    --overwrite 'usr/*'
-    
-dir_lib=$sysroot/usr/lib
-rm -f $dir_lib/libstdc++.so.6
-ln -s $sysroot/usr/armv6-rpi-linux-gnueabihf/lib/libstdc++.so.6.0.35 $dir_lib/libstdc++.so.6
+pacman -Su --overwrite '*'
 
-rm $sysroot/pacman.conf $sysroot/armv6h
+ldd /usr/bin/openssl
+
 
 # insert card reader with rpi0 sd card
 rsync -aAXv --delete
@@ -68,8 +46,6 @@ rsync -aAXv --delete
 
 sed -i '/REPOSITORIES/,$ d' /etc/pacman.conf
 cat << EOF >> /etc/pacman.conf
-DisableSandbox
-
 [+R]
 SigLevel = Optional TrustAll
 Server = https://rern.github.io/armv6h/+R

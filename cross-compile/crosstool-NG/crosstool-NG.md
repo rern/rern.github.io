@@ -54,6 +54,13 @@ scp test root@192.168.1.90:/root
 cd
 rm -rf crosstool-ng toolchain
 
+# compile
+CARCH="armv6h" makepkg -Ad --skipinteg
+# rerun on failed
+sudo rm -rf pkg src; CARCH="armv6h" makepkg -Ad --skipinteg -C
+# repackage
+CARCH="armv6h" makepkg -AdR
+
 # if frozen while compiling - reduce cpu threads and write to hdd instead of ram
 sed -i -E 's/^#*(MAKEFLAGS=).*/\1"-j4"/; s|^#*(BUILDDIR=).*|\1home/x/tmp|' /etc/makepkg.conf
 mkdir /home/x/tmp

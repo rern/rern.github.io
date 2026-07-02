@@ -48,6 +48,7 @@ case $1 in
     list )
         machinectl list;;
     renew )
+        machinectl kill rpi0 --signal=SIGKILL
         sudo rm -rf /home/x/x-sysroot
         sudo cp -r /home/x/{rpi0,x}-sysroot
         ;;
