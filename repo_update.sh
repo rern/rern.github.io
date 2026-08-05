@@ -12,11 +12,12 @@ if [[ $( uname -m ) == x86_64 ]]; then
 	manjaro=1
 else
 	bar Mount REPO ...
-	mkdir -p BIG REPO
+	mkdir -p REPO
 	mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
-	[[ $? != 0 ]] && rmdir BIG REPO && dialog.error_exit "Mount '\Z1REPO\Zn' failed."
+	echo 000
+	[[ $? != 0 ]] && rmdir REPO && dialog.error_exit "Mount '\Z1REPO\Zn' failed."
 #----------------------------------------------------------------------------
-	[[ ! $( ls REPO ) ]] && rmdir BIG REPO && dialog.error_exit Repo empty: REPO
+	[[ ! $( ls REPO ) ]] && rmdir REPO && dialog.error_exit Repo empty: REPO
 #----------------------------------------------------------------------------
 fi
 #........................
@@ -62,8 +63,8 @@ done
 
 if [[ ! $manjaro ]]; then
 	cd $dir_base
-	umount -ql BIG REPO
-	rmdir BIG REPO
+	umount -ql REPO
+	rmdir REPO
 fi
 
 bar Done
