@@ -1,0 +1,98 @@
+# Maintainer: Anatol Pomozov
+# Contributor: Zhuoyun Wei <wzyboy@wzyboy.org>
+
+pkgname=libnghttp2
+pkgver=1.69.0
+pkgrel=1
+pkgdesc='Framing layer of HTTP/2 is implemented as a reusable C library (Cross-compiled for armv6h)'
+arch=('armv6h') # Updated for the target architecture
+url='https://nghttp2.org/'
+license=('MIT')
+depends=('glibc')
+provides=('libnghttp2.so')
+makedepends=('git')
+conflicts=('nghttp2<1.20.0-2')
+validpgpkeys=('F4F3B91474D1EB29889BD0EF7E8403D5D673C366')
+source=("git+https://github.com/nghttp2/nghttp2.git?signed#tag=v${pkgver}"
+        'git+https://github.com/ngtcp2/munit.git'
+        'git+https://github.com/mruby/mruby.git'
+        'git+https://github.com/tatsuhiro-t/neverbleed.git')
+sha512sums=('501c30bf2ec24d8ae25eba4f38f50287d1027d0209ca835b588d6654f691a1885b4875ef5249e4fe58e00a8ee77c7eac0e96144d2724c627bd38d42c15e6b2fa'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP')
+
+# Set up cross-compilation environment variables
+_tc_path="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_sysroot="/home/x/x-sysroot"
+_target="armv6-rpi-linux-gnueabihf"
+
+prepare() {
+  cd nghttp2
+
+  git config --file=.gitmodules submodule.tests/munit.url ../munit/
+  git config --file=.gitmodules submodule.third-party/mruby.url ../mruby/
+  git config --file=.gitmodules submodule.tests/neverbleed.url ../neverbleed/
+
+  git submodule init
+  git -c protocol.file.allow=always submodule update
+
+  autoreconf -i
+}
+
+build() {
+  cd nghttp2
+
+  # Inject the toolchain path and override compilation tools
+  export PATH="${_tc_path}:${PATH}"
+  export CC="${_target}-gcc"
+  export CXX="${_target}-g++"
+  export AR="${_target}-ar"
+  export RANLIB="${_target}-ranlib"
+  export LD="${_target}-ld"
+  
+  # Ensure the compiler searches your custom sysroot for dependencies
+  export CFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export LDFLAGS="--sysroot=${_sysroot}"
+
+  ./configure \
+    --prefix=/usr \
+    --host="${_target}" \
+    --build="x86_64-pc-linux-gnu" \
+    --disable-examples \
+    --disable-python-bindings \
+    --enable-lib-only
+  
+  make
+}
+
+# Omitted check() because the compiled binaries are for ARM and cannot run on x86_64
+
+package() {
+  cd nghttp2/lib
+
+  # Stage into the standard Arch package directory
+  make DESTDIR="$pkgdir" install
+  install -Dm644 ../COPYING "$pkgdir/usr/share/licenses/libnghttp2/COPYING"
+
+  # Remove any stray man pages or documentation if generated
+  rm -rf "${pkgdir}/usr/share/doc"
+  rm -rf "${pkgdir}/usr/share/man"
+
+  # Syncing files cleanly to your local sysroot (now that ownership is fixed)
+  echo "==> Syncing files to local sysroot: ${_sysroot}"
+  
+  mkdir -p "${_sysroot}/usr/include" "${_sysroot}/usr/lib"
+
+  # Copy headers safely
+  if [ -d "${pkgdir}/usr/include" ]; then
+    cp -rP "${pkgdir}/usr/include"/* "${_sysroot}/usr/include/"
+  fi
+
+  # Copy libraries safely (handling symlinks correctly)
+  if [ -d "${pkgdir}/usr/lib" ]; then
+    cp -rP "${pkgdir}/usr/lib"/* "${_sysroot}/usr/lib/"
+  fi
+}

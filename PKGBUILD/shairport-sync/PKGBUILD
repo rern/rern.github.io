@@ -1,0 +1,89 @@
+pkgname=shairport-sync
+pkgver=5.0.4
+pkgrel=2
+pkgdesc="AirPlay audio player"
+arch=('armv6h')
+license=('MIT')
+
+# --- CONFIGURATION ---
+_target="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+_toolchain_bin="/home/x/x-tools/$_target/bin"
+# ---------------------
+
+source=("shairport-sync-$pkgver.tar.gz" "shairport-sync.sysusers" "remove_useradd.patch" "shairport-sync.user.service")
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+build() {
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS
+
+  cd "$srcdir/$pkgname-$pkgver"
+  [ -f Makefile ] && make distclean
+  autoreconf -fi
+
+  # --- ISOLATION: Hide librsvg ---
+  # We trick pkg-config into thinking librsvg does not exist
+  mkdir -p "$srcdir/fake_pkgconfig"
+  # This makes pkg-config return "false" for librsvg
+  echo "Name: librsvg-2.0" > "$srcdir/fake_pkgconfig/librsvg-2.0.pc"
+  echo "Version: 0.0.0" >> "$srcdir/fake_pkgconfig/librsvg-2.0.pc"
+
+  # Toolchain & Sysroot
+  export CC="$_toolchain_bin/$_target-gcc"
+  export CXX="$_toolchain_bin/$_target-g++"
+  
+  # Configure PKG_CONFIG to look at our fake folder FIRST
+  export PKG_CONFIG_PATH="$srcdir/fake_pkgconfig"
+  export PKG_CONFIG_SYSROOT_DIR="$_sysroot"
+  export PKG_CONFIG_LIBDIR="$_sysroot/usr/lib/pkgconfig:$_sysroot/usr/share/pkgconfig"
+
+  # Flags
+  # 1. We use -Wl,--as-needed to tell the linker: "Only link libraries that are actually used." 
+  #    This will automatically drop unused dependencies like librsvg.
+  # 2. We explicitly include -lxml2 to satisfy the FFmpeg requirement.
+  
+  export CFLAGS="--sysroot=$_sysroot -march=armv6 -mfloat-abi=hard -mfpu=vfp -O2 -I$_sysroot/usr/include/libxml2"
+  export CXXFLAGS="$CFLAGS"
+  
+  # The critical Linker Flags
+  # -Wl,--as-needed: Drops libraries (like librsvg) that aren't strictly required by the code.
+  # -lxml2: Explicitly link this to resolve the libavformat errors.
+# Add this flag to your existing LDFLAGS
+export LDFLAGS="--sysroot=$_sysroot -L$_sysroot/usr/lib -Wl,--rpath-link,$_sysroot/usr/lib -Wl,--unresolved-symbols=ignore-in-shared-libs"
+  ./configure \
+    --host="$_target" \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-ssl=openssl \
+    --with-airplay-2 \
+    --with-alsa \
+    --without-pipewire \
+    --without-pulseaudio \
+    --without-jack \
+    --with-stdout \
+    --with-pipe \
+    --with-soxr \
+    --with-convolution \
+    --with-metadata \
+    --with-mqtt-client \
+    --with-dbus-interface \
+    --with-mpris-interface \
+    --with-avahi \
+    --with-dns_sd \
+    --with-systemd-startup \
+    --with-configfiles \
+    --with-pkg-config
+
+  make LDFLAGS="$LDFLAGS"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  # Broad-spectrum cleanup: Remove any line containing useradd, groupadd, or getent
+  # This kills all the "user-setup" logic that fails inside the build environment.
+  sed -i -E '/(useradd|groupadd|getent)/d' Makefile
+
+  # Install the files
+  make DESTDIR="$pkgdir" install
+}

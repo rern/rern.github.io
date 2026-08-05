@@ -1,0 +1,152 @@
+pkgbase=linux-rpi
+pkgname=(${pkgbase})
+_commit=954341c412dd48b7c7f8125d81212ec4c0e42ed3
+_srcname=linux-${_commit}
+_kernelname=${pkgbase#linux}
+pkgver=6.18.36
+pkgrel=3
+pkgdesc='Linux kernel cross-compiled for Raspberry Pi Zero (armv6h) with systemd sandboxing and lean performance tuning'
+url="https://github.com/raspberrypi/linux"
+arch=(armv6h)
+license=(GPL-2.0-only)
+makedepends=(bc kmod inetutils)
+options=('!strip' '!debug')
+source=("linux-$pkgver-${_commit:0:10}.tar.gz::https://github.com/raspberrypi/linux/archive/${_commit}.tar.gz"
+        cmdline.txt
+        config.txt
+        0001-Make-proc-cpuinfo-consistent-on-arm64-and-arm.patch
+        linux.preset)
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+# Cross-compilation settings
+_cross_bindir="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_cross_prefix="armv6-rpi-linux-gnueabihf-"
+_sysroot="/home/x/x-sysroot"
+
+# Raspberry Pi Zero specific setup vars
+_kernel=kernel.img
+KARCH=arm
+_image=zImage
+_boot=config.txt
+
+make_env() {
+  export ARCH=$KARCH
+  export CROSS_COMPILE="${_cross_bindir}/${_cross_prefix}"
+  export CC="${_cross_bindir}/${_cross_prefix}gcc --sysroot=${_sysroot}"
+  export CXX="${_cross_bindir}/${_cross_prefix}g++ --sysroot=${_sysroot}"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+}
+
+prepare() {
+  cd "${srcdir}/${_srcname}"
+
+  patch -p1 -i ../0001-Make-proc-cpuinfo-consistent-on-arm64-and-arm.patch
+
+  echo "-$pkgrel" > localversion.10-pkgrel
+  echo "${pkgbase#linux}" > localversion.20-pkgname
+
+  sed -i '/^CONFIG_LOCALVERSION=/d' ./arch/arm/configs/bcmrpi_defconfig
+
+  make_env
+  make bcmrpi_defconfig
+
+  # === Systemd-required features ===
+  scripts/config --enable CONFIG_NAMESPACES
+  scripts/config --enable CONFIG_UTS_NS
+  scripts/config --enable CONFIG_IPC_NS
+  scripts/config --enable CONFIG_USER_NS
+  scripts/config --enable CONFIG_PID_NS
+  scripts/config --enable CONFIG_NET_NS
+
+  scripts/config --enable CONFIG_SECCOMP
+  scripts/config --enable CONFIG_SECCOMP_FILTER
+  scripts/config --enable CONFIG_HAVE_ARCH_SECCOMP_FILTER
+
+  scripts/config --enable CONFIG_CGROUPS
+  scripts/config --enable CONFIG_CGROUP_SCHED
+  scripts/config --enable CONFIG_CGROUP_FREEZER
+  scripts/config --enable CONFIG_CGROUP_BPF
+
+  scripts/config --enable CONFIG_AUDIT
+  scripts/config --enable CONFIG_AUDITSYSCALL
+
+  scripts/config --enable CONFIG_DEVTMPFS
+  scripts/config --enable CONFIG_DEVTMPFS_MOUNT
+  scripts/config --enable CONFIG_TMPFS
+  scripts/config --enable CONFIG_FHANDLE
+
+  # === Raspberry Pi Zero hardware essentials ===
+  # Dependencies first
+  scripts/config --enable CONFIG_DMADEVICES
+  scripts/config --enable CONFIG_DMA_ENGINE
+  scripts/config --enable CONFIG_DMA_SHARED_BUFFER
+  scripts/config --enable CONFIG_MAILBOX
+  scripts/config --enable CONFIG_RASPBERRYPI_FIRMWARE
+
+  # Drivers
+  scripts/config --enable CONFIG_BCM2835_THERMAL
+  scripts/config --enable CONFIG_BCM2835_WDT
+  scripts/config --enable CONFIG_BCM2835_MBOX
+  scripts/config --enable CONFIG_DMA_BCM2835
+  scripts/config --enable CONFIG_BCM2835_SMI
+  scripts/config --enable CONFIG_BCM2835_VCHIQ
+
+  # === Performance tuning ===
+  scripts/config --enable CONFIG_LRU_GEN_ENABLED
+  scripts/config --enable CONFIG_SCHED_AUTOGROUP
+  scripts/config --enable CONFIG_HIGH_RES_TIMERS
+  scripts/config --enable CONFIG_PREEMPT_VOLUNTARY
+
+  make olddefconfig
+  make -s kernelrelease > version
+
+  # === Optional inline verification ===
+  echo "Verifying kernel options..."
+  grep -q "^CONFIG_DMA_BCM2835=y" .config || {
+    echo "ERROR: CONFIG_DMA_BCM2835 still missing!"
+    exit 1
+  }
+}
+
+
+build() {
+  cd "${srcdir}/${_srcname}"
+  make_env
+  make "$_image" modules dtbs
+}
+
+package_linux-rpi() {
+  pkgdesc="Linux kernel and modules (RPi Foundation fork) - Cross-compiled with systemd support and lean tuning"
+  depends=(coreutils firmware-raspberrypi kmod 'mkinitcpio>=0.7' raspberrypi-bootloader)
+  optdepends=('linux-firmware' 'wireless-regdb')
+  provides=(linux="${pkgver}" KSMBD-MODULE WIREGUARD-MODULE raspberrypi-overlays)
+  conflicts=(linux linux-rpi-16k uboot-raspberrypi)
+  backup=(boot/config.txt boot/cmdline.txt)
+
+  cd "${srcdir}/${_srcname}"
+  local modulesdir="$pkgdir/usr/lib/modules/$(<version)"
+
+  echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
+
+  make_env
+  make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
+    DEPMOD=/doesnt/exist modules_install
+
+  rm -f "$modulesdir"/build
+
+  mkdir -p "${pkgdir}"/boot
+  make INSTALL_DTBS_PATH="${pkgdir}/boot" dtbs_install
+
+  cp arch/$KARCH/boot/$_image "${pkgdir}/boot/$_kernel"
+  cp arch/$KARCH/boot/dts/overlays/README "${pkgdir}/boot/overlays"
+  install -m644 ../"$_boot" "${pkgdir}/boot/config.txt"
+  install -m644 ../cmdline.txt "${pkgdir}/boot"
+
+  local _subst="
+    s|%PKGBASE%|${pkgbase}|g
+    s|%KERNVER%|$(<version)|g
+  "
+  sed "${_subst}" ../linux.preset | install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
+
+  touch "${pkgdir}/usr/lib/modules/$(<version)/vmlinuz"
+}

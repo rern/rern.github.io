@@ -1,0 +1,225 @@
+# Maintainer: Dave Reisner <dreisner@archlinux.org>
+# Contributor: Angel Velasquez <angvp@archlinux.org>
+# Contributor: Eric Belanger <eric@archlinux.org>
+# Modified for cross-compilation to armv6h (Raspberry Pi Zero)
+
+pkgbase=curl
+pkgname=(curl libcurl-compat libcurl-gnutls)
+pkgver=8.20.0
+pkgrel=7
+pkgdesc='command line tool and library for transferring data with URLs (Cross-compiled for armv6h)'
+arch=('armv6h') # Updated target architecture
+url='https://curl.se/'
+license=('MIT')
+makedepends=(
+  'git'
+  'patchelf' # Host-native binary modifier tool remains here
+) 
+validpgpkeys=('27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2') # Daniel Stenberg
+source=("git+https://github.com/curl/curl.git?signed#tag=curl-${pkgver//./_}")
+sha512sums=('e97541789fb3f5e00ecb41c867f8440e651fdb7be922cddfea70e9462b40ed33d7ca4d29039025584afb11ade8ce389ae25fc41200e3a38706a6fc265cd0c29b')
+
+_backports=(
+  'cfadbaa133504d47ece989486fde944d076e0222'
+  'c29278cc83f31a3e5113eb5c68604fc48ce22fcb'
+  '2a2104f3cff44bb28bb570a093be52bbeeed8f23'
+)
+
+_reverts=(
+)
+
+prepare() {
+  cd "$pkgbase"
+
+  local _c
+  for _c in "${_backports[@]}"; do
+    if [[ $_c == *..* ]]; then
+      git log --oneline --reverse "${_c}"
+    else
+      git log --oneline -1 "${_c}"
+    fi
+    git cherry-pick -n -m1 "${_c}"
+  done
+  for _c in "${_reverts[@]}"; do
+    git log --oneline -1 "${_c}"
+    git revert -n "${_c}"
+  done
+
+  sed -i \
+    -e "/\WLIBCURL_VERSION\W/c #define LIBCURL_VERSION \"${pkgver}\"" \
+    -e "/\WLIBCURL_TIMESTAMP\W/c #define LIBCURL_TIMESTAMP \"$(git log -1 --format=%cs "curl-${pkgver//./_}")\"" \
+    include/curl/curlver.h
+
+  autoreconf -fi
+}
+
+build() {
+  local _target="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_target}/bin"
+  local _sysroot="/home/x/x-sysroot"
+
+  export CC="${_toolchain_bin}/${_target}-gcc"
+  export CXX="${_toolchain_bin}/${_target}-g++"
+  export AR="${_toolchain_bin}/${_target}-ar"
+  export RANLIB="${_toolchain_bin}/${_target}-ranlib"
+  export STRIP="${_toolchain_bin}/${_target}-strip"
+
+  # Absolute isolation flags for pkg-config
+  export PKG_CONFIG="/usr/bin/pkg-config"
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_PATH=""
+  export PKG_CONFIG_LIBDIR="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+
+  # Explicitly append sysroot and explicitly point to the OpenSSL directory
+  export CFLAGS="--sysroot=${_sysroot} -I${_sysroot}/usr/include -O2 -pipe"
+  export CXXFLAGS="--sysroot=${_sysroot} -I${_sysroot}/usr/include -O2 -pipe"
+  export LDFLAGS="--sysroot=${_sysroot} -lpthread -ldl -Wl,-rpath-link,${_sysroot}/usr/lib"
+
+local _configure_options=(
+    --host="${_target}"
+    --prefix='/usr'
+    --disable-ldap
+    --disable-ldaps
+    --disable-manual
+    --enable-ipv6
+    --enable-threaded-resolver
+    --enable-websockets
+    --with-gssapi
+    --with-libssh2
+    --without-nghttp3  # Change from --with to --without
+    --without-ngtcp2   # Change from --with to --without
+    --with-ca-bundle='/etc/ssl/certs/ca-certificates.crt'
+  )
+  
+  mkdir -p build-curl{,-compat,-gnutls}
+
+  # build curl
+  cd "${srcdir}"/build-curl
+  "${srcdir}/${pkgbase}"/configure \
+    "${_configure_options[@]}" \
+    --enable-versioned-symbols \
+    --without-gnutls \
+    --with-openssl="${_sysroot}/usr" \
+    --with-fish-functions-dir=/usr/share/fish/vendor_completions.d/ \
+    --with-zsh-functions-dir=/usr/share/zsh/site-functions/
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+
+  # build libcurl-compat
+  cd "${srcdir}"/build-curl-compat
+  "${srcdir}/${pkgbase}"/configure \
+    "${_configure_options[@]}" \
+    --disable-versioned-symbols \
+    --without-gnutls \
+    --with-openssl="${_sysroot}/usr"
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -C lib
+  patchelf --set-soname 'libcurl-compat.so.4' ./lib/.libs/libcurl.so
+
+  # build libcurl-gnutls
+  cd "${srcdir}"/build-curl-gnutls
+  "${srcdir}/${pkgbase}"/configure \
+    "${_configure_options[@]}" \
+    --disable-versioned-symbols \
+    --with-gnutls \
+    --without-openssl
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -C lib
+  patchelf --set-soname 'libcurl-gnutls.so.4' ./lib/.libs/libcurl.so
+}
+
+package_curl() {
+  depends=(
+    'ca-certificates'
+    'brotli' 'libbrotlidec.so'
+    'krb5' 'libgssapi_krb5.so'
+    'libidn2' 'libidn2.so'
+    'libnghttp2' 'libnghttp2.so'
+    'libnghttp3' 'libnghttp3.so'
+    'libngtcp2' 'libngtcp2.so'
+    'libpsl' 'libpsl.so'
+    'libssh2' 'libssh2.so'
+    'openssl' 'libcrypto.so' 'libssl.so'
+    'zlib' 'libz.so'
+    'zstd' 'libzstd.so')
+  provides=('libcurl.so')
+  replaces=('wcurl')
+  conflicts=('wcurl')
+
+  cd build-curl
+  make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install -C scripts
+
+  cd "${srcdir}/${pkgbase}"
+  install -Dt "${pkgdir}/usr/share/licenses/${pkgbase}" -m0644 COPYING
+
+  # Clean out documentation/man structures
+  rm -rf "${pkgdir}/usr/share/man"
+}
+
+package_libcurl-compat() {
+  pkgdesc='command line tool and library for transferring data with URLs (no versioned symbols)'
+  depends=(
+    'ca-certificates'
+    'brotli' 'libbrotlidec.so'
+    'krb5' 'libgssapi_krb5.so'
+    'libidn2' 'libidn2.so'
+    'libnghttp2' 'libnghttp2.so'
+    'libnghttp3' 'libnghttp3.so'
+    'libngtcp2' 'libngtcp2.so'
+    'libpsl' 'libpsl.so'
+    'libssh2' 'libssh2.so'
+    'openssl' 'libcrypto.so' 'libssl.so'
+    'zlib' 'libz.so'
+    'zstd' 'libzstd.so')
+  provides=('libcurl-compat.so')
+
+  cd "${srcdir}"/build-curl-compat
+  make -C lib DESTDIR="${pkgdir}" install
+
+  mv "${pkgdir}"/usr/lib/libcurl{,-compat}.so.4.8.0
+  rm "${pkgdir}"/usr/lib/libcurl.{a,so}*
+  for version in 3 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0 4.7.0; do
+    ln -s libcurl-compat.so.4.8.0 "${pkgdir}"/usr/lib/libcurl.so.${version}
+    ln -s libcurl-compat.so.4.8.0 "${pkgdir}"/usr/lib/libcurl-compat.so.${version}
+  done
+
+  install -dm 0755 "${pkgdir}"/usr/share/licenses
+  ln -s curl "${pkgdir}"/usr/share/licenses/libcurl-compat
+  
+  rm -rf "${pkgdir}/usr/share/man"
+}
+
+package_libcurl-gnutls() {
+  pkgdesc='command line tool and library for transferring data with URLs (no versioned symbols, linked against gnutls)'
+  depends=(
+    'ca-certificates'
+    'brotli' 'libbrotlidec.so'
+    'gnutls'
+    'krb5' 'libgssapi_krb5.so'
+    'libidn2' 'libidn2.so'
+    'libnghttp2' 'libnghttp2.so'
+    'libnghttp3' 'libnghttp3.so'
+    'libngtcp2' 'libngtcp2.so' 'libngtcp2_crypto_gnutls.so'
+    'libpsl' 'libpsl.so'
+    'libssh2' 'libssh2.so'
+    'nettle' 'libnettle.so'
+    'zlib' 'libz.so'
+    'zstd' 'libzstd.so')
+  provides=('libcurl-gnutls.so')
+
+  cd "${srcdir}"/build-curl-gnutls
+  make -C lib DESTDIR="${pkgdir}" install
+
+  mv "${pkgdir}"/usr/lib/libcurl{,-gnutls}.so.4.8.0
+  rm "${pkgdir}"/usr/lib/libcurl.{a,so}*
+  ln -s libcurl-gnutls.so.4 "${pkgdir}"/usr/lib/libcurl-gnutls.so
+  for version in 3 4 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0 4.7.0; do
+    ln -s libcurl-gnutls.so.4.8.0 "${pkgdir}"/usr/lib/libcurl-gnutls.so.${version}
+  done
+
+  install -dm 0755 "${pkgdir}"/usr/share/licenses
+  ln -s curl "${pkgdir}"/usr/share/licenses/libcurl-gnutls
+
+  rm -rf "${pkgdir}/usr/share/man"
+}

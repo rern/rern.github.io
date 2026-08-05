@@ -1,0 +1,67 @@
+# Maintainer: Andreas Radke <andyrtr@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+
+pkgname=libgpg-error
+pkgver=1.61
+pkgrel=1
+pkgdesc="Support library for libgcrypt (Cross-compiled for armv6h)"
+arch=(armv6h)
+url="https://www.gnupg.org"
+license=(LGPL-2.1-or-later
+         'BSD-3-Clause OR LGPL-2.1-or-later'
+         FSFULLR
+         GPL-2.0-or-later)
+depends=('glibc' 'sh')
+source=(https://www.gnupg.org/ftp/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2{,.sig})
+sha256sums=('7a85413f2bc354f4f8aa832b718af122e48965e9e0eb9012ee659c13c6385c93'
+            'SKIP')
+validpgpkeys=('6DAA6E64A76D2840571B4902528897B826403ADA') # Werner Koch (dist signing 2020)
+validpgpkeys+=('AC8E115BF73E2D8D47FA9908E98E9B2D19C6C8BD') # Niibe Yutaka (GnuPG Release Key)
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  autoreconf -vfi
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -D_GNU_SOURCE"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  cd "${pkgname}-${pkgver}"
+
+  # --disable-tests prevents host environment execution problems
+  ./configure --host=armv6-rpi-linux-gnueabihf \
+              --build=$(gcc -dumpmachine) \
+              --prefix=/usr \
+              --disable-static \
+              --disable-tests \
+              CC="${TARGET_CC}" \
+              CXX="${TARGET_CXX}" \
+              AR="${TARGET_AR}" \
+              RANLIB="${TARGET_RANLIB}" \
+              LD="${TARGET_LD}" \
+              CFLAGS="${TARGET_CFLAGS}" \
+              CXXFLAGS="${TARGET_CXXFLAGS}" \
+              CPPFLAGS="${TARGET_CPPFLAGS}" \
+              LDFLAGS="${TARGET_LDFLAGS}"
+  make
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}/" install
+  install -vDm 644 COPYING{,.LIB} -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}

@@ -1,0 +1,140 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Maintainer: T.J. Townsend <blakkheim@archlinux.org>
+# Maintainer: Robin Candau <antiz@archlinux.org>
+# Contributor: Eric Bélanger <eric@archlinux.org>
+# Cross-compiled for armv6h Raspberry Pi Zero via crosstool-ng
+
+pkgname=wget
+pkgver=1.25.0
+pkgrel=5
+pkgdesc='Network utility to retrieve files from the web (Cross-compiled for armv6h)'
+url='https://www.gnu.org/software/wget/wget.html'
+arch=('armv6h')
+license=('GPL-3.0-or-later')
+depends=('glibc' 'zlib' 'gnutls' 'libidn2' 'libidn2.so' 'util-linux-libs' 'libuuid.so'
+         'libpsl' 'libpsl.so' 'pcre2' 'nettle' 'libnettle.so')
+makedepends=('git' 'gperf' 'perl' 'autoconf-archive')
+optdepends=('ca-certificates: HTTPS downloads')
+backup=('etc/wgetrc')
+source=("git+https://git.savannah.gnu.org/git/wget.git?signed#tag=v${pkgver}"
+        "git+https://git.savannah.gnu.org/git/gnulib.git"
+        "https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.lz"{,.sig}
+         nettle-4.patch)
+sha256sums=('c63fd5c082a3a7ecf9309c2334df95e61abfc413cbefe81e5ed5d40a4301344e'
+            'SKIP'
+            '19225cc756b0a088fc81148dc6a40a0c8f329af7fd8483f1c7b2fe50f4e08a1f'
+            'SKIP'
+            '64165d602d501ff0974d103d7d93a336ef23106a106cce6477efeca57319a938')
+b2sums=('d4f747bd505a5b482013dfc20c307a34ce505833120ff2b77ba4d94b7476d1407e64eab862d6fd5490e96e5e9b8a7e3cf742404634a287996a7a702c8efd6304'
+        'SKIP'
+        '58edd7393b5109804d7a6ce77466d30e1fba3c5ae4b5b8634758c9ebd7fa95cf106d35ad0b4f9151833d88b0221fc488a1005ec0b98417766bf2092309744954'
+        'SKIP'
+        '7decaee7cefceba54942e94ad29dfd5449b3ed4fed6262ea96052eb2cfa99e0accc10b64cea5a039d29ab4984c613f8c0543917cf32ddb105ef497a9ec540ff0')
+validpgpkeys=(
+  'AC404C1C0BF735C63FF4D562263D6DF2E163E1EA'
+  '7845120B07CBD8D6ECE5FF2B2A1743EDA91A35B6'
+  '1CB27DBC98614B2D5841646D08302DB6A2670428'
+)
+
+prepare() {
+  # Build inside the extracted release directory instead of the raw git cache directory
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  export SKIP_PO="1"
+  export GNULIB_TOOL_IMPL="sh"
+  echo "${pkgver}" > .tarball-version
+
+  git submodule init
+  git config submodule.gnulib.url "${srcdir}/gnulib"
+  git -c protocol.file.allow=always submodule update
+
+  patch -p1 -i ../nettle-4.patch
+
+  # Force copy missing structural scripts from gnulib landscape directly 
+  autoreconf -fiv
+
+  cat >> doc/sample.wgetrc <<EOF
+
+# default root certs location
+ca_certificate=/etc/ssl/certs/ca-certificates.crt
+EOF
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  # Clean makepkg native host architecture profiles
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  # Setup cross-compilation binaries
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  # FIXED: Added -DO_TEXT=0 to bypass windows-specific macro requirements
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -DO_BINARY=0 -DO_TEXT=0"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  export LTFLAGS="-no-fast-install"
+  export AM_LIBTOOLFLAGS="-no-fast-install"
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(gcc -dumpmachine) \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --disable-rpath \
+    --enable-nls \
+    --with-ssl=gnutls \
+    ac_cv_func_c32width=no \
+    ac_cv_func_c32isprint=no \
+    ac_cv_func_c32iscntrl=no \
+    ac_cv_func_mbszero=no \
+    CC="${TARGET_CC}" \
+    CXX="${TARGET_CXX}" \
+    AR="${TARGET_AR}" \
+    RANLIB="${TARGET_RANLIB}" \
+    LD="${TARGET_LD}" \
+    CFLAGS="${TARGET_CFLAGS}" \
+    CXXFLAGS="${TARGET_CXXFLAGS}" \
+    CPPFLAGS="${TARGET_CPPFLAGS}" \
+    LDFLAGS="${TARGET_LDFLAGS}"
+
+  # Explicitly tell make to skip assembling documentation files completely
+  make SUBDIRS="src po"
+
+  # Generate translation files manually using native host utility tools
+  cd po
+  for po in *.po; do
+    msgfmt "${po}" -o "${po%.po}.mo"
+  done
+}
+# Omit check() because target binaries cannot execute on x86_64 host
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  # Install binary paths and translations, skipping doc files safely
+  make DESTDIR="${pkgdir}" SUBDIRS="src po" install
+
+  # Clear out remaining document layouts if any bypass occurred
+  rm -rf "${pkgdir}/usr/share/man"
+  rm -rf "${pkgdir}/usr/share/info"
+
+  # Install built translation binaries 
+  cd po
+  for wget_mo in *.mo; do
+    install -Dm 644 "${wget_mo}" "${pkgdir}/usr/share/locale/${wget_mo%.mo}/LC_MESSAGES/${pkgname}.mo"
+  done
+
+  for wget_gnulib_mo in *.gmo; do
+    install -Dm 644 "${wget_gnulib_mo}" "${pkgdir}/usr/share/locale/${wget_gnulib_mo%.gmo}/LC_MESSAGES/${pkgname}-gnulib.mo"
+  done
+}

@@ -1,0 +1,83 @@
+pkgname=file
+pkgver=5.48
+pkgrel=1
+pkgdesc='File type identification utility'
+arch=('armv6h')
+license=('BSD-2-Clause-Darwin')
+url='https://www.darwinsys.com/file/'
+depends=('glibc'
+         'bzip2' 'libbz2.so'
+         'libseccomp' 'libseccomp.so'
+         'xz' 'liblzma.so'
+         'zlib' 'libz.so'
+         'zstd' 'libzstd.so')
+makedepends=('git')
+provides=('libmagic.so')
+options=('!emptydirs')
+source=("git+https://github.com/file/file.git#tag=FILE${pkgver//./_}")
+sha256sums=('b87dd9948e5a31c8bc16e7c6dff05ab894ccbbf3d02727cb3e50d9073d2bff5f')
+
+prepare() {
+  cd file
+  autoreconf -fiv
+}
+
+build() {
+  cd file
+
+  # Setup Toolchain PATH & Sysroot environments
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+
+  # Step 1: Build a native x86_64 compiler tool needed to compile magic files during target build.
+  # Explicitly force host system GCC and strip any leaking cross-compilation variables.
+  mkdir -p build-native
+  pushd build-native
+  ../configure \
+    CC="gcc" \
+    CXX="g++" \
+    AR="ar" \
+    RANLIB="ranlib" \
+    STRIP="strip" \
+    CFLAGS="-O2" \
+    CXXFLAGS="-O2" \
+    LDFLAGS="" \
+    --disable-silent-rules
+  make
+  popd
+
+  # Step 2: Cross-compile for armv6h target.
+  # We pass CFLAGS/CXXFLAGS directly into ./configure to prevent makepkg host flag injection.
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(./config.guess) \
+    --prefix=/usr \
+    --datadir=/usr/share/file \
+    --disable-fsect-man5 \
+    --enable-libseccomp \
+    --enable-file-build="$PWD/build-native/src/file" \
+    CC="armv6-rpi-linux-gnueabihf-gcc --sysroot=/home/x/x-sysroot" \
+    CXX="armv6-rpi-linux-gnueabihf-g++ --sysroot=/home/x/x-sysroot" \
+    AR="armv6-rpi-linux-gnueabihf-ar" \
+    RANLIB="armv6-rpi-linux-gnueabihf-ranlib" \
+    STRIP="armv6-rpi-linux-gnueabihf-strip" \
+    CFLAGS="-march=armv6 -mfloat-abi=hard -mfpu=vfp -O2 -pipe -fstack-protector-strong -pthread" \
+    CXXFLAGS="-march=armv6 -mfloat-abi=hard -mfpu=vfp -O2 -pipe -fstack-protector-strong -pthread" \
+    LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd file
+
+  make DESTDIR="$pkgdir" install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+
+  # Omit manual pages per request
+  rm -rf "$pkgdir/usr/share/man"
+}
+
+# vim:set ts=2 sw=2 et:

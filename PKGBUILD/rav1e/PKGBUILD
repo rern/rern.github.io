@@ -1,0 +1,88 @@
+# Maintainer: Adapted for cross-compilation
+
+pkgname=rav1e
+pkgver=0.8.1
+pkgrel=2
+pkgdesc='An AV1 encoder focused on speed and safety'
+arch=(armv6h)
+url=https://github.com/xiph/rav1e/
+license=(BSD-2-Clause)
+depends=(gcc-libs glibc)
+makedepends=(cargo-c git nasm rust rustup)
+provides=(librav1e.so)
+_tag=1fe82de02510767539e89b2ee6fa846920ae2686
+source=(
+  git+https://github.com/xiph/rav1e.git#tag=${_tag}
+  Cargo-rav1e-${pkgver}.lock::https://github.com/xiph/rav1e/releases/download/v${pkgver}/Cargo.lock
+)
+b2sums=('6d595597ae817653e8da4515c3649e8ad7618ed09f938525a91106ae059a91dba6ba2b7eb556c5abe1fcf99e8a99ba9f1933018669d0f2f85b2340f9a8ecf0af'
+        '4c0e7e271f8cd96bf5d47162a0072a7ba4ddb6f40ec03fc6deddd7b3166fffcdc60ddf85829d49359a9d49fe9a3fba1ed4ef2ea8c4303475076eba9ea6ae1cc4')
+
+pkgver() {
+  cd rav1e
+  git describe --tags | sed 's/^v//'
+}
+
+prepare() {
+  cp -f Cargo-rav1e-${pkgver}.lock rav1e/Cargo.lock
+  cargo fetch --locked --manifest-path rav1e/Cargo.toml
+}
+
+build() {
+  export CC="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  export CFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard -O2"
+  export CXXFLAGS="$CFLAGS"
+  export LDFLAGS=""
+
+  rustup target add arm-unknown-linux-gnueabihf
+  export CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER="$CC"
+  export RUSTFLAGS="-C target-cpu=arm1176jzf-s -C target-feature=+vfp2"
+
+  cargo build \
+    --release \
+    --frozen \
+    --no-default-features \
+    --features binaries,asm,threading,signal_support \
+    --manifest-path rav1e/Cargo.toml \
+    --target arm-unknown-linux-gnueabihf
+
+  cargo cbuild \
+    --release \
+    --frozen \
+    --no-default-features \
+    --features binaries,asm,threading,signal_support \
+    --prefix=/usr \
+    --manifest-path rav1e/Cargo.toml \
+    --target arm-unknown-linux-gnueabihf
+}
+
+check() {
+  echo "Skipping tests in cross-compile environment"
+}
+
+package() {
+  cd rav1e
+  cargo install \
+    --frozen \
+    --no-default-features \
+    --features binaries,asm,threading,signal_support \
+    --offline \
+    --no-track \
+    --path . \
+    --root "${pkgdir}"/usr \
+    --target arm-unknown-linux-gnueabihf
+
+  cargo cinstall \
+    --release \
+    --frozen \
+    --no-default-features \
+    --features binaries,asm,threading,signal_support \
+    --prefix /usr \
+    --destdir "${pkgdir}" \
+    --target arm-unknown-linux-gnueabihf
+
+  install -Dm644 LICENSE PATENTS -t "${pkgdir}"/usr/share/licenses/rav1e/
+}

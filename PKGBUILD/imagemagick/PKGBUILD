@@ -1,0 +1,225 @@
+# Maintainer: Antonio Rojas <arojas@archlinux.org>
+# Contributor: Eric Bélanger <eric@archlinux.org>
+# Modified for Cross-Compilation targeting Pi Zero (ARMv6h) - Docs and Man Pages Omitted
+
+pkgname=imagemagick
+pkgver=7.1.2.26
+_pkgver=${pkgver%.*}-${pkgver##*.}
+pkgrel=1
+pkgdesc='An image viewing/manipulation program (Cross-compiled for ARMv6h, No Docs)'
+url='https://www.imagemagick.org/'
+arch=(armv6h)
+license=(ImageMagick)
+depends=(bzip2
+         cairo
+         fftw
+         fontconfig
+         freetype2
+         glib2
+         glibc
+         lcms2
+         liblqr
+         libltdl
+         libpng
+         libraqm
+         libxext
+         libxml2
+         libgcc
+         libstdc++
+         libgomp
+         xz
+         zlib)
+optdepends=('ghostscript: PS/PDF support'
+            'jbigkit: JBIG support'
+            'libheif: HEIF support'
+            'libjpeg-turbo: JPEG support'
+            'libjxl: JPEG XL support'
+            'libraw: DNG support'
+            'librsvg: SVG support'
+            'libtiff: TIFF support'
+            'libultrahdr: UHDR support'
+            'libwebp: WEBP support'
+            'libwmf: WMF support'
+            'libzip: OpenRaster support'
+            'ocl-icd: OpenCL support'
+            'openexr: OpenEXR support'
+            'openjpeg2: JPEG2000 support'
+            'djvulibre: DJVU support'
+            'pango: Text rendering')
+options+=(!emptydirs libtool)
+backup=(etc/ImageMagick-7/{colors,delegates,log,mime,policy,quantization-table,thresholds,type,type-{dejavu,ghostscript}}.xml)
+provides=(libmagick)
+makedepends=(chrpath
+             djvulibre
+             ghostscript
+             git
+             glu
+             jbigkit
+             libheif
+             libjpeg-turbo
+             libjxl
+             libraw
+             librsvg
+             libultrahdr
+             libwebp
+             libwmf
+             libzip
+             ocl-icd
+             opencl-headers
+             openexr
+             openjpeg2)
+replaces=(imagemagick-doc)
+source=(git+https://github.com/ImageMagick/ImageMagick#tag=$_pkgver)
+sha256sums=('3281eb4bdbf31d0a0263d7d28548e09c6fd4d2b93916b4e7a557884db2880ba5')
+validpgpkeys=(C305FEBD4C4081119CB3C12CE640E67B2C7F96AA)  # Dirk Lemstra <dirk@lemstra.org>
+
+build() {
+  cd ImageMagick
+
+  # -------------------------------------------------------------------------
+  # Host Cross-Compilation Toolchain and Sysroot Configuration
+  # -------------------------------------------------------------------------
+  export SYSROOT="/home/x/x-sysroot"
+  export TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-"
+
+  export CC="${TOOLCHAIN}gcc"
+  export CXX="${TOOLCHAIN}g++"
+  export AR="${TOOLCHAIN}ar"
+  export RANLIB="${TOOLCHAIN}ranlib"
+  export LD="${TOOLCHAIN}ld"
+
+  export CFLAGS="--sysroot=$SYSROOT -O2 -pipe"
+  export CXXFLAGS="--sysroot=$SYSROOT -O2 -pipe"
+  export LDFLAGS="--sysroot=$SYSROOT -L$SYSROOT/usr/lib -Wl,-rpath-link,$SYSROOT/usr/lib -Wl,-O1,--as-needed"
+
+  export PKG_CONFIG_PATH="$SYSROOT/usr/lib/pkgconfig:$SYSROOT/usr/share/pkgconfig"
+  export PKG_CONFIG_SYSROOT_DIR="$SYSROOT"
+  export PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
+
+  export PERL5LIB="$SYSROOT/usr/share/perl5/core_perl"
+  # -------------------------------------------------------------------------
+
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --enable-shared \
+    --disable-static \
+    --disable-docs \
+    --without-manpages \
+    --with-dejavu-font-dir=/usr/share/fonts/TTF \
+    --with-gs-font-dir=/usr/share/fonts/gsfonts \
+    PSDelegate=/usr/bin/gs \
+    XPSDelegate=/usr/bin/gxps \
+    PCLDelegate=/usr/bin/gpcl6 \
+    --enable-hdri \
+    --disable-opencl \
+    --without-gslib \
+    --with-djvu \
+    --with-fftw \
+    --with-jxl \
+    --with-lqr \
+    --with-modules \
+    --with-openexr \
+    --with-openjp2 \
+    --with-perl \
+    --with-perl-options='INSTALLDIRS=vendor INSTALL_BASE=' \
+    --with-rsvg \
+    --with-uhdr \
+    --with-webp \
+    --with-wmf \
+    --with-xml \
+    --without-autotrace \
+    --without-dps \
+    --without-fpx \
+    --without-gcc-arch \
+    --without-gvc \
+    --without-x
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+package() {
+  cd ImageMagick
+
+  export SYSROOT="/home/x/x-sysroot"
+  export TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-"
+
+  export CC="${TOOLCHAIN}gcc"
+  export CXX="${TOOLCHAIN}g++"
+  export AR="${TOOLCHAIN}ar"
+  export RANLIB="${TOOLCHAIN}ranlib"
+  export LD="${TOOLCHAIN}ld"
+
+  export CFLAGS="--sysroot=$SYSROOT -O2 -pipe"
+  export CXXFLAGS="--sysroot=$SYSROOT -O2 -pipe"
+  export LDFLAGS="--sysroot=$SYSROOT -L$SYSROOT/usr/lib -Wl,-rpath-link,$SYSROOT/usr/lib -Wl,-O1,--as-needed"
+  export PKG_CONFIG_PATH="$SYSROOT/usr/lib/pkgconfig:$SYSROOT/usr/share/pkgconfig"
+  export PKG_CONFIG_SYSROOT_DIR="$SYSROOT"
+  export PERL5LIB="$SYSROOT/usr/share/perl5/core_perl"
+
+  # 1. BRUTE FORCE LIBTOOL PATCH
+  echo "=> Disabling libtool relink execution block entirely..."
+  if [ -f "libtool" ]; then
+    sed -i 's/if test -n "$relink_command"; then/if false; then/g' libtool
+  fi
+
+  # 2. RECURSIVE TRANSITIONAL FILE HACK
+  echo "=> Creating libtool transitional symlinks recursively..."
+  find . -type d -name ".libs" | while read -r libdir; do
+    cd "$libdir"
+    for f in *.so*; do
+      if [ -f "$f" ] && [[ "$f" != *T ]]; then
+        ln -s -f "$f" "${f}T"
+      fi
+    done
+    cd "$srcdir/ImageMagick"
+  done
+
+  # 3. DESTROY THE HARDCODED PERL CALLS IN THE MAIN MAKEFILE
+  echo "=> Purging automated Perl install targets from Makefile..."
+  sed -i 's/cd PerlMagick && $(MAKE) $(AM_MAKEFLAGS) install/true/g' Makefile
+  sed -i 's/cd PerlMagick && $(MAKE) install/true/g' Makefile
+  
+  # This kills the hidden multi-line compilation target tracking block completely
+  sed -i '/install-exec-perl:/,/^[a-zA-Z0-9_-]\+:/ { /install-exec-perl:/! { /^[a-zA-Z0-9_-]\+:/! d } }' Makefile
+  sed -i 's/install-exec-perl:/install-exec-perl:\n\t@true/g' Makefile
+
+  # 4. Install core ImageMagick components sequentially (Perl-free)
+  echo "=> Installing main binaries and assets sequentially..."
+  make -j1 DESTDIR="$pkgdir" install
+
+  # 5. Hand-crafted isolated Perl build with clean environments
+  if [ -d "PerlMagick" ]; then
+    echo "=> Executing manual isolated Perl cross-installation..."
+    cd PerlMagick
+    
+    # Generate the configuration clean
+    /usr/bin/perl Makefile.PL INSTALLDIRS=vendor INSTALL_BASE=
+    
+    # Strip incompatible x86_64 optimizations completely
+    find . -name "Makefile" -exec sed -i -e 's/-march=x86-64//g' \
+                                         -e 's/-mtune=generic//g' \
+                                         -e 's/-fcf-protection//g' \
+                                         -e 's/-mno-omit-leaf-frame-pointer//g' \
+                                         -e 's/-fstack-clash-protection//g' {} +
+    
+    # Explicitly compile using our cross-compiler environment parameters
+    make CC="${TOOLCHAIN}gcc" LD="${TOOLCHAIN}gcc"
+    make DESTDIR="$pkgdir" install PERL_PREFIX="/usr"
+    cd ..
+  fi
+
+  # 6. OMIT ALL DOCUMENTATION AND MAN PAGES
+  echo "=> Purging leftover documentation and man pages..."
+  rm -rf "$pkgdir"/usr/share/doc
+  rm -rf "$pkgdir"/usr/share/man
+
+  # 7. Clean up layout artifacts
+  find "$pkgdir/usr/lib/perl5" -name '*.so' -exec chrpath -d {} + 2>/dev/null || true
+  rm -f "$pkgdir"/usr/lib/*.la
+  rm -rf "$pkgdir"/etc/ImageMagick-*/type-{apple,urw-base35,windows}.xml
+
+  install -Dm644 LICENSE NOTICE -t "$pkgdir"/usr/share/licenses/$pkgname
+}

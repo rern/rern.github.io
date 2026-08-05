@@ -1,0 +1,118 @@
+# Maintainer: Adapted for cross-compilation
+
+pkgbase=libwebp
+pkgname=(
+  libwebp
+  libwebp-utils
+)
+pkgver=1.6.0
+pkgrel=2
+pkgdesc="WebP image codec library"
+url="https://developers.google.com/speed/webp/"
+arch=(armv6h)
+license=(BSD-3-Clause)
+depends=(glibc)
+makedepends=(cmake giflib libjpeg-turbo libpng libtiff ninja)
+source=(
+  https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${pkgver/[a-z]/-&}.tar.gz{,.asc}
+  0001-cmake-Install-anim-utils.patch
+)
+sha256sums=('e4ab7009bf0629fd11982d4c2aa83964cf244cffba7347ecd39019a9e38c4564'
+            'SKIP'
+            '72128445371887c81046ad19cdbd1688e6b180e6428aec579cac0df756c2af35')
+b2sums=('cbdfa8616edce14bf3f8621d9d0d925884d0f40e8775c7d8810575c8bec88f10ed912029cc0a4bccf9bb9eb98824e4b1a89ec61ee53d7ef20a150450d8513168'
+        'SKIP'
+        'f059b5c5729e5ead14f2d715e4192e02cab05cfb70d8781d9ffdba961eaeaf4515e2029845e8a5949a69d3a11a0a154128cc9fc58c34032b1d0d500c86ffa266')
+validpgpkeys=(6B0E6B70976DE303EDF2F601F9C3D6BDB8232B5D) # WebP release signing key
+
+prepare() {
+  cd libwebp-$pkgver
+  patch -Np1 -i ../0001-cmake-Install-anim-utils.patch
+}
+
+build() {
+  # Cross toolchain
+  export CC="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-g++"
+  export AR="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ranlib"
+
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  export CFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard -O2 -DNDEBUG"
+  export CXXFLAGS="$CFLAGS"
+  export LDFLAGS=""
+
+  # Toolchain file
+  cat > "${srcdir}/armv6h.cmake" <<EOF
+  set(CMAKE_SYSTEM_NAME Linux)
+  set(CMAKE_SYSTEM_PROCESSOR arm)
+  set(CMAKE_SYSROOT /home/x/x-sysroot)
+  set(CMAKE_C_COMPILER ${CC})
+  set(CMAKE_CXX_COMPILER ${CXX})
+  set(CMAKE_AR ${AR})
+  set(CMAKE_RANLIB ${RANLIB})
+  set(CMAKE_FIND_ROOT_PATH /home/x/x-sysroot)
+  set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+  set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+EOF
+
+  local cmake_options=(
+    -D BUILD_SHARED_LIBS=ON
+    -D CMAKE_BUILD_TYPE=None
+    -D CMAKE_INSTALL_LIBDIR=/usr/lib
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_SKIP_INSTALL_RPATH=ON
+    -D WEBP_BUILD_CWEBP=ON
+    -D WEBP_BUILD_DWEBP=ON
+    -D WEBP_BUILD_EXTRAS=OFF
+    -D WEBP_BUILD_GIF2WEBP=ON
+    -D WEBP_BUILD_IMG2WEBP=ON
+    -D WEBP_BUILD_VWEBP=OFF
+  )
+
+  cmake -S libwebp-$pkgver -B build -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE="${srcdir}/armv6h.cmake" \
+    "${cmake_options[@]}"
+  cmake --build build
+}
+
+check() {
+  # Cross builds usually skip tests, but you can run them under QEMU if desired
+  echo "Skipping tests in cross-compile environment"
+}
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+package_libwebp() {
+  optdepends=('libwebp-utils: WebP conversion and inspection tools')
+  provides=(libsharpyuv.so libwebp{,decoder,demux,mux}.so)
+
+  DESTDIR="$pkgdir" cmake --install build
+
+  _pick utils "$pkgdir"/usr/bin
+  _pick utils "$pkgdir"/usr/share/man/man1
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 \
+    libwebp-$pkgver/COPYING
+}
+
+package_libwebp-utils() {
+  depends=(giflib glibc libjpeg-turbo libpng libtiff libwebp)
+
+  mv utils/* "$pkgdir"
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 \
+    libwebp-$pkgver/COPYING
+}

@@ -1,0 +1,43 @@
+# Maintainer: David Runge <dvzrv@archlinux.org>
+# Maintainer: Robin Candau <antiz@archlinux.org>
+
+pkgname=apparmor
+pkgver=5.0.1
+pkgrel=1
+pkgdesc="Mandatory Access Control (MAC) using Linux Security Module (LSM) - Lib Only"
+arch=(x86_64)
+url="https://gitlab.com/apparmor/apparmor"
+license=(GPL-2.0-only LGPL-2.0-only LGPL-2.1-only)
+depends=(glibc)
+makedepends=(autoconf-archive git meson)
+provides=(libapparmor.so)
+
+# Validation signatures and tracking checksums stripped
+source=("git+$url.git#tag=v$pkgver")
+sha512sums=('SKIP')
+b2sums=('SKIP')
+
+prepare() {
+  cd $pkgname/libraries/libapparmor/
+  autoreconf -fiv
+}
+
+build() {
+  # Minimum light configuration required to safely register the .pc tracking link
+  local configure_options=(
+    --prefix=/usr
+    --sbindir=/usr/bin
+    --without-perl
+    --without-python
+    --without-ruby
+  )
+
+  cd $pkgname/libraries/libapparmor/
+  ./configure "${configure_options[@]}"
+  make
+}
+
+package() {
+  cd $pkgname/libraries/libapparmor/
+  make DESTDIR="$pkgdir" install
+}

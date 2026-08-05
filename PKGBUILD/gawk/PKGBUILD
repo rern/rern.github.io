@@ -1,0 +1,56 @@
+# Maintainer: Adapted for cross-compilation (armv6h Raspberry Pi Zero)
+
+pkgname=gawk
+pkgver=5.4.0
+pkgrel=1
+pkgdesc="GNU version of awk (cross-compiled for armv6h)"
+arch=(armv6h)
+url="https://www.gnu.org/software/gawk/"
+license=('GPL-3.0-or-later')
+depends=('sh' 'glibc' 'mpfr')
+provides=('awk')
+source=(https://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('SKIP') # adjust if needed
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  # No patches applied
+}
+
+build() {
+  cd "${pkgname}-${pkgver}"
+
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  export CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  export AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  export LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  export CFLAGS="--sysroot=${SYSROOT} -O2"
+  export CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  export LDFLAGS="--sysroot=${SYSROOT}"
+
+  export PKG_CONFIG_SYSROOT_DIR="${SYSROOT}"
+  export PKG_CONFIG_PATH="${SYSROOT}/usr/lib/pkgconfig"
+
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(gcc -dumpmachine) \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --sysconfdir=/etc \
+    --without-libsigsegv \
+    --disable-nls
+
+  make
+}
+
+# Omit check() because tests cannot run on host for target binaries
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

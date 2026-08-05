@@ -1,0 +1,53 @@
+# Maintainer: You
+pkgname=gmp
+pkgver=6.3.0
+pkgrel=1
+pkgdesc='A free library for arbitrary precision arithmetic (cross ARMv6h)'
+arch=(armv6h)
+url='https://gmplib.org/'
+depends=(glibc libgcc libstdc++)
+license=('GPL-2.0-or-later' 'LGPL-3.0-or-later')
+source=(https://gmplib.org/download/gmp/gmp-$pkgver.tar.gz
+        gmp-gcc-15.patch)
+sha256sums=('be5c908a7a836c3a9bd9d62aa58563c5e9e7fef94c43a7f42dbc35bb6d02733c'
+            'SKIP'
+            'fd0f1b48dbe72413efbd9c45f1ca7013d555f46c578446ce3ba202e3a9b96c6c')
+validpgpkeys=('343C2FF0FBEE5EC2EDBEF399F3599FF828C67298')   # Niels Möller
+
+_target="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+_toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+
+prepare() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 < ../gmp-gcc-15.patch # Fix build with GCC 15
+  autoreconf -vif
+}
+
+build() {
+  export PATH="$_toolchain:$PATH"
+  export CC=${_target}-gcc
+  export AR=${_target}-ar
+  export RANLIB=${_target}-ranlib
+  export LD=${_target}-ld
+  export CFLAGS=""
+  export CXXFLAGS=""
+  export LDFLAGS="--sysroot=$_sysroot -L$_sysroot/usr/lib"
+  export CPPFLAGS="--sysroot=$_sysroot -I$_sysroot/usr/include"
+
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure \
+    --host=$_target \
+    --build=x86_64-pc-linux-gnu \
+    --prefix=/usr \
+    --with-sysroot=$_sysroot \
+    --disable-cxx \
+    --disable-nls
+  make
+}
+
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

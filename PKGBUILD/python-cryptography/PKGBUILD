@@ -1,0 +1,43 @@
+pkgname=python-cryptography
+pkgver=49.0.0
+pkgrel=1
+pkgdesc="Cryptographic primitives for Raspberry Pi Zero (ARMv6h)"
+arch=('armv6h')
+license=('Apache-2.0 OR BSD-3-Clause')
+source=("cryptography::git+https://github.com/pyca/cryptography.git#tag=$pkgver")
+sha512sums=('SKIP')
+
+build() {
+  cd cryptography
+
+  # Define specific ARMv6 flags
+  export ARM_FLAGS="-march=armv6 -marm -mfpu=vfp -mfloat-abi=hard"
+  # Define the Python include path explicitly
+  export PYTHON_INC="-I/home/x/x-sysroot/usr/include/python3.14"
+
+  env -i PATH="$PATH" \
+    TARGET="arm-unknown-linux-gnueabihf" \
+    CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER="armv6-rpi-linux-gnueabihf-gcc" \
+    CFLAGS="$ARM_FLAGS $PYTHON_INC" \
+    CXXFLAGS="$ARM_FLAGS $PYTHON_INC" \
+    LDFLAGS="--sysroot=/home/x/x-sysroot -L/home/x/x-sysroot/lib -L/home/x/x-sysroot/usr/lib" \
+    RUSTFLAGS="-C link-arg=--sysroot=/home/x/x-sysroot" \
+    PYO3_NO_PYTHON=1 \
+    PYO3_CROSS_INCLUDE_DIR="/home/x/x-sysroot/usr/include/python3.14" \
+    PYO3_CROSS_LIB_DIR="/home/x/x-sysroot/usr/lib" \
+    OPENSSL_DIR="/home/x/x-sysroot/usr" \
+    CC="armv6-rpi-linux-gnueabihf-gcc" \
+    CXX="armv6-rpi-linux-gnueabihf-g++" \
+    AR="armv6-rpi-linux-gnueabihf-ar" \
+    python -m maturin build \
+      --release \
+      --target "arm-unknown-linux-gnueabihf" \
+      --manylinux off \
+      --strip
+}
+
+package() {
+  cd cryptography
+  python -m installer --destdir="$pkgdir" target/wheels/*.whl
+  install -vDm644 LICENSE.BSD "$pkgdir/usr/share/licenses/$pkgname/LICENSE.BSD"
+}

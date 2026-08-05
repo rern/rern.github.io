@@ -1,0 +1,178 @@
+# Maintainer: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Maintainer: Frederik Schwan <freswa at archlinux dot org>
+# Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Allan McRae <allan@archlinux.org>
+
+_pkgbase=binutils
+pkgname=binutils
+pkgver=2.46+r70+g155188ea10a7
+_commit=155188ea10a78d18416b8c0f62e17da66d8385a7
+pkgrel=1
+pkgdesc='A set of programs to assemble and manipulate binary and object files (ARMv6h Cross-Compiled)'
+arch=(armv6h)
+url='https://www.gnu.org/software/binutils/'
+license=(GPL-2.0-or-later GPL-3.0-or-later LGPL-2.0-or-later LGPL-3.0-or-later GFDL-1.3 FSFAP)
+depends=(
+  glibc
+  jansson
+  libelf
+  libgcc
+  libstdc++
+  zlib
+  zstd
+)
+makedepends=(
+  git
+)
+checkdepends=()
+optdepends=(
+  'debuginfod: for debuginfod server/client functionality'
+  'perl: for gprofng-display-html'
+)
+provides=(
+  libctf.so
+  libgprofng.so
+  libsframe.so
+)
+backup=(
+  'etc/gprofng.rc'
+)
+options=(
+  staticlibs
+  !distcc
+  !ccache
+  !strip # Bypasses host strip that corrupts ARM binaries
+)
+source=(
+  "git+https://sourceware.org/git/binutils-gdb.git#commit=${_commit}"
+  gold-warn-unsupported.patch
+  0001-strip-Don-t-treat-fat-IR-objects-as-plugin-object.patch
+)
+sha256sums=('471831d95080719823e948806d11867be0de797f4a2f72e8c766bd52f18b9d95'
+            '2d430b66f84a19c154725ec535280c493be1d34f1a90f95208dce02fecd0e4e4'
+            'cd1816becb0e992ebc09f2ff66050e4b92fad33f0b7acc833cf513f4e4791d1a')
+validpgpkeys=(3A24BC1E8FB409FA9F14371813FCEF89DD9E3C4F)
+
+pkgver() {
+  cd binutils-gdb
+  git describe --abbrev=12 --tags | sed 's/[^-]*-//;s/[^-]*-/&r/;s/-/+/g;s/_/./g'
+}
+
+prepare() {
+  [[ ! -d binutils-gdb ]] && ln -s binutils-${pkgver} binutils-gdb
+  mkdir -p binutils-build
+
+  cd binutils-gdb
+
+  # Turn off development mode
+  sed -i '/^development=/s/true/false/' bfd/development.sh
+
+  # Allow binutils to be built with BPF support enabled
+  patch -Np1 < ../gold-warn-unsupported.patch
+}
+
+build() {
+  cd binutils-build
+
+  local _cross_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  local _target_triple="armv6-rpi-linux-gnueabihf"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  export PATH="${_cross_bin}:${PATH}"
+
+  # Pure environment hygiene
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS
+
+  # Bind flag definitions directly to global compiler targets
+  export CC="${_cross_bin}/${_target_triple}-gcc --sysroot=${_sysroot}"
+  export CXX="${_cross_bin}/${_target_triple}-g++ --sysroot=${_sysroot}"
+  export AR="${_cross_bin}/${_target_triple}-ar"
+  export AS="${_cross_bin}/${_target_triple}-as"
+  export RANLIB="${_cross_bin}/${_target_triple}-ranlib"
+  export LD="${_cross_bin}/${_target_triple}-ld --sysroot=${_sysroot}"
+
+  # Pass target configurations explicitly via sub-automake properties
+  export CFLAGS_FOR_TARGET="-O2 -pipe -march=armv6zk -mcpu=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard --sysroot=${_sysroot} -I${_sysroot}/usr/include"
+  export CXXFLAGS_FOR_TARGET="${CFLAGS_FOR_TARGET}"
+  export LDFLAGS_FOR_TARGET="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot} -L${_sysroot}/usr/lib"
+
+  export CC_FOR_BUILD="cc"
+  export CXX_FOR_BUILD="g++"
+
+  # NOTE: --disable-shared stops libtool from trying to dynamically relink targets
+  # using host system paths during the installation execution environment.
+  "${srcdir}"/binutils-gdb/configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-sysroot="${_sysroot}" \
+    --with-lib-path=/usr/lib \
+    --with-bugurl=https://github.com/archlinuxarm/PKGBUILDs/issues \
+    --enable-colored-disassembly \
+    --enable-default-execstack=no \
+    --enable-deterministic-archives \
+    --enable-gold \
+    --enable-install-libiberty \
+    --disable-jansson \
+    --enable-ld=default \
+    --enable-new-dtags \
+    --enable-plugins \
+    --enable-relro \
+    --disable-shared \
+    --enable-targets=bpf-unknown-none \
+    --enable-threads \
+    --disable-gdb \
+    --disable-gdbserver \
+    --disable-libdecnumber \
+    --disable-readline \
+    --disable-sim \
+    --disable-werror \
+    --without-debuginfod \
+    --with-pic \
+    --with-system-zlib \
+    --host=${_target_triple} \
+    --build=x86_64-pc-linux-gnu
+
+  make tooldir=/usr MAKEINFO=true
+  tail -n 5 "${srcdir}"/binutils-gdb/ld/scripttempl/README > FSFAP
+}
+
+check() {
+  echo "Skipping validation test suite: host target environment mismatches (x86_64 running armv6h)."
+}
+
+package() {
+  cd binutils-build
+  make prefix="${pkgdir}"/usr tooldir="${pkgdir}"/usr install
+
+  # Install version of libiberty (fallback to root if pic/ doesn't exist)
+  if [ -f libiberty/pic/libiberty.a ]; then
+    install -m644 libiberty/pic/libiberty.a "${pkgdir}"/usr/lib
+  else
+    install -m644 libiberty/libiberty.a "${pkgdir}"/usr/lib
+  fi
+
+  # Remove unwanted files
+  rm -f "${pkgdir}"/usr/share/man/man1/{dlltool,windres,windmc}*
+
+  # Fix linking structures for static target dependencies
+  rm -f "${pkgdir}"/usr/lib/lib{bfd,opcodes}.so
+  
+  tee "${pkgdir}"/usr/lib/libbfd.so << EOS
+/* GNU ld script */
+INPUT( /usr/lib/libbfd.a -lsframe -liberty -lz -lzstd -ldl )
+EOS
+
+  tee "${pkgdir}"/usr/lib/libopcodes.so << EOS
+/* GNU ld script */
+INPUT( /usr/lib/libopcodes.a -lbfd )
+EOS
+
+  # Install licenses
+  install -Dm644 -t "${pkgdir}"/usr/share/licenses/${pkgname}/ FSFAP
+
+  # Explicitly target-strip binaries before finishing the package
+  local _cross_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  local _target_triple="armv6-rpi-linux-gnueabihf"
+  find "${pkgdir}/usr/bin" "${pkgdir}/usr/lib" -type f \( -name "*.so*" -o -executable \) \
+    -exec "${_cross_bin}/${_target_triple}-strip" --strip-unneeded {} + 2>/dev/null || true
+}

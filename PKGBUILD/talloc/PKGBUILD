@@ -1,0 +1,24 @@
+# Maintainer: ...
+pkgname=talloc
+pkgver=2.4.4
+pkgrel=1
+pkgdesc="Hierarchical pool based memory allocator with destructors"
+arch=('aarch64' 'armv7h') # Arch Linux ARM specific
+url="https://talloc.samba.org/"
+license=('GPL-3.0-or-later')
+depends=('glibc')
+makedepends=('python' 'docbook-xsl' 'libxslt')
+source=("https://www.samba.org/ftp/talloc/talloc-$pkgver.tar.gz")
+sha256sums=('...')
+
+build() {
+  cd "$pkgname-$pkgver"
+  # Waf configuration
+  ./configure --prefix=/usr --bundled-libraries=NONE
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,58 @@
+# Maintainer: Frederik Schwan <freswa at archlinux dot org>
+pkgname=spotifyd
+pkgver=0.4.2
+pkgrel=1
+pkgdesc='Lightweight spotify streaming daemon with spotify connect support'
+arch=('armv7h')
+url='https://github.com/Spotifyd/spotifyd'
+license=('GPL3')
+depends=('alsa-lib' 'dbus' 'libogg' 'libpulse')
+makedepends=('clang' 'cmake' 'rust')
+options=('!lto')
+source=("https://github.com/Spotifyd/spotifyd/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+b2sums=('bf61c133252cddc79ef492836a99da8ab099527f0dc508f8ea29d6057f4dd4ac5603bd4e38e69f748bb3ac7bb14e03341377cfd4889f0d8c3667e85562518303')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+
+    local _sysroot="/home/x/x-sysroot"
+    local _toolchain_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+    
+    # 1. Add toolchain to PATH
+    export PATH="${_toolchain_bin}:${PATH}"
+    
+    # 2. Tell Cargo and Pkg-Config where everything lives
+    export CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER="armv6-rpi-linux-gnueabihf-gcc"
+    export PKG_CONFIG_ALLOW_CROSS=1
+    export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+    export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+
+    # 3. Standard C environment variables for downstream C compilation
+    export CC="armv6-rpi-linux-gnueabihf-gcc"
+    export CFLAGS="-O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot} -w"
+    export CXXFLAGS="${CFLAGS}"
+
+    # 4. Guide bindgen to target the correct ARM headers
+    export BINDGEN_EXTRA_CLANG_ARGS="--target=arm-linux-gnueabihf --sysroot=${_sysroot}"
+
+    # 5. Linker path corrections for flat sysroot layout
+    local _rpath_dirs="${_sysroot}/usr/lib:${_sysroot}/usr/lib/pulseaudio:${_sysroot}/lib"
+    
+    # 6. Comprehensive Linker Flags:
+    #    -rpath-link: Points to nested shared library directories
+    #    --allow-shlib-undefined: Bypasses downstream shared-to-shared checks
+    #    -latomic: Emulates 64-bit atomic operations on 32-bit ARMv6
+    #    -lz -lzstd: Feeds static libcrypto its compression backends
+    #    -lbrotlienc -lbrotlidec -lbrotlicommon: Resolves the static Brotli symbols
+    export LDFLAGS="-Wl,-rpath-link,${_rpath_dirs} -Wl,--allow-shlib-undefined -latomic -lz -lzstd -lbrotlienc -lbrotlidec -lbrotlicommon"
+    export RUSTFLAGS="-C link-arg=-Wl,-rpath-link,${_rpath_dirs} -C link-arg=-Wl,--allow-shlib-undefined -C link-arg=-latomic -C link-arg=-lz -C link-arg=-lzstd -C link-arg=-lbrotlienc -C link-arg=-lbrotlidec -C link-arg=-lbrotlicommon"
+
+    # 7. Build the binary
+    cargo build --release --target=arm-unknown-linux-gnueabihf
+}
+
+package() {
+  cd "${srcdir}/spotifyd-${pkgver}"
+  install -Dm755 "target/arm-unknown-linux-gnueabihf/release/spotifyd" "${pkgdir}/usr/bin/spotifyd"
+  install -Dm644 contrib/spotifyd.service "${pkgdir}/usr/lib/systemd/user/spotifyd.service"
+}

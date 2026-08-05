@@ -1,0 +1,107 @@
+# Maintainer: Sébastien "Seblu" Luttringer
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Allan McRae <allan@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+# Modified for Cross-Compilation targeting armv6h (Raspberry Pi Zero)
+# Omitted man pages, documentation, host check routines, and non-essential locale blocks
+
+pkgname=coreutils
+pkgver=9.11
+pkgrel=1
+pkgdesc='The basic file, shell and text manipulation utilities of the GNU operating system (Cross-Compiled)'
+arch=('armv6h')
+license=(
+  GPL-3.0-or-later
+  GFDL-1.3-or-later
+)
+url='https://www.gnu.org/software/coreutils/'
+depends=( 
+  acl  
+  attr
+  glibc
+  gmp
+  libcap
+  openssl
+)
+makedepends=(
+  git
+  gperf
+  python
+  wget
+)
+source=(
+  git+https://git.savannah.gnu.org/git/coreutils.git#tag=v${pkgver}
+  git+https://git.savannah.gnu.org/git/gnulib.git
+  https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz
+)
+options=(!lto 'strip')
+sha256sums=('SKIP'
+            'SKIP'
+            '6c3e1763df577c9bebb91fcf7ee3ce56dcb2aa3cb911bebbf2ec3493cad1a0cbeffb2ab7caeb0351fba92e8b631ae4dfee7a32d9542d8e25c4dcdd2fec8cbcf3')
+
+prepare() {
+  cd "${pkgname}"
+  export SKIP_PO="1"
+  export GNULIB_TOOL_IMPL="sh"
+
+  git submodule init
+  git config submodule.gnulib.url ../gnulib
+  git -c protocol.file.allow=always submodule update
+
+  ./bootstrap
+
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    echo "Applying patch $src..."
+    patch -Np1 < "../$src"
+  done
+}
+
+build() {
+  export PATH="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH"
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_PATH="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  # CRITICAL FIX: Add explicit warning overrides to prevent compiler static analysis halts
+  export CFLAGS="--sysroot=/home/x/x-sysroot -Wno-error=format-overflow -Wno-error=maybe-uninitialized"
+  export CXXFLAGS="--sysroot=/home/x/x-sysroot -Wno-error=format-overflow -Wno-error=maybe-uninitialized"
+  export LDFLAGS="--sysroot=/home/x/x-sysroot"
+
+  # Autotools binary mapping configuration variables
+  export CC="armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="armv6-rpi-linux-gnueabihf-g++"
+  export AR="armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="armv6-rpi-linux-gnueabihf-ranlib"
+  export STRIP="armv6-rpi-linux-gnueabihf-strip"
+
+  cd "${pkgname}"
+  
+  # Pre-seeding answers to cross-compilation runtime tests to bypass config blocks
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --with-openssl \
+    gl_cv_func_mknod_works=yes \
+    gl_cv_func_mkdir_trailing_slash_works=yes \
+    ac_cv_func_chown_works=yes
+    
+  make
+}
+
+package() {
+  cd "${pkgname}"
+  make DESTDIR="${pkgdir}" install
+
+  # Scrub out target documentation structures completely
+  rm -rf "${pkgdir}/usr/share/man"
+  rm -rf "${pkgdir}/usr/share/info"
+  rm -rf "${pkgdir}/usr/share/doc"
+  
+  # Optional: Omit large system internationalization files to maintain a minimal Pi Zero footprint
+  rm -rf "${pkgdir}/usr/share/locale"
+}

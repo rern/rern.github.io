@@ -1,0 +1,49 @@
+pkgname=libplist
+pkgver=2.7.0
+pkgrel=1
+pkgdesc="Library to handle Apple Property List files (ARM cross-compiled)"
+arch=('armv6h')
+url="https://libimobiledevice.org/"
+license=('LGPL-2.1-or-later')
+source=("git+https://github.com/libimobiledevice/libplist.git#tag=$pkgver")
+sha256sums=('SKIP')
+
+# --- CONFIGURATION ---
+_sysroot="/home/x/x-sysroot"
+_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+
+build() {
+  cd "$pkgname"
+
+  # 1. Point pkg-config specifically to the sysroot
+  # This makes it ignore the host system entirely
+  export PKG_CONFIG_SYSROOT_DIR="$_sysroot"
+  export PKG_CONFIG_LIBDIR="$_sysroot/usr/lib/pkgconfig"
+  export PKG_CONFIG_PATH=""
+
+  # 2. Hardcode the dependencies so configure doesn't have to search
+  # These flags take precedence over pkg-config
+  export UUID_CFLAGS="-I$_sysroot/usr/include"
+  export UUID_LIBS="-L$_sysroot/usr/lib -luuid"
+
+  # 3. Force the configuration
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --with-libuuid \
+    --with-avahi \
+    --with-ssl=openssl \
+    --with-dns_sd
+
+  make
+}
+
+package() {
+  cd "$pkgname"
+  
+  # Force installation to the sysroot-compatible location
+  make DESTDIR="$pkgdir" libdir="/usr/lib" install
+
+  # Cleanup
+  find "$pkgdir" -name "*.la" -delete
+}

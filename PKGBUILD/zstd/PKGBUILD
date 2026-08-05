@@ -1,0 +1,41 @@
+# Maintainer: You
+pkgname=zstd
+pkgver=1.5.6
+pkgrel=1
+pkgdesc="Zstandard fast compression algorithm (ARMv6h cross build)"
+arch=(armv6h)
+url="https://github.com/facebook/zstd"
+license=(BSD)
+source=("https://github.com/facebook/zstd/releases/download/v${pkgver}/zstd-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/zstd-$pkgver"
+
+  export CC=armv6-rpi-linux-gnueabihf-gcc
+  export AR=armv6-rpi-linux-gnueabihf-ar
+  export RANLIB=armv6-rpi-linux-gnueabihf-ranlib
+  export LD=armv6-rpi-linux-gnueabihf-ld
+
+  export CFLAGS="-O2 -pipe -march=armv6 -mfpu=vfp -mfloat-abi=hard"
+  export CXXFLAGS="$CFLAGS"
+  export LDFLAGS=""
+
+  make lib
+}
+
+package() {
+  cd "$srcdir/zstd-$pkgver"
+
+  # Install into $pkgdir (pacman staging area)
+  install -Dm644 lib/libzstd.a "$pkgdir/usr/lib/libzstd.a"
+  install -Dm755 lib/libzstd.so "$pkgdir/usr/lib/libzstd.so"
+  ln -sf libzstd.so "$pkgdir/usr/lib/libzstd.so.1"
+
+  install -Dm644 lib/zstd.h "$pkgdir/usr/include/zstd.h"
+  install -Dm644 lib/zdict.h "$pkgdir/usr/include/zdict.h"
+  install -Dm644 lib/zstd_errors.h "$pkgdir/usr/include/zstd_errors.h"
+
+  install -Dm644 lib/libzstd.pc "$pkgdir/usr/lib/pkgconfig/libzstd.pc"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

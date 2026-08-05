@@ -1,0 +1,68 @@
+# Maintainer: Evangelos Foutras <foutrelis@archlinux.org>
+# Contributor: Daurnimator <quae@daurnimator.com>
+
+pkgname=libidn2
+pkgver=2.3.8
+pkgrel=1
+pkgdesc="Free software implementation of IDNA2008, Punycode and TR46 (Cross-compiled for armv6h)"
+arch=('armv6h')
+url="https://www.gnu.org/software/libidn/#libidn2"
+license=('GPL2' 'LGPL3')
+depends=('libunistring')
+makedepends=() # Stripped ruby-ronn-ng to avoid host documentation processing dependencies
+provides=('libidn2.so')
+source=(https://ftp.gnu.org/gnu/libidn/$pkgname-$pkgver.tar.gz{,.sig})
+sha256sums=('f557911bf6171621e1f72ff35f5b1825bb35b52ed45325dcdee931e5d3c0787a'
+            'SKIP')
+validpgpkeys=('B1D2BD1375BECB784CF4F8C4D73CF638C53C06BE') # Simon Josefsson <simon@josefsson.org>
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+}
+
+build() {
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS CHOST
+
+  local TARGET_CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  local TARGET_CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  local TARGET_AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  local TARGET_RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  local TARGET_LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  local TARGET_CFLAGS="--sysroot=${SYSROOT} -O2 -D_GNU_SOURCE"
+  local TARGET_CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  local TARGET_CPPFLAGS="--sysroot=${SYSROOT}"
+  local TARGET_LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  cd "${pkgname}-${pkgver}"
+
+  # --disable-doc avoids triggering missing ronn/manpage compilers on host
+  ./configure --host=armv6-rpi-linux-gnueabihf \
+              --build=$(gcc -dumpmachine) \
+              --prefix=/usr \
+              --disable-static \
+              --disable-doc \
+              --with-libunistring-prefix="${SYSROOT}/usr" \
+              CC="${TARGET_CC}" \
+              CXX="${TARGET_CXX}" \
+              AR="${TARGET_AR}" \
+              RANLIB="${TARGET_RANLIB}" \
+              LD="${TARGET_LD}" \
+              CFLAGS="${TARGET_CFLAGS}" \
+              CXXFLAGS="${TARGET_CXXFLAGS}" \
+              CPPFLAGS="${TARGET_CPPFLAGS}" \
+              LDFLAGS="${TARGET_LDFLAGS}"
+  make
+}
+
+package() {
+  depends+=('libunistring.so')
+
+  cd "${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+
+# vim:set ts=2 sw=2 et:

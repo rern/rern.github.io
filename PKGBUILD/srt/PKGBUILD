@@ -1,0 +1,50 @@
+pkgname=srt
+pkgver=1.5.5
+pkgrel=1
+pkgdesc="Secure Reliable Transport library"
+url="https://www.srtalliance.org/"
+arch=('armv6h')
+license=(MPL-2.0)
+depends=(glibc libgcc libstdc++ openssl)
+makedepends=(cmake git ninja)
+
+source=("git+https://github.com/Haivision/srt#tag=v$pkgver")
+b2sums=('5f40bc6bbe461e71062efc59d30aef394ba1eb10dc78b276d14f23e982f89ecf73f364bd345ecde86a9f586ed779b2b6bf651b79d5ddaa396e37cadaf9b78164')
+
+# Assuming your paths are globally available or set in your build environment
+_sysroot="/home/x/x-sysroot"
+_toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf"
+
+build() {
+  # 1. Clear environment variables so makepkg defaults don't leak into CMake
+  unset CFLAGS
+  unset CXXFLAGS
+  unset LDFLAGS
+
+  export CC="${_toolchain}-gcc"
+  export CXX="${_toolchain}-g++"
+  
+  local cmake_options=(
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_SYSTEM_NAME=Linux
+    -DCMAKE_SYSTEM_PROCESSOR=armv6
+    -DCMAKE_SYSROOT="${_sysroot}"
+    -DCMAKE_FIND_ROOT_PATH="${_sysroot}"
+    -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER
+    -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY
+    -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY
+    # 2. Force the correct ARM flags here so they are used instead of host flags
+    -DCMAKE_C_FLAGS="-O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp"
+    -DCMAKE_CXX_FLAGS="-O2 -march=armv6 -mfloat-abi=hard -mfpu=vfp"
+    -DENABLE_STATIC=OFF
+    -DENABLE_TESTING=OFF
+  )
+
+  cmake -S srt -B build -G Ninja "${cmake_options[@]}"
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

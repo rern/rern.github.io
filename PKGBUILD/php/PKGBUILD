@@ -1,0 +1,128 @@
+# Maintainer: Adapted for cross-compilation
+
+pkgbase=php
+pkgname=('php' 'php-cgi' 'php-fpm')
+pkgver=8.5.7
+pkgrel=1
+arch=('armv6h')
+license=('PHP-3.01')
+url='https://www.php.net/'
+makedepends=('curl' 'libxml2' 'libzip' 'pcre2' 'argon2' 'oniguruma' 'zlib')
+source=("https://php.net/distributions/${pkgbase}-${pkgver}.tar.xz"{,.asc}
+        'php-fpm.patch' 'php-fpm.tmpfiles' 'php.ini.patch')
+sha256sums=('01ba2ed1c2658dacf91bebc8be6a4885f69b811c7993831fc48e26107ab29985'
+            'SKIP'
+            '78b8074461cdfc5d4e0ba428a8387f308d60720c8ad35c6176801e5088f02090'
+            '640dba0d960bfeaae9ad38d2826d3f6b5d6c175a4d3e16664eefff29141faad5'
+            '3cb032e719fe40963258616dcfe4937a6043042a31faef417c05dcb6e7295094')
+validpgpkeys=('1198C0117593497A5EC5C199286AF1F9897469DC'
+              '49D9AF6BC72A80D6691719C8AA23F5BE9C7097D4'
+              'D95C03BC702BE9515344AE3374E44BC9067701A5')
+
+_interpreter=${pkgver%.*}
+options=('!lto')
+
+prepare() {
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    patch -p0 -i "${srcdir}/php-fpm.patch"
+    patch -p0 -i "${srcdir}/php.ini.patch"
+    autoconf
+}
+
+build() {
+    CPPFLAGS+=' -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'
+
+    # Cross-compiler Toolchain Paths
+    export CC="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc"
+    export CXX="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-g++"
+    export AR="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar"
+    export RANLIB="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ranlib"
+    export LD="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ld"
+    
+    # Target Sysroot Configuration
+    export SYSROOT="/home/x/x-sysroot"
+    export PKG_CONFIG="/usr/bin/pkg-config"
+    export PKG_CONFIG_SYSROOT_DIR="${SYSROOT}"
+    export PKG_CONFIG_PATH="${SYSROOT}/usr/lib/pkgconfig"
+
+    # Compiler / Linker Isolation Flags
+    export CFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard -O2 --sysroot=${SYSROOT}"
+    export CXXFLAGS="${CFLAGS}"
+    export LDFLAGS="-Wl,-rpath-link,${SYSROOT}/usr/lib -L${SYSROOT}/usr/lib -L${SYSROOT}/lib --sysroot=${SYSROOT}"
+
+    # Pre-seed configure cache to avoid running ARM binaries during feature checks
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    export ac_cv_func_strerror_r=yes
+    export ac_cv_func_memcmp_working=yes
+
+    # Changed modules from '=shared' to built-in flags
+    local _phpconfig="--host=armv6-rpi-linux-gnueabihf \
+        --build=x86_64-pc-linux-gnu \
+        --prefix=/usr \
+        --sysconfdir=/etc/php \
+        --localstatedir=/var \
+        --with-layout=GNU \
+        --with-config-file-path=/etc/php \
+        --with-config-file-scan-dir=/etc/php/conf.d \
+        --disable-rpath \
+        --disable-all \
+        --enable-cli \
+        --enable-cgi \
+        --enable-fpm \
+        --with-zlib \
+        --with-curl \
+        --with-openssl \
+        --enable-mbstring \
+        --enable-sockets \
+        --enable-shmop \
+        --enable-sysvshm \
+        --enable-pcntl \
+        --with-libdir=usr/lib \
+        --with-sysroot=${SYSROOT} \
+        "
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    
+    CONFIG_SITE=/home/x/x-tools/config.site ./configure ${_phpconfig}
+    make
+}
+
+package_php() {
+    pkgdesc='PHP for ARMv6 (Raspberry Pi Zero)'
+    depends=('libxml2' 'curl' 'libzip' 'pcre2' 'argon2' 'oniguruma')
+    provides=("php-interpreter=${_interpreter}")
+    backup=('etc/php/php.ini')
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    
+    # Removed 'install-modules' since everything is compiled statically into the core binary
+    make -j1 INSTALL_ROOT="${pkgdir}" install-cli install-headers install-programs
+    
+    install -D -m644 "${srcdir}/${pkgbase}-${pkgver}/php.ini-production" "${pkgdir}/etc/php/php.ini"
+    install -d -m755 "${pkgdir}/etc/php/conf.d/"
+    
+    # Removed the 'rm -f' cleanup line since there are no shared module .a files anymore
+}
+
+package_php-cgi() {
+    pkgdesc='CGI and FCGI SAPI for PHP (ARMv6)'
+    depends=('php')
+    provides=("php-cgi-interpreter=${_interpreter}")
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    make -j1 INSTALL_ROOT="${pkgdir}" install-cgi
+}
+
+package_php-fpm() {
+    pkgdesc='FastCGI Process Manager for PHP (ARMv6)'
+    depends=('php' 'systemd')
+    backup=('etc/php/php-fpm.conf' 'etc/php/php-fpm.d/www.conf')
+    provides=("php-fpm-interpreter=${_interpreter}")
+    options=('!emptydirs')
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    make -j1 INSTALL_ROOT="${pkgdir}" install-fpm
+    install -D -m644 sapi/fpm/php-fpm.service "${pkgdir}/usr/lib/systemd/system/php-fpm.service"
+    install -D -m644 "${srcdir}/php-fpm.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf"
+}

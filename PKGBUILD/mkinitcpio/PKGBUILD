@@ -1,0 +1,68 @@
+# Maintainer: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Maintainer: Morten Linderud <foxboron@archlinux.org>
+# Contributor: Dave Reisner <dreisner@archlinux.org>
+# Contributor: Thomas Bächler <thomas@archlinux.org>
+
+# ALARM: Kevin Mihelich <kevin@archlinuxarm.org>
+#  - patch to revert back to gzip for default compression
+#  - patch for gzip kernel image support (https://github.com/archlinux/mkinitcpio/pull/86)
+# Modified to omit man pages, documentation, and unnecessary features for armv6h-cross target
+
+pkgname=mkinitcpio
+pkgver=41
+pkgrel=4
+pkgdesc="Modular initramfs image creation utility (No Docs/Man)"
+arch=('any')
+url='https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio'
+license=('GPL-2.0-only')
+depends=('awk' 'mkinitcpio-busybox' 'kmod' 'util-linux' 'libarchive' 'coreutils'
+         'bash' 'binutils' 'diffutils' 'findutils' 'grep' 'gzip' 'filesystem' 'zstd' 'systemd')
+makedepends=('meson')
+provides=('initramfs')
+backup=('etc/mkinitcpio.conf')
+source=("https://sources.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.xz"
+        "patch-udev.patch"
+        "install-encrypt-add-dlopen-ed-libcryptsetup.patch"
+        '0001-use-gzip-for-compression-by-default.patch'
+        '0002-functions-handle-gzip-compressed-kernels-in-kver_gen.patch'
+        '0003-check-for-ALARM-kernels-in-run_post_hooks.patch')
+sha512sums=('bb0955214d037e645c2cae34423a31a1baae5d9864bce56a4477dfe5a38151057f643dc34ec51de0ed9f420ec922f974a6cbec18f9d5c65813ca1e5896362776'
+            '37e7f8b88a00f19660ea66c92e4a999548194ca827293b2bb723c3556b275bef86b5d89dffcb598c43c6c47c4c7a38b39159680d80eccf2f4d1c1c44b65757ea'
+            'ecf5a151c08b613b84cfa86237089490e60279495992180b320d22dbcb6610e4803ed1bb94d52212ba5c8747af58213dd57dbb905b4e10d34d246f30061c3cf1'
+            '677437f92cb5a7255f17e87d7a4fe233121ea44fa13e6de20993c6c11eb2e7333c74a8603f803d75beef4842fd42b6aea9a7d8bc660ddbcd34d119c8d224b8c2'
+            '01a48c0a3e80829a7075072bd21696ffdf214f118ad614b05ba2ae4e5d7273f77ab35338e551e09f4647a75008f83b9d81ce62d725b1b8fd24c2b8e3f1e0cb1b'
+            'caecdb72f77d99cefddf9f91de80114904f9091ebb0c37bd48beb9e105d9bec435dcb0dcf6b911a1f9961f9c20e163b77a2d9dbd242c746c3b4b04f21d646e10')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  patch -Np1 < "$srcdir/patch-udev.patch"
+  patch -Np1 < "$srcdir/install-encrypt-add-dlopen-ed-libcryptsetup.patch"
+  patch -p1 -i ../0001-use-gzip-for-compression-by-default.patch
+  patch -p1 -i ../0002-functions-handle-gzip-compressed-kernels-in-kver_gen.patch
+  patch -p1 -i ../0003-check-for-ALARM-kernels-in-run_post_hooks.patch
+
+  # Modify meson configurations to drop documentation builds cleanly
+  if [ -f meson.build ]; then
+    sed -i "/subdir('man')/d" meson.build
+    sed -i "/subdir('docs')/d" meson.build 2>/dev/null || true
+  fi
+}
+
+build(){
+  cd $pkgname-$pkgver
+  
+  # Configuration adapted for your layout; explicit options added to disable documentation if present
+  arch-meson \
+    -Dsystemd_hooks=true \
+    ../build
+  meson compile -C ../build
+}
+
+package() {
+  cd $pkgname-$pkgver
+  DESTDIR="$pkgdir" meson install -C ../build
+
+  # Explicit clean sweep: ensure no lingering man or doc shares leak through
+  rm -rf "$pkgdir/usr/share/man"
+  rm -rf "$pkgdir/usr/share/doc"
+}

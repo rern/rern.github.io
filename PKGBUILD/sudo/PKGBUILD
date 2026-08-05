@@ -1,0 +1,77 @@
+pkgname=sudo
+_sudover=1.9.17p2
+pkgrel=6
+pkgver=${_sudover/p/.p}
+pkgdesc="Give certain users the ability to run some commands as root"
+arch=('armv6h')
+url="https://www.sudo.ws/sudo/"
+license=('custom')
+depends=('glibc' 'openssl' 'pam' 'libldap' 'zlib')
+backup=('etc/pam.d/sudo'
+        'etc/sudo.conf'
+        'etc/sudo_logsrvd.conf'
+        'etc/sudoers')
+install=$pkgname.install
+source=(https://www.sudo.ws/sudo/dist/$pkgname-$_sudover.tar.gz{,.sig}
+        sudo_logsrvd.service
+        sudo.pam)
+sha256sums=('4a38a1ab3adb1199257edc2a7c4a2bd714665eb605b04368843b06dada2cfcfb'
+            'SKIP'
+            'bd4bc2f5d85cbe14d7e7acc5008cb4fe62c38de7d42dc6876c87bfaa273c0a6e'
+            '7ec1c668c10e0f83d00e25f336872212fe04ce2c2563e1d661d34d28852f4649')
+
+prepare() {
+  cd $pkgname-$_sudover
+}
+
+build() {
+  cd $pkgname-$_sudover
+
+  export PATH=/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin:$PATH
+  export CC=armv6-rpi-linux-gnueabihf-gcc
+  export CXX=armv6-rpi-linux-gnueabihf-g++
+  export AR=armv6-rpi-linux-gnueabihf-ar
+  export RANLIB=armv6-rpi-linux-gnueabihf-ranlib
+  export STRIP=armv6-rpi-linux-gnueabihf-strip
+
+  export CFLAGS="-march=armv6 -mfpu=vfp -mfloat-abi=hard"
+  export CXXFLAGS="$CFLAGS"
+  export CPPFLAGS="--sysroot=/home/x/x-sysroot -I/home/x/x-sysroot/usr/include"
+  export LDFLAGS="--sysroot=/home/x/x-sysroot -L/home/x/x-sysroot/usr/lib"
+
+  ./configure \
+    --build=x86_64-pc-linux-gnu \
+    --host=armv6-rpi-linux-gnueabihf \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libexecdir=/usr/lib \
+    --with-rundir=/run/sudo \
+    --with-vardir=/var/db/sudo \
+    --with-logfac=auth \
+    --enable-tmpfiles.d \
+    --with-pam \
+    --with-sssd \
+    --with-ldap \
+    --with-ldap-conf-file=/etc/openldap/ldap.conf \
+    --with-env-editor \
+    --with-passprompt="[sudo] password for %p: " \
+    --with-secure-path-value=/usr/local/sbin:/usr/local/bin:/usr/bin \
+    --with-all-insults \
+    --with-yielding_select=yes \
+    --disable-shared --enable-static
+
+  make
+}
+
+package() {
+  depends+=('libcrypto.so' 'libssl.so')
+
+  cd $pkgname-$_sudover
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 -t "$pkgdir/usr/lib/systemd/system" ../sudo_logsrvd.service
+  rm "$pkgdir/etc/sudoers.dist"
+  rmdir "$pkgdir/run/sudo" "$pkgdir/run"
+  install -Dm644 "$srcdir/sudo.pam" "$pkgdir/etc/pam.d/sudo"
+  install -Dm644 LICENSE.md -t "$pkgdir/usr/share/licenses/sudo"
+}

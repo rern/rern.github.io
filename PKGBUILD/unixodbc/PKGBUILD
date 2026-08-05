@@ -1,0 +1,68 @@
+# Maintainer: AndyRTR <andyrtr@archlinux.org>
+# Contributor: Judd Vinet <jvinet@zeroflux.org>
+# Contributor: Tom Newsom <Jeepster@gmx.co.uk>
+# Contributor: Cross-compiled for Arch Linux ARM (armv6h / Raspberry Pi Zero)
+
+pkgname=unixodbc
+pkgver=2.3.14
+pkgrel=1
+pkgdesc="ODBC is an open specification for providing application developers with a predictable API with which to access Data Sources (ARMv6h)"
+arch=('armv6h')
+license=('GPL-2.0-or-later' 'LGPL-2.1-or-later')
+url="http://www.unixodbc.org/"
+backup=('etc/odbc.ini' 'etc/odbcinst.ini')
+depends=('readline' 'libltdl' 'glibc')
+provides=('libodbc.so' 'libodbccr.so' 'libodbcinst.so')
+source=(https://github.com/lurcher/unixODBC/releases/download/v${pkgver}/unixODBC-${pkgver}.tar.gz)
+sha256sums=('4e2814de3e01fc30b0b9f75e83bb5aba91ab0384ee951286504bb70205524771')
+
+prepare() {
+    cd "unixODBC-${pkgver}"
+    autoreconf -vfi
+}
+
+build() {
+    # Cross-compilation variables setup
+    local _target_triplet="armv6-rpi-linux-gnueabihf"
+    local _toolchain_bin="/home/x/x-tools/${_target_triplet}/bin"
+    local _sysroot="/home/x/rpi0_sysroot"
+
+    # Create a pkg-config wrapper to safely map target library footprints
+    mkdir -p "${srcdir}/bin"
+    cat <<EOF > "${srcdir}/bin/pkg-config"
+#!/bin/sh
+export PKG_CONFIG_DIR=""
+export PKG_CONFIG_LIBDIR="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+exec /usr/bin/pkg-config "\$@"
+EOF
+    chmod +x "${srcdir}/bin/pkg-config"
+
+    # Update path parameters and inject toolchain target configurations
+    export PATH="${srcdir}/bin:${_toolchain_bin}:${PATH}"
+    export CHOST="${_target_triplet}"
+    export CC="${_target_triplet}-gcc"
+    export CXX="${_target_triplet}-g++"
+    
+    # Pass target sysroot flags down to compiler operations
+    export CFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+    export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+    export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot}"
+
+    cd "unixODBC-${pkgver}"
+    
+    ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --host=${_target_triplet} \
+        --with-sysroot=${_sysroot}
+        
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+    make
+}
+
+package() {
+    cd "unixODBC-${pkgver}"
+    make DESTDIR="${pkgdir}" install
+    touch "$pkgdir"/etc/{odbc,odbcinst}.ini
+}

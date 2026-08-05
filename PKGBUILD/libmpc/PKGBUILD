@@ -1,0 +1,60 @@
+# Maintainer: You
+pkgname=libmpc
+pkgver=1.4.1
+pkgrel=1
+pkgdesc='Library for the arithmetic of complex numbers with arbitrarily high precision (cross ARMv6h)'
+arch=(armv6h)
+url='http://www.multiprecision.org/'
+license=(LGPL-3.0-only)
+depends=(glibc gmp mpfr)
+source=(https://ftp.gnu.org/gnu/mpc/mpc-${pkgver/_/-}.tar.xz{,.sig})
+sha256sums=('91204cd32f164bd3b7c992d4a6a8ce6519511aadab30f78b6982d0bf8d73e931'
+            'SKIP')
+validpgpkeys=('AD17A21EF8AED8F1CC02DBD9F7D5C9BF765C61E3')  # Andreas Enge
+
+_target="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+_toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+
+prepare() {
+  cd "$srcdir/mpc-$pkgver"
+}
+
+build() {
+  _target="armv6-rpi-linux-gnueabihf"
+  _sysroot="/home/x/x-sysroot"
+  _toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+
+  export PATH="$_toolchain:$PATH"
+  export CC=${_target}-gcc
+  export CXX=${_target}-g++
+  export AR=${_target}-ar
+  export RANLIB=${_target}-ranlib
+  export LD=${_target}-ld
+
+  # Force configure to search sysroot headers/libs
+  export CPPFLAGS="-I$_sysroot/usr/include"
+  export LDFLAGS="-L$_sysroot/usr/lib"
+
+  cd "$srcdir/gcc-$pkgver"
+  ./configure \
+    --target=$_target \
+    --host=x86_64-pc-linux-gnu \
+    --build=x86_64-pc-linux-gnu \
+    --prefix=/usr \
+    --with-sysroot=$_sysroot \
+    --with-gmp=$_sysroot/usr \
+    --with-mpfr=$_sysroot/usr \
+    --with-mpc=$_sysroot/usr \
+    --disable-nls \
+    --enable-languages=c,c++ \
+    --disable-multilib
+  make all-gcc
+}
+
+
+package() {
+  cd "$srcdir/mpc-$pkgver"
+  make DESTDIR="$pkgdir" install
+  mv "$pkgdir"/usr/share/info/{mpc,libmpc}.info
+}

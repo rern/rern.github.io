@@ -1,0 +1,71 @@
+## crosstool-NG
+
+- Install
+
+```sh
+pacman -Sy --needed base-devel bison cpio flex git gperftools help2man libtool ncurses patch rsync texinfo unzip
+
+cd
+git clone https://github.com/crosstool-ng/crosstool-ng.git
+cd crosstool-ng
+./bootstrap
+./configure --prefix=${HOME}/.local
+make
+make install
+
+# build to dir: x-tools (any changes need rebuild)
+cd
+mkdir -p toolchain
+cd toolchain
+ct-ng armv6-unknown-linux-gnueabihf # for armv6: ct-ng list-samples | grep armv6
+ct-ng menuconfig
+# Paths and misc options
+#   Try features marked as EXPERIMENTAL: [*] Enable
+#   Extra host compiler flags: -fno-char8_t
+# Esc-Esc to save and exit
+
+ct-ng build.$(nproc) # ct-ng build.12 - lower if frozen
+
+echo 'export PATH=$PATH:/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin' >> ~/.bashrc
+# open new terminal to load new $PATH
+
+# test run
+armv6-rpi-linux-gnueabihf-gcc -v
+# Using built-in specs.
+# ...
+# gcc version 15.2.0 (crosstool-NG 1.28.0)
+
+# test compile
+cat << EOF > test.c
+#include <stdio.h>
+int main() {
+    printf("Hello Raspberry Pi Zero!\\n");
+    return 0;
+}
+EOF
+
+armv6-rpi-linux-gnueabihf-gcc test.c -o test
+
+file test
+# test_rpi: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV) ...
+
+scp test root@192.168.1.90:/root
+# run test on rpi0
+
+cd
+rm -rf crosstool-ng toolchain
+
+# toolchain build order: linux-api-headers->glibc->binutils->gcc
+
+# compile command - omit sudo rm -rf pkg src; and -C to keep already built part
+sudo rm -rf pkg src; CARCH="armv6h" makepkg -Ad --skipinteg -C
+# repackage
+CARCH="armv6h" makepkg -AdR
+
+# if frozen while compiling - reduce cpu threads and write to hdd instead of ram
+sed -i -E 's/^#*(MAKEFLAGS=).*/\1"-j4"/; s|^#*(BUILDDIR=).*|\1home/x/tmp|' /etc/makepkg.conf
+mkdir /home/x/tmp
+
+# install compiled package
+sudo pacman --sysroot /home/x/x-sysroot -U PACKAGE-armv6h.pkg.tar.zst
+```

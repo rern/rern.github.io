@@ -1,0 +1,108 @@
+# Maintainer:  Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Thomas Bächler <thomas@archlinux.org>
+# Modified for armv6h cross-compilation (Documentation and Man pages removed)
+
+pkgname=cryptsetup
+pkgver=2.8.6
+pkgrel=1
+pkgdesc='Userspace setup tool for transparent encryption of block devices using dm-crypt (Cross-compiled, no docs)'
+arch=('armv6h')
+license=('GPL-2.0-or-later')
+url='https://gitlab.com/cryptsetup/cryptsetup/'
+depends=('device-mapper' 'libdevmapper.so'
+         'glibc'
+         'openssl' 'libcrypto.so'
+         'popt'
+         'util-linux-libs' 'libblkid.so' 'libuuid.so'
+         'json-c' 'libjson-c.so')
+makedepends=('util-linux') # Removed asciidoctor
+conflicts=('mkinitcpio<38-1')
+provides=('libcryptsetup.so')
+options=('!emptydirs' '!strip')
+validpgpkeys=('2A2918243FDE46648D0686F9D9B0577BD93E98FC') # Milan Broz <gmazyland@gmail.com>
+source=("https://www.kernel.org/pub/linux/utils/cryptsetup/v${pkgver%.*}/${pkgname}-${pkgver}.tar."{xz,sign})
+sha256sums=('8004265fd993885d08f7b633dbe056851de1a210307613a4ebddc743fccefe5a'
+            'SKIP')
+
+build() {
+  cd "${srcdir}"/$pkgname-${pkgver}
+
+  local _triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_triplet}/bin"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  # 1. Setup Cross-Compiler Toolchain Environment
+  export PATH="${_toolchain_bin}:${PATH}"
+  export CC="${_triplet}-gcc"
+  export CXX="${_triplet}-g++"
+  export AR="${_triplet}-ar"
+  export RANLIB="${_triplet}-ranlib"
+  export STRIP="${_triplet}-strip"
+  
+  # Crucial: Force the use of your toolchain-prefixed pkg-config binary if it exists,
+  # or force standard evaluation to recognize the target triplet context.
+  export PKG_CONFIG="${_toolchain_bin}/${_triplet}-pkg-config"
+  if [ ! -f "${PKG_CONFIG}" ]; then
+    export PKG_CONFIG="pkg-config"
+  fi
+
+  # 2. Redirect pkg-config to sysroot dependencies
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+  export PKG_CONFIG_LIBDIR=""
+
+  # 3. Target architecture compilation parameters
+  export CFLAGS="-O2 -pipe -march=armv6zk -mtune=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot}"
+  export LDFLAGS="-Wl,-O1,--as-needed --sysroot=${_sysroot}"
+
+  ./configure \
+    --host="${_triplet}" \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --disable-ssh-token \
+    --disable-static \
+    --disable-asciidoc \
+    --disable-documentation \
+    --enable-fsck \
+    --with-crypto_backend=openssl \
+    --with-sysroot="${_sysroot}"
+
+  # Fix libtool optimization passthrough
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  
+  # Go ahead and fire your full 12 threads! No Ruby means no race conditions.
+  make -j12
+}
+
+check() {
+  echo "Skipping checks for cross-compilation."
+}
+
+package() {
+  cd "${srcdir}"/$pkgname-${pkgver}
+
+  local _triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_triplet}/bin"
+
+  # Force installation into the local packaging folder without touching host structures
+  make DESTDIR="${pkgdir}" install
+
+  # Strip binaries using the target toolchain to dramatically minimize package size
+  find "${pkgdir}" -type f -exec "${_toolchain_bin}/${_triplet}-strip" --strip-unneeded {} + 2>/dev/null || true
+}
+
+check() {
+  echo "Skipping checks for cross-compilation."
+}
+
+package() {
+  cd "${srcdir}"/$pkgname-${pkgver}
+
+  make DESTDIR="${pkgdir}" install
+
+  local _triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_triplet}/bin"
+  find "${pkgdir}" -type f -exec "${_toolchain_bin}/${_triplet}-strip" --strip-unneeded {} + 2>/dev/null || true
+  
+  # All host markdown and man page installations have been removed
+}

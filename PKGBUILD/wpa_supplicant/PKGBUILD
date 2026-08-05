@@ -1,0 +1,51 @@
+pkgname=wpa_supplicant
+pkgver=2.11
+pkgrel=1
+pkgdesc="WPA Supplicant"
+arch=('armv6h')
+license=('BSD')
+source=("git+https://git.w1.fi/hostap.git")
+sha256sums=('SKIP')
+
+_toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+
+prepare() {
+  cd "$srcdir/hostap/wpa_supplicant"
+  
+  # 1. Start with a clean config
+  cp defconfig .config
+  
+  # 2. Force-disable MACSEC in config
+  sed -i 's/^CONFIG_MACSEC=y/CONFIG_MACSEC=n/' .config
+  sed -i 's/^CONFIG_DRIVER_MACSEC_LINUX=y/CONFIG_DRIVER_MACSEC_LINUX=n/' .config
+  sed -i 's/^CONFIG_DRIVER_MACSEC_QCA=y/CONFIG_DRIVER_MACSEC_QCA=n/' .config
+
+  # 3. Empty the files (Satisfies Makefile "No rule to make target")
+  echo "/* empty */" > ../src/drivers/driver_macsec_linux.c
+  echo "/* empty */" > ../src/drivers/driver_macsec_qca.c
+  
+  # 4. REMOVE THE REGISTRY REFERENCES (Satisfies Linker "undefined reference")
+  # This tells the registry: "These drivers do not exist, don't look for them."
+  sed -i '/wpa_driver_macsec_linux_ops/d' ../src/drivers/drivers.c
+  sed -i '/wpa_driver_macsec_qca_ops/d' ../src/drivers/drivers.c
+}
+
+build() {
+  cd "$srcdir/hostap/wpa_supplicant"
+  
+  export PATH="$_toolchain/bin:$PATH"
+  export CC="armv6-rpi-linux-gnueabihf-gcc"
+  
+  export CFLAGS="-march=armv6 -mfloat-abi=hard -mfpu=vfp -O2 --sysroot=$_sysroot -Wno-error"
+  export LDFLAGS="--sysroot=$_sysroot"
+
+  make clean
+  make -j$(nproc)
+}
+
+package() {
+  cd "$srcdir/hostap/wpa_supplicant"
+  install -d "$pkgdir/usr/bin"
+  install -m 755 wpa_supplicant wpa_cli wpa_passphrase "$pkgdir/usr/bin/"
+}

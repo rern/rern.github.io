@@ -1,0 +1,23 @@
+# Maintainer: Your Name <you@example.com>
+pkgname=audiocd-meta
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Audio CD metadata"
+arch=('aarch64' 'armv7h' 'armv6h')
+url="https://example.com/audiocd-meta"
+license=('MIT')
+depends=('libdiscid' 'libxml2')
+makedepends=('fakeroot' 'gcc' 'pkgconf')
+source=("audiocd_meta.cpp")
+sha256sums=('SKIP')
+
+build() {
+    cd "$srcdir"
+    g++ -O2 audiocd_meta.cpp -o audiocd-meta \
+        $(pkg-config --cflags --libs libdiscid libcurl libxml-2.0)
+}
+
+package() {
+    cd "$srcdir"
+    install -Dm755 audiocd-meta "$pkgdir/usr/bin/audiocd-meta"
+}

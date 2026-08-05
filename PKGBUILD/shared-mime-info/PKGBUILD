@@ -1,0 +1,77 @@
+# Maintainer: AndyRTR <andyrtr@archlinux.org>
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Modified for ARMv6h Cross-Compilation
+
+pkgname=shared-mime-info
+_commit=9a6d6b8e963935f145f3a1ef446552de6996dada # = master 2023-11-12 = v2.4
+pkgver=2.4
+pkgrel=3
+pkgdesc="Freedesktop.org Shared MIME Info (ARMv6h Cross Build)"
+arch=('armv6h')
+license=('GPL-2.0-or-later')
+depends=('libxml2' 'glib2' 'glibc' 'libstdc++' 'libgcc')
+makedepends=('gettext' 'xmlto' 'docbook-xsl' 'git' 'meson')
+install=shared-mime-info.install
+url="https://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec/"
+source=("git+https://gitlab.freedesktop.org/xdg/shared-mime-info.git#commit=$_commit"
+        "git+https://gitlab.freedesktop.org/xdg/xdgmime.git#commit=92f6a09fda2b23c2ab95cede8eb0612ca96bd0f7"
+        update-mime-database.hook)
+sha256sums=('SKIP'
+            'SKIP'
+            'f08efbcbac9d2bd18a805b8dcf3ed06d7763b97eca5935aa64d65593774b6501')
+options=(!makeflags)
+
+pkgver() {
+  cd "$pkgname"
+  git describe --tags | sed 's/^Release.//;s/\([^-]*-g\)/\1/;s/-/+/g;'
+}
+
+prepare() {
+  # Clean old build profiles if they exist
+  rm -rf build
+}
+
+build() {
+  cd "${srcdir}"
+
+  # Unset native host flags to protect the cross-compiler
+  unset CFLAGS CXXFLAGS LDFLAGS
+
+  # Force any interactive text streams to dump directly to stdout
+  export PAGER=cat
+
+  # Route cross dependencies accurately via the sysroot environment variables
+  export PKG_CONFIG_SYSROOT_DIR="/home/x/x-sysroot"
+  export PKG_CONFIG_LIBDIR="/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig"
+
+  local _meson_options=(
+    --cross-file "/home/x/x-tools/cross-file.txt"
+    --prefix=/usr
+    --sysconfdir=/etc
+    --localstatedir=/var
+    --buildtype=release
+    --optimization=2
+    
+    # Disable automated generation of database maps on host filesystem context
+    -Dupdate-mimedb=false
+  )
+
+  # Standard setup execution
+  meson setup build "$pkgname" "${_meson_options[@]}"
+  
+  # Compile package targets
+  meson compile -C build
+}
+
+# Disabled for cross-compilation because test binaries cannot run on the host CPU
+# check() {
+#   meson test -C build --print-errorlogs
+# }
+
+package() {
+  cd "${srcdir}"
+  DESTDIR="$pkgdir" meson install -C build
+  
+  # Deploy installation management configuration hooks
+  install -Dm644 "$srcdir"/update-mime-database.hook "$pkgdir"/usr/share/libalpm/hooks/30-update-mime-database.hook
+}

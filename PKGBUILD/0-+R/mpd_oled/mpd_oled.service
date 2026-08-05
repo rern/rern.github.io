@@ -1,0 +1,8 @@
+[Unit]
+Description=MPD OLED Display
+
+[Service]
+User=root
+EnvironmentFile=/etc/default/mpd_oled
+ExecStart=/usr/bin/mpd_oled $OPTS
+ 

@@ -1,0 +1,272 @@
+# Maintainer: Anatol Pomozov <anatol.pomozov@gmail.com>
+# Maintainer: Andreas 'Segaja' Schleifer <segaja at archlinux dot org>
+# Maintainer: Tim Meusel <tim@bastelfreak.de>
+# Contributor: Thomas Dziedzic <gostrc@gmail.com>
+# Contributor: Allan McRae <allan@archlinux.org>
+# Contributor: John Proctor <jproctor@prium.net>
+# Contributor: Jeramy Rutley <jrutley@gmail.com>
+# Modified for armv6h cross-compilation targeting Raspberry Pi Zero
+
+pkgname=(
+  ruby
+  ruby-docs
+  ruby-default-gems
+  ruby-bundled-gems
+  ruby-stdlib
+)
+pkgver=3.4.8
+pkgrel=3
+pkgdesc='An object-oriented language for quick and easy programming (Cross-compiled for armv6h)'
+url='https://www.ruby-lang.org/en/'
+arch=(armv6h)
+license=(BSD-2-Clause)
+makedepends=(
+  doxygen
+  libgcc
+  gdbm
+  glibc
+  gmp
+  graphviz
+  libffi
+  libxcrypt
+  libyaml
+  openssl
+  readline
+  rust
+  tk
+  zlib
+  ruby # Required on host for cross-compiling code generation
+)
+options=('!emptydirs' '!strip')
+source=(
+  "https://cache.ruby-lang.org/pub/ruby/${pkgver:0:3}/ruby-${pkgver}.tar.xz"
+)
+sha512sums=('b6289654685c2d381d15123cf07a131fd088edf13a5336966af5a2e8fad9adda42d14caa7bb0998331831af71e35c546091db55c82089e89b9508603ff5f92d6')
+b2sums=('e40144cea391c32a4ce1e6c576884dd9ca3a31398b0110bb67e96eca90dc1d8cb0376269e691a1b48b06bbbb23b0137e67bd05ae4aeccb5c26d163fbce5cec55')
+
+_bootstrap=0
+_rubyver="${pkgver:0:3}.0"
+
+_bundled_gems=(
+  abbrev base64 bigdecimal csv debug drb getoptlong matrix minitest mutex_m
+  net-ftp net-imap net-pop net-smtp nkf observer power_assert prime racc rake
+  rbs repl_type_completor resolv-replace rexml rinda rss test-unit syslog typeprof
+)
+_bundled_gems_bins=(racc rake rbs rdbg typeprof)
+_default_gems=(
+  benchmark cgi date delegate did_you_mean digest english error_highlight etc fcntl
+  fiddle fileutils find forwardable io-console io-nonblock io-wait ipaddr json logger
+  net-http net-protocol open-uri open3 openssl optparse ostruct pathname prism pp
+  prettyprint pstore psych readline reline resolv ruby2_keywords securerandom set
+  shellwords singleton stringio strscan syntax_suggest tempfile time timeout tmpdir
+  tsort un uri weakref yaml zlib
+)
+_default_tool_gems=(bundler erb irb rdoc rubygems)
+_default_tool_gems_bins=(bundle bundler erb gem irb rdoc ri)
+
+prepare() {
+  cd "ruby-${pkgver}"
+
+  msg2 "Patching ruby memory allocation headers for GCC compliance..."
+  sed -i '1s/^/#include <stdbool.h>\n/' include/ruby/internal/memory.h
+
+  autoreconf -fiv
+}
+
+build() {
+  cd "ruby-${pkgver}"
+
+  local _triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_triplet}/bin"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  # 1. Setup Cross-Compiler Toolchain Environment
+  export PATH="${_toolchain_bin}:${PATH}"
+  export CC="${_triplet}-gcc"
+  export CXX="${_triplet}-g++"
+  export AR="${_triplet}-ar"
+  export RANLIB="${_triplet}-ranlib"
+  export STRIP="${_triplet}-strip"
+
+  # 2. Redirect pkg-config to sysroot dependencies
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_PATH="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+  export PKG_CONFIG_LIBDIR=""
+
+  # 3. Optimization flags for hardware-float ARMv6 + permissive evaluation compatibility
+  export CFLAGS="-O2 -pipe -march=armv6zk -mtune=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot} -I${_sysroot}/usr/include -Wno-incompatible-pointer-types -D_FORTIFY_SOURCE=2 -fpermissive"
+  export CXXFLAGS="-O2 -pipe -march=armv6zk -mtune=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp --sysroot=${_sysroot} -I${_sysroot}/usr/include -Wno-incompatible-pointer-types -D_FORTIFY_SOURCE=2 -fpermissive"
+  export LDFLAGS="-Wl,-O1,--as-needed --sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib"
+
+  # 4. Global runtime locks for cross-generation workflows
+  export ac_cv_prog_BASERUBY="/usr/bin/ruby"
+  export BASERUBY="/usr/bin/ruby"
+  export RUNRUBY="qemu-arm-static -L ${_sysroot}"
+
+  # 5. Force 32-bit type measurements during configure execution pass
+  export ac_cv_sizeof_long=4
+  export ac_cv_sizeof_voidp=4
+  export ac_cv_sizeof_short=2
+  export ac_cv_sizeof_int=4
+  export ac_cv_sizeof_long_long=8
+
+  ./configure \
+    --host="${_triplet}" \
+    --target="${_triplet}" \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --sharedstatedir=/var/lib \
+    --libexecdir=/usr/lib/ruby \
+    --enable-shared \
+    --disable-rpath \
+    --with-dbm-type=gdbm_compat \
+    --with-sysroot="${_sysroot}" \
+    --with-baseruby="/usr/bin/ruby"
+
+  # 1. Reset directory state cleanly
+  rm -f config.h
+  rm -rf .ext
+  mkdir -p include/ruby
+
+  # 2. Let Ruby create its baseline configuration header (this contains 'LONG_LONG' definitions)
+  msg2 "Generating structural system configuration files..."
+  touch include/ruby/config.h
+  ./config.status --header=include/ruby/config.h:config.h.in
+
+  # 3. SED FIX: Forcefully convert any 64-bit leaks into 32-bit sizes right inside the genuine file
+  msg2 "Fixing architectural type dimensions..."
+  sed -i 's/#define SIZEOF_LONG 8/#define SIZEOF_LONG 4/g' include/ruby/config.h
+  sed -i 's/#define SIZEOF_VOIDP 8/#define SIZEOF_VOIDP 4/g' include/ruby/config.h
+  sed -i 's/#define SIZEOF_SIZE_T 8/#define SIZEOF_SIZE_T 4/g' include/ruby/config.h
+  sed -i 's/#define SIZEOF_PTRDIFF_T 8/#define SIZEOF_PTRDIFF_T 4/g' include/ruby/config.h
+
+  # 4. Mirror it across the fallback directories so that every sub-makefile sees it
+  cp -v include/ruby/config.h config.h
+  mkdir -p .ext/include/armv6-linux-gnueabihf/ruby
+  mkdir -p .ext/armv6-linux-gnueabihf/enc/trans
+  cp -v include/ruby/config.h .ext/include/armv6-linux-gnueabihf/ruby/config.h
+
+  # Phase 2: Run the parallel compilation with all 12 threads
+  msg2 "Building components with parallel threads..."
+  make \
+    BASERUBY="/usr/bin/ruby" \
+    RUNRUBY="qemu-arm-static -L ${_sysroot}" \
+    MINIRUBY="qemu-arm-static -L ${_sysroot} ./miniruby"
+  
+  make rdoc capi BASERUBY="/usr/bin/ruby" RUNRUBY="qemu-arm-static -L ${_sysroot}"
+}
+
+check() {
+  echo "Skipping checks when cross-compiling target binaries."
+}
+
+package_ruby() {
+  depends=(libgcc gdbm glibc gmp libffi libxcrypt libyaml openssl readline zlib)
+  optdepends=(
+    'tk: for Ruby/TK'
+    'ruby-docs: Documentation for Ruby'
+    'ruby-default-gems: Default gems which are part of Ruby StdLib'
+    'ruby-bundled-gems: Bundled gems which are part of Ruby StdLib'
+    'ruby-stdlib: Full Ruby StdLib including default gems, bundled gems and tools'
+  )
+  provides=(libruby.so)
+  replaces=(
+    ruby-benchmark ruby-cgi ruby-date ruby-delegate ruby-did_you_mean ruby-digest
+    ruby-english ruby-etc ruby-fcntl ruby-fiddle ruby-fileutils ruby-find
+    ruby-forwardable ruby-io-console ruby-io-nonblock ruby-io-wait ruby-ipaddr
+    ruby-json ruby-logger ruby-net-http ruby-open-uri ruby-prism ruby-psych
+    ruby-reline ruby-ruby2_keywords ruby-set ruby-stringio ruby-time ruby-tmpdir ruby-uri
+  )
+  conflicts=("${replaces[@]}")
+  provides+=("${_default_gems[@]/#/ruby-}")
+
+  cd "ruby-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install-nodoc BASERUBY="/usr/bin/ruby"
+
+  install --verbose -D --mode=0644 BSDL COPYING --target-directory "${pkgdir}/usr/share/licenses/ruby"
+  install --verbose -D --mode=0644 *.md --target-directory "${pkgdir}/usr/share/doc/ruby"
+
+  rm --recursive --verbose "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/cache"
+
+  if (( _bootstrap )); then
+    declare -n bootstrap_provides=provides
+    bootstrap_provides+=("${_default_tool_gems[@]/#/ruby-}" rubygems)
+    bootstrap_provides+=("${_bundled_gems[@]/#/ruby-}")
+    declare -n bootstrap_conflicts=conflicts
+    bootstrap_conflicts+=("${_default_tool_gems[@]/#/ruby-}" rubygems)
+    bootstrap_conflicts+=("${_bundled_gems[@]/#/ruby-}")
+  else
+    _remove_default_tool_gems
+    _remove_bundled_gems
+    depends+=(rubygems)
+  fi
+
+  # Manually execute architecture-safe strip via target compiler suite
+  local _triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_triplet}/bin"
+  find "${pkgdir}" -type f -name "*.so*" -exec "${_toolchain_bin}/${_triplet}-strip" --strip-unneeded {} + 2>/dev/null || true
+  find "${pkgdir}" -type f -executable -exec "${_toolchain_bin}/${_triplet}-strip" --strip-all {} + 2>/dev/null || true
+}
+
+_remove_bundled_gems() {
+  local gem bin
+  for gem in "${_bundled_gems[@]}"; do
+    msg2 "removing bundled gem ${gem}"
+    rm --recursive --verbose "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/gems/${gem}"-* "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/specifications/${gem}"-*.gemspec
+    rm --recursive --verbose --force "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/extensions"/*-linux*/"${_rubyver}/${gem}"-*
+  done
+  for bin in "${_bundled_gems_bins[@]}"; do
+    rm --recursive --verbose "${pkgdir}/usr/bin/${bin}"
+    rm --recursive --verbose --force "${pkgdir}/usr/bin/${bin}.lock"
+    rm --recursive --verbose --force "${pkgdir}/usr/share/man/man1/${bin}.1"
+  done
+}
+
+_remove_default_tool_gems() {
+  local gem bin
+  for gem in "${_default_tool_gems[@]}"; do
+    msg2 "removing default gem ${gem}"
+    rm --recursive --verbose "${pkgdir}/usr/lib/ruby/${_rubyver}/${gem}"*
+    if [[ ${gem} != rubygems ]]; then
+      rm --recursive --verbose "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/gems/${gem}"-* "${pkgdir}/usr/lib/ruby/gems/${_rubyver}/specifications/default/${gem}"-*.gemspec
+    fi
+    rm --recursive --verbose --force "${pkgdir}/usr/lib/ruby/${_rubyver}"/*-linux*/"${gem}"
+  done
+  for bin in "${_default_tool_gems_bins[@]}"; do
+    rm --recursive --verbose "${pkgdir}/usr/bin/${bin}"
+    rm --recursive --verbose --force "${pkgdir}/usr/bin/${bin}.lock"
+    rm --recursive --verbose --force "${pkgdir}/usr/share/man/man1/${bin}.1"
+  done
+}
+
+package_ruby-docs() {
+  pkgdesc='Documentation files for Ruby (Cross-compiled)'
+  cd "ruby-${pkgver}"
+  make DESTDIR="${pkgdir}" install-doc install-capi BASERUBY="/usr/bin/ruby"
+  install --verbose -D --mode=0644 BSDL COPYING --target-directory "${pkgdir}/usr/share/licenses/ruby-docs"
+}
+
+package_ruby-bundled-gems() {
+  pkgdesc='Bundled gems which are part of Ruby StdLib'
+  replaces=(ruby-bundledgems)
+  conflicts=(ruby-bundledgems)
+  depends=("${_bundled_gems[@]/#/ruby-}")
+  cd "ruby-${pkgver}"
+  install --verbose -D --mode=0644 BSDL COPYING --target-directory "${pkgdir}/usr/share/licenses/ruby-bundled-gems"
+}
+
+package_ruby-default-gems() {
+  pkgdesc='Default gems which are part of Ruby StdLib'
+  depends=("${_default_tool_gems[@]/#/ruby-}")
+  cd "ruby-${pkgver}"
+  install --verbose -D --mode=0644 BSDL COPYING --target-directory "${pkgdir}/usr/share/licenses/ruby-default-gems"
+}
+
+package_ruby-stdlib() {
+  pkgdesc='Full Ruby StdLib including default gems, bundled gems and tools'
+  depends=(ruby-default-gems ruby-bundled-gems)
+  cd "ruby-${pkgver}"
+  install --verbose -D --mode=0644 BSDL COPYING --target-directory "${pkgdir}/usr/share/licenses/ruby-stdlib"
+}

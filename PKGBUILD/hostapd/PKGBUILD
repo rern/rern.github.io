@@ -1,0 +1,86 @@
+pkgname=hostapd
+_name=hostap
+pkgver=2.11
+pkgrel=4
+pkgdesc="IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator"
+arch=(x86_64)
+url="https://w1.fi/hostapd/"
+license=(BSD-3-Clause)
+depends=(
+  glibc
+  libnl
+  openssl
+  sqlite
+)
+makedepends=(
+  git
+)
+backup=(
+  etc/$pkgname/$pkgname.{accept,conf,deny,eap_user,radius_clients,vlan,wpa_psk}
+)
+source=(
+  "git+https://w1.fi/$_name.git?signed#tag=${_name}_${pkgver//./_}"
+  config
+  hostapd.service
+  hostapd@.service
+  $pkgname.tmpfiles
+  $pkgname-2.11-fhs-config.patch
+)
+sha512sums=('de2ba10af60bc88f0f900fe4a90681d9f08318bf12f88227881f6c4f2c4c628b89515a5425242048b8867b1791f5613fbfa1c3adeecf345aeb4093cac5eb62e4'
+            '98f59c3a262504639605532676f2268e8247cc60eacaea59297807d3574562e9f1588537fa291fb92627446055e2177147a04bd04e601f56e4e11c463d1b07e2'
+            '34e16c5d46383477bcb9e0dba5073b7f01354a6adca8e591050aeff6319255f8939926b70d76d109735496bbaf9ff2d04be9cf6e0d057c4d2f4a4140067957a3'
+            '51f472ed969037bd4d480d13e356a03207316169ef0ac532c40d2e7a618d0fef0529eb060a7d146d28c31efef9b5942bc12661f29d970a6ea0d972f7d2b9d3dc'
+            '4394f871381165b772afc603ef640cb278980287060e87eed9cff17d8eb5ce131d081674bbbb053b2df65aeff55ce4a5fd361788e8e552e6b085656c2332b600'
+            'd1dba5160d784e0194de70a7b0009ea41ada6c944cb448299d4a05e33d8ac4350b05e570f21622fc5c39d3737a0bf782e498d2c6916808505eaac119e7273c0a')
+b2sums=('163d2e6644902f36b3b5f25e328221fa34495d745801e8d3dce874b05366c81370ef75c8f7e0198e206a3d04c5ea4bb501bf97693fa481e15cf5067d80ab0c1e'
+        '2f769192e3ba7231a61cad02e6b05b985a6fe4773935e8f44bdfabc289424f31145025ecaaf301ef1c87b7b881d31ada34795c983c5329615b85e563b4d15a1a'
+        'dbb4d1ad4359931bd70d6ad428b509e0c40dab3a55ba7b87cf1c00a458d737c2a4ed6f06dd23286d9e4a38a481e4af9ab4ffa8e6fb27d852aa4eb7d16d046bf8'
+        'a36556144a4e98b2be15fb2920ce18bc13377dc2fa4becb5f122f40aaaa7ece4e169fdaa39a60b96275fdc94ee08a31a21684c6ffd14a5417b9752c79215edb4'
+        '1ffc43daa6751066a575e33a70b952498397a8bb037391c52b5d696f84df4b16583b8cf1df3cc272654523460a3ea08c53aa5139d59dd5cd40c8c615b963f74b'
+        'cafdd75caaa01298d310a8ae272ed4ac647b12b59a474ab16f4fe4e4feea63e6cf4f131bc486dd7539077969257524d919820ab30cc15a86ec7deb24c2af4926')
+validpgpkeys=(EC4AA0A991A5F2464582D52D2B6EF432EFC895FA)
+
+prepare() {
+  # make include locations in main configuration file filesystem compliant
+  patch -Np1 -d "$_name" -i ../$pkgname-2.11-fhs-config.patch
+
+  # link build configuration into place
+  ln -sv ../../config "$_name/$pkgname/.config"
+}
+
+build() {
+  make -C "$_name/$pkgname"
+}
+
+package() {
+  cd "$_name"
+
+  make -C "$pkgname" install DESTDIR="$pkgdir" BINDIR=/usr/bin
+
+  # systemd service units
+  install -vDm 644 ../hostapd.service "$pkgdir/usr/lib/systemd/system/hostapd.service"
+  install -vDm 644 ../hostapd@.service "$pkgdir/usr/lib/systemd/system/hostapd@.service"
+
+  # license
+  install -vDm 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+
+  # configuration files (etc and factory copy)
+  install -vDm 640 "$pkgname/$pkgname.accept" "$pkgdir/etc/$pkgname/$pkgname.accept"
+  install -vDm 640 "$pkgname/$pkgname.conf" "$pkgdir/etc/$pkgname/$pkgname.conf"
+  install -vDm 640 "$pkgname/$pkgname.deny" "$pkgdir/etc/$pkgname/$pkgname.deny"
+  install -vDm 640 "$pkgname/$pkgname.eap_user" "$pkgdir/etc/$pkgname/$pkgname.eap_user"
+  install -vDm 640 "$pkgname/$pkgname.radius_clients" "$pkgdir/etc/$pkgname/$pkgname.radius_clients"
+  install -vDm 640 "$pkgname/$pkgname.vlan" "$pkgdir/etc/$pkgname/$pkgname.vlan"
+  install -vDm 640 "$pkgname/$pkgname.wpa_psk" "$pkgdir/etc/$pkgname/$pkgname.wpa_psk"
+
+  install -vDm 640 "$pkgname/$pkgname.accept" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.accept"
+  install -vDm 640 "$pkgname/$pkgname.conf" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.conf"
+  install -vDm 640 "$pkgname/$pkgname.deny" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.deny"
+  install -vDm 640 "$pkgname/$pkgname.eap_user" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.eap_user"
+  install -vDm 640 "$pkgname/$pkgname.radius_clients" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.radius_clients"
+  install -vDm 640 "$pkgname/$pkgname.vlan" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.vlan"
+  install -vDm 640 "$pkgname/$pkgname.wpa_psk" "$pkgdir/usr/share/factory/etc/$pkgname/$pkgname.wpa_psk"
+
+  # tmpfiles.d
+  install -vDm 644 ../$pkgname.tmpfiles "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+}

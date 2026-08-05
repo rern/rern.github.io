@@ -1,0 +1,62 @@
+# Maintainer: Adapted for cross-compilation (armv6h Raspberry Pi Zero)
+
+pkgname=libbsd
+pkgver=0.12.2
+pkgrel=2
+pkgdesc="Provides useful BSD functions like strlcpy() (cross-compiled for armv6h)"
+arch=(armv6h)
+url="https://libbsd.freedesktop.org"
+license=('custom')
+depends=('glibc' 'libmd')
+makedepends=('git')
+options=('staticlibs')
+source=("git+https://gitlab.freedesktop.org/libbsd/libbsd.git#tag=${pkgver}")
+sha256sums=('SKIP')
+validpgpkeys=('4F3E74F436050C10F5696574B972BF3EA4AE57A3') # Guillem Jover
+
+prepare() {
+  cd "$pkgname"
+  autoreconf -vfi
+}
+
+build() {
+  cd "$pkgname"
+
+  TOOLCHAIN="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+  SYSROOT="/home/x/x-sysroot"
+
+  export CC="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-gcc"
+  export CXX="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-g++"
+  export AR="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ar"
+  export RANLIB="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ranlib"
+  export LD="${TOOLCHAIN}/armv6-rpi-linux-gnueabihf-ld"
+
+  export CFLAGS="--sysroot=${SYSROOT} -O2 -ffat-lto-objects"
+  export CXXFLAGS="--sysroot=${SYSROOT} -O2"
+  export LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib"
+
+  export PKG_CONFIG_SYSROOT_DIR="${SYSROOT}"
+  export PKG_CONFIG_PATH="${SYSROOT}/usr/lib/pkgconfig"
+
+  ./configure \
+    --host=armv6-rpi-linux-gnueabihf \
+    --build=$(gcc -dumpmachine) \
+    --prefix=/usr
+
+  make
+}
+
+# Omit check() because tests cannot run on host for target binaries
+
+package() {
+  cd "$pkgname"
+  make DESTDIR="$pkgdir" install
+
+  # Remove static lib if not needed
+  rm -f "${pkgdir}/usr/lib/libbsd.a"
+
+  install -D -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  # Remove duplicate man page
+  rm -f "${pkgdir}/usr/share/man/man3/explicit_bzero.3"
+}

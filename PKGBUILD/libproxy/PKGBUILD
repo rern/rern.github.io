@@ -1,0 +1,73 @@
+pkgbase=libproxy
+pkgname=(libproxy libproxy-docs)
+pkgver=0.5.12
+pkgrel=1
+pkgdesc="Automatic proxy configuration management library"
+url="https://libproxy.github.io/libproxy/"
+arch=(armv6h)
+license=(LGPL-2.1-or-later)
+depends=(curl duktape glib2 glibc libgcc)
+
+source=("git+https://github.com/libproxy/libproxy#tag=$pkgver")
+b2sums=('SKIP')
+
+prepare() {
+  cd libproxy
+  # Create a custom cross-file locally to ensure correct toolchain paths
+  cat > ../meson-cross.txt <<EOF
+[binaries]
+c = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-gcc'
+cpp = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-g++'
+ar = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-ar'
+strip = '/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin/armv6-rpi-linux-gnueabihf-strip'
+pkgconfig = 'pkg-config'
+
+[properties]
+sys_root = '/home/x/x-sysroot'
+pkg_config_libdir = '/home/x/x-sysroot/usr/lib/pkgconfig:/home/x/x-sysroot/usr/share/pkgconfig'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv6'
+endian = 'little'
+EOF
+}
+
+build() {
+  cd "$srcdir"
+  rm -rf build
+
+  # Clear environment variables
+  unset CFLAGS CXXFLAGS LDFLAGS
+
+  meson setup build libproxy \
+    --cross-file meson-cross.txt \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dintrospection=false \
+    -Dvapi=false \
+    -Ddocs=false \
+    -Dwerror=false \
+    -Dc_args="-O2 -pipe -Wno-error=redundant-decls" \
+    -Dcpp_args="-O2 -pipe -Wno-error=redundant-decls"
+
+  meson compile -C build
+}
+check() {
+  # Cross-compiled binaries cannot run on the host; tests are disabled.
+  return 0
+}
+
+package_libproxy() {
+  provides=(libproxy.so)
+  meson install -C build --destdir "$pkgdir"
+  mkdir -p "$pkgdir/usr/share/doc"
+}
+
+package_libproxy-docs() {
+  pkgdesc+=" (documentation)"
+  depends=()
+  # Logic to move doc folder if generated
+  mv "$pkgdir/usr/share/doc" "$pkgdir" || true
+}

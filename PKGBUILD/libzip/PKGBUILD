@@ -1,0 +1,92 @@
+pkgname=libzip
+pkgver=1.11.4
+pkgrel=1
+pkgdesc="C library for reading, creating, and modifying zip archives"
+url="https://libzip.org"
+license=('BSD')
+arch=('armv6h')
+depends=('zlib' 'bzip2' 'zstd' 'openssl' 'gnutls')
+makedepends=('cmake' 'pkgconf')
+provides=('libzip.so')
+source=("${url}/download/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('8a247f57d1e3e6f6d11413b12a6f28a9d388de110adc0ec608d893180ed7097b')
+
+# adjust these to your environment if different
+_toolchain="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_sysroot="/home/x/x-sysroot"
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # create a CMake toolchain file for cross-compiling
+  crossfile="${srcdir}/makepkg.cross"
+  cat > "${crossfile}" <<_EOF
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+# sysroot and compilers
+set(CMAKE_SYSROOT "${_sysroot}")
+set(CMAKE_C_COMPILER   "${_toolchain}/armv6-rpi-linux-gnueabihf-gcc")
+set(CMAKE_CXX_COMPILER "${_toolchain}/armv6-rpi-linux-gnueabihf-g++")
+set(CMAKE_AR           "${_toolchain}/armv6-rpi-linux-gnueabihf-ar")
+set(CMAKE_RANLIB       "${_toolchain}/armv6-rpi-linux-gnueabihf-ranlib")
+set(CMAKE_STRIP        "${_toolchain}/armv6-rpi-linux-gnueabihf-strip")
+
+# prefer libraries/includes from sysroot
+set(CMAKE_FIND_ROOT_PATH "${_sysroot}")
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+# avoid passing host CFLAGS/CXXFLAGS into the cross compiler
+set(CMAKE_C_FLAGS_INIT "")
+set(CMAKE_CXX_FLAGS_INIT "")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "")
+
+# pkg-config in cross environment
+set(ENV{PKG_CONFIG_SYSROOT_DIR} "${_sysroot}")
+set(ENV{PKG_CONFIG_LIBDIR} "${_sysroot}/usr/lib/pkgconfig;${_sysroot}/usr/share/pkgconfig;${_sysroot}/usr/lib/arm-linux-gnueabihf/pkgconfig")
+_EOF
+
+  # Ensure pkg-config uses the sysroot paths during configure/build
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_LIBDIR="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig:${_sysroot}/usr/lib/arm-linux-gnueabihf/pkgconfig"
+
+  # Clear host build flags so they are not injected into cross compiler calls
+  # Save originals to restore later (if needed)
+  _OLD_CFLAGS="${CFLAGS:-}"
+  _OLD_CXXFLAGS="${CXXFLAGS:-}"
+  _OLD_LDFLAGS="${LDFLAGS:-}"
+  _OLD_CPPFLAGS="${CPPFLAGS:-}"
+
+  unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS
+
+  # Configure and build
+  cmake -B build -S . \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_EXAMPLES=OFF \
+    -DBUILD_REGRESS=OFF \
+    -DWITH_BZIP2=ON \
+    -DWITH_ZSTD=ON \
+    -Wno-dev \
+    -DCMAKE_TOOLCHAIN_FILE="${crossfile}"
+
+  cmake --build build -- -j"$(nproc)"
+
+  # restore env
+  export CFLAGS="${_OLD_CFLAGS}"
+  export CXXFLAGS="${_OLD_CXXFLAGS}"
+  export LDFLAGS="${_OLD_LDFLAGS}"
+  export CPPFLAGS="${_OLD_CPPFLAGS}"
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  DESTDIR="${pkgdir}" cmake --install build --prefix=/usr
+
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

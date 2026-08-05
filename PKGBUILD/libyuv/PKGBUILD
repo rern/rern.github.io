@@ -1,0 +1,89 @@
+# Maintainer: Bruno Pagani <archange@archlinux.org>
+# Cross-compiled for armv6h via crosstool-ng (rAudio Capsule Mirrorless Setup)
+
+pkgname=libyuv
+pkgver=r2426+464c51a03
+pkgrel=1
+pkgdesc="Library for YUV scaling (Cross-compiled)"
+arch=('armv6h')
+url="https://chromium.googlesource.com/libyuv/libyuv/"
+license=(custom)
+depends=(gcc-libs libjpeg-turbo)
+makedepends=(cmake git)
+# Version required by libavif
+_commit=464c51a0353c71f08fe45f683d6a97a638d47833
+source=(git+${url}#commit=${_commit})
+sha512sums=(SKIP)
+
+# --- Toolchain Cross Configurations ---
+_cross_bin="/home/x/x-tools/armv6-rpi-linux-gnueabihf/bin"
+_target_triple="armv6-rpi-linux-gnueabihf"
+_sysroot="/home/x/x-sysroot"
+
+pkgver() {
+  cd "${pkgname}"
+  printf "r%s+%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  sed -i 's|yuvconvert ${JPEG_LIBRARY}|${ly_lib_shared} ${JPEG_LIBRARY}|' ${pkgname}/CMakeLists.txt
+}
+
+build() {
+  rm -rf build
+
+  export PATH="${_cross_bin}:${PATH}"
+  export QEMU_LD_PREFIX="${_sysroot}"
+
+  # Core target flags
+  export ARCH_FLAGS="-march=armv6zk -mcpu=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard --sysroot=${_sysroot}"
+  export CFLAGS="-O2 -pipe ${ARCH_FLAGS}"
+  export CXXFLAGS="-O2 -pipe ${ARCH_FLAGS}"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot} -L${_sysroot}/usr/lib -L${_sysroot}/lib -Wl,-rpath-link,${_sysroot}/usr/lib"
+
+  # Map pkg-config to read from the target sysroot structures
+  export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+  export PKG_CONFIG_LIBDIR="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+  export PKG_CONFIG_PATH=""
+
+  # Inject compilation parameters directly into CMake's configuration pass
+  cmake -B build -S $pkgname \
+    -DCMAKE_SYSTEM_NAME=Linux \
+    -DCMAKE_SYSTEM_PROCESSOR=arm \
+    -DCMAKE_C_COMPILER="${_cross_bin}/${_target_triple}-gcc" \
+    -DCMAKE_CXX_COMPILER="${_cross_bin}/${_target_triple}-g++" \
+    -DCMAKE_SYSROOT="${_sysroot}" \
+    -DCMAKE_FIND_ROOT_PATH="${_sysroot}" \
+    -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+    -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+    -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+    -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DAVIF_BUILD_APPS=ON \
+    -DAVIF_BUILD_MAN_PAGES=OFF \
+    -DAVIF_CODEC_AOM=SYSTEM \
+    -DAVIF_CODEC_DAV1D=SYSTEM \
+    -DAVIF_CODEC_RAV1E=SYSTEM \
+    -DAVIF_CODEC_SVT=OFF \
+    -DAVIF_LIBXML2=SYSTEM \
+    -DAVIF_BUILD_GDK_PIXBUF=OFF \
+    -DAVIF_LIBYUV=SYSTEM \
+    -Dlibyuv_INCLUDE_DIR="${_sysroot}/usr/include" \
+    -Dlibyuv_LIBRARY="${_sysroot}/usr/lib/libyuv.so" \
+    -DAVIF_LIBSHARPYUV=SYSTEM \
+    -Dlibsharpyuv_FOUND=TRUE \
+    -Dlibsharpyuv_LIBRARIES="" \
+    -Dlibsharpyuv_INCLUDE_DIRS="" \
+    -Dlibsharpyuv_CFLAGS=""
+
+  make -C build
+}
+
+package() {
+  make -C build DESTDIR="${pkgdir}" install
+  install -Dm644 ${pkgname}/LICENSE -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+
+  # Strip target binaries cleanly using toolchain strip engine
+  find "${pkgdir}/usr/bin" "${pkgdir}/usr/lib" -type f \( -name "*.so*" -o -executable \) \
+    -exec "${_cross_bin}/${_target_triple}-strip" --strip-unneeded {} + 2>/dev/null || true
+}

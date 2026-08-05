@@ -1,0 +1,115 @@
+# Maintainer: Felix Yan <felixonmars@gmail.com>
+# Contributor: Andrea Scarpino <andrea@archlinux.org>
+# Contributor: dorphell <dorphell@archlinux.org>
+# Contributor: Cross-compiled for Arch Linux ARM (armv6h / Raspberry Pi Zero)
+
+pkgname=enchant
+pkgver=2.8.15
+pkgrel=2
+pkgdesc="A wrapper library for generic spell checking (ARMv6h)"
+url="https://rrthomas.github.io/enchant/"
+arch=('armv6h')
+license=('LGPL-2.1-or-later')
+depends=(
+  'glib2'
+  'glibc'
+  'libgcc'
+  'libstdc++'
+)
+makedepends=(
+  'aspell'
+  'git'
+  'hspell'
+  'hunspell'
+  'libvoikko'
+  'nuspell'
+  'vala'
+)
+checkdepends=('unittestpp')
+optdepends=(
+  'aspell: for aspell based spell checking support'
+  'hspell: for hspell based spell checking support'
+  'hunspell: for hunspell based spell checking support'
+  'libvoikko: for libvoikko based spell checking support'
+  'nuspell: for nuspell based spell checking support'
+)
+provides=('libenchant-2.so')
+source=(
+  "git+https://github.com/rrthomas/enchant#tag=v$pkgver"
+  "git+https://git.savannah.gnu.org/git/gnulib.git"
+  "git+https://github.com/gnulib-modules/bootstrap.git"
+)
+b2sums=('148e77510bc258317c8b5e0564eb4475dba9ecea803baf8e3a0c40ecf632e68d76459f0296e1350fb68697327b8cd6c0f89753332375af0bffd21c63c7d5d1e4'
+        'SKIP'
+        'SKIP')
+
+prepare() {
+  cd enchant
+
+  git submodule init
+  git submodule set-url gnulib "$srcdir/gnulib"
+  git submodule set-url gl-mod/bootstrap "$srcdir/bootstrap"
+  git -c protocol.file.allow=always -c protocol.allow=never submodule update
+
+  ./bootstrap
+}
+
+build() {
+  # Cross-compilation variables setup
+  local _target_triplet="armv6-rpi-linux-gnueabihf"
+  local _toolchain_bin="/home/x/x-tools/${_target_triplet}/bin"
+  local _sysroot="/home/x/rpi0_sysroot"
+
+  # Create cross-pkg-config wrapper to intercept any dependency queries (like glib-2.0)
+  mkdir -p "${srcdir}/bin"
+  cat <<EOF > "${srcdir}/bin/pkg-config"
+#!/bin/sh
+export PKG_CONFIG_DIR=""
+export PKG_CONFIG_LIBDIR="${_sysroot}/usr/lib/pkgconfig:${_sysroot}/usr/share/pkgconfig"
+export PKG_CONFIG_SYSROOT_DIR="${_sysroot}"
+exec /usr/bin/pkg-config "\$@"
+EOF
+  chmod +x "${srcdir}/bin/pkg-config"
+
+  # Setup paths and compiler targets
+  export PATH="${srcdir}/bin:${_toolchain_bin}:${PATH}"
+  export CHOST="${_target_triplet}"
+  export CC="${_target_triplet}-gcc"
+  export CXX="${_target_triplet}-g++"
+  
+  # Inject target sysroot to compilation and linker steps
+  export CFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export CXXFLAGS="-O2 -pipe --sysroot=${_sysroot}"
+  export LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now --sysroot=${_sysroot}"
+
+  local configure_options=(
+    --prefix=/usr
+    --sysconfdir=/etc
+    --localstatedir=/var
+    --disable-static
+    --enable-relocatable
+    --host=${_target_triplet}
+    --with-sysroot=${_sysroot}
+  )
+
+  cd enchant
+  ./configure "${configure_options[@]}"
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make
+}
+
+# The check() block is completely bypassed via options=('!check')
+
+package() {
+  # Dynamically enter whichever directory was used (git layout vs tarball layout)
+  if [ -d "enchant-${pkgver}" ]; then
+    cd "enchant-${pkgver}"
+  else
+    cd enchant
+  fi
+  
+  # Create the missing modules directory to stop the install-data-hook from crashing
+  mkdir -p "$pkgdir/usr/lib/enchant-2"
+  
+  make DESTDIR="$pkgdir" install
+}
