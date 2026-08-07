@@ -2,12 +2,6 @@
 
 . <( curl -sL https://github.com/rern/rOS/raw/main/common.sh )
 
-updateRepo() {
-	[[ ! $newer_only ]] && rm -f +R*
-	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz
-	rm -f *.xz.old
-}
-
 bar Mount REPO ...
 mkdir -p REPO
 mount -t cifs //192.168.1.9/rern.github.io REPO -o username=guest,password=
@@ -40,7 +34,9 @@ shopt -s nullglob # suppress error if no *.zst
 for arch in $selected; do
 	cd REPO/$arch
 	bar $arch
-	updateRepo
+	[[ ! $newer_only ]] && rm -f +R*
+	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz
+	rm -f *.xz.old
 done
 
 cd $dir_base
