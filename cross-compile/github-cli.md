@@ -8,7 +8,7 @@ gh auth login
 #    HTTPS
 # ? How would you like to authenticate GitHub CLI?
 #    Login with a web browser
-#    (copy one-time code > [Enter])
+#    (copy one-time code > [Enter]) - if failed - open browser: https://github.com/login/device
 
 git config --global user.email EMAIL
 git config --global user.name USER
