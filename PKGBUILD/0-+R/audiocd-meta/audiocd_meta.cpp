@@ -11,9 +11,10 @@
 #include <iostream>
 #include <string>
 
+namespace fs = std::filesystem;
+
 bool STDOUT = false;
-std::string DISCID;
-std::string FILE_ID;
+std::string DIR_ID, DISCID;
 
 static const char *USER_AGENT = "MyDiscIdApp/1.0 ( you@example.com )";
 static const char *MB_NS = "http://musicbrainz.org/ns/mmd-2.0#";
@@ -79,11 +80,10 @@ static xmlXPathObjectPtr xpath_nodes(xmlXPathContextPtr ctx, xmlNodePtr node, co
 }
 
 static void print_release(xmlXPathContextPtr ctx, xmlNodePtr release_node) {
-    std::string data = DISCID +"\n"
-                     + xpath_string(ctx, release_node, "mb:artist-credit/mb:name-credit/mb:artist/mb:name") +"\n" // Artist
-                     + xpath_string(ctx, release_node, "mb:title") +"\n"; // Album
+    std::string data = xpath_string(ctx, release_node, "mb:title") +"\n"                                           // album
+                     + xpath_string(ctx, release_node, "mb:artist-credit/mb:name-credit/mb:artist/mb:name") +"\n"; // artist
 
-    xmlXPathObjectPtr tracks = xpath_nodes(ctx, release_node, "mb:medium-list/mb:medium/mb:track-list/mb:track");
+    xmlXPathObjectPtr tracks = xpath_nodes(ctx, release_node, "mb:medium-list/mb:medium/mb:track-list/mb:track");  // tracks
     if (tracks && tracks->nodesetval && tracks->nodesetval->nodeNr > 0) {
         for (int i = 0; i < tracks->nodesetval->nodeNr; ++i) {
             xmlNodePtr track_node = tracks->nodesetval->nodeTab[i];
@@ -97,23 +97,50 @@ static void print_release(xmlXPathContextPtr ctx, xmlNodePtr release_node) {
     }
     if (tracks) xmlXPathFreeObject(tracks);
     
-    std::ofstream f(FILE_ID);
-    if (f) f << data;
+    std::error_code error;
+    fs::create_directory(DIR_ID, error);
+    if (error) {
+        std::cerr
+            << "Failed: create directory: " << DIR_ID << '\n'
+            << error.message() <<  '\n';
+        return;
+    }
+    
+    std::ofstream file_id(DIR_ID +"/data");
+    if (!file_id) {
+        std::cerr << "Failed: create file: " << DIR_ID +"/data" << '\n';
+        return;
+    }
+    
+    file_id << data;
     
     if (STDOUT) {
         std::cout
             << "\nExample DISCID: " << DISCID << "\n\n"
             << data;
-    } else {
-        std::cout << DISCID << '\n';
+        return;
     }
+    
+    std::cout << DISCID << '\n';
 }
 
 int main(int argc, char **argv) {
     if (argc > 1) {
+        std::string argv1 = argv[1];
+        DISCID = "I5l9cCSFccLKFEKS.7wqSZAorPU-";
+        if (argv1 == "-h") {
+            std::cerr
+                << "\nFetch Audio CD album, artist and track list from MusicBrainZ.\n\n"
+
+                << "Usage: " << argv[0] << " [DISCID]\n"
+                << "          default: calculate discid from current CD/DVD\n"
+                << "  x       (any invalid discid) example discid: " << DISCID << '\n' // Nirvana - Nevermind
+                << "  DISCID  MusicBrainZ discid\n\n";
+            return 0;
+        }
+        
         STDOUT = true;
-        DISCID = argv[1];
-        if (DISCID.size() < 28) DISCID = "I5l9cCSFccLKFEKS.7wqSZAorPU-"; // example: Nirvana - Nevermind 
+        if (argv1.size() == 28) DISCID = argv1;
     } else {
         DiscId *disc = discid_new();
         if (discid_read_sparse(disc, nullptr, 0) == 0) {
@@ -130,8 +157,8 @@ int main(int argc, char **argv) {
         }
     }
     
-    FILE_ID = "/srv/http/data/audiocd/"+ DISCID;
-    if (std::filesystem::exists(FILE_ID)) {
+    DIR_ID = "/srv/http/data/audiocd/"+ DISCID;
+    if (fs::is_directory(DIR_ID)) {
         if (STDOUT) std::cout << "Example DISCID: ";
         std::cout << DISCID << '\n';
         return 0;

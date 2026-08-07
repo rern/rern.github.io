@@ -7,7 +7,7 @@ pkgdesc='Audio spectrum OLED for Raspberry Pi'
 url=https://github.com/rern/mpd_oled
 arch=(armv6h armv7h aarch64)
 license=(MIT)
-depends=(alsa-lib fftw i2c-tools)
+depends=(alsa-lib cava fftw i2c-tools)
 makedepends=(glibc)
 source=(https://github.com/rern/mpd_oled/archive/refs/tags/$pkgver.tar.gz
         mpd_oled.default
