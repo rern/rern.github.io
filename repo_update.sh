@@ -26,14 +26,13 @@ else
 	action=Update
 	newer_only=-n # newer only (deleted packages still exist in db)
 fi
-#........................
-banner $action Repository
 
 dir_base=$PWD
 shopt -s nullglob # suppress error if no *.zst
 for arch in $selected; do
-	cd REPO/$arch
-	bar $arch
+	cd $dir_base/REPO/$arch
+#........................
+	banner $action $arch
 	[[ ! $newer_only ]] && rm -f +R*
 	repo-add $newer_only -R +R.db.tar.xz *.pkg.tar.xz
 	rm -f *.xz.old
