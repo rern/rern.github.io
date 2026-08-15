@@ -157,19 +157,24 @@ static void write_data(const std::string &data) {
 }
 
 static void print_release_musicbrainz(xmlXPathContextPtr ctx, xmlNodePtr release_node) {
-    std::string data = xpath_string(ctx, release_node, "mb:title") + "\n"
-                      + xpath_string(ctx, release_node, "mb:artist-credit/mb:name-credit/mb:artist/mb:name") + "\n";
+    std::string albumartist, artist, data, length, title;
+    albumartist = xpath_string(ctx, release_node, "mb:artist-credit/mb:name-credit/mb:artist/mb:name");
+    data        = xpath_string(ctx, release_node, "mb:title") + "\n"
+                + albumartist +"\n";
 
     xmlXPathObjectPtr tracks = xpath_nodes(ctx, release_node, "mb:medium-list/mb:medium/mb:track-list/mb:track");
     if (tracks && tracks->nodesetval && tracks->nodesetval->nodeNr > 0) {
         for (int i = 0; i < tracks->nodesetval->nodeNr; ++i) {
             xmlNodePtr track_node = tracks->nodesetval->nodeTab[i];
-            std::string title  = xpath_string(ctx, track_node, "mb:recording/mb:title");
-            std::string length = xpath_string(ctx, track_node, "mb:length");
+            artist = xpath_string(ctx, track_node,
+                "mb:artist-credit/mb:name-credit/mb:artist/mb:name");
+            title  = xpath_string(ctx, track_node, "mb:recording/mb:title");
+            length = xpath_string(ctx, track_node, "mb:length");
             if (length.empty()) length = xpath_string(ctx, track_node, "mb:recording/mb:length");
             int time_s = (std::stoi(length) + 500) / 1000;
-
-            data += std::to_string(time_s) + " " + title + "\n";
+            
+            if (artist.empty()) artist = albumartist;
+            data += artist +"^^"+ title +"^^"+ std::to_string(time_s) +"\n";
         }
     }
     if (tracks) xmlXPathFreeObject(tracks);
@@ -330,7 +335,7 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
         return false;
     }
 
-    std::string artist, album;
+    std::string album, albumartist, artist, data, title;
     std::vector<std::string> track_titles;
 
     for (size_t i = 1; i < lines.size(); ++i) {
@@ -341,10 +346,10 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
             std::string val = line.substr(7);
             auto sep = val.find(" / ");
             if (sep != std::string::npos) {
-                artist = val.substr(0, sep);
-                album  = val.substr(sep + 3);
+                album       = val.substr(sep + 3);
+                albumartist = val.substr(0, sep);
             } else {
-                album = val;
+                album       = val;
             }
         } else if (line.rfind("TTITLE", 0) == 0) {
             auto eq = line.find('=');
@@ -355,13 +360,22 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
             }
         }
     }
+    data = album +"\n"
+         + albumartist +"\n";
 
-    std::string data = album + "\n" + artist + "\n";
     for (size_t i = 0; i < track_titles.size(); ++i) {
-        int start = TRACK_OFFSETS[i];
-        int end   = (i + 1 < TRACK_OFFSETS.size()) ? TRACK_OFFSETS[i + 1] : LEADOUT_SECTORS;
+        int start  = TRACK_OFFSETS[i];
+        int end    = (i + 1 < TRACK_OFFSETS.size()) ? TRACK_OFFSETS[i + 1] : LEADOUT_SECTORS;
         int time_s = (end - start) / 75; // frames -> seconds
-        data += std::to_string(time_s) + " " + track_titles[i] + "\n";
+        title      = track_titles[i];
+        auto tsep  = title.find(" / ");
+        if (tsep != std::string::npos) {
+            artist = title.substr(0, tsep);
+            title  = title.substr(tsep + 3);
+        }
+        if (artist.empty()) artist = albumartist;
+        data += artist +"^^"+ title +"^^"+ std::to_string(time_s) +"\n";
+
     }
 
     data_out = data;
