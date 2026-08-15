@@ -87,8 +87,8 @@ static bool read_disc_ids(std::string &err) {
     const char *mb_id    = discid_get_id(disc);
     const char *gnudb_id = discid_get_freedb_id(disc); // same TOC, CDDB-style checksum
 
-    MBZ_DISCID    = mb_id    ? mb_id    : "";
-    GDB_DISCID = gnudb_id ? gnudb_id : "";
+    MBZ_DISCID      = mb_id    ? mb_id    : "";
+    GDB_DISCID      = gnudb_id ? gnudb_id : "";
 
     FIRST_TRACK     = discid_get_first_track_num(disc);
     LAST_TRACK      = discid_get_last_track_num(disc);
@@ -112,7 +112,7 @@ static bool read_disc_ids(std::string &err) {
 // XPath helpers (MusicBrainz XML response)
 // ---------------------------------------------------------------------
 static std::string xpath_string(xmlXPathContextPtr ctx, xmlNodePtr node, const char *expr) {
-    ctx->node = node;
+    ctx->node             = node;
     xmlXPathObjectPtr obj = xmlXPathEvalExpression(BAD_CAST expr, ctx);
     std::string result;
     if (obj && obj->nodesetval && obj->nodesetval->nodeNr > 0) {
@@ -193,7 +193,7 @@ static bool lookup_musicbrainz(std::string &err_out) {
     xmlDocPtr doc = xmlReadMemory(response.c_str(), static_cast<int>(response.size()),
                                    "response.xml", nullptr, 0);
     if (!doc) {
-        err_out = "Failed: parse MusicBrainz XML response.";
+        err_out = "parse MusicBrainz XML response.";
         return false;
     }
 
@@ -223,8 +223,8 @@ static bool lookup_musicbrainz(std::string &err_out) {
 // need proper percent-encoding; the query/read commands above intentionally
 // use literal '+' separators instead (see gnudb_query/gnudb_read).
 [[maybe_unused]] static std::string url_encode(const std::string &s) {
-    CURL *curl = curl_easy_init();
-    char *out = curl_easy_escape(curl, s.c_str(), static_cast<int>(s.size()));
+    CURL *curl         = curl_easy_init();
+    char *out          = curl_easy_escape(curl, s.c_str(), static_cast<int>(s.size()));
     std::string result = out ? out : s;
     if (out) curl_free(out);
     curl_easy_cleanup(curl);
@@ -331,7 +331,7 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
     int code = 0;
     std::istringstream(lines[0]) >> code;
     if (code != 210) {
-        err_out = "read failed (code " + std::to_string(code) + ")";
+        err_out = "read failed: " + std::to_string(code);
         return false;
     }
 
@@ -345,9 +345,9 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
         if (line.rfind("DTITLE=", 0) == 0) {
             std::string val = line.substr(7);
             auto sep = val.find(" / ");
-            if (sep != std::string::npos) {
-                album       = val.substr(sep + 3);
+            if (sep != std::string::npos) { // albumartist / album
                 albumartist = val.substr(0, sep);
+                album       = val.substr(sep + 3);
             } else {
                 album       = val;
             }
@@ -369,11 +369,12 @@ static bool gnudb_read(const GnudbMatch &match, std::string &data_out, std::stri
         int time_s = (end - start) / 75; // frames -> seconds
         title      = track_titles[i];
         auto tsep  = title.find(" / ");
-        if (tsep != std::string::npos) {
+        if (tsep != std::string::npos) { // trackartist / title
             artist = title.substr(0, tsep);
             title  = title.substr(tsep + 3);
+        } else {
+            artist = albumartist;
         }
-        if (artist.empty()) artist = albumartist;
         data += artist +"^^"+ title +"^^"+ std::to_string(time_s) +"\n";
 
     }
@@ -432,7 +433,7 @@ int main(int argc, char **argv) {
 
     std::string err;
     if (!read_disc_ids(err)) {
-        std::cerr << "Failed: read disc: " << err << "\n";
+        std::cerr << "Failed: read disc " << err << "\n";
         return 1;
     }
 
