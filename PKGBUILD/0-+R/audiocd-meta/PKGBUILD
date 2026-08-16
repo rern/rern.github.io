@@ -1,7 +1,7 @@
 # Maintainer: Your Name <you@example.com>
 pkgname=audiocd-meta
 pkgver=1.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Audio CD metadata"
 arch=('aarch64' 'armv7h' 'armv6h')
 url="https://example.com/audiocd-meta"
