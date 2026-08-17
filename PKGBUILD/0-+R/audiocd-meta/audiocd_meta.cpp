@@ -86,14 +86,16 @@ static bool read_disc_ids(std::string &err) {
         return false;
     }
 
+    FIRST_TRACK     = discid_get_first_track_num(disc);
+    LAST_TRACK      = discid_get_last_track_num(disc);
+    if (NUM_TRACKS) return true;
+    
     const char *mb_id    = discid_get_id(disc);
     const char *gnudb_id = discid_get_freedb_id(disc); // same TOC, CDDB-style checksum
 
     MBZ_DISCID      = mb_id    ? mb_id    : "";
     GDB_DISCID      = gnudb_id ? gnudb_id : "";
 
-    FIRST_TRACK     = discid_get_first_track_num(disc);
-    LAST_TRACK      = discid_get_last_track_num(disc);
     LEADOUT_SECTORS = discid_get_sectors(disc);
 
     TRACK_OFFSETS.clear();
