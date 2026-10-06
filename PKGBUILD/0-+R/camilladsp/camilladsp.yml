@@ -15,7 +15,7 @@ devices:
   playback:
     type: Alsa
     channels: 2
-    device: hw:0,0
+    device: hw:0
     format: S16_LE
   enable_rate_adjust: false
   target_level: 2048
