@@ -11,12 +11,12 @@ devices:
     type: Alsa
     channels: 2
     device: hw:Loopback,0
-    format: S32_LE
+    format: null
   playback:
     type: Alsa
     channels: 2
     device: hw:0
-    format: S16_LE
+    format: null
   enable_rate_adjust: false
   target_level: 2048
   adjust_period: 10.0
