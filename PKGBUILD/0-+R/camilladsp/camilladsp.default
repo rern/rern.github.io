@@ -2,4 +2,4 @@ ADDRESS=0.0.0.0
 CONFIG=/etc/camilladsp/configs/camilladsp.yml
 LOG=/var/log/camilladsp.log
 PORT=1234
-STATE=/srv/http/data/camilladsp/state.yml
+STATE=/etc/camilladsp/state.yml

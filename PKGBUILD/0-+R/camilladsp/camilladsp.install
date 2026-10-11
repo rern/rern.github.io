@@ -1,10 +1,7 @@
 # for rAudio
 
 post_install() {
-	if [[ -e /srv/http/data/camilladsp ]]; then
-		file=/etc/default/camilladsp
-		grep -q /etc/ $file && sed -i 's|/etc/|/srv/http/data/|' $file
-	fi
+	[[ -e /srv/http/data/camilladsp ]] && sed -i 's|/etc/|/srv/http/data/|' /etc/default/camilladsp
 }
 post_upgrade() {
 	post_install

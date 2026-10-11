@@ -1,33 +1,46 @@
 # Maintainer: rern <rernrern@gmail.com>
 
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# re-login
+
 pkgname=camilladsp
 pkgver=4.1.3
-pkgrel=1
+pkgrel=2
 pkgdesc='IIR and FIR engine for crossovers, room correction etc.'
 url=https://github.com/HEnquist/camilladsp
-arch=(x86_64 armv7h aarch64)
-license=(GPL)
-depends=(alsa-lib openssl)
-makedepends=(pkg-config)
+arch=(x86_64 aarch64 armv7h)
+license=(GPL-3.0-only)
+depends=(alsa-lib gcc-libs glibc openssl)
 install=camilladsp.install
-source=(camilladsp.default
+source=(https://github.com/HEnquist/camilladsp/archive/refs/tags/v$pkgver.tar.gz
+        camilladsp.default
         camilladsp.install
         camilladsp.service
         camilladsp.yml
         state.yml)
-source_armv7h=($url/releases/download/v$pkgver/camilladsp-linux-armv7.tar.gz)
-source_aarch64=(${source_armv7h/armv7/aarch64})
-source_x86_64=(${source_armv7h/armv7/amd64})
-
-sha256sums=('245d0ba135c81590ea5d8a1eb68741daf055192869128cad26242924dbcd5144'
-            '25d68017e71bf4c1972a84dc8f675670ada810f2e3ef6dbe96f08fa227f3d3d4'
-            '2ddfad846b2a6e57a27302849c03e47e5ce062b3365cb67d8525c80963bef689'
-            'd0e08597cce823f437eb69ef6433e5d3456c9899b9d2225b1c8bf831aa58994b'
+sha256sums=('7e2fdca1e9c73885426ac889d27682c76d49ea1ea52c5f5bfe5356d7fdfa52df'
+            '3b89ce3546e58782a25ccc480915315422edb3915481cedd578fb52232c3dfb8'
+            '4ba985ecc5afd9a8f17b589b810ea323d0dc9abd0fb6d0f2d7b6b9d25ed8b4ba'
+            'd5df5dfb0dac64a1e0be3f8802d18aa406f22a1bb8992c5ee02d6d0c2ce1f631'
+            '92a587bccbae1c4d014cf7ebc4629624954dd621c175f0d342dbcb9260b61df6'
             'b1cf5192986ee4497546bf9d58c64b28f9c7d2d1e3efb4ef7b69fedd4a7904d1')
-sha256sums_x86_64=('55f5ec2ed80fcc79a543672f9f89ace4557d290d80584ef31ee0442111bd0b11')
-sha256sums_armv7h=('dd1af57129e078383e2a1d5dc28cc13f3f02a78dce9247eb7d9232731b8f7609')
-sha256sums_aarch64=('d9a17092923ebfe5d20a770c6b6a7eb2268f9700f999bf604b9db09f518aca5a')
 
+prepare() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo fetch --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+build() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release --features bluez-backend
+}
+check() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo test --frozen --release --features bluez-backend
+}
 package() {
     cd $srcdir
     install -Dm 755 $pkgname $pkgdir/usr/bin/$pkgname
