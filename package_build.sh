@@ -29,13 +29,10 @@ package=$( dialog.menu Package "$list_menu" )
 pkg_name=$( sed -n "$package p" <<< $list_menu )
 depends=$( sed -n "$package {s/.*: *//; p}" <<< $list )
 #----------------------------------------------------------------------------
-if [[ $pkg_name == snapcast ]]; then
+if [[ $pkg_name == camilladsp || $pkg_name == snapcast ]]; then
 	if (( $( awk '/^MemFree/ {print $2}' /proc/meminfo ) < 2000000 )); then
-		file_swap=/swap
-		fallocate -l 4G $file_swap
-		chmod 600 $file_swap
-		mkswap $file_swap
-		swapon $file_swap
+		mkswap -U clear --size 4G --file /swapfile
+		swapon /swapfile
 	fi
 elif [[ $pkg_name == status ]]; then
 	clear -x
