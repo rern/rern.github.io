@@ -7,11 +7,7 @@ bash <( curl -sL https://github.com/rern/rern.github.io/raw/main/package.sh )
 - Build
 - Update repo
 - AUR setup
-- Swap file if needed. (`camilladsp` on Rpi 3)
-```sh
-mkswap -U clear --size 4G --file /swapfile
-swapon /swapfile
-```
+
 **Arch Linux Arm Repo**:
 - Current - http://mirror.archlinuxarm.org
 - Archives
