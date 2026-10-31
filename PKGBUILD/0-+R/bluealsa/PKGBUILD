@@ -1,7 +1,7 @@
 # Maintainer: rern <rernrern@gmail.com>
 
 pkgname=bluealsa
-pkgver=4.3.1
+pkgver=5.0.0
 pkgrel=1
 pkgdesc='Bluetooth audio ALSA backend'
 arch=( x86_64
@@ -35,7 +35,7 @@ build() {
 		  --enable-debug
 		  #--enable-hcitop
 		  #--enable-ldac
-		  --enable-manpages
+		  #--enable-manpages
 		  #--enable-mp3lame
 		  #--enable-mpg123
 		  #--enable-msbc
