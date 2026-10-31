@@ -12,7 +12,6 @@ reponame=bluez-alsa
 url=https://github.com/Arkq/$reponame
 license=( MIT )
 depends=( alsa-lib bluez-libs glib2 libfdk-aac sbc systemd )
-makedepends=( python-docutils python-packaging )
 optdepends=( 'lame: build with mp3 support'
              'libbsd: build with hcitop tool'
              'libopenaptx-git: build with libopenaptx for apt-X'
@@ -21,7 +20,7 @@ optdepends=( 'lame: build with mp3 support'
              'readline: build with bluealsa-rfcomm tool'
              'spandsp: build mSBC codec support' )
 source=( https://github.com/Arkq/bluez-alsa/archive/refs/tags/v$pkgver.tar.gz )
-sha512sums=('db9ac0ce58c03062d65eab2a0ccaed3ddd23de6eda3572ac0d038557c6bb7f243a3551eebae70593c519bc4db070923b9997a6cc4e6546000a2279c56fe1f2e5')
+sha512sums=('045b6286535191df9a85c0a1a0b9f1d5e0d5e10c65ba8d10c75dff895eb902717a0a022b5479f23216b9c59f6b55f51ffc1a2d61ad9cfd74c730f3ab035434fc')
 
 build() {
 	local flags
